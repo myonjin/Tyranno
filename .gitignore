@@ -37,10 +37,13 @@ out/
 .vscode/
 
 ### property files ###
-application-*.yml
+application.yml
 
 ### Key Files ###
 src/main/resources/firebase/serviceAccountKey.json
 
 ### .DS_store ###
+.DS_Store
+._.DS_Store
 **/.DS_Store
+**/._.DS_Store
