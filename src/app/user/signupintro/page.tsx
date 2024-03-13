@@ -5,14 +5,12 @@ import Image from 'next/image'
 import signupcoupon from '@/images/signupcoupon.png'
 // /Users/jimin/develop/ssg-frontend/src/images/signupcoupon.png
 import './signup.css'
+import HeaderTitle from '@/components/ui/HeaderTitle'
 
 function Signup() {
     return (
         <div>
-            <div className="signup_header_menu">
-                <FontAwesomeIcon icon={faArrowLeft} style={{ width: '20px', height: '20px' }} />
-                <p style={{ fontSize: '20px', textAlign: 'center', flex: 1 }}>회원가입</p>
-            </div>
+            <HeaderTitle title="회원가입" />
             <h3 style={{ padding: '2%' }}>
                 믿고 사는 즐거움 <br />
                 SSG.COM에 오신것을 환영합니다.
