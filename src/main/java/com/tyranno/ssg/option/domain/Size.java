@@ -6,12 +6,15 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Builder
 @Entity
 @Table(name = "size")
 public class Size {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "size", nullable = false)
     private String size;
+
 }

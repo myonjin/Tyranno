@@ -1,4 +1,4 @@
-package com.tyranno.ssg.users.domain;
+package com.tyranno.ssg.auth.users.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,28 +9,27 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Builder
 @Entity
 @Table(name = "users")
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "login_id", length = 30, nullable = false)
     private String loginId;
 
-    @Column(length = 100, nullable = false)
+    @Column(name = "password", length = 100, nullable = false)
     private String password;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "gender", nullable = false)
     private Byte gender;
 
     @Column(name = "phone_number", nullable = false)
@@ -45,12 +44,13 @@ public class Users {
     @Column(name = "modify_at")
     private LocalDateTime modifyAt;
 
-    @Column(nullable = false)
-    private int status;
+    @Column(name = "status", nullable = false)
+    private Integer status;
 
     @Column(nullable = false)
     private String uuid;
 
-
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
+    private Marketing marketing;
 
 }

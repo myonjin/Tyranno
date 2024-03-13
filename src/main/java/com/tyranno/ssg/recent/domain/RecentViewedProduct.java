@@ -1,6 +1,7 @@
 package com.tyranno.ssg.recent.domain;
 
 import com.tyranno.ssg.auth.users.domain.Users;
+import com.tyranno.ssg.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,8 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "recent_search_history")
-public class RecentSearchHistory {
+@Table(name = "recent_viewed_product")
+public class RecentViewedProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,9 +22,13 @@ public class RecentSearchHistory {
     @JoinColumn(name = "users_id")
     private Users users;
 
-    @Column(name = "search_word", nullable = false)
-    private String searchWord;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "is_view", nullable = false)
+    private Boolean isView;
 }

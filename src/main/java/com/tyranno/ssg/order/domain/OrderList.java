@@ -1,4 +1,4 @@
-package com.tyranno.ssg.order;
+package com.tyranno.ssg.order.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,14 +8,13 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Builder
 @Entity
-@Table(name = "orderlist")
+@Table(name = "order_list")
 public class OrderList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "users_id")
     private long usersId;
@@ -30,7 +29,7 @@ public class OrderList {
     private String addressDetail;
 
     @Column(name = "zip_code", nullable = false)
-    private int zipCode;
+    private Integer zipCode;
 
     @Column(name = "receiver_name", nullable = false)
     private String receiverName;
@@ -60,8 +59,8 @@ public class OrderList {
     private byte orderStatus;
 
     @Column(name = "total_money", nullable = false)
-    private int totalMoney;
+    private Integer totalMoney;
 
     @Column(name = "is_order_confirm", nullable = false)
-    private boolean isOrderConfirm;
+    private Boolean isOrderConfirm;
 }

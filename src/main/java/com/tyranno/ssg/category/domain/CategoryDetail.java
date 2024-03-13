@@ -6,17 +6,16 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Builder
 @Entity
 @Table(name = "categorydetail")
 public class CategoryDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @ManyToOne
-    @JoinTable(name = "category_small")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_small_id")
     private CategorySmall categorySmall;
 
     @Column(name = "detail_name")
