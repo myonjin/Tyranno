@@ -22,7 +22,7 @@ public class Product {
     @Column(nullable = false)
     private Float productRate; // 평점
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String detailContent; // 상세설명
 
     @Column(nullable = false)
