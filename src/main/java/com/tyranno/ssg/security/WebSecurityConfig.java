@@ -21,7 +21,7 @@ public class WebSecurityConfig {
                 .formLogin(formLogin -> formLogin.disable())
                 .authorizeHttpRequests(authz -> authz
                         // /api/v1/category 경로에 대한 접근을 모두에게 허용
-                        .requestMatchers("/api/v1/category").permitAll()
+                        .requestMatchers("/api/v1/**","/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         // 정적 자원에 대한 접근 허용
                         .requestMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
                         // 나머지 요청에 대해 인증 요구
