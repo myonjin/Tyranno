@@ -2,8 +2,8 @@ spring:
   datasource:
     url: jdbc:mysql://15.164.246.181:3306/tyranno?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
 
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    username: tyranno
+    password: xlfksh97
 
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -15,9 +15,14 @@ spring:
       hibernate:
         #        dialect: org.hibernate.dialect.MySQL5Dialect
         format_sql: true
+  security:
+    user:
+      name: tyranno
+      password: xlfksh97
+
+
 # swagger
 springdoc:
-  #  packages-to-scan: global.Swaggerconfig
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
