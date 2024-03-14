@@ -21,9 +21,11 @@ function Signup() {
                 <button className="button-groups" style={{ backgroundColor: '#ff5452' }}>
                     멤버십 혜택 받고 가입하기
                 </button>
+                {/* <label> */}
                 <button className="button-groups">
-                    <Link href="/user/auth">통합회원만 가입하기</Link>
+                    <Link href="/user/auth"> 통합회원만 가입하기 </Link>
                 </button>
+                {/* </label> */}
             </div>
         </div>
     )

@@ -141,53 +141,49 @@ function Auth() {
                 <div className="auth_user">
                     <span className="inp_txt">
                         <input className="input-content" type="text" id="userName" name="name" placeholder="이름" />
-                        <div className="tag-group">
+                        {/* <div className="tag-group">
                             <input type="radio" name="sex" value="1" />
                             <label>남</label>
-                        </div>
+                        </div> */}
 
                         {/* <label className="userName"></label> */}
                     </span>
-                    <div>
+                    <span className="inp_txt">
+                        <input type="text" className="input-content" placeholder="생년월일 8자리(예. 20100101)" />
+                        <label htmlFor="currency" className="" />
+                        <select id="currency" name="foriegn">
+                            <option>내국인</option>
+                            <option>외국인</option>
+                        </select>
+                    </span>
+                    {/* </div> */}
+                    <span className="inp_txt">
+                        <label htmlFor="currency" className="" />
+                        <select
+                            id="currency"
+                            name="phone-type"
+                            className="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                        >
+                            <option>SKT</option>
+                            <option>KT</option>
+                            <option>LG U+</option>
+                            <option>SKT 알뜰폰</option>
+                            <option>KT 알뜰폰</option>
+                            <option>LG U+ 알뜰폰</option>
+                        </select>
+                    </span>
+                    <span className="inp_txt">
                         <input
+                            className="input-content"
                             type="text"
-                            name="price"
-                            id="price"
-                            className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            placeholder="0.00"
+                            id="userName"
+                            name="name"
+                            placeholder="-없이 휴대폰번호 입력"
                         />
-                        <div className="absolute inset-y-0 right-0 flex items-center">
-                            <label htmlFor="currency" className="sr-only">
-                                Currency
-                            </label>
-                            <select
-                                id="currency"
-                                name="currency"
-                                className="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                            >
-                                <option>USD</option>
-                                <option>CAD</option>
-                                <option>EUR</option>
-                            </select>
-                        </div>
-                    </div>
+
+                        <label className="userName"></label>
+                    </span>
                 </div>
-                <span className="inp_txt">
-                    <input className="input-content" type="text" id="userName" name="name" placeholder="이름" />
-
-                    <label className="userName"></label>
-                </span>
-                <span className="inp_txt">
-                    <input
-                        className="input-content"
-                        type="text"
-                        id="userName"
-                        name="name"
-                        placeholder="-없이 휴대폰번호 입력"
-                    />
-
-                    <label className="userName"></label>
-                </span>
             </div>
         </div>
     )
