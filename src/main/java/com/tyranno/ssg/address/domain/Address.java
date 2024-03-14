@@ -1,45 +1,43 @@
 package com.tyranno.ssg.address.domain;
 
-import com.tyranno.ssg.auth.users.domain.Users;
+import com.tyranno.ssg.users.domain.Users;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "address")
+@Getter
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private Users users; // 회원정보 들고오기
 
-    @Column(name = "is_main")
-    private boolean isMain;
+    private Byte isMain;
 
-    @Column(name = "address_name")
     private String addressName;
 
-    @Column(name = "zip_code", nullable = false)
-    private int zipCode;
+    @Column(nullable = false)
+    private Integer zipCode;
 
-    @Column(name = "address_base", nullable = false)
+    @Column(nullable = false)
     private String addressBase;
 
-    @Column(name = "address_detail")
     private String addressDetail;
 
-    @Column(name = "receiver_name", nullable = false)
+    @Column(nullable = false)
     private String receiverName;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(name = "home_number")
     private String homeNumber;
 }

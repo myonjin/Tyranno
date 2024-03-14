@@ -3,7 +3,7 @@ package com.tyranno.ssg.option.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -15,21 +15,21 @@ public class Option {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "size_id")
+    @JoinColumn(name = "sizeId")
     private Size size;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "color_id")
+    @JoinColumn(name = "colorId")
     private Color color;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "etc_id")
+    @JoinColumn(name = "etcId")
     private Etc etc;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Extra_id")
+    @JoinColumn(name = "ExtraId")
     private Extra extra;
 
-    @Column(name = "stock", nullable = false)
+    @Column(nullable = false)
     private Integer stock;
 }

@@ -4,22 +4,21 @@ import com.tyranno.ssg.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "vendor_product")
+@Getter
 public class VendorProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vendor_id")
+    @JoinColumn(name = "vendorId")
     private Vendor vendor;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productId")
     private Product product;
 }

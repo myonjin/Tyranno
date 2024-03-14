@@ -3,12 +3,11 @@ package com.tyranno.ssg.product.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "product_thum")
+@Getter
 public class ProductThum {
 
     @Id
@@ -16,15 +15,13 @@ public class ProductThum {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productId")
     private Product product;
 
-    @Column(name = "image_url")
     private String imageUrl; // 이미지링크
 
-    @Column(name = "priority", nullable = false)
+    @Column(nullable = false)
     private Byte priority; // 우선순위
 
-    @Column(name = "image_name")
     private String imageName; // alt
 }

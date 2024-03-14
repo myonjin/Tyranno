@@ -4,7 +4,7 @@ import com.tyranno.ssg.option.domain.Option;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -16,16 +16,16 @@ public class Order {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "option_id")
+    @JoinColumn(name = "optionId")
     private Option option;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_list_id")
+    @JoinColumn(name = "orderListId")
     private OrderList orderList;
 
-    @Column(name = "content", nullable = false)
+    @Column(nullable = false)
     private Integer count;
 
-    @Column(name = "money", nullable = false)
+    @Column(nullable = false)
     private Integer money;
 }

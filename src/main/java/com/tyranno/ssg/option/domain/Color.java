@@ -3,17 +3,16 @@ package com.tyranno.ssg.option.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "color")
+@Getter
 public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "color", nullable = false)
+    @Column(nullable = false)
     private String color;
 }

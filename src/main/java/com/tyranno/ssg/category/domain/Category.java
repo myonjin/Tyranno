@@ -2,33 +2,30 @@ package com.tyranno.ssg.category.domain;
 
 import com.tyranno.ssg.product.domain.Product;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "category")
+@Getter
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productId")
     private Product product;
 
-    @Column(name = "detail_id")
-    private long detailId;
+    private Long detailId;
 
-    @Column(name = "small_id")
-    private long smallId;
+    private Long smallId;
 
-    @Column(name = "middle_id")
-    private long middleId;
+    private Long middleId;
 
-    @Column(name = "large_id")
-    private long largeId;
+    private Long largeId;
 }

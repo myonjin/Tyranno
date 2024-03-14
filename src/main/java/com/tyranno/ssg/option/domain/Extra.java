@@ -3,21 +3,20 @@ package com.tyranno.ssg.option.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "extra")
+@Getter
 public class Extra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "extra_name", nullable = false)
+    @Column(nullable = false)
     private String extraName;
 
-    @Column(name = "extra_price", nullable = false)
+    @Column(nullable = false)
     private Integer extraPrice;
 
 }
