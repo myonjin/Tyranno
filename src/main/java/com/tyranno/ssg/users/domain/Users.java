@@ -1,4 +1,4 @@
-package com.tyranno.ssg.auth.users.domain;
+package com.tyranno.ssg.users.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
