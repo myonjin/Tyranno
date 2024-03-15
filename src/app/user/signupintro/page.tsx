@@ -23,7 +23,7 @@ function Signup() {
                 </button>
                 <label>
                     <button className="button-groups" style={{ backgroundColor: '#f0f0f0' }}>
-                        <Link href="/user/auth"> 통합회원만 가입하기 </Link>
+                        <Link href="/user/signupintro/auth"> 통합회원만 가입하기 </Link>
                     </button>
                 </label>
             </div>

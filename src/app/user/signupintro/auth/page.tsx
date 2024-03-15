@@ -75,7 +75,7 @@ import HeaderTitle from '@/components/ui/HeaderTitle'
 import './terms.css'
 import React, { useState } from 'react'
 import { Checkbox } from '@nextui-org/react'
-import './../signupintro/signup.css'
+import './../signup.css'
 
 function Auth() {
     const [terms, setTerms] = useState([
