@@ -2,10 +2,7 @@ import HeaderTitle from '@/components/ui/HeaderTitle'
 import React from 'react'
 import Link from 'next/link'
 import NaverIcon from '@/images/NaverSvg'
-import KakaoIcon from '@/images/KakaoSvg'
 import AppleIcon from '@/images/AppleSvg'
-import TossIcon from '@/images/TossSvg'
-import PhoneIcon from '@/images/PhoneSvg'
 
 function Login() {
     return (
@@ -55,7 +52,7 @@ function Login() {
                     <li>
                         <a>
                             <span>
-                                <KakaoIcon />
+                                <NaverIcon />
                             </span>
                             <span className="m-2">카카오</span>
                         </a>
@@ -71,7 +68,7 @@ function Login() {
                     <li>
                         <a>
                             <span>
-                                <TossIcon />
+                                <NaverIcon />
                             </span>
                             <span className="m-3">토스</span>
                         </a>
@@ -79,7 +76,7 @@ function Login() {
                     <li>
                         <a>
                             <span>
-                                <PhoneIcon />
+                                <NaverIcon />
                             </span>
                             <span className="m-2">휴대폰</span>
                         </a>
