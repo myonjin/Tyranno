@@ -1,10 +1,9 @@
 import React from 'react'
 import Image from 'next/image'
 import signupcoupon from '@/images/signupcoupon.png'
-
-import './signup.css'
 import HeaderTitle from '@/components/ui/HeaderTitle'
 import Link from 'next/link'
+import Buttons from '@/components/ui/buttons'
 
 function Signup() {
     return (
@@ -18,9 +17,9 @@ function Signup() {
                 <Image src={signupcoupon} alt="할인쿠폰안내" width={400} height={300} />
             </div>
             <div>
-                <button className="button-groups" style={{ backgroundColor: '#ff5452' }}>
-                    멤버십 혜택 받고 가입하기
-                </button>
+                <span>
+                    <Buttons title="인증번호 받기" />
+                </span>
                 <label>
                     <button className="button-groups" style={{ backgroundColor: '#f0f0f0' }}>
                         <Link href="/user/signupintro/auth"> 통합회원만 가입하기 </Link>

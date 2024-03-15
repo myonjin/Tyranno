@@ -75,7 +75,7 @@ import HeaderTitle from '@/components/ui/HeaderTitle'
 import './terms.css'
 import React, { useState } from 'react'
 import { Checkbox } from '@nextui-org/react'
-import './../signup.css'
+import Buttons from '@/components/ui/buttons'
 
 function Auth() {
     const [terms, setTerms] = useState([
@@ -196,24 +196,21 @@ function Auth() {
                             onChange={(e) => setPhoneNumberString(parsingPhoneNumber(e.target.value))}
                             placeholder="-없이 휴대폰번호 입력"
                         />
-
-                        <label className="userName"></label>
                     </span>
-                    <span>
-                        <button className="button-groups" style={{ backgroundColor: '#ff5452' }}>
-                            인증번호 받기
-                        </button>
-                    </span>
-                    <div className="m_auth_section">
-                        <ul className="noti_list">
-                            <li className="text-sm">본인 명의의 휴대폰 정보를 정확히 입력하여 주시기 바랍니다.</li>
-                            <li className="text-sm">
-                                타인의 명의를 도용하여 부정인증을 시도한 경우 관련 법령에 따라 처벌(3년 이하의 징역형
-                                또는 1천만원 이하의 벌금형) 받을수 있습니다.
-                            </li>
-                            <li className="text-sm">인증문의 : (주)KCB고객센터(02-708-1000)</li>
-                        </ul>
-                    </div>
+                    <label className="userName"></label>
+                </div>
+                <span>
+                    <Buttons title="인증번호 받기" />
+                </span>
+                <div className="m_auth_section">
+                    <ul className="noti_list">
+                        <li className="text-sm">본인 명의의 휴대폰 정보를 정확히 입력하여 주시기 바랍니다.</li>
+                        <li className="text-sm">
+                            타인의 명의를 도용하여 부정인증을 시도한 경우 관련 법령에 따라 처벌(3년 이하의 징역형 또는
+                            1천만원 이하의 벌금형) 받을수 있습니다.
+                        </li>
+                        <li className="text-sm">인증문의 : (주)KCB고객센터(02-708-1000)</li>
+                    </ul>
                 </div>
             </div>
         </div>
