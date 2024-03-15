@@ -75,10 +75,7 @@ import HeaderTitle from '@/components/ui/HeaderTitle'
 import './terms.css'
 import React, { useState } from 'react'
 import { Checkbox } from '@nextui-org/react'
-<<<<<<< Updated upstream:src/app/user/auth/page.tsx
-=======
 import Buttons from '@/components/ui/buttons'
->>>>>>> Stashed changes:src/app/user/signupintro/auth/page.tsx
 
 function Auth() {
     const [terms, setTerms] = useState([
@@ -160,25 +157,9 @@ function Auth() {
                             className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             placeholder="0.00"
                         />
-<<<<<<< Updated upstream:src/app/user/auth/page.tsx
-                        <div className="absolute inset-y-0 right-0 flex items-center">
-                            <label htmlFor="currency" className="sr-only">
-                                Currency
-                            </label>
-                            <select
-                                id="currency"
-                                name="currency"
-                                className="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                            >
-                                <option>USD</option>
-                                <option>CAD</option>
-                                <option>EUR</option>
-                            </select>
-                        </div>
-=======
 
                         <label className="userName"></label>
-                    </span>
+                    </div>
                     <span>
                         <Buttons title="인증번호 받기" />
                     </span>
@@ -191,7 +172,6 @@ function Auth() {
                             </li>
                             <li className="text-sm">인증문의 : (주)KCB고객센터(02-708-1000)</li>
                         </ul>
->>>>>>> Stashed changes:src/app/user/signupintro/auth/page.tsx
                     </div>
                 </div>
                 <span className="inp_txt">
