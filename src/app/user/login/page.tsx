@@ -35,7 +35,7 @@ function Login() {
                         <span>|</span>
                         <a>비밀번호 찾기</a>
                         <span>|</span>
-                        <a>회원가입</a>
+                        <Link href="/user/signupintro">회원가입</Link>
                     </div>
                 </form>
 
