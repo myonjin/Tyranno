@@ -75,6 +75,10 @@ import HeaderTitle from '@/components/ui/HeaderTitle'
 import './terms.css'
 import React, { useState } from 'react'
 import { Checkbox } from '@nextui-org/react'
+<<<<<<< Updated upstream:src/app/user/auth/page.tsx
+=======
+import Buttons from '@/components/ui/buttons'
+>>>>>>> Stashed changes:src/app/user/signupintro/auth/page.tsx
 
 function Auth() {
     const [terms, setTerms] = useState([
@@ -156,6 +160,7 @@ function Auth() {
                             className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             placeholder="0.00"
                         />
+<<<<<<< Updated upstream:src/app/user/auth/page.tsx
                         <div className="absolute inset-y-0 right-0 flex items-center">
                             <label htmlFor="currency" className="sr-only">
                                 Currency
@@ -170,6 +175,23 @@ function Auth() {
                                 <option>EUR</option>
                             </select>
                         </div>
+=======
+
+                        <label className="userName"></label>
+                    </span>
+                    <span>
+                        <Buttons title="인증번호 받기" />
+                    </span>
+                    <div className="m_auth_section">
+                        <ul className="noti_list">
+                            <li className="text-sm">본인 명의의 휴대폰 정보를 정확히 입력하여 주시기 바랍니다.</li>
+                            <li className="text-sm">
+                                타인의 명의를 도용하여 부정인증을 시도한 경우 관련 법령에 따라 처벌(3년 이하의 징역형
+                                또는 1천만원 이하의 벌금형) 받을수 있습니다.
+                            </li>
+                            <li className="text-sm">인증문의 : (주)KCB고객센터(02-708-1000)</li>
+                        </ul>
+>>>>>>> Stashed changes:src/app/user/signupintro/auth/page.tsx
                     </div>
                 </div>
                 <span className="inp_txt">
