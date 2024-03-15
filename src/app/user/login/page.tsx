@@ -51,10 +51,12 @@ function Login() {
                     </li>
                     <li>
                         <a>
-                            <span>
-                                <NaverIcon />
-                            </span>
-                            <span className="m-2">카카오</span>
+                            <img
+                                src="https://www.m25.or.kr/common/assets/img/common/ico_kakaotalk.png"
+                                alt="카카오"
+                                className=" w-14"
+                            />
+                            <span className="ml-2">카카오</span>
                         </a>
                     </li>
                     <li>
@@ -91,11 +93,7 @@ function Login() {
                     </button>
                 </div>
 
-                <a className=" flex mt-10 ">
-                    <Link href="/user/nonuser" className="flex justify-center w-full  h-10  text-gray-400 text-xs">
-                        비회원 조회하기
-                    </Link>
-                </a>
+                <a className=" flex mt-10 justify-center w-full  h-10  text-gray-400 text-xs">비회원 조회하기</a>
             </div>
         </div>
     )
