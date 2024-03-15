@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
-import '@/app/user/signupintro/signup.css'
+import '@/components/ui/HeaderTitle.css'
 
 export default function HeaderTitle({ title }: { title: string }) {
     return (

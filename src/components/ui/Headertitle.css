@@ -1,0 +1,7 @@
+.signup_header_menu {
+    border-bottom: 1px solid;
+    display: flex;
+    font-weight: bold;
+    align-items: center;
+    height: 45px;
+}

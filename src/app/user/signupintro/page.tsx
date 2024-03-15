@@ -1,11 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
 import Image from 'next/image'
 import signupcoupon from '@/images/signupcoupon.png'
-// /Users/jimin/develop/ssg-frontend/src/images/signupcoupon.png
+
 import './signup.css'
 import HeaderTitle from '@/components/ui/HeaderTitle'
+import Link from 'next/link'
 
 function Signup() {
     return (
@@ -22,7 +21,11 @@ function Signup() {
                 <button className="button-groups" style={{ backgroundColor: '#ff5452' }}>
                     멤버십 혜택 받고 가입하기
                 </button>
-                <button className="button-groups">통합회원만 가입하기</button>
+                {/* <label> */}
+                <button className="button-groups">
+                    <Link href="/user/auth"> 통합회원만 가입하기 </Link>
+                </button>
+                {/* </label> */}
             </div>
         </div>
     )
