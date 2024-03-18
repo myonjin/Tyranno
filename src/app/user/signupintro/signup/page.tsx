@@ -79,6 +79,18 @@ function signup() {
                     </dl>
                     <input type="text" className=" mt-1 p-2 ml-7 h-10 w-full  border text-sm" />
                     <PostcodeButton />
+                    {/* <button
+            type="button"
+            onClick={handleClick}
+            className=" mt-1 ml-2 h-10 w-28 text-sm bg-stone-500 text-white "
+            style={{
+                backgroundColor: '#666666',
+                color: 'white',
+                fontWeight: 'bold',
+            }}
+        >
+            우편번호
+        </button> */}
                 </div>
                 <div className="box">
                     <dl className="flex">
