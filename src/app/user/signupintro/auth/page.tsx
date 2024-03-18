@@ -74,7 +74,7 @@
 import HeaderTitle from '@/components/ui/HeaderTitle'
 import './terms.css'
 import React, { useState } from 'react'
-import { Checkbox } from '@nextui-org/react'
+import { Checkbox, Link } from '@nextui-org/react'
 import Buttons from '@/components/ui/buttons'
 
 function Auth() {
@@ -159,8 +159,13 @@ function Auth() {
                         {/* <label className="userName"></label> */}
                     </span>
                     <span className="inp_txt">
-                        <input type="text" className="input-content" placeholder="생년월일 8자리(예. 20100101)" />
-                        <label htmlFor="currency" className="" />
+                        <input
+                            type="text"
+                            className="input-content"
+                            name="birthday"
+                            placeholder="생년월일 8자리(예. 20100101)"
+                        />
+
                         <select
                             id="currency"
                             name="foriegn"
@@ -201,6 +206,7 @@ function Auth() {
                 </div>
                 <span>
                     <Buttons title="인증번호 받기" />
+                    {/* <Link href={{ pathname: '/user/signupintro/signup', query: { name: 'test' } }}> 클릭</Link> */}
                 </span>
                 <div className="m_auth_section">
                     <ul className="noti_list">
