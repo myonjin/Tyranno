@@ -21,8 +21,8 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-//  필터의 주된 목적은 액세스 토큰의 검증과 사용자 인증 정보의 설정, 여기서 쓰이는 토큰은 엑세스 토큰
-    private final com.tyranno.ssg.security.JwtTokenProvider jwtTokenProvider;
+
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
 
     @Override
