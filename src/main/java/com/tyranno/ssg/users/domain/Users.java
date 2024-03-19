@@ -1,17 +1,26 @@
 package com.tyranno.ssg.users.domain;
 
+import com.tyranno.ssg.global.GlobalTimeEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
 @Getter
-public class Users {
+public class Users extends GlobalTimeEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,11 +47,6 @@ public class Users {
     private LocalDate birth;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    private LocalDateTime modifyAt;
-
-    @Column(nullable = false)
     private Integer status;
 
     @Column(nullable = false)
@@ -51,4 +55,37 @@ public class Users {
     @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
     private Marketing marketing;
 
+    public void hashPassword(String password) {
+        this.password = new BCryptPasswordEncoder().encode(password);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getUsername() {
+        return uuid;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
