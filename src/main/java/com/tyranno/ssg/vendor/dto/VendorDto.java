@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VendorDto {
+    private Long VendorId;
     private String vendorName;
     private String vendorImageUrl;
 }

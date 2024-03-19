@@ -1,8 +1,8 @@
 package com.tyranno.ssg.product.application;
-import com.tyranno.ssg.product.dto.ProductDto;
+import com.tyranno.ssg.product.dto.ProductDetailDto;
 
 public interface ProductService {
 
 
-    ProductDto productDetail(Long id);
+    ProductDetailDto productDetail(Long id);
 }

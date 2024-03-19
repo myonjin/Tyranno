@@ -1,5 +1,7 @@
 package com.tyranno.ssg.product.dto;
 
+import com.tyranno.ssg.vendor.domain.Vendor;
+import com.tyranno.ssg.vendor.dto.VendorDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,13 +13,14 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto {
+public class ProductDetailDto {
     private String productName;
     private int price;
     private float productRate;
     private String detailContent;
 
-    private List<String> vendor;
+    // 다른 곳
+    private List<VendorDto> vendor;
     private List<String> imageUrl;
     private int discount;
     private int reviewCount;
