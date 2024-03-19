@@ -42,8 +42,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
                                 // 허용 범위
-                                .requestMatchers(allowedUrls).authenticated()
-                                .anyRequest().permitAll()
+                                .requestMatchers(allowedUrls).permitAll()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(
                         sessionManagement -> sessionManagement
