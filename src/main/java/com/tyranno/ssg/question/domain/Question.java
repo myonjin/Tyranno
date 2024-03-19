@@ -1,4 +1,4 @@
-package com.tyranno.ssg.qna.domain;
+package com.tyranno.ssg.question.domain;
 
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.users.domain.Users;
