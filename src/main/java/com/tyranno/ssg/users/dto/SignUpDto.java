@@ -18,9 +18,9 @@ public class SignUpDto { // 회원가입 정보 이걸로 받음
     @NotNull // - 회원 가입시 한 정보라도 안받으면 오류창
     private String name;
     @NotNull
-    private String addressBase;
+    private String deliveryBase;
     @NotNull
-    private String addressDetail;
+    private String deliveryDetail;
     @NotNull
     private int zipCode;
     @NotNull
@@ -32,11 +32,11 @@ public class SignUpDto { // 회원가입 정보 이걸로 받음
     @NotNull
     private LocalDate birth;
 
-    private int shinsegaeMarketingAgree;
+    //private int shinsegaeMarketingAgree;
 
-    private int shinsegaeOptionAgree;
+    //private int shinsegaeOptionAgree;
 
-    private int ssgMarketingAgree;
+   // private int ssgMarketingAgree;
 
 //    @NotNull
 //    private int snsLogin;
