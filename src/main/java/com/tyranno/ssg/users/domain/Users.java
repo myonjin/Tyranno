@@ -1,6 +1,6 @@
 package com.tyranno.ssg.users.domain;
 
-import com.tyranno.ssg.global.GlobalTimeEntity;
+import com.tyranno.ssg.global.GlobalTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +20,7 @@ import java.util.List;
 @Builder
 @Entity
 @Getter
-public class Users extends GlobalTimeEntity implements UserDetails {
+public class Users extends GlobalTime implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,9 +51,6 @@ public class Users extends GlobalTimeEntity implements UserDetails {
 
     @Column(nullable = false)
     private String uuid;
-
-    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
-    private Marketing marketing;
 
     public void hashPassword(String password) {
         this.password = new BCryptPasswordEncoder().encode(password);
