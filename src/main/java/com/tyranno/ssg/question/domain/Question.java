@@ -1,18 +1,20 @@
 package com.tyranno.ssg.question.domain;
 
+import com.tyranno.ssg.global.GlobalTime;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
 @Getter
-public class Question {
+public class Question extends GlobalTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Q&A 아이디
@@ -29,11 +31,6 @@ public class Question {
 
     @Column(nullable = false)
     private String content; // 내용
-
-    @Column(nullable = false)
-    private LocalDateTime rgdt; // 작성일
-
-    private LocalDateTime modifyRgdt; // 수정일
 
     @Column(nullable = false)
     private Byte isDelete; // 삭제 여부
