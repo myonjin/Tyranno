@@ -1,9 +1,10 @@
 'use client'
 import HeaderTitle from '@/components/ui/HeaderTitle'
 import './signup.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PostcodeButton from '@/components/common/address'
 import Buttons from '@/components/ui/buttons'
+import { useRouter } from 'next/navigation'
 function signup() {
     const [loginId, setLoginId] = useState('')
     const [password, setpassword] = useState('')
@@ -23,6 +24,31 @@ function signup() {
     const [loginIdValue, setLoginIdValue] = useState('')
     const [passwordValue, setPasswordValue] = useState('')
     const [passwordConfirm, setpasswordConfirm] = useState('')
+
+    // const router = useRouter()
+    // const { param1, param2 } = router.query
+    // if (typeof window !== 'undefined') {
+    //     const storedName = localStorage.getItem('name')
+    //     const storedBirthday = localStorage.getItem('birthday')
+    //     const storedPhoneNumberString = localStorage.getItem('phoneNumberString')
+    //     console.log(storedName, storedBirthday, storedPhoneNumberString)
+
+    //     // localStorage를 사용한 로직 계속...
+    // }
+    const [storedName, setStoredName] = useState('')
+    const [storedBirthday, setStoredBirthday] = useState('')
+    const [storedPhoneNumberString, setStoredPhoneNumberString] = useState('')
+
+    useEffect(() => {
+        const name = localStorage.getItem('name')
+        const birthday = localStorage.getItem('birthday')
+        const phoneNumberString = localStorage.getItem('phoneNumberString')
+
+        setStoredName(name || '')
+        setStoredBirthday(birthday || '')
+        setStoredPhoneNumberString(phoneNumberString || '')
+    }, [])
+
     const handleAddressChange = (address: string) => {
         setAddressBase(address)
     }
@@ -128,7 +154,7 @@ function signup() {
                             </span>
                             <label>이름</label>
                         </dt>
-                        <span className=" mt-1 p-2 ml-6 h-10 w-full mb-1 text-sm ">이지민</span>
+                        <span className=" mt-1 p-2 ml-6 h-10 w-full mb-1 text-sm ">{storedName}</span>
                     </dl>
                 </div>
                 <div className="box">
@@ -156,7 +182,7 @@ function signup() {
                             </span>
                             <label>휴대폰번호</label>
                         </dt>
-                        <span className=" mt-1 p-2 ml-6 h-10 w-full mb-1 text-sm ">010-6877-4842</span>
+                        <span className=" mt-1 p-2 ml-6 h-10 w-full mb-1 text-sm ">{storedPhoneNumberString}</span>
                     </dl>
                 </div>
                 <div className="box">

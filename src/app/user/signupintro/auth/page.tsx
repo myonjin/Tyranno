@@ -3,6 +3,7 @@ import HeaderTitle from '@/components/ui/HeaderTitle'
 import './terms.css'
 import React, { useState } from 'react'
 import Buttons from '@/components/ui/buttons'
+import { usePathname, useRouter } from 'next/navigation'
 
 function Auth() {
     const [terms, setTerms] = useState([
@@ -51,8 +52,11 @@ function Auth() {
             .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
             .replace(/(-{1,2})$/g, '')
     }
-    const submitHandler = () => {
-        console.log(name, birthday, phoneNumberString)
+
+    const handleButtonClick = () => {
+        localStorage.setItem('name', name)
+        localStorage.setItem('birthday', birthday)
+        localStorage.setItem('phoneNumberString', phoneNumberString)
     }
 
     return (
@@ -158,7 +162,7 @@ function Auth() {
                             color="#f0f0f0"
                             href="/user/signupintro/signup"
                             ftcolor="black"
-                            click={submitHandler}
+                            click={handleButtonClick}
                         />
                     )}
                     {/* <Buttons title="인증번호 받기" href="/user/signupintro/signup" /> */}
