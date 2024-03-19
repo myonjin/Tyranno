@@ -1,4 +1,4 @@
-package com.tyranno.ssg.address.domain;
+package com.tyranno.ssg.delivery.domain;
 
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.persistence.*;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Getter
-public class Address {
+public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,17 +21,17 @@ public class Address {
     @JoinColumn(name = "userId")
     private Users users; // 회원정보 들고오기
 
-    private Byte isMain;
+    private Byte isBaseDelivery;
 
-    private String addressName;
+    private String deliveryName;
 
     @Column(nullable = false)
     private Integer zipCode;
 
     @Column(nullable = false)
-    private String addressBase;
+    private String deliveryBase;
 
-    private String addressDetail;
+    private String deliveryDetail;
 
     @Column(nullable = false)
     private String receiverName;

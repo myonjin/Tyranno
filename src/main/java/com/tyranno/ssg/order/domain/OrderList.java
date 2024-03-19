@@ -1,7 +1,12 @@
 package com.tyranno.ssg.order.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 public class OrderList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +23,12 @@ public class OrderList {
 
     private Long usersId;
 
-    private String addressRequest;
+    private String deliveryRequest;
 
     @Column(nullable = false)
-    private String addressBase;
+    private String deliveryBase;
 
-    private String addressDetail;
+    private String deliveryDetail;
 
     @Column(nullable = false)
     private Integer zipCode;
@@ -33,6 +39,7 @@ public class OrderList {
     @Column(nullable = false)
     private String receiverPhoneNumber;
 
+    @CreatedDate
     @Column(nullable = false)
     private LocalDateTime orderDate;
 

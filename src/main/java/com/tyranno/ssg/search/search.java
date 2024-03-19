@@ -1,5 +1,6 @@
-package com.tyranno.ssg.recent.domain;
+package com.tyranno.ssg.search;
 
+import com.tyranno.ssg.global.GlobalCreateTime;
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Getter
-public class RecentSearchHistory {
+public class search extends GlobalCreateTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +23,4 @@ public class RecentSearchHistory {
 
     @Column(nullable = false)
     private String searchWord;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
 }

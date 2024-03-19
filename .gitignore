@@ -38,6 +38,8 @@ out/
 
 ### property files ###
 application.yml
+*.yml
+src/main/resources/application.yml
 
 ### Key Files ###
 src/main/resources/firebase/serviceAccountKey.json
