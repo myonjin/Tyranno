@@ -1,11 +1,14 @@
 package com.tyranno.ssg.users.application;
 
-import com.tyranno.ssg.users.domain.Users;
+import com.tyranno.ssg.users.dto.LoginDto;
 import com.tyranno.ssg.users.dto.SignUpDto;
 import com.tyranno.ssg.users.dto.UsersModifyDto;
 
 public interface UsersService {
+
     void createUsers(SignUpDto signUpDto);
+
+    String loginUsers(LoginDto loginDto);
 
     SignUpDto modifyUsersInfo(UsersModifyDto usersIdentityDto);
 

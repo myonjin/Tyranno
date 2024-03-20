@@ -7,8 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +23,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-//    @Autowired
+    //    @Autowired
 //    @Qualifier("userServiceDetailsImp")
     private final UserDetailsService userDetailsService;
 
@@ -43,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String userUuid;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            log.info("로그인 되어있지 않음");
+            //log.info("로그인 되어있지 않음");
             filterChain.doFilter(request, response);
             return;
         }

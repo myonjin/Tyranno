@@ -2,6 +2,7 @@ package com.tyranno.ssg.users.presentation;
 
 import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.application.UsersService;
+import com.tyranno.ssg.users.dto.LoginDto;
 import com.tyranno.ssg.users.dto.SignUpDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.lang.constant.Constable;
 
 //new ResponseEntity<>(message, headers, HttpStatus.OK);
 @RequiredArgsConstructor
@@ -30,6 +29,12 @@ public class UsersController {
         usersService.createUsers(signUpDto);
 
         return new ResponseEntity<>("메세지",HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public String logIn(@RequestBody LoginDto logInDto){
+        return usersService.loginUsers(logInDto);
+        //에러처리 후 사용 : return ResponseEntity<>;
     }
 
 

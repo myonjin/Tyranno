@@ -2,8 +2,10 @@ package com.tyranno.ssg.users.application;
 
 import com.tyranno.ssg.delivery.domain.Delivery;
 import com.tyranno.ssg.delivery.infrastructure.DeliveryRepository;
+import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.domain.MarketingInformation;
 import com.tyranno.ssg.users.domain.Users;
+import com.tyranno.ssg.users.dto.LoginDto;
 import com.tyranno.ssg.users.dto.SignUpDto;
 import com.tyranno.ssg.users.dto.UsersModifyDto;
 import com.tyranno.ssg.users.infrastructure.MarketingInformationRepository;
@@ -11,6 +13,8 @@ import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -22,10 +26,14 @@ public class UsersServiceImp implements UsersService {
     private final MarketingRepository marketingRepository;
     private final MarketingInformationRepository marketingInformationRepository;
     private final DeliveryRepository deliveryRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authenticationManager;
+
 
     @Transactional // 반복이 될수 있음. 모든 곳에서 붙이는건 생각해봐야함  이유가 명확해야함
     @Override
     public void createUsers(SignUpDto signUpDto) {
+        //회원
         String generatedUuid = UUID.randomUUID().toString();
 
         Users users = Users.builder()
@@ -80,6 +88,21 @@ public class UsersServiceImp implements UsersService {
                 .build();
 
         deliveryRepository.save(delivery);
+    }
+
+    @Override
+    @Transactional
+    public String loginUsers(LoginDto loginDto) {
+        Users users = usersRepository.findByLoginId(loginDto.getLoginId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다"));
+        //아이디 찾기 로직으로 가도 될듯
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        users.getUsername(),
+                        loginDto.getPassword()
+                )
+        );
+        return jwtTokenProvider.generateToken(users);
     }
 
     @Transactional
