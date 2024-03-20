@@ -1,26 +1,29 @@
-package com.tyranno.ssg.search;
+package com.tyranno.ssg.like.domain;
 
-import com.tyranno.ssg.global.GlobalCreateTime;
+import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
 @Getter
-public class search extends GlobalCreateTime {
+@Table(name = "`like`")
+public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usersId")
+    @JoinColumn(name = "userId")
     private Users users;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "productId")
+    private Product product;
+
     @Column(nullable = false)
-    private String searchWord;
+    private Byte isLiked;
 }
