@@ -1,12 +1,3 @@
 spring:
   profiles:
-<<<<<<< HEAD
     default: local
-=======
-    default: aws
-<<<<<<< HEAD
-=======
-
-
->>>>>>> develop
->>>>>>> 00c5d5af6b6233a52162a2f48fbb93fd037781ba

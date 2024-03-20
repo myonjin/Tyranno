@@ -1,6 +1,5 @@
 package com.tyranno.ssg.users.application;
 
-import com.tyranno.ssg.users.domain.Users;
 import com.tyranno.ssg.users.dto.SignUpDto;
 import com.tyranno.ssg.users.dto.UsersModifyDto;
 

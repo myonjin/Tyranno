@@ -5,8 +5,6 @@ import com.tyranno.ssg.users.domain.Users;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
