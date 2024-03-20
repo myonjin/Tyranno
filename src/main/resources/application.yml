@@ -1,9 +1,9 @@
 spring:
   datasource:
     # [ ] << 대괄호는 빼면됨
-    url: jdbc:mysql://localhost:3306/tyranno_local?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
-    username: tyranno_local
-    password: 12345
+    url: jdbc:mysql://localhost:3306/ssg_tyranno?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ssg_tyranno
+    password: 1234
 
     driver-class-name: com.mysql.cj.jdbc.Driver
 

@@ -1,5 +1,7 @@
 package com.tyranno.ssg.users.application;
 
+import com.tyranno.ssg.delivery.domain.Delivery;
+import com.tyranno.ssg.delivery.infrastructure.DeliveryRepository;
 import com.tyranno.ssg.users.domain.MarketingInformation;
 import com.tyranno.ssg.users.domain.Users;
 import com.tyranno.ssg.users.dto.SignUpDto;
@@ -19,6 +21,7 @@ public class UsersServiceImp implements UsersService {
     private final UsersRepository usersRepository;
     private final MarketingRepository marketingRepository;
     private final MarketingInformationRepository marketingInformationRepository;
+    private final DeliveryRepository deliveryRepository;
 
     @Transactional // 반복이 될수 있음. 모든 곳에서 붙이는건 생각해봐야함  이유가 명확해야함
     @Override
@@ -39,6 +42,7 @@ public class UsersServiceImp implements UsersService {
         users.hashPassword(signUpDto.getPassword());
         usersRepository.save(users);
 
+        //마케팅
         MarketingInformation marketingInformation1 = MarketingInformation.builder()
                 .isAgree(signUpDto.getShinsegaeMarketingAgree())
                 .users(users)
@@ -62,6 +66,20 @@ public class UsersServiceImp implements UsersService {
                 .build();
 
         marketingInformationRepository.save(marketingInformation3);
+
+        // 배송지
+        Delivery delivery = Delivery.builder()
+                .users(users)
+                .isBaseDelivery((byte) 11)
+                .deliveryName(signUpDto.getName())
+                .zipCode(signUpDto.getZipCode())
+                .deliveryBase(signUpDto.getDeliveryBase())
+                .deliveryDetail(signUpDto.getDeliveryDetail())
+                .receiverName(signUpDto.getName())
+                .phoneNumber(signUpDto.getPhoneNumber())
+                .build();
+
+        deliveryRepository.save(delivery);
     }
 
     @Transactional
