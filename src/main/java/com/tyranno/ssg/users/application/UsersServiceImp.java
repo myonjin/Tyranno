@@ -1,8 +1,11 @@
 package com.tyranno.ssg.users.application;
 
+import com.tyranno.ssg.users.domain.MarketingInformation;
 import com.tyranno.ssg.users.domain.Users;
 import com.tyranno.ssg.users.dto.SignUpDto;
 import com.tyranno.ssg.users.dto.UsersModifyDto;
+import com.tyranno.ssg.users.infrastructure.MarketingInformationRepository;
+import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +17,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UsersServiceImp implements UsersService {
     private final UsersRepository usersRepository;
+    private final MarketingRepository marketingRepository;
+    private final MarketingInformationRepository marketingInformationRepository;
 
     @Transactional // 반복이 될수 있음. 모든 곳에서 붙이는건 생각해봐야함  이유가 명확해야함
     @Override
-    public Users createUsers(SignUpDto signUpDto) {
+    public void createUsers(SignUpDto signUpDto) {
         String generatedUuid = UUID.randomUUID().toString();
 
-        Users users =  Users.builder()
+        Users users = Users.builder()
                 .loginId(signUpDto.getLoginId())
                 .name(signUpDto.getName())
                 .email(signUpDto.getEmail())
@@ -34,14 +39,36 @@ public class UsersServiceImp implements UsersService {
         users.hashPassword(signUpDto.getPassword());
         usersRepository.save(users);
 
-        return users;
+        MarketingInformation marketingInformation1 = MarketingInformation.builder()
+                .isAgree(signUpDto.getShinsegaeMarketingAgree())
+                .users(users)
+                .marketing(marketingRepository.findById(1L).orElseThrow())// 예외처리 필요
+                .build();
+
+        marketingInformationRepository.save(marketingInformation1);
+
+        MarketingInformation marketingInformation2 = MarketingInformation.builder()
+                .isAgree(signUpDto.getShinsegaeOptionAgree())
+                .users(users)
+                .marketing(marketingRepository.findById(2L).orElseThrow())// 예외처리 필요
+                .build();
+
+        marketingInformationRepository.save(marketingInformation2);
+
+        MarketingInformation marketingInformation3 = MarketingInformation.builder()
+                .isAgree(signUpDto.getSsgMarketingAgree())
+                .users(users)
+                .marketing(marketingRepository.findById(3L).orElseThrow())// 예외처리 필요
+                .build();
+
+        marketingInformationRepository.save(marketingInformation3);
     }
 
     @Transactional
     @Override
     public SignUpDto modifyUsersInfo(UsersModifyDto usersModifyDto) {
         validateModifyUsers(usersModifyDto);
-
+        // String token =jwtTokenProvider.generateToken();
         Users users = usersRepository.findByPhoneNumber(usersModifyDto.getPhoneNumber()).orElseThrow(// 찾았는데 null일 경우
                 //            () -> new UsersExcetion(No_USERS)
         );
@@ -88,4 +115,6 @@ public class UsersServiceImp implements UsersService {
     public void modifyPassword() {
 
     }
+
+
 }

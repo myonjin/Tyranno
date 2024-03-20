@@ -25,9 +25,9 @@ public class UsersController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody SignUpDto signUpDto) {
-        log.info("dd {}", signUpDto);
-        jwtTokenProvider.generateToken(usersService.createUsers(signUpDto));
+    public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpDto) {
+
+        usersService.createUsers(signUpDto);
 
         return new ResponseEntity<>("메세지",HttpStatus.OK);
     }
