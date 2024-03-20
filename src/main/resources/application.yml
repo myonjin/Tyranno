@@ -1,7 +1,6 @@
 spring:
-  datasource:
-
   profiles:
-    default: local
+    default: aws
+
 
 
