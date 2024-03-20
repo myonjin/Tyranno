@@ -3,6 +3,8 @@ package com.tyranno.ssg.product.application;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
 import com.tyranno.ssg.product.dto.ProductDetailDto;
+import com.tyranno.ssg.product.dto.ProductDto;
+import com.tyranno.ssg.product.dto.ProductListDto;
 import com.tyranno.ssg.product.infrastructure.ProductRepository;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
 import com.tyranno.ssg.vendor.domain.Vendor;
@@ -76,4 +78,37 @@ public class ProductServiceImp implements ProductService{
             return null;
         }
     }
+
+//    @Override
+//    public ProductListDto productList() {
+//        List<Product> productList = productRepository.findAll();
+//        List<ProductDto> productDtos = productList.stream()
+//                .map(this::convertToDto)
+//                .collect(Collectors.toList());
+//
+//        return new ProductListDto(productDtos);
+//    }
+//
+//    private ProductDto convertToDto(Product product) {
+//        ProductDto dto = new ProductDto();
+//        dto.setProductId(product.getId());
+//        dto.setProductName(product.getProductName());
+//        dto.setPrice(product.getPrice());
+//        dto.setProductRate(product.getProductRate());
+//        // 나머지 필드들 설정
+//
+//        // 판매자 정보 가져오기
+//        VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId());
+//        if (vendorProduct != null) {
+//            dto.setVendorName(vendorProduct.getVendor().getVendorName());
+//        }
+//
+//        // 이미지 URL 설정
+//        // dto.setImageUrl(...);
+//
+//        // 나머지 필드들 설정
+//
+//        return dto;
+//    }
+
 }
