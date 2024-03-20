@@ -5,7 +5,7 @@ import com.tyranno.ssg.users.dto.SignUpDto;
 import com.tyranno.ssg.users.dto.UsersModifyDto;
 
 public interface UsersService {
-    Users createUsers(SignUpDto signUpDto);
+    void createUsers(SignUpDto signUpDto);
 
     SignUpDto modifyUsersInfo(UsersModifyDto usersIdentityDto);
 

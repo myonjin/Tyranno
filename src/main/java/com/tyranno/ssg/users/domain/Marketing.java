@@ -16,6 +16,9 @@ public class Marketing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    // 1 : shinsegaeMarketingAgree
+    // 2 : shinsegaeOptionAgree
+    // 3 : ssgMarketingAgree
 
     @Column(nullable = false)
     private String type;
