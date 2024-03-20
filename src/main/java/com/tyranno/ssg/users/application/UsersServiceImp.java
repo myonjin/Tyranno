@@ -12,9 +12,12 @@ import com.tyranno.ssg.users.infrastructure.MarketingInformationRepository;
 import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -27,7 +30,8 @@ public class UsersServiceImp implements UsersService {
     private final MarketingInformationRepository marketingInformationRepository;
     private final DeliveryRepository deliveryRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
 
     @Transactional // 반복이 될수 있음. 모든 곳에서 붙이는건 생각해봐야함  이유가 명확해야함
@@ -96,13 +100,10 @@ public class UsersServiceImp implements UsersService {
         Users users = usersRepository.findByLoginId(loginDto.getLoginId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다"));
         //아이디 찾기 로직으로 가도 될듯
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        users.getUsername(),
-                        loginDto.getPassword()
-                )
-        );
-        return jwtTokenProvider.generateToken(users);
+        if (bCryptPasswordEncoder.matches(loginDto.getPassword(), users.getPassword())) {
+            return jwtTokenProvider.generateToken(users);
+        }
+        return "NO LOGIN";
     }
 
     @Transactional
