@@ -32,11 +32,11 @@ public class SignUpDto { // 회원가입 정보 이걸로 받음
     @NotNull
     private LocalDate birth;
 
-    //private int shinsegaeMarketingAgree;
+    private Byte shinsegaeMarketingAgree;
 
-    //private int shinsegaeOptionAgree;
+    private Byte shinsegaeOptionAgree;
 
-   // private int ssgMarketingAgree;
+    private Byte ssgMarketingAgree;
 
 //    @NotNull
 //    private int snsLogin;

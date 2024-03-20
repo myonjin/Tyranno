@@ -21,13 +21,15 @@ public class SecurityConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtTokenProvider;
-    private final String[] allowedUrls = {"/api/v1/auth/**","/api/v1/address/**","/api/v1/review/**","/api/v1/order/**","/api/v1/like/**",
+    private final String[] allowedUrls = {"/api/v1/users/**", "/api/v1/product/**", "/api/v1/category/**", "/api/v1/cart/**", "/api/v1/recent/**",
+            "/api/v1/option/**", "/api/v1/event/**", "/api/v1/question/**", "/api/v1/search/**",
             "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**"};
-
+//    private final String[] allowedUrls = {"/api/v1/auth/**","/api/v1/address/**","/api/v1/review/**","/api/v1/order/**","/api/v1/like/**",
+//            "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**"};
     @Bean
-    public CorsConfigurationSource corsConfigurationSource () {
+    public CorsConfigurationSource corsConfigurationSource() {
         return request -> {
-            var cors= new org.springframework.web.cors.CorsConfiguration();
+            var cors = new org.springframework.web.cors.CorsConfiguration();
             cors.setAllowedOriginPatterns(List.of("*"));
             cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
             cors.setAllowedHeaders(List.of("*"));
@@ -42,8 +44,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
                                 // 허용 범위
-                                .requestMatchers(allowedUrls).authenticated()
-                                .anyRequest().permitAll()
+                                .requestMatchers(
+                                        "/api/v1/users/**", "/api/v1/product/**", "/api/v1/category/**", "/api/v1/cart/**", "/api/v1/recent/**",
+                                        "/api/v1/option/**", "/api/v1/event/**", "/api/v1/question/**", "/api/v1/search/**",
+                                        "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(
                         sessionManagement -> sessionManagement
