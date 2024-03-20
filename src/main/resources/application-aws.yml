@@ -3,8 +3,8 @@ spring:
     #    url: jdbc:mysql://15.164.246.181:3306/tyranno?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
     url: jdbc:mysql://15.164.246.181:3306/tyranno?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
 
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    username: tyranno
+    password: xlfksh97
 
     driver-class-name: com.mysql.cj.jdbc.Driver
 
