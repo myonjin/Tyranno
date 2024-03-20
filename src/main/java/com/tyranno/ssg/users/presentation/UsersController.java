@@ -25,6 +25,7 @@ public class UsersController {
     private final JwtTokenProvider jwtTokenProvider;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpDto) {
 
@@ -33,6 +34,8 @@ public class UsersController {
         return new ResponseEntity<>("메세지",HttpStatus.OK);
     }
 =======
+=======
+>>>>>>> Stashed changes
 //    @PostMapping
 //    public ResponseEntity<> signUp(@RequestBody SignUpDto signUpDto) {
 //        usersService.createUsers(signUpDto);
@@ -40,6 +43,9 @@ public class UsersController {
 //
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 
