@@ -4,6 +4,5 @@ import java.util.List;
 
 public class ProductListDto {
 
-    public ProductListDto(List<ProductDto> productDtos) {
-    }
+    private List<ProductDto> productDtos;
 }

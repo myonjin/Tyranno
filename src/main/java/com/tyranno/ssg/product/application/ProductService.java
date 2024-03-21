@@ -9,5 +9,6 @@ public interface ProductService {
 
 
     ProductDetailDto productDetail(Long id);
-    ProductListDto productList();
+    ProductListDto productList(int sortCriterion, Long categoryLarge, Long CategoryMiddle, Long CategorySmall, Long CategoryDetail);
+//    ProductListDto productList();
 }

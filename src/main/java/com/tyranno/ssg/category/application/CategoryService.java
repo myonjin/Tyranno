@@ -1,4 +1,7 @@
 package com.tyranno.ssg.category.application;
 
-public class CategoryService {
+import com.tyranno.ssg.category.dto.CategoryDto;
+
+public interface CategoryService {
+    CategoryDto sortCategoryDetail(Long CategoryDetailId);
 }
