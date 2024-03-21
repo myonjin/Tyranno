@@ -1,10 +1,15 @@
 package com.tyranno.ssg;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+@OpenAPIDefinition(servers = {
+		@Server(url = "https://tyrannoback.com", description = "Default Server URL")
+})
 @EnableWebMvc
 @EnableJpaAuditing
 @SpringBootApplication
