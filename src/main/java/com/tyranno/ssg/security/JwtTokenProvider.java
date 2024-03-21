@@ -46,7 +46,7 @@ public class JwtTokenProvider {
         log.info("generateToken {} ", userDetails);
         return Jwts.builder()
                 .setClaims(extractClaims)
-                .setSubject(userDetails.getUsername()) // 'sub' 클레임으로 사용자 식별자 설정
+                .setSubject(userDetails.getUsername()) // details의 username을 uuid로 설정해둠
                 .setIssuedAt(new java.util.Date(System.currentTimeMillis()))// 'iat' 클레임으로 토큰 발행 시간 설정
                 .setExpiration(new java.util.Date(System.currentTimeMillis() + env.getProperty("JWT.EXPIRATION_TIME", Long.class)))// 'exp' 클레임으로 토큰 만료 시간 설정
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256) // 서명 키와 알고리즘 설정

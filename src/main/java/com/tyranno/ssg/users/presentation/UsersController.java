@@ -4,6 +4,7 @@ import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.application.UsersService;
 import com.tyranno.ssg.users.dto.LoginDto;
 import com.tyranno.ssg.users.dto.SignUpDto;
+import com.tyranno.ssg.users.dto.UserIdentifyDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,14 +29,26 @@ public class UsersController {
 
         usersService.createUsers(signUpDto);
 
-        return new ResponseEntity<>("메세지",HttpStatus.OK);
+        return new ResponseEntity<>("메세지", HttpStatus.OK);
+    }
+
+    @PostMapping("/id_check")
+    public ResponseEntity<?> checkIdExist(@RequestBody String loginId) {
+
+        usersService.checkLoginId(loginId);
+
+        return new ResponseEntity<>("메세지", HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public String logIn(@RequestBody LoginDto logInDto){
+    public String logIn(@RequestBody LoginDto logInDto) {
         return usersService.loginUsers(logInDto);
         //에러처리 후 사용 : return ResponseEntity<>;
     }
 
+    @PostMapping("/find_id")
+    public String findId(@RequestBody UserIdentifyDto userIdentifyDto) {
+        return usersService.findLoginId(userIdentifyDto);
+    }
 
 }
