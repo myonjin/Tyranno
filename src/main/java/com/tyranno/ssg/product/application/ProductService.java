@@ -1,4 +1,5 @@
 package com.tyranno.ssg.product.application;
+import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.dto.ProductDetailDto;
 import com.tyranno.ssg.product.dto.ProductDto;
 import com.tyranno.ssg.product.dto.ProductListDto;
@@ -9,6 +10,6 @@ public interface ProductService {
 
 
     ProductDetailDto productDetail(Long id);
-    ProductListDto productList(int sortCriterion, Long categoryLarge, Long CategoryMiddle, Long CategorySmall, Long CategoryDetail);
-//    ProductListDto productList();
+
+    List<ProductDto> getProductDtoList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion);
 }

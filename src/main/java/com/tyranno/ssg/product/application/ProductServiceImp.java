@@ -1,5 +1,7 @@
 package com.tyranno.ssg.product.application;
 
+import com.tyranno.ssg.like.domain.Like;
+import com.tyranno.ssg.product.domain.Discount;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
 import com.tyranno.ssg.product.dto.ProductDetailDto;
@@ -28,9 +30,11 @@ public class ProductServiceImp implements ProductService{
 
     // JPA로 productId를 통해 조회하기
     private final ProductRepository productRepository;
-    private final VendorRepository vendorRepository;
     private final VendorProductRepository vendorProductRepository;
     private final ProductThumRepository productThumRepository;
+//    private final DiscountRepository discountRepository;
+//    private final LikeRepository likeRepository;
+
 
 
     @Override
@@ -73,41 +77,41 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
-    public ProductListDto productList(int sortCriterion, Long categoryLarge, Long categoryMiddle, Long categorySmall, Long categoryDetail) {
-        List<Product> productList;
-
-        // 카테고리 필터링을 위한 조건 설정
-        if (categoryDetail != null) {
-            productList = productRepository.findByCategoryDetailId(categoryDetail);
-        } else if (categorySmall != null) {
-            productList = productRepository.findByCategorySmallId(categorySmall);
-        } else if (categoryMiddle != null) {
-            productList = productRepository.findByCategoryMiddleId(categoryMiddle);
-        } else if (categoryLarge != null) {
-            productList = productRepository.findByCategoryLargeId(categoryLarge);
-        } else {
-            productList = productRepository.findAll();
-        }
-
-        // 정렬 기준에 따라 정렬
-        // 여기서는 각각의 정렬 기준에 따라 조건문을 추가하여 처리해야 합니다.
-        // 이 예제에서는 정렬 기준에 따라 직접적으로 정렬하는 코드는 제공되지 않았으므로,
-        // 해당 부분은 정확한 구현 방법을 알려주셔야 합니다.
-
-        // ProductListDto 객체 생성 및 반환
-        ProductListDto productListDto = new ProductListDto();
-        List<ProductDto> productDtoList = productList.stream()
-                .map(this::mapToProductDto)
+    public List<ProductDto> getProductDtoList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion) {
+        List<Product> products = productRepository.findByCategoryIdsAndSortCriterion(largeId, middleId, smallId, detailId, sortCriterion);
+        return products.stream()
+                .map(this::convertToProductDto)
                 .collect(Collectors.toList());
-        productListDto.setProductDtoList(productDtoList);
-        return productListDto;
     }
 
-    // Product를 ProductDto로 매핑하는 메서드
-    private ProductDto mapToProductDto(Product product) {
+    public ProductDto convertToProductDto(Product product) {
+        // Vendor 정보 조회
+        VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId());
+        VendorDto vendorDto = new VendorDto();
+        vendorDto.setVendorName(vendorProduct.getVendor().getVendorName());
+
+        // ProductThum 정보 조회
+        ProductThum productThum = productThumRepository.findByProductId(product.getId());
+
+        // Discount 정보 조회
+//        Discount discount = discountRepository.findByProductId(product.getId());
+//
+//        // Like 정보 조회
+//        Like like = likeRepository.findByProductId(product.getId());
+//        boolean isLiked = (like != null);
+
+        // ProductDto 생성 및 필드 설정
         ProductDto productDto = new ProductDto();
-        // ProductDto에 제품 정보 매핑
-        // 예시: productDto.setName(product.getName());
+        productDto.setProductId(product.getId());
+        productDto.setProductName(product.getProductName());
+        productDto.setPrice(product.getProductPrice());
+        productDto.setProductRate(product.getProductRate());
+        productDto.setVendorName(vendorDto.getVendorName());
+        productDto.setImageUrl(productThum.getImageUrl());
+//        productDto.setDiscount(discount.getDiscount());
+        productDto.setReviewCount(product.getReviewCount());
+//        productDto.setIsLiked(isLiked);
+
         return productDto;
     }
 }

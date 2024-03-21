@@ -33,32 +33,22 @@ public class ProductController {
     }
 
     @Operation(summary = "상품 리스트", description = "상품 리스트를 받아오기", tags = { "Get ProductList" })
-    @GetMapping("/productList/")
-    public ResponseEntity<ProductDto> productList(@RequestParam (value = "sortCriterion", required = false,
-            defaultValue = "5")int sortCriterion,
-                                                  @RequestParam ("categoryLarge") Long categoryLarge,
-                                                  @RequestParam ("categoryMiddle") Long categoryMiddle,
-                                                  @RequestParam ("categorySmall") Long categorySmall,
-                                                  @RequestParam ("categoryDetail") Long categoryDetail) {
-        ProductListDto productListDto = ProductService.productList();
-        if (sortCriterion == 5) {
-         if (categoryDetail != null){
-             return null;
-         } else if (categorySmall != null) {
-             return null;
-         } else if (categoryMiddle != null) {
-            return null;
-         } else if (categoryLarge != null) {
-             return null;
-         }
+    @GetMapping("/productList")
+    public ResponseEntity<List<ProductDto>> getProductList(
+            @RequestParam(required = false) Long largeId,
+            @RequestParam(required = false) Long middleId,
+            @RequestParam(required = false) Long smallId,
+            @RequestParam(required = false) Long detailId,
+            @RequestParam String sortCriterion
+    ) {
+        List<ProductDto> productDtoList = productService.getProductDtoList(largeId, middleId, smallId, detailId, sortCriterion);
 
+        if (!productDtoList.isEmpty()) {
+            return ResponseEntity.ok(productDtoList);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-
-//    @Operation(summary = "상품 리스트", description = "상품 리스트를 받아오기", tags = { "Get ProductList" })
-//    @GetMapping("/productList/")
-//    public ResponseEntity<ProductDto> productList() {
-//
-//    }
 
 
 }

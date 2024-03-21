@@ -8,4 +8,6 @@ import java.util.List;
 public interface ProductThumRepository extends JpaRepository<ProductThum, Long> {
 
     List<ProductThum> findAllByProductId(Long id);
+
+    ProductThum findByProductId(Long id);
 }
