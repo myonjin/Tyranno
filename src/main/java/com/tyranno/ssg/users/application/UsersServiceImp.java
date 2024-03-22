@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import java.util.UUID;
 
 @Service
@@ -118,7 +117,11 @@ public class UsersServiceImp implements UsersService {
         return users.getLoginId();
     }
 
+    @Override
+    public Void changePassword(String password) {
+        //헤더로 uuid 받기
 
+    }
 
 
     @Transactional

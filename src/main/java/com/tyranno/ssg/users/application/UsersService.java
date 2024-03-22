@@ -13,6 +13,8 @@ public interface UsersService {
 
     void checkLoginId(String loginId);
     String findLoginId(UserIdentifyDto userIdentifyDto);
+
+    Void changePassword(String password);
     SignUpDto modifyUsersInfo(UsersModifyDto usersIdentityDto);
 
     void modifyMaketing();
