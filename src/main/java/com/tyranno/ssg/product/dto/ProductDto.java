@@ -1,6 +1,5 @@
 package com.tyranno.ssg.product.dto;
 
-import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.vendor.domain.Vendor;
 
 public class ProductDto {
@@ -12,43 +11,56 @@ public class ProductDto {
     private String imageUrl;
     private int discount;
     private int reviewCount;
-    private int isLiked;
+    private byte isLiked;
 
-
-    public ProductDto(Long productId, String productName, int price, float productRate, Vendor vendor, String imageUrl, int discount, int reviewCount, boolean isLiked) {
+    public ProductDto(Long productId, String productName, int price, float productRate, Vendor vendor, String imageUrl, int discount, int reviewCount, byte isLiked) {
         this.productId = productId;
         this.productName = productName;
         this.price = price;
         this.productRate = productRate;
-//        this.Vendor = vendor;
+        this.vendor = vendor;
         this.imageUrl = imageUrl;
         this.discount = discount;
         this.reviewCount = reviewCount;
-//        this.isLiked = isLiked;
+        this.isLiked = isLiked;
     }
 
     public ProductDto() {
-
     }
 
-    public void setProductId(Long id) {
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public void setPrice(Integer productPrice) {
+    public void setPrice(int price) {
+        this.price = price;
     }
 
-    public void setProductRate(Float productRate) {
+    public void setProductRate(float productRate) {
+        this.productRate = productRate;
     }
 
-    public void setReviewCount(Integer reviewCount) {
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
     }
 
-    public void setVendorName(String vendorName) {
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
     }
 
     public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public void setIsLiked(byte isLiked) {
+        this.isLiked = isLiked;
     }
 }

@@ -11,9 +11,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findById(Long id);
 
-
-    List<Product> findByCategoryDetailId(Long categoryDetail);
-
     @Query("SELECT p FROM Product p " +
             "WHERE (:largeId IS NULL OR EXISTS(SELECT 1 FROM Category c WHERE c.product = p AND c.largeId = :largeId)) " +
             "AND (:middleId IS NULL OR EXISTS(SELECT 1 FROM Category c WHERE c.product = p AND c.middleId = :middleId)) " +
@@ -23,7 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "CASE WHEN :sortCriterion = '1' THEN p.productPrice END ASC, " +
             "CASE WHEN :sortCriterion = '2' THEN p.productPrice END DESC, " +
             "CASE WHEN :sortCriterion = '3' THEN (SELECT d.discount FROM Discount d WHERE d.product = p) END DESC, " +
-            "CASE WHEN :sortCriterion = '4' THEN p.reviewCount END DESC, " +0
+            "CASE WHEN :sortCriterion = '4' THEN p.reviewCount END DESC, " +
             "CASE WHEN :sortCriterion = '5' THEN p.id END ASC")
     List<Product> findByCategoryIdsAndSortCriterion(
             Long largeId,

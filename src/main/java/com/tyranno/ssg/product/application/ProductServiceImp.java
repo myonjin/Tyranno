@@ -15,6 +15,9 @@ import com.tyranno.ssg.vendor.dto.VendorDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
 import com.tyranno.ssg.vendor.infrastructure.VendorRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +30,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImp implements ProductService{
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
     // JPA로 productId를 통해 조회하기
     private final ProductRepository productRepository;
@@ -76,9 +80,12 @@ public class ProductServiceImp implements ProductService{
         }
     }
 
+
     @Override
     public List<ProductDto> getProductDtoList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion) {
         List<Product> products = productRepository.findByCategoryIdsAndSortCriterion(largeId, middleId, smallId, detailId, sortCriterion);
+        logger.info("Products: {}", products); // 리스트 전체를 로그로 출력
+
         return products.stream()
                 .map(this::convertToProductDto)
                 .collect(Collectors.toList());
@@ -106,7 +113,7 @@ public class ProductServiceImp implements ProductService{
         productDto.setProductName(product.getProductName());
         productDto.setPrice(product.getProductPrice());
         productDto.setProductRate(product.getProductRate());
-        productDto.setVendorName(vendorDto.getVendorName());
+        vendorDto.setVendorName(vendorDto.getVendorName());
         productDto.setImageUrl(productThum.getImageUrl());
 //        productDto.setDiscount(discount.getDiscount());
         productDto.setReviewCount(product.getReviewCount());
