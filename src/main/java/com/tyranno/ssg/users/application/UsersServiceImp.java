@@ -117,10 +117,11 @@ public class UsersServiceImp implements UsersService {
         return users.getLoginId();
     }
 
+    @Transactional
     @Override
-    public Void changePassword(String password) {
-        //헤더로 uuid 받기
-
+    public void changePassword(String password, String uuid) {
+        Users users = usersRepository.findByUuid((uuid)).orElseThrow();
+        users.hashPassword(password);
     }
 
 

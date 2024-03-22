@@ -14,7 +14,7 @@ public interface UsersService {
     void checkLoginId(String loginId);
     String findLoginId(UserIdentifyDto userIdentifyDto);
 
-    Void changePassword(String password);
+    void changePassword(String password, String uuid);
     SignUpDto modifyUsersInfo(UsersModifyDto usersIdentityDto);
 
     void modifyMaketing();

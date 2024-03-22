@@ -51,4 +51,11 @@ public class UsersController {
         return usersService.findLoginId(userIdentifyDto);
     }
 
+    @PostMapping("/change_pw")
+    public ResponseEntity<?> changePassword(@RequestBody String password) {
+        //헤더에서 uuid 추출
+        //usersService.changePassword(password, uuid);
+        return new ResponseEntity<>("메세지", HttpStatus.OK);
+    }
+
 }
