@@ -2,6 +2,8 @@ package com.tyranno.ssg.users.application;
 
 import com.tyranno.ssg.delivery.domain.Delivery;
 import com.tyranno.ssg.delivery.infrastructure.DeliveryRepository;
+import com.tyranno.ssg.global.GlobalException;
+import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.domain.MarketingInformation;
 import com.tyranno.ssg.users.domain.Users;
@@ -91,36 +93,36 @@ public class UsersServiceImp implements UsersService {
 
     @Override
     public void checkLoginId(String loginId) {
+        System.out.println(usersRepository.existsByLoginId(loginId));
         if (usersRepository.existsByLoginId(loginId)) {
-            //throw new BaseException(POST_EXISTS_LOGIN_ID);
+            throw new GlobalException(ResponseStatus.DUPLICATE_EMAIL);
         }
     }
-    // 아이디 찾기 로직은 에러로 넘겨야해서 에러 생성 후
+
     @Override
     public String loginUsers(LoginDto loginDto) {
         Users users = usersRepository.findByLoginId(loginDto.getLoginId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다"));
-        //아이디 찾기 로직으로 가도 될듯
+                .orElseThrow(() -> new GlobalException(ResponseStatus.FAILED_TO_LOGIN_ID));
+
         if (bCryptPasswordEncoder.matches(loginDto.getPassword(), users.getPassword())) {
             return jwtTokenProvider.generateToken(users);
-        }
-        return "NO LOGIN";
+        } else throw new GlobalException(ResponseStatus.FAILED_TO_LOGIN_PW);
     }
-
 
 
     @Override
     public String findLoginId(UserIdentifyDto userIdentifyDto) {
         Users users = usersRepository.findByNameAndPhoneNumberAndGenderAndBirth(
                 userIdentifyDto.getName(), userIdentifyDto.getPhoneNumber(), userIdentifyDto.getGender(), userIdentifyDto.getBirth()
-        ).orElseThrow();
+        ).orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
         return users.getLoginId();
     }
 
     @Transactional
     @Override
     public void changePassword(String password, String uuid) {
-        Users users = usersRepository.findByUuid((uuid)).orElseThrow();
+        Users users = usersRepository.findByUuid((uuid))
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
         users.hashPassword(password);
     }
 

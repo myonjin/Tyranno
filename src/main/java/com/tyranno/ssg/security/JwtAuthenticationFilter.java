@@ -23,8 +23,6 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    //    @Autowired
-//    @Qualifier("userServiceDetailsImp")
     private final UserDetailsService userDetailsService;
 
     @Override
@@ -41,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String userUuid;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            //log.info("로그인 되어있지 않음");
+            log.info("인증이 필요없는 url 이거나 헤더가 잘못됨");
             filterChain.doFilter(request, response);
             return;
         }
@@ -49,13 +47,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwt = authHeader.substring(7);
         userUuid = jwtTokenProvider.validateAndGetUserUuid(jwt);
 
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (SecurityContextHolder.getContext().getAuthentication() == null) { // 사용자 인증 정보가 없는 경우
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userUuid);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    userDetails.getAuthorities()
-            );
+                    userDetails, null, userDetails.getAuthorities()
+            ); // authenticationToken 에 인증 정보 설정
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }

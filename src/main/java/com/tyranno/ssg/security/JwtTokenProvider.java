@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
@@ -39,8 +40,8 @@ public class JwtTokenProvider {
     }
 
     public String generateToken( // 사용자 상세 정보(UserDetails)를 기반으로 JWT를 생성
-            Map<String, Objects> extractClaims,
-            UserDetails userDetails
+                                 Map<String, Objects> extractClaims,
+                                 UserDetails userDetails
     ) {
 
         log.info("generateToken {} ", userDetails);
