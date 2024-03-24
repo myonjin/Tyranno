@@ -6,12 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class CategoryDto {
-    private Product product;
+    private Long productId;
+//    private Product product;
     private Long detailId;
     private Long smallId;
     private Long middleId;

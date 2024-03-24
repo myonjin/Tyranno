@@ -1,5 +1,8 @@
 package com.tyranno.ssg.product.application;
 
+import com.tyranno.ssg.category.application.CategoryServiceImp;
+import com.tyranno.ssg.category.domain.Category;
+import com.tyranno.ssg.category.infrastructure.CategoryRepository;
 import com.tyranno.ssg.like.domain.Like;
 import com.tyranno.ssg.product.domain.Discount;
 import com.tyranno.ssg.product.domain.Product;
@@ -36,6 +39,7 @@ public class ProductServiceImp implements ProductService{
     private final ProductRepository productRepository;
     private final VendorProductRepository vendorProductRepository;
     private final ProductThumRepository productThumRepository;
+    private final CategoryRepository categoryRepository;
 //    private final DiscountRepository discountRepository;
 //    private final LikeRepository likeRepository;
 
@@ -83,42 +87,19 @@ public class ProductServiceImp implements ProductService{
 
     @Override
     public List<ProductDto> getProductDtoList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion) {
-        List<Product> products = productRepository.findByCategoryIdsAndSortCriterion(largeId, middleId, smallId, detailId, sortCriterion);
-        logger.info("Products: {}", products); // 리스트 전체를 로그로 출력
+        List<Long> productIds = new ArrayList<>();
+
+        if (detailId != null) {
+            List<Category> categories = categoryRepository.findAllByDetailId(detailId);
+            for (Category category : categories) {
+                productIds.add(category.getProduct().getId());
+            }
+        }
+
+        List<Product> products = productRepository.findByProductIdsAndSortCriterion(productIds, sortCriterion);
 
         return products.stream()
                 .map(this::convertToProductDto)
                 .collect(Collectors.toList());
-    }
-
-    public ProductDto convertToProductDto(Product product) {
-        // Vendor 정보 조회
-        VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId());
-        VendorDto vendorDto = new VendorDto();
-        vendorDto.setVendorName(vendorProduct.getVendor().getVendorName());
-
-        // ProductThum 정보 조회
-        ProductThum productThum = productThumRepository.findByProductId(product.getId());
-
-        // Discount 정보 조회
-//        Discount discount = discountRepository.findByProductId(product.getId());
-//
-//        // Like 정보 조회
-//        Like like = likeRepository.findByProductId(product.getId());
-//        boolean isLiked = (like != null);
-
-        // ProductDto 생성 및 필드 설정
-        ProductDto productDto = new ProductDto();
-        productDto.setProductId(product.getId());
-        productDto.setProductName(product.getProductName());
-        productDto.setPrice(product.getProductPrice());
-        productDto.setProductRate(product.getProductRate());
-        vendorDto.setVendorName(vendorDto.getVendorName());
-        productDto.setImageUrl(productThum.getImageUrl());
-//        productDto.setDiscount(discount.getDiscount());
-        productDto.setReviewCount(product.getReviewCount());
-//        productDto.setIsLiked(isLiked);
-
-        return productDto;
     }
 }

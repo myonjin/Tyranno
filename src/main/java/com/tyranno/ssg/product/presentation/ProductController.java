@@ -24,7 +24,6 @@ public class ProductController {
     @GetMapping("/detail/{productId}")
     public ResponseEntity<ProductDetailDto> productDetail(@PathVariable Long productId) {
         ProductDetailDto productDetailDto = productService.productDetail(productId);
-
         if (productDetailDto != null) {
             return ResponseEntity.ok(productDetailDto);
         } else {
@@ -39,7 +38,7 @@ public class ProductController {
             @RequestParam(required = false) Long middleId,
             @RequestParam(required = false) Long smallId,
             @RequestParam(required = false) Long detailId,
-            @RequestParam String sortCriterion
+            @RequestParam(defaultValue = "5") String sortCriterion
     ) {
         List<ProductDto> productDtoList = productService.getProductDtoList(largeId, middleId, smallId, detailId, sortCriterion);
 

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+    List<Category> findAllByDetailId(Long detailId);
+
     Optional<Category> findByProductId(Long productId);
 
 }
