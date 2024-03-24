@@ -39,7 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String userUuid;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            log.info("인증이 필요없는 url 이거나 헤더가 잘못됨");
             filterChain.doFilter(request, response);
             return;
         }

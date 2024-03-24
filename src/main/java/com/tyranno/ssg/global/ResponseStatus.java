@@ -46,7 +46,7 @@ public enum ResponseStatus {
     WRONG_AUTH_CODE(false, 2007, "인증번호가 일치하지 않습니다."),
 
     // USERS
-    DUPLICATE_EMAIL(false, 2100, "사용중인 이메일입니다."),
+    DUPLICATE_ID(false, 2100, "사용중인 아이디입니다."),
     DUPLICATED_USERS(false, 2101, "이미 가입된 유저입니다."),
     MASSAGE_SEND_FAILED(false, 2102, "인증번호 전송에 실패했습니다."),
     MASSAGE_VALID_FAILED(false, 2103, "인증번호가 일치하지 않습니다."),
@@ -60,6 +60,8 @@ public enum ResponseStatus {
     PASSWORD_CONTAIN_NUM_FAILED(false, 2109, "휴대폰 번호를 포함한 비밀번호 입니다."),
     PASSWORD_CONTAIN_EMAIL_FAILED(false, 2110, "이메일이 포함된 비밀번호 입니다."),
 
+    // Marketing
+    NO_EXIST_MARKETING(false, 2200, "마케팅동의여부가 조회되지 않습니다."),
     // Address
     NO_EXIST_ADDRESS(false, 2300, "존재하지 않는 주소입니다."),
 

@@ -10,7 +10,6 @@ import com.tyranno.ssg.users.domain.Users;
 import com.tyranno.ssg.users.dto.LoginDto;
 import com.tyranno.ssg.users.dto.SignUpDto;
 import com.tyranno.ssg.users.dto.UserIdentifyDto;
-import com.tyranno.ssg.users.dto.UsersModifyDto;
 import com.tyranno.ssg.users.infrastructure.MarketingInformationRepository;
 import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
@@ -55,7 +54,7 @@ public class UsersServiceImp implements UsersService {
         MarketingInformation marketingInformation1 = MarketingInformation.builder()
                 .isAgree(signUpDto.getShinsegaeMarketingAgree())
                 .users(users)
-                .marketing(marketingRepository.findById(1L).orElseThrow())// 예외처리 필요
+                .marketing(marketingRepository.findById(1L).orElseThrow())
                 .build();
 
         marketingInformationRepository.save(marketingInformation1);
@@ -63,7 +62,7 @@ public class UsersServiceImp implements UsersService {
         MarketingInformation marketingInformation2 = MarketingInformation.builder()
                 .isAgree(signUpDto.getShinsegaeOptionAgree())
                 .users(users)
-                .marketing(marketingRepository.findById(2L).orElseThrow())// 예외처리 필요
+                .marketing(marketingRepository.findById(2L).orElseThrow())
                 .build();
 
         marketingInformationRepository.save(marketingInformation2);
@@ -71,7 +70,7 @@ public class UsersServiceImp implements UsersService {
         MarketingInformation marketingInformation3 = MarketingInformation.builder()
                 .isAgree(signUpDto.getSsgMarketingAgree())
                 .users(users)
-                .marketing(marketingRepository.findById(3L).orElseThrow())// 예외처리 필요
+                .marketing(marketingRepository.findById(3L).orElseThrow())
                 .build();
 
         marketingInformationRepository.save(marketingInformation3);
@@ -95,7 +94,7 @@ public class UsersServiceImp implements UsersService {
     public void checkLoginId(String loginId) {
         System.out.println(usersRepository.existsByLoginId(loginId));
         if (usersRepository.existsByLoginId(loginId)) {
-            throw new GlobalException(ResponseStatus.DUPLICATE_EMAIL);
+            throw new GlobalException(ResponseStatus.DUPLICATE_ID);
         }
     }
 
@@ -125,59 +124,4 @@ public class UsersServiceImp implements UsersService {
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
         users.hashPassword(password);
     }
-
-
-    @Transactional
-    @Override
-    public SignUpDto modifyUsersInfo(UsersModifyDto usersModifyDto) {
-        validateModifyUsers(usersModifyDto);
-        // String token =jwtTokenProvider.generateToken();
-        Users users = usersRepository.findByPhoneNumber(usersModifyDto.getPhoneNumber()).orElseThrow(// 찾았는데 null일 경우
-                //            () -> new UsersExcetion(No_USERS)
-        );
-//        // 기존 entity에 있던 정보 + 새로 set 정보
-//        users.setEmail(usersModifyDto.getEmail());
-//        users.setPassword(usersModifyDto.getPassword());
-//        users.setPhoneNumber(usersModifyDto.getPhoneNumber());
-
-        return SignUpDto.builder()
-                .loginId(users.getLoginId())
-                .password(users.getPassword())
-                .name(users.getName())
-                .email(users.getEmail())
-                .gender(users.getGender())
-                .phoneNumber(users.getPhoneNumber())
-                .birth(users.getBirth())
-                //.status(users.getStatus())
-                .build();
-    }
-
-
-    private void validateModifyUsers(UsersModifyDto usersModifyDto) {
-    }
-
-    @Transactional
-    @Override
-    public void modifyMaketing() {
-
-    }
-
-    @Override
-    public SignUpDto getUsersInfo(String uuid) {
-        return null;
-    }
-
-    @Transactional
-    @Override
-    public void resignUsers(String uuid) {
-
-    }
-
-    @Transactional // patch가 아니라 put 이기 때문에
-    @Override
-    public void modifyPassword() {
-
-    }
-
-
 }

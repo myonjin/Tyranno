@@ -1,4 +1,4 @@
-package com.tyranno.ssg.users.dto;
+package com.tyranno.ssg.auth.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

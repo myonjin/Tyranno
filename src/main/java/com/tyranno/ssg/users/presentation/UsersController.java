@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 public class UsersController {
 
     private final UsersService usersService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto signUpDto) {
@@ -48,10 +47,10 @@ public class UsersController {
         return new ResponseEntity<>(usersService.findLoginId(userIdentifyDto));
     }
 
-    @PostMapping("/change_pw")
+    @PutMapping("/change_pw")
     public ResponseEntity<?> changePassword(@RequestBody String password, Authentication authentication) {
         String uuid = authentication.getName();
-        System.out.println(uuid);
+        System.out.println(password);
         usersService.changePassword(password, uuid);
         return new ResponseEntity<>("비밀번호 변경 성공");
     }
