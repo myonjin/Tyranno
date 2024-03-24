@@ -16,17 +16,17 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PutMapping("/shinsegae_marketing/{isagree}")
-    public ResponseEntity<?> modifyShinsegaeMaketing(@PathVariable Byte isagree, Authentication authentication) {
+    @PutMapping("/shinsegae_marketing/{isAgree}")
+    public ResponseEntity<?> modifyShinsegaeMaketing(@PathVariable Byte isAgree, Authentication authentication) {
         String uuid = authentication.getName();
-        authService.modifyShinsegaeMaketing(isagree, uuid);
+        authService.modifyShinsegaeMaketing(isAgree, uuid);
         return new ResponseEntity<>("신세계 동의 변경 성공");
     }
 
-    @PutMapping("/ssg_marketing/{isagree}")
-    public ResponseEntity<?> modifySsgMaketing(@PathVariable Byte isagree, Authentication authentication) {
+    @PutMapping("/ssg_marketing/{isAgree}")
+    public ResponseEntity<?> modifySsgMaketing(@PathVariable Byte isAgree, Authentication authentication) {
         String uuid = authentication.getName();
-        authService.modifySsgMaketing(isagree, uuid);
+        authService.modifySsgMaketing(isAgree, uuid);
         return new ResponseEntity<>("ssg 동의 변경 성공");
     }
     @PutMapping

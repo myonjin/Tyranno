@@ -8,6 +8,7 @@ import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.domain.MarketingInformation;
 import com.tyranno.ssg.users.domain.Users;
 import com.tyranno.ssg.users.dto.LoginDto;
+import com.tyranno.ssg.users.dto.PasswordModifyDto;
 import com.tyranno.ssg.users.dto.SignUpDto;
 import com.tyranno.ssg.users.dto.UserIdentifyDto;
 import com.tyranno.ssg.users.infrastructure.MarketingInformationRepository;
@@ -92,7 +93,6 @@ public class UsersServiceImp implements UsersService {
 
     @Override
     public void checkLoginId(String loginId) {
-        System.out.println(usersRepository.existsByLoginId(loginId));
         if (usersRepository.existsByLoginId(loginId)) {
             throw new GlobalException(ResponseStatus.DUPLICATE_ID);
         }
@@ -119,9 +119,9 @@ public class UsersServiceImp implements UsersService {
 
     @Transactional
     @Override
-    public void changePassword(String password, String uuid) {
+    public void changePassword(PasswordModifyDto passwordModifyDto, String uuid) {
         Users users = usersRepository.findByUuid((uuid))
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-        users.hashPassword(password);
+        users.hashPassword(passwordModifyDto.getPassword());
     }
 }

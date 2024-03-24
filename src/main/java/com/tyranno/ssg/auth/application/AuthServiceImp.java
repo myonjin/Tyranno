@@ -1,5 +1,6 @@
 package com.tyranno.ssg.auth.application;
 
+import com.tyranno.ssg.auth.dto.MarketingModifyDto;
 import com.tyranno.ssg.auth.dto.UsersInfoDto;
 import com.tyranno.ssg.auth.dto.UsersModifyDto;
 import com.tyranno.ssg.global.GlobalException;
