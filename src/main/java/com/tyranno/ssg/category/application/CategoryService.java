@@ -5,6 +5,8 @@ import com.tyranno.ssg.category.dto.CategoryDto;
 import java.util.List;
 
 public interface CategoryService {
-//    CategoryDto sortCategoryDetail(Long CategoryDetailId);
-    List<CategoryDto> findAllDetailId(Long detailId);
+    List<Long> getProductIdsByLargeId(Long largeId);
+    List<Long> getProductIdsByMiddleId(Long middleId);
+    List<Long> getProductIdsBySmallId(Long smallId);
+    List<Long> getProductIdsByDetailId(Long detailId);
 }

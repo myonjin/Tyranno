@@ -1,33 +1,28 @@
 package com.tyranno.ssg.product.application;
 
-import com.tyranno.ssg.category.application.CategoryServiceImp;
-import com.tyranno.ssg.category.domain.Category;
 import com.tyranno.ssg.category.infrastructure.CategoryRepository;
-import com.tyranno.ssg.like.domain.Like;
 import com.tyranno.ssg.product.domain.Discount;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
+import com.tyranno.ssg.product.dto.DiscountDto;
 import com.tyranno.ssg.product.dto.ProductDetailDto;
 import com.tyranno.ssg.product.dto.ProductDto;
 import com.tyranno.ssg.product.dto.ProductListDto;
+import com.tyranno.ssg.product.infrastructure.DiscountRepository;
 import com.tyranno.ssg.product.infrastructure.ProductRepository;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
 import com.tyranno.ssg.vendor.domain.Vendor;
 import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.dto.VendorDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
-import com.tyranno.ssg.vendor.infrastructure.VendorRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,9 +34,10 @@ public class ProductServiceImp implements ProductService{
     private final ProductRepository productRepository;
     private final VendorProductRepository vendorProductRepository;
     private final ProductThumRepository productThumRepository;
-    private final CategoryRepository categoryRepository;
-//    private final DiscountRepository discountRepository;
-//    private final LikeRepository likeRepository;
+//    private final CategoryRepository categoryRepository;
+    private final DiscountRepository discountRepository;
+
+    //    private final LikeRepository likeRepository;
 
 
 
@@ -84,22 +80,58 @@ public class ProductServiceImp implements ProductService{
         }
     }
 
+    // Discount 객체 구하기
+    @Override
+    public DiscountDto findDiscountByProductId(Long id){
+        Discount discount = discountRepository.findByProductId(id);
+        return DiscountDto.builder()
+                .build();
+    }
+
+
 
     @Override
-    public List<ProductDto> getProductDtoList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion) {
-        List<Long> productIds = new ArrayList<>();
+    public List<ProductDto> getProductList(List<Long> productIds) {
+        List<Product> products = productRepository.findAllById(productIds);
+        List<ProductDto> productDtos = new ArrayList<>();
 
-        if (detailId != null) {
-            List<Category> categories = categoryRepository.findAllByDetailId(detailId);
-            for (Category category : categories) {
-                productIds.add(category.getProduct().getId());
+        for (Product product : products) {
+            ProductDto productDto = convertToDto(product);
+            VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId());
+            if (vendorProduct != null) {
+                Vendor vendor = vendorProduct.getVendor();
+                if (vendor != null) {
+                    productDto.setVendorName(vendor.getVendorName()); // Vendor 정보 설정
+                }
             }
+
+            ProductThum productThum = productThumRepository.findByProductId(product.getId());
+            if (productThum != null) {
+                productDto.setImageUrl(productThum.getImageUrl()); // ImageUrl 설정
+            }
+
+            Discount discount = discountRepository.findByProductId(product.getId());
+            if (discount != null) {
+                productDto.setDiscount(discount.getDiscount()); // Discount 정보 설정
+            }
+
+            productDto.setIsLiked((byte) 99); // isLiked를 무조건 99로 설정
+
+            productDtos.add(productDto);
         }
 
-        List<Product> products = productRepository.findByProductIdsAndSortCriterion(productIds, sortCriterion);
-
-        return products.stream()
-                .map(this::convertToProductDto)
-                .collect(Collectors.toList());
+        return productDtos;
     }
+
+    private ProductDto convertToDto(Product product) {
+        return ProductDto.builder()
+                .productId(product.getId())
+                .productName(product.getProductName())
+                .price(product.getProductPrice())
+                .productRate(product.getProductRate())
+                // 나머지 필드는 여기에 추가합니다.
+                .build();
+    }
+
+
 }
