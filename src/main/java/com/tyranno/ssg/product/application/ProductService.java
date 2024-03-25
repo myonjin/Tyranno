@@ -19,5 +19,5 @@ public interface ProductService {
 
     List<ProductDto> getProductList(List<Long> productIds);
 
-//    List<ProductDto> getProductListSorted(List<Long> productIds, String sortBy);
+    List<ProductDto> getProductListSorted(List<ProductDto> beforeProductDtoList, String sortBy);
 }

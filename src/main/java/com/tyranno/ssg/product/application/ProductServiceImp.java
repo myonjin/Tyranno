@@ -139,7 +139,7 @@ public class ProductServiceImp implements ProductService{
                     productDto.setDiscount(0);
                 }
 
-                productDto.setIsLiked((byte) 99); // isLiked를 무조건 99로 설정
+                productDto.setIsLiked((byte) 99); // isLiked를 무조건 99로 설정 Like테이블 안만들어서 이렇게 한거임 나중에 수정
 
                 productDtos.add(productDto);
             }
@@ -157,31 +157,36 @@ public class ProductServiceImp implements ProductService{
                 .build();
     }
 
-//    @Override
-//    public List<ProductDto> getProductListSorted(List<Long> productIds, String sortCriterion) {
-//        // productIds를 이용하여 제품 정보 조회
-//        List<ProductDto> productDtos = getProductList(productIds);
-//
-//        // 정렬 로직 추가
-//        if ("1".equals(sortCriterion)) {
-//            // 낮은 가격 순
-//            Collections.sort(productDtos, Comparator.comparing(ProductDto::getPrice));
-//        } else if ("2".equals(sortCriterion)) {
-//            // 높은 가격 순
-//            Collections.sort(productDtos, Comparator.comparing(ProductDto::getPrice).reversed());
-//        } else if ("3".equals(sortCriterion)) {
-//            // 할인율 높은 순
-//            Collections.sort(productDtos, Comparator.comparing(ProductDto::getDiscount).reversed());
-//        } else if ("4".equals(sortCriterion)) {
-//            // 리뷰 많은 순
-//            Collections.sort(productDtos, Comparator.comparing(ProductDto::getReviewCount).reversed());
-//        } else {
-//            Collections.sort(productDtos, Comparator.comparing(ProductDto::getProductId));
-//        }
-//        // 기타 필요한 정렬 조건 추가
-//
-//        return productDtos;
-//    }
+    @Override
+    public List<ProductDto> getProductListSorted(List<ProductDto> beforeProductDtoList, String sortCriterion) {
+        // productIds를 이용하여 제품 정보 조회
+        List<ProductDto> productDtos = new ArrayList<>(beforeProductDtoList);
+
+        // 정렬 로직 추가
+        if ("1".equals(sortCriterion)) {
+            // 낮은 가격 순
+            Collections.sort(productDtos, Comparator.comparing(ProductDto::getPrice));
+            log.info("정렬방법: 낮은 가격순 ");
+        } else if ("2".equals(sortCriterion)) {
+            // 높은 가격 순
+            Collections.sort(productDtos, Comparator.comparing(ProductDto::getPrice).reversed());
+            log.info("정렬방법: 높은 가격순");
+        } else if ("3".equals(sortCriterion)) {
+            // 할인율 높은 순
+            Collections.sort(productDtos, Comparator.comparing(ProductDto::getDiscount).reversed());
+            log.info("정렬방법: 할인율 높은 순");
+        } else if ("4".equals(sortCriterion)) {
+            // 리뷰 많은 순
+            Collections.sort(productDtos, Comparator.comparing(ProductDto::getReviewCount).reversed());
+            log.info("정렬방법: 리뷰 많은 순");
+        } else {
+            Collections.sort(productDtos, Comparator.comparing(ProductDto::getProductId));
+            log.info("정렬방법: 기본(아이디 순)");
+        }
+        // 기타 필요한 정렬 조건 추가
+
+        return productDtos;
+    }
 
 
 }
