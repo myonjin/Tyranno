@@ -56,6 +56,15 @@ public class Users extends GlobalTime implements UserDetails {
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 
+    public void modifyInfo(String phoneNumber, String email) {
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
+    public void resign() {
+        this.status = 1;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
