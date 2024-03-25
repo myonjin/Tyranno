@@ -10,6 +10,8 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "`option`")
+@Getter
+@Setter
 public class Option {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,4 +39,18 @@ public class Option {
 
     @Column(nullable = false)
     private Integer stock;
+    @Override
+    public String toString() {
+        return "Option{" +
+                "id=" + id +
+                ", stock=" + stock +
+                ", color='" + (color != null ? color.getColor() : "None") + '\'' +
+                ", size='" + (size != null ? size.getSize() : "None") + '\'' +
+                ", product=" + (product != null ? product.getId() : "None") +
+                ", extra='" + (extra != null ? extra.getExtraName() : "None") + '\'' +
+                ", etc='" + (etc != null ? etc.getAdditionalOption() : "None") + '\'' +
+                '}';
+    }
+
+
 }

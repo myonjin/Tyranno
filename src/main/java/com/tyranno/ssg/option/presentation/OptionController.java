@@ -2,6 +2,7 @@ package com.tyranno.ssg.option.presentation;
 
 
 import com.tyranno.ssg.option.application.OptionService;
+import com.tyranno.ssg.option.domain.Option;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,10 +39,10 @@ public class OptionController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "선택 가능 옵션 조회 완료"),
             @ApiResponse(responseCode = "400", description = "선택 가능 옵션 조회 중 오류 발생")})
-    public ResponseEntity<?> findOptions(@Parameter(description = "상품 ID") @PathVariable Long productId) {
+    public ResponseEntity<?> findOptions(@Parameter(description = "상품 ID") @PathVariable(value = "productId") Long productId) {
         List<String> optionAble = optionService.findOptionAble(productId);
 
-        return ResponseEntity.ok().body("오케이");
+        return ResponseEntity.ok().body(optionAble);
     }
 }
 //         @GetMapping("/find-options")

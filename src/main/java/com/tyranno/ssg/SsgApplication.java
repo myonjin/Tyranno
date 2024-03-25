@@ -19,8 +19,6 @@ public class SsgApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SsgApplication.class, args);
-		log.debug("디버그");
-		log.info("인포");
 
 	}
 
