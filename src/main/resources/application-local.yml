@@ -1,6 +1,6 @@
 spring:
   datasource:
-    #    url: jdbc:mysql://15.164.246.181:3306/tyranno?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    #    url: jdbc:mysql://15.164.246.181:3306/tyranno_local?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
     url: jdbc:mysql://localhost:3306/tyranno_local?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
 
     username: tyranno_local
