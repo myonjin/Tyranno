@@ -8,7 +8,7 @@ import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.domain.MarketingInformation;
 import com.tyranno.ssg.users.domain.Users;
 import com.tyranno.ssg.users.dto.LoginDto;
-import com.tyranno.ssg.users.dto.PasswordModifyDto;
+import com.tyranno.ssg.users.dto.PasswordChangeDto;
 import com.tyranno.ssg.users.dto.SignUpDto;
 import com.tyranno.ssg.users.dto.UserIdentifyDto;
 import com.tyranno.ssg.users.infrastructure.MarketingInformationRepository;
@@ -16,6 +16,7 @@ import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UsersServiceImp implements UsersService {
     private final UsersRepository usersRepository;
     private final MarketingRepository marketingRepository;
@@ -117,11 +119,14 @@ public class UsersServiceImp implements UsersService {
         return users.getLoginId();
     }
 
-    @Transactional
     @Override
-    public void changePassword(PasswordModifyDto passwordModifyDto, String uuid) {
-        Users users = usersRepository.findByUuid((uuid))
+    public void changePassword(PasswordChangeDto passwordChangeDto) {
+        Users users = usersRepository.findByLoginId(passwordChangeDto.getLoginId())
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-        users.hashPassword(passwordModifyDto.getPassword());
+        log.info(String.valueOf(users));
+        users.hashPassword(passwordChangeDto.getNewPassword());
+        log.info(String.valueOf(users));
     }
+
+
 }

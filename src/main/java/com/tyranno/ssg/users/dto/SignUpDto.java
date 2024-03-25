@@ -1,5 +1,6 @@
 package com.tyranno.ssg.users.dto;
 
+import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -37,7 +38,7 @@ public class SignUpDto { // 회원가입 정보 이걸로 받음
 
     private Byte ssgMarketingAgree;
 
-//    @NotNull
+//    @Notnull
 //    private int snsLogin;
 
 }

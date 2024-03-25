@@ -3,7 +3,9 @@ package com.tyranno.ssg.auth.presentation;
 import com.tyranno.ssg.auth.application.AuthService;
 import com.tyranno.ssg.auth.dto.UsersModifyDto;
 import com.tyranno.ssg.global.ResponseEntity;
-import com.tyranno.ssg.security.JwtTokenProvider;
+import com.tyranno.ssg.users.application.UsersService;
+import com.tyranno.ssg.auth.dto.PasswordModifyDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-
+    @PutMapping("/modify_pw")
+    public ResponseEntity<?> modifyPassword(@Valid @RequestBody PasswordModifyDto passwordModifyDto, Authentication authentication) {
+        String uuid = authentication.getName();
+        authService.modifyPassword(passwordModifyDto, uuid);
+        return new ResponseEntity<>("비밀번호 변경 성공");
+    }
     @PutMapping("/shinsegae_marketing/{isAgree}")
     public ResponseEntity<?> modifyShinsegaeMaketing(@PathVariable Byte isAgree, Authentication authentication) {
         String uuid = authentication.getName();
