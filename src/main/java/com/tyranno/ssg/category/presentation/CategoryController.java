@@ -1,39 +1,93 @@
 package com.tyranno.ssg.category.presentation;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.tyranno.ssg.category.application.CategoryService;
+import com.tyranno.ssg.category.dto.DetailCategoryDto;
+import com.tyranno.ssg.category.dto.LargeCategoryDto;
+import com.tyranno.ssg.category.dto.MiddleCategoryDto;
+
+import com.tyranno.ssg.category.dto.SmallCategoryDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
+@RequiredArgsConstructor
 @RestController
+@Slf4j
+@RequestMapping("/api/v1/category")
 public class CategoryController {
+    private final CategoryService categoryService;
 
-    //    @GetMapping("/api/v1/category")
-//    public String getExampleCategory() {
-//        return "Hello World";
-//    }
-    @GetMapping("/api/v1/category")
-    public List<ExampleCategory> getExampleCategory() {
-        return Arrays.asList(
-                new ExampleCategory(1, "스포츠/레저"),
-                new ExampleCategory(2, "주방/세제"),
-                new ExampleCategory(3, "문구"),
-                new ExampleCategory(4, "전자기기"),
-                new ExampleCategory(5, "식품")
-        );
+    @Operation(summary = "대 카테고리", description = "대 카테고리 조회하기", tags = { "Get LargeCategory" })
+    @GetMapping("/")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "대 카테고리 조회 완료"),
+            @ApiResponse(responseCode = "400", description = "대 카테고리 조회 중 오류 발생")})
+    public ResponseEntity<List<LargeCategoryDto>> getLargeCategory() {
+        List<LargeCategoryDto> largeCategoryDtos = categoryService.getLargeCategory();
+        if (largeCategoryDtos != null) {
+            log.info("대 카테고리 조회");
+            return ResponseEntity.ok(largeCategoryDtos);
+        } else {
+            log.warn("대 카테고리 없음");
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @Operation(summary = "중 카테고리", description = "중 카테고리 조회하기", tags = { "Get MiddleCategory" })
+    @GetMapping("/large/{largeId}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "중 카테고리 조회 완료"),
+            @ApiResponse(responseCode = "400", description = "중 카테고리 조회 중 오류 발생")})
+    public ResponseEntity<List<MiddleCategoryDto>> getMiddleCategory(@PathVariable Long largeId) {
+        List<MiddleCategoryDto> middleCategoryDtos = categoryService.getMiddleCategory(largeId);
+        if (middleCategoryDtos != null) {
+            log.info("largeCategory ID: {}", largeId);
+            return ResponseEntity.ok(middleCategoryDtos);
+        } else {
+            log.warn("category ID 없는거다: {}", largeId);
+            return ResponseEntity.notFound().build();
+        }
     }
 
+    @Operation(summary = "소 카테고리", description = "소 카테고리 조회하기", tags = { "Get SmallCategory" })
+    @GetMapping("/middle/{middleId}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "소 카테고리 조회 완료"),
+            @ApiResponse(responseCode = "400", description = "소 카테고리 조회 중 오류 발생")})
+    public ResponseEntity<List<SmallCategoryDto>> getSmallCategory(@PathVariable Long middleId) {
+        List<SmallCategoryDto> smallCategoryDtos = categoryService.getSmallCategory(middleId);
+        if (smallCategoryDtos != null) {
+            log.info("middleCategory ID: {}", middleId);
+            return ResponseEntity.ok(smallCategoryDtos);
+        } else {
+            log.warn("category ID 없는거다: {}", middleId);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "상세 카테고리", description = "상세 카테고리 조회하기", tags = { "Get DetailCategory" })
+    @GetMapping("/small/{smallId}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "상세 카테고리 조회 완료"),
+            @ApiResponse(responseCode = "400", description = "상세 카테고리 조회 중 오류 발생")})
+    public ResponseEntity<List<DetailCategoryDto>> getDetailCategory(@PathVariable Long smallId) {
+        List<DetailCategoryDto> detailCategoryDtos = categoryService.getDetailCategory(smallId);
+        if (detailCategoryDtos != null) {
+            log.info("smallCategory ID: {}", smallId);
+            return ResponseEntity.ok(detailCategoryDtos);
+        } else {
+            log.warn("category ID 없는거다: {}", smallId);
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-class ExampleCategory {
-    private int category;
-    private String categoryName;
-}
+
