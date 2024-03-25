@@ -18,4 +18,6 @@ public interface ProductService {
     DiscountDto findDiscountByProductId(Long id);
 
     List<ProductDto> getProductList(List<Long> productIds);
+
+//    List<ProductDto> getProductListSorted(List<Long> productIds, String sortBy);
 }

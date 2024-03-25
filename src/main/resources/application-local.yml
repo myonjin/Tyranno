@@ -36,4 +36,4 @@ JWT:
   EXPIRATION_TIME: 86400
 logging:
   level:
-    com.tyranno.ssg: info
+    com.tyranno.ssg: trace

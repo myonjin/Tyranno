@@ -6,6 +6,7 @@ import com.tyranno.ssg.category.infrastructure.CategoryRepository;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,7 +15,9 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CategoryServiceImp implements CategoryService{
+
     private final CategoryRepository categoryRepository;
 
     @Override
