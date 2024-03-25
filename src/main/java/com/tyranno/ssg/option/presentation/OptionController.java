@@ -39,6 +39,7 @@ public class OptionController {
             @ApiResponse(responseCode = "200", description = "선택 가능 옵션 조회 완료"),
             @ApiResponse(responseCode = "400", description = "선택 가능 옵션 조회 중 오류 발생")})
     public ResponseEntity<?> findOptions(@Parameter(description = "상품 ID") @PathVariable Long productId) {
+        List<String> optionAble = optionService.findOptionAble(productId);
 
         return ResponseEntity.ok().body("오케이");
     }

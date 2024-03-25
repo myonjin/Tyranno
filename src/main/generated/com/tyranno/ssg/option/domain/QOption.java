@@ -30,6 +30,8 @@ public class QOption extends EntityPathBase<Option> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final com.tyranno.ssg.product.domain.QProduct product;
+
     public final QSize size;
 
     public final NumberPath<Integer> stock = createNumber("stock", Integer.class);
@@ -55,6 +57,7 @@ public class QOption extends EntityPathBase<Option> {
         this.color = inits.isInitialized("color") ? new QColor(forProperty("color")) : null;
         this.etc = inits.isInitialized("etc") ? new QEtc(forProperty("etc")) : null;
         this.extra = inits.isInitialized("extra") ? new QExtra(forProperty("extra")) : null;
+        this.product = inits.isInitialized("product") ? new com.tyranno.ssg.product.domain.QProduct(forProperty("product")) : null;
         this.size = inits.isInitialized("size") ? new QSize(forProperty("size")) : null;
     }
 

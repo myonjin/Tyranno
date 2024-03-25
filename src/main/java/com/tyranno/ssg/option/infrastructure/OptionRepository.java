@@ -1,4 +1,4 @@
-package com.tyranno.ssg.option.infrastucture;
+package com.tyranno.ssg.option.infrastructure;
 
 import com.tyranno.ssg.option.domain.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
