@@ -1,19 +1,21 @@
 package com.tyranno.ssg.users.application;
 
-import com.tyranno.ssg.users.domain.Users;
+import com.tyranno.ssg.users.dto.LoginDto;
+import com.tyranno.ssg.auth.dto.PasswordModifyDto;
+import com.tyranno.ssg.users.dto.PasswordChangeDto;
 import com.tyranno.ssg.users.dto.SignUpDto;
-import com.tyranno.ssg.users.dto.UsersModifyDto;
+import com.tyranno.ssg.users.dto.UserIdentifyDto;
 
 public interface UsersService {
+
     void createUsers(SignUpDto signUpDto);
 
-    SignUpDto modifyUsersInfo(UsersModifyDto usersIdentityDto);
+    String loginUsers(LoginDto loginDto);
 
-    void modifyMaketing();
+    void checkLoginId(String loginId);
 
-    SignUpDto getUsersInfo(String uuid); // api 응답값 이상 - 확인 필요
+    String findLoginId(UserIdentifyDto userIdentifyDto);
 
-    void resignUsers(String uuid);
+    void changePassword(PasswordChangeDto passwordChangeDto);
 
-    void modifyPassword(); // 파라미터 보류
 }

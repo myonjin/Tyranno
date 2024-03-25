@@ -2,10 +2,7 @@ package com.tyranno.ssg.users.domain;
 
 import com.tyranno.ssg.global.GlobalTime;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString
 @Getter
 public class Users extends GlobalTime implements UserDetails {
     @Id
@@ -54,6 +52,15 @@ public class Users extends GlobalTime implements UserDetails {
 
     public void hashPassword(String password) {
         this.password = new BCryptPasswordEncoder().encode(password);
+    }
+
+    public void modifyInfo(String phoneNumber, String email) {
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
+    public void resign() {
+        this.status = 1;
     }
 
     @Override

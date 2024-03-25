@@ -2,30 +2,41 @@ package com.tyranno.ssg.users.application;
 
 import com.tyranno.ssg.delivery.domain.Delivery;
 import com.tyranno.ssg.delivery.infrastructure.DeliveryRepository;
+import com.tyranno.ssg.global.GlobalException;
+import com.tyranno.ssg.global.ResponseStatus;
+import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.domain.MarketingInformation;
 import com.tyranno.ssg.users.domain.Users;
+import com.tyranno.ssg.users.dto.LoginDto;
+import com.tyranno.ssg.users.dto.PasswordChangeDto;
 import com.tyranno.ssg.users.dto.SignUpDto;
-import com.tyranno.ssg.users.dto.UsersModifyDto;
+import com.tyranno.ssg.users.dto.UserIdentifyDto;
 import com.tyranno.ssg.users.infrastructure.MarketingInformationRepository;
 import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UsersServiceImp implements UsersService {
     private final UsersRepository usersRepository;
     private final MarketingRepository marketingRepository;
     private final MarketingInformationRepository marketingInformationRepository;
     private final DeliveryRepository deliveryRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional // 반복이 될수 있음. 모든 곳에서 붙이는건 생각해봐야함  이유가 명확해야함
     @Override
     public void createUsers(SignUpDto signUpDto) {
+        //회원
         String generatedUuid = UUID.randomUUID().toString();
 
         Users users = Users.builder()
@@ -46,7 +57,7 @@ public class UsersServiceImp implements UsersService {
         MarketingInformation marketingInformation1 = MarketingInformation.builder()
                 .isAgree(signUpDto.getShinsegaeMarketingAgree())
                 .users(users)
-                .marketing(marketingRepository.findById(1L).orElseThrow())// 예외처리 필요
+                .marketing(marketingRepository.findById(1L).orElseThrow())
                 .build();
 
         marketingInformationRepository.save(marketingInformation1);
@@ -54,7 +65,7 @@ public class UsersServiceImp implements UsersService {
         MarketingInformation marketingInformation2 = MarketingInformation.builder()
                 .isAgree(signUpDto.getShinsegaeOptionAgree())
                 .users(users)
-                .marketing(marketingRepository.findById(2L).orElseThrow())// 예외처리 필요
+                .marketing(marketingRepository.findById(2L).orElseThrow())
                 .build();
 
         marketingInformationRepository.save(marketingInformation2);
@@ -62,7 +73,7 @@ public class UsersServiceImp implements UsersService {
         MarketingInformation marketingInformation3 = MarketingInformation.builder()
                 .isAgree(signUpDto.getSsgMarketingAgree())
                 .users(users)
-                .marketing(marketingRepository.findById(3L).orElseThrow())// 예외처리 필요
+                .marketing(marketingRepository.findById(3L).orElseThrow())
                 .build();
 
         marketingInformationRepository.save(marketingInformation3);
@@ -82,56 +93,39 @@ public class UsersServiceImp implements UsersService {
         deliveryRepository.save(delivery);
     }
 
-    @Transactional
     @Override
-    public SignUpDto modifyUsersInfo(UsersModifyDto usersModifyDto) {
-        validateModifyUsers(usersModifyDto);
-        // String token =jwtTokenProvider.generateToken();
-        Users users = usersRepository.findByPhoneNumber(usersModifyDto.getPhoneNumber()).orElseThrow(// 찾았는데 null일 경우
-                //            () -> new UsersExcetion(No_USERS)
-        );
-//        // 기존 entity에 있던 정보 + 새로 set 정보
-//        users.setEmail(usersModifyDto.getEmail());
-//        users.setPassword(usersModifyDto.getPassword());
-//        users.setPhoneNumber(usersModifyDto.getPhoneNumber());
-
-        return SignUpDto.builder()
-                .loginId(users.getLoginId())
-                .password(users.getPassword())
-                .name(users.getName())
-                .email(users.getEmail())
-                .gender(users.getGender())
-                .phoneNumber(users.getPhoneNumber())
-                .birth(users.getBirth())
-                //.status(users.getStatus())
-                .build();
-    }
-
-
-    private void validateModifyUsers(UsersModifyDto usersModifyDto) {
-    }
-
-    @Transactional
-    @Override
-    public void modifyMaketing() {
-
+    public void checkLoginId(String loginId) {
+        if (usersRepository.existsByLoginId(loginId)) {
+            throw new GlobalException(ResponseStatus.DUPLICATE_ID);
+        }
     }
 
     @Override
-    public SignUpDto getUsersInfo(String uuid) {
-        return null;
+    public String loginUsers(LoginDto loginDto) {
+        Users users = usersRepository.findByLoginId(loginDto.getLoginId())
+                .orElseThrow(() -> new GlobalException(ResponseStatus.FAILED_TO_LOGIN_ID));
+
+        if (bCryptPasswordEncoder.matches(loginDto.getPassword(), users.getPassword())) {
+            return jwtTokenProvider.generateToken(users);
+        } else throw new GlobalException(ResponseStatus.FAILED_TO_LOGIN_PW);
     }
 
-    @Transactional
-    @Override
-    public void resignUsers(String uuid) {
 
+    @Override
+    public String findLoginId(UserIdentifyDto userIdentifyDto) {
+        Users users = usersRepository.findByNameAndPhoneNumberAndGenderAndBirth(
+                userIdentifyDto.getName(), userIdentifyDto.getPhoneNumber(), userIdentifyDto.getGender(), userIdentifyDto.getBirth()
+        ).orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        return users.getLoginId();
     }
 
-    @Transactional // patch가 아니라 put 이기 때문에
     @Override
-    public void modifyPassword() {
-
+    public void changePassword(PasswordChangeDto passwordChangeDto) {
+        Users users = usersRepository.findByLoginId(passwordChangeDto.getLoginId())
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        log.info(String.valueOf(users));
+        users.hashPassword(passwordChangeDto.getNewPassword());
+        log.info(String.valueOf(users));
     }
 
 

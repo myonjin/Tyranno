@@ -4,15 +4,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsersModifyDto { //회원 인증 정보 - 유저가 입력, 비밀번호 변경 시 사용
+@ToString
+public class PasswordChangeDto {
     @NotNull
-    private String password;
+    private String loginId;
     @NotNull
-    private String phoneNumber;
-    @NotNull
-    private String email;
+    private String newPassword;
 }

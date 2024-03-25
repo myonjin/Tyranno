@@ -18,4 +18,7 @@ public class CategoryMiddle {
     private CategoryLarge categoryLarge;
 
     private String middleName;
+    private String middleImageUrl;
+
+
 }
