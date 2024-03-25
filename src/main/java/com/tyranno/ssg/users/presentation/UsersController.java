@@ -52,7 +52,7 @@ public class UsersController {
     }
 
     @PutMapping("/change_pw")
-    public ResponseEntity<?> changePassword(@RequestBody PasswordModifyDto passwordModifyDto, Authentication authentication) {
+    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordModifyDto passwordModifyDto, Authentication authentication) {
         String uuid = authentication.getName();
         usersService.changePassword(passwordModifyDto, uuid);
         return new ResponseEntity<>("비밀번호 변경 성공");

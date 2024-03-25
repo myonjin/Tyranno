@@ -2,8 +2,10 @@
 //
 //
 //import lombok.RequiredArgsConstructor;
+//import net.nurigo.java_sdk.api.Message;
 //import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.stereotype.Service;
+//import com.tyranno.ssg.text.SmsCertification;
 //
 //import java.util.HashMap;
 //import java.util.Random;

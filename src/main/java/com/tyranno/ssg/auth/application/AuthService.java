@@ -7,9 +7,14 @@ import com.tyranno.ssg.users.domain.Users;
 public interface AuthService {
 
     void modifyShinsegaeMaketing(Byte isAgree, String uuid);
+
     void modifySsgMaketing(Byte isAgree, String uuid);
+
     void modifyUsers(UsersModifyDto usersModifyDto, String uuid);
-    UsersInfoDto getUsersInfo(String uuid); // api 응답값 이상 - 확인 필요
+
+    UsersInfoDto getUsersInfo(String uuid);
+
     void resignUsers(String uuid);
+
     Users getUsers(String uuid);
 }

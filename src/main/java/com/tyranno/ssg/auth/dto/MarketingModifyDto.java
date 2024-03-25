@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MarketingModifyDto {
-    private Byte shinsegeaIsagree;
+    private Byte shinsegeaIsAgree;
     private Byte ssg;
 }
