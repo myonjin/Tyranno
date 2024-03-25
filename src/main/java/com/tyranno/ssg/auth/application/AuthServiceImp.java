@@ -34,12 +34,21 @@ public class AuthServiceImp implements AuthService{
     @Transactional
     @Override
     public void modifyShinsegaeMaketing(Byte isAgree, String uuid) {
+        if (isAgree != 11 && isAgree != 99){
+            throw new GlobalException(ResponseStatus.NO_FORMATING);
+        }
         Users users = getUsers(uuid);
+//        try{
+//        Users users = getUsers(uuid);
+//        }
+//        catch (Exception e) {
+//            throw new GlobalException(ResponseStatus.NO_FORMATING);
+//        }
         Marketing marketing = marketingRepository.findById(2L).orElseThrow();
         MarketingInformation marketingInformation = marketingInformationRepository.findByUsersAndMarketing(users, marketing)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_MARKETING));
-
         marketingInformation.updateIsAgree(isAgree);
+
     }
 
     @Transactional
