@@ -1,21 +1,21 @@
 package com.tyranno.ssg.users.application;
 
-import com.tyranno.ssg.users.dto.LoginDto;
-import com.tyranno.ssg.auth.dto.PasswordModifyDto;
-import com.tyranno.ssg.users.dto.PasswordChangeDto;
-import com.tyranno.ssg.users.dto.SignUpDto;
-import com.tyranno.ssg.users.dto.UserIdentifyDto;
+import com.tyranno.ssg.users.domain.Users;
+import com.tyranno.ssg.users.dto.UsersInfoDto;
+import com.tyranno.ssg.users.dto.UsersModifyDto;
+
 
 public interface UsersService {
 
-    void createUsers(SignUpDto signUpDto);
+    void modifyShinsegaeMaketing(Byte isAgree, String uuid);
 
-    String loginUsers(LoginDto loginDto);
+    void modifySsgMaketing(Byte isAgree, String uuid);
 
-    void checkLoginId(String loginId);
+    void modifyUsers(UsersModifyDto usersModifyDto, String uuid);
 
-    String findLoginId(UserIdentifyDto userIdentifyDto);
+    UsersInfoDto getUsersInfo(String uuid);
 
-    void changePassword(PasswordChangeDto passwordChangeDto);
+    void resignUsers(String uuid);
 
+    Users getUsers(String uuid);
 }

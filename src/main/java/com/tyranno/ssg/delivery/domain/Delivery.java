@@ -7,9 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+//@Builder
 @Entity
 @Getter
 public class Delivery {
@@ -40,4 +40,18 @@ public class Delivery {
     private String phoneNumber;
 
     private String homeNumber;
+
+    @Builder
+    public Delivery(Long id, Users users, Byte isBaseDelivery, String deliveryName, Integer zipCode, String deliveryBase, String deliveryDetail, String receiverName, String phoneNumber, String homeNumber) {
+        this.id = id;
+        this.users = users;
+        this.isBaseDelivery = isBaseDelivery;
+        this.deliveryName = deliveryName;
+        this.zipCode = zipCode;
+        this.deliveryBase = deliveryBase;
+        this.deliveryDetail = deliveryDetail;
+        this.receiverName = receiverName;
+        this.phoneNumber = phoneNumber;
+        this.homeNumber = homeNumber;
+    }
 }
