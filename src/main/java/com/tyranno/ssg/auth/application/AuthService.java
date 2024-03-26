@@ -1,9 +1,7 @@
 package com.tyranno.ssg.auth.application;
 
-import com.tyranno.ssg.auth.dto.LoginDto;
-import com.tyranno.ssg.auth.dto.PasswordModifyDto;
-import com.tyranno.ssg.auth.dto.SignUpDto;
-import com.tyranno.ssg.auth.dto.UserIdentifyDto;
+import com.tyranno.ssg.auth.dto.*;
+import com.tyranno.ssg.users.dto.PasswordModifyDto;
 
 public interface AuthService {
 
@@ -11,10 +9,10 @@ public interface AuthService {
 
     String loginUsers(LoginDto loginDto);
 
-    void checkLoginId(String loginId);
+    void checkLoginId(IdCheckDto idCheckDto);
 
     String findLoginId(UserIdentifyDto userIdentifyDto);
 
-    void changePassword(PasswordModifyDto passwordModifyDto, String uuid);
+    void changePassword(PasswordChangeDto passwordChangeDto);
 
 }

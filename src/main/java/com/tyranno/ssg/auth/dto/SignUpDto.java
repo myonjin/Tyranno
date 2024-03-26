@@ -1,10 +1,14 @@
 package com.tyranno.ssg.auth.dto;
 
-import jakarta.annotation.Nonnull;
+import com.tyranno.ssg.delivery.domain.Delivery;
+import com.tyranno.ssg.users.domain.MarketingInformation;
+import com.tyranno.ssg.users.domain.Users;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Builder
@@ -40,5 +44,29 @@ public class SignUpDto { // 회원가입 정보 이걸로 받음
 
 //    @Notnull
 //    private int snsLogin;
-
+    public Users toUsersEntity() {
+        return Users.builder()
+                .loginId(loginId)
+                .password(new BCryptPasswordEncoder().encode(password))
+                .name(name)
+                .email(email)
+                .gender(gender)
+                .phoneNumber(phoneNumber)
+                .birth(birth)
+                .status(0) // 활동중
+                .uuid(UUID.randomUUID().toString())
+                .build();
+    }
+    public Delivery toDeliveryEntity(Users users) {
+        return Delivery.builder()
+                .users(users)
+                .isBaseDelivery((byte) 11)
+                .deliveryName(name)
+                .zipCode(zipCode)
+                .deliveryBase(deliveryBase)
+                .deliveryDetail(deliveryDetail)
+                .receiverName(name)
+                .phoneNumber(phoneNumber)
+                .build();
+    }
 }

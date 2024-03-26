@@ -36,7 +36,7 @@ public enum ResponseStatus {
 //     */
 //    // Token, Code
 //    TOKEN_EXPIRED(false, 2001, "토큰이 만료되었습니다."),
-//    TOKEN_NOT_VALID(false, 2002, "토큰이 유효하지 않습니다."),
+    TOKEN_NOT_VALID(false, 2002, "토큰이 유효하지 않습니다."),
 //    TOKEN_NULL(false, 2003, "토큰이 존재하지 않습니다."),
 //    JWT_CREATE_FAILED(false, 2004, "토큰 생성에 실패했습니다."),
 //    JWT_VALID_FAILED(false, 2005, "토큰 검증에 실패했습니다."),

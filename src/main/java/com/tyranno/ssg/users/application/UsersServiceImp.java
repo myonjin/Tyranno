@@ -5,6 +5,8 @@ import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.users.domain.Marketing;
 import com.tyranno.ssg.users.domain.MarketingInformation;
 import com.tyranno.ssg.users.domain.Users;
+import com.tyranno.ssg.users.dto.MarketingModifyDto;
+import com.tyranno.ssg.users.dto.PasswordModifyDto;
 import com.tyranno.ssg.users.dto.UsersInfoDto;
 import com.tyranno.ssg.users.dto.UsersModifyDto;
 import com.tyranno.ssg.users.infrastructure.MarketingInformationRepository;
@@ -31,49 +33,64 @@ public class UsersServiceImp implements UsersService {
 
     @Transactional
     @Override
-    public void modifyShinsegaeMaketing(Byte isAgree, String uuid) {
+    public void modifyPassword(PasswordModifyDto passwordModifyDto, String uuid) {
+        Users users = usersRepository.findByUuid((uuid))
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        usersRepository.save(passwordModifyDto.toEntity(users));
+    }
+
+    @Transactional
+    @Override
+    public void modifyShinsegaeMaketing(MarketingModifyDto marketingModifyDto, String uuid) {
         Users users = getUsers(uuid);
         Marketing marketing = marketingRepository.findById(2L).orElseThrow();
         MarketingInformation marketingInformation = marketingInformationRepository.findByUsersAndMarketing(users, marketing)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_MARKETING));
 
-        marketingInformation.updateIsAgree(isAgree);
+        marketingInformationRepository.save(marketingModifyDto.toEntity(marketingInformation));
     }
 
     @Override
-    public void modifySsgMaketing(Byte isAgree, String uuid) {
+    public void modifySsgMaketing(MarketingModifyDto marketingModifyDto, String uuid) {
         Users users = getUsers(uuid);
         Marketing marketing = marketingRepository.findById(3L).orElseThrow();
         MarketingInformation marketingInformation = marketingInformationRepository.findByUsersAndMarketing(users, marketing)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_MARKETING));
 
-        marketingInformation.updateIsAgree(isAgree);
+        marketingInformationRepository.save(marketingModifyDto.toEntity(marketingInformation));
     }
 
     @Transactional
     @Override
     public void modifyUsers(UsersModifyDto usersModifyDto, String uuid) {
         Users users = getUsers(uuid);
-        users.hashPassword(usersModifyDto.getPassword());
-        users.modifyInfo(usersModifyDto.getPhoneNumber(), usersModifyDto.getEmail());
+        usersRepository.save(usersModifyDto.toEntity(users));
     }
 
     @Override
     public UsersInfoDto getUsersInfo(String uuid) {
-        Users users = getUsers(uuid);
-        return UsersInfoDto.builder()
-                .loginId(users.getLoginId())
-                .name(users.getName())
-                .phoneNumber(users.getPhoneNumber())
-                .email(users.getEmail())
-                .build();
+        return usersRepository.findByUuid(uuid)
+                .map(UsersInfoDto::FromEntity)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
     }
 
     @Transactional
     @Override
     public void resignUsers(String uuid) {
         Users users = getUsers(uuid);
-        users.resign();
+
+        Users.builder()
+                .loginId(users.getLoginId())
+                .name(users.getName())
+                .email(users.getEmail())
+                .gender(users.getGender())
+                .phoneNumber(users.getPhoneNumber())
+                .birth(users.getBirth())
+                .status(1) // 탈퇴
+                .uuid(users.getUuid())
+                .build();
+
+        usersRepository.save(users);
     }
 
 

@@ -1,14 +1,10 @@
 package com.tyranno.ssg.auth.presentation;
 
 import com.tyranno.ssg.auth.application.AuthService;
-import com.tyranno.ssg.auth.dto.LoginDto;
-import com.tyranno.ssg.auth.dto.PasswordModifyDto;
-import com.tyranno.ssg.auth.dto.SignUpDto;
-import com.tyranno.ssg.auth.dto.UserIdentifyDto;
+import com.tyranno.ssg.auth.dto.*;
 import com.tyranno.ssg.global.ResponseEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 //new ResponseEntity<>(message, headers, HttpStatus.OK);
@@ -27,10 +23,10 @@ public class AuthController {
         return new ResponseEntity<>("회원가입 완료");
     }
 
-    @PostMapping("/id_check/{loginId}")
-    public ResponseEntity<?> checkIdExist(@PathVariable String loginId) {
+    @PostMapping("/id_check")
+    public ResponseEntity<?> checkIdExist(@RequestBody IdCheckDto idCheckDto) {
 
-        authService.checkLoginId(loginId);
+        authService.checkLoginId(idCheckDto);
 
         return new ResponseEntity<>("사용할 수 있는 아이디입니다.");
     }
@@ -48,9 +44,8 @@ public class AuthController {
     }
 
     @PutMapping("/change_pw")
-    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordModifyDto passwordModifyDto, Authentication authentication) {
-        String uuid = authentication.getName();
-        authService.changePassword(passwordModifyDto, uuid);
+    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
+        authService.changePassword(passwordChangeDto);
         return new ResponseEntity<>("비밀번호 변경 성공");
     }
 

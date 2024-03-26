@@ -1,9 +1,6 @@
 package com.tyranno.ssg.auth.application;
 
-import com.tyranno.ssg.auth.dto.LoginDto;
-import com.tyranno.ssg.auth.dto.PasswordModifyDto;
-import com.tyranno.ssg.auth.dto.SignUpDto;
-import com.tyranno.ssg.auth.dto.UserIdentifyDto;
+import com.tyranno.ssg.auth.dto.*;
 import com.tyranno.ssg.delivery.domain.Delivery;
 import com.tyranno.ssg.delivery.infrastructure.DeliveryRepository;
 import com.tyranno.ssg.global.GlobalException;
@@ -11,6 +8,7 @@ import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.domain.MarketingInformation;
 import com.tyranno.ssg.users.domain.Users;
+import com.tyranno.ssg.users.dto.MarketingType;
 import com.tyranno.ssg.users.infrastructure.MarketingInformationRepository;
 import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
@@ -18,8 +16,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,65 +31,41 @@ public class AuthServiceImp implements AuthService {
     @Override
     public void createUsers(SignUpDto signUpDto) {
         //회원
-        String generatedUuid = UUID.randomUUID().toString();
-
-        Users users = Users.builder()
-                .loginId(signUpDto.getLoginId())
-                .name(signUpDto.getName())
-                .email(signUpDto.getEmail())
-                .gender(signUpDto.getGender())
-                .phoneNumber(signUpDto.getPhoneNumber())
-                .birth(signUpDto.getBirth())
-                .status(0) // 활동중
-                .uuid(generatedUuid)
-                .build();
-
-        users.hashPassword(signUpDto.getPassword());
+        Users users = signUpDto.toUsersEntity();
         usersRepository.save(users);
 
         //마케팅
-        MarketingInformation marketingInformation1 = MarketingInformation.builder()
-                .isAgree(signUpDto.getShinsegaeMarketingAgree())
-                .users(users)
-                .marketing(marketingRepository.findById(1L).orElseThrow())
-                .build(); // 아이디를 받거나 이넘으로 받거나
+        for (MarketingType type : MarketingType.values()) {
+            Byte isAgree = 99; // default : 99 - 비동의
+            switch (type) {
+                case SHINSEGAE:
+                    isAgree = signUpDto.getShinsegaeMarketingAgree();
+                    break;
+                case SHINSEGAE_OPTION:
+                    isAgree = signUpDto.getShinsegaeOptionAgree();
+                    break;
+                case SSG:
+                    isAgree = signUpDto.getSsgMarketingAgree();
+                    break;
+            }
 
-        marketingInformationRepository.save(marketingInformation1);
+            MarketingInformation marketingInformation = MarketingInformation.builder()
+                    .isAgree(isAgree)
+                    .users(users)
+                    .marketing(marketingRepository.findById(type.getId()).orElseThrow())
+                    .build();
 
-        MarketingInformation marketingInformation2 = MarketingInformation.builder()
-                .isAgree(signUpDto.getShinsegaeOptionAgree())
-                .users(users)
-                .marketing(marketingRepository.findById(2L).orElseThrow())
-                .build();
-
-        marketingInformationRepository.save(marketingInformation2);
-
-        MarketingInformation marketingInformation3 = MarketingInformation.builder()
-                .isAgree(signUpDto.getSsgMarketingAgree())
-                .users(users)
-                .marketing(marketingRepository.findById(3L).orElseThrow())
-                .build();
-
-        marketingInformationRepository.save(marketingInformation3);
+            marketingInformationRepository.save(marketingInformation);
+        }
 
         // 배송지
-        Delivery delivery = Delivery.builder()
-                .users(users)
-                .isBaseDelivery((byte) 11)
-                .deliveryName(signUpDto.getName())
-                .zipCode(signUpDto.getZipCode())
-                .deliveryBase(signUpDto.getDeliveryBase())
-                .deliveryDetail(signUpDto.getDeliveryDetail())
-                .receiverName(signUpDto.getName())
-                .phoneNumber(signUpDto.getPhoneNumber())
-                .build();
-
+        Delivery delivery = signUpDto.toDeliveryEntity(users);
         deliveryRepository.save(delivery);
     }
 
     @Override
-    public void checkLoginId(String loginId) {
-        if (usersRepository.existsByLoginId(loginId)) {
+    public void checkLoginId(IdCheckDto idCheckDto) {
+        if (usersRepository.existsByLoginId(idCheckDto.getLoginId())) {
             throw new GlobalException(ResponseStatus.DUPLICATE_ID);
         }
     }
@@ -119,73 +91,9 @@ public class AuthServiceImp implements AuthService {
 
     @Transactional
     @Override
-    public void changePassword(PasswordModifyDto passwordModifyDto, String uuid) {
-        Users users = usersRepository.findByUuid((uuid))
+    public void changePassword(PasswordChangeDto passwordChangeDto) {
+        Users users = usersRepository.findByLoginId((passwordChangeDto.getLoginId()))
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-        users.hashPassword(passwordModifyDto.getNewPassword());
+        usersRepository.save(passwordChangeDto.toEntity(users));
     }
-<<<<<<< Updated upstream
-
-    @Transactional
-    @Override
-    public void modifyShinsegaeMaketing(Byte isAgree, String uuid) {
-        if (isAgree != 11 && isAgree != 99){
-            throw new GlobalException(ResponseStatus.NO_FORMATING);
-        }
-        Users users = getUsers(uuid);
-//        try{
-//        Users users = getUsers(uuid);
-//        }
-//        catch (Exception e) {
-//            throw new GlobalException(ResponseStatus.NO_FORMATING);
-//        }
-        Marketing marketing = marketingRepository.findById(2L).orElseThrow();
-        MarketingInformation marketingInformation = marketingInformationRepository.findByUsersAndMarketing(users, marketing)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_MARKETING));
-        marketingInformation.updateIsAgree(isAgree);
-
-    }
-
-    @Transactional
-    @Override
-    public void modifySsgMaketing(Byte isAgree, String uuid) {
-        Users users = getUsers(uuid);
-        Marketing marketing = marketingRepository.findById(3L).orElseThrow();
-        MarketingInformation marketingInformation = marketingInformationRepository.findByUsersAndMarketing(users, marketing)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_MARKETING));
-
-        marketingInformation.updateIsAgree(isAgree);
-    }
-
-    @Transactional
-    @Override
-    public void modifyUsers(UsersModifyDto usersModifyDto, String uuid) {
-        Users users = getUsers(uuid);
-        users.hashPassword(usersModifyDto.getPassword());
-        users.modifyInfo(usersModifyDto.getPhoneNumber(), usersModifyDto.getEmail());
-    }
-
-    @Override
-    public UsersInfoDto getUsersInfo(String uuid) {
-        Users users = getUsers(uuid);
-        return UsersInfoDto.builder()
-                .loginId(users.getLoginId())
-                .name(users.getName())
-                .phoneNumber(users.getPhoneNumber())
-                .email(users.getEmail())
-                .build();
-    }
-
-    @Transactional
-    @Override
-    public void resignUsers(String uuid) {
-        Users users = getUsers(uuid);
-        users.resign();
-    }
-    public Users getUsers(String uuid){
-        return usersRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-    }
-=======
->>>>>>> Stashed changes
 }
