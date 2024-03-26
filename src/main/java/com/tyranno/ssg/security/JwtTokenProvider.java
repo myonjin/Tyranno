@@ -26,7 +26,7 @@ public class JwtTokenProvider {
 
     private final Environment env;
 
-    public String headerToUuid(String token) {
+    public String tokenToUuid(String token) {
         if (token != null && token.startsWith("Bearer ")) {
             String jwt = token.substring(7);
             return getUuid(jwt);

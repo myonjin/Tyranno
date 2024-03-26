@@ -1,10 +1,12 @@
 package com.tyranno.ssg.auth.dto;
 
 import com.tyranno.ssg.delivery.domain.Delivery;
-import com.tyranno.ssg.users.domain.MarketingInformation;
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
@@ -42,7 +44,7 @@ public class SignUpDto { // 회원가입 정보 이걸로 받음
 
     private Byte ssgMarketingAgree;
 
-//    @Notnull
+    //    @Notnull
 //    private int snsLogin;
     public Users toUsersEntity() {
         return Users.builder()
@@ -57,6 +59,7 @@ public class SignUpDto { // 회원가입 정보 이걸로 받음
                 .uuid(UUID.randomUUID().toString())
                 .build();
     }
+
     public Delivery toDeliveryEntity(Users users) {
         return Delivery.builder()
                 .users(users)

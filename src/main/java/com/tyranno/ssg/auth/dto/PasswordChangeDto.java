@@ -22,6 +22,7 @@ public class PasswordChangeDto {
 
     public Users toEntity(Users users) {
         return Users.builder()
+                .id(users.getId())
                 .loginId(users.getLoginId())
                 .password(users.hashPassword(newPassword))
                 .name(users.getName())

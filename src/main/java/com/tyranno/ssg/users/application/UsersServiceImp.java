@@ -5,10 +5,7 @@ import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.users.domain.Marketing;
 import com.tyranno.ssg.users.domain.MarketingInformation;
 import com.tyranno.ssg.users.domain.Users;
-import com.tyranno.ssg.users.dto.MarketingModifyDto;
-import com.tyranno.ssg.users.dto.PasswordModifyDto;
-import com.tyranno.ssg.users.dto.UsersInfoDto;
-import com.tyranno.ssg.users.dto.UsersModifyDto;
+import com.tyranno.ssg.users.dto.*;
 import com.tyranno.ssg.users.infrastructure.MarketingInformationRepository;
 import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UsersServiceImp implements UsersService {
     private final UsersRepository usersRepository;
     private final MarketingRepository marketingRepository;
@@ -41,24 +37,15 @@ public class UsersServiceImp implements UsersService {
 
     @Transactional
     @Override
-    public void modifyShinsegaeMaketing(MarketingModifyDto marketingModifyDto, String uuid) {
+    public void modifyMarketing(MarketingModifyDto marketingModifyDto, MarketingType marketingType, String uuid) {
         Users users = getUsers(uuid);
-        Marketing marketing = marketingRepository.findById(2L).orElseThrow();
+        Marketing marketing = marketingRepository.findById(marketingType.getId()).orElseThrow();
         MarketingInformation marketingInformation = marketingInformationRepository.findByUsersAndMarketing(users, marketing)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_MARKETING));
 
         marketingInformationRepository.save(marketingModifyDto.toEntity(marketingInformation));
     }
 
-    @Override
-    public void modifySsgMaketing(MarketingModifyDto marketingModifyDto, String uuid) {
-        Users users = getUsers(uuid);
-        Marketing marketing = marketingRepository.findById(3L).orElseThrow();
-        MarketingInformation marketingInformation = marketingInformationRepository.findByUsersAndMarketing(users, marketing)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_MARKETING));
-
-        marketingInformationRepository.save(marketingModifyDto.toEntity(marketingInformation));
-    }
 
     @Transactional
     @Override
@@ -79,8 +66,10 @@ public class UsersServiceImp implements UsersService {
     public void resignUsers(String uuid) {
         Users users = getUsers(uuid);
 
-        Users.builder()
+        users = Users.builder()
+                .id(users.getId())
                 .loginId(users.getLoginId())
+                .password(users.getPassword())
                 .name(users.getName())
                 .email(users.getEmail())
                 .gender(users.getGender())

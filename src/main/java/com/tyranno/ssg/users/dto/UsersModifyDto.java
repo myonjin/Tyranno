@@ -1,7 +1,6 @@
 package com.tyranno.ssg.users.dto;
 
 import com.tyranno.ssg.users.domain.Users;
-import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,11 +17,11 @@ public class UsersModifyDto { //회원 인증 정보 - 유저가 입력, 비밀�
     @NotNull
     private String email;
 
-    public Users toEntity(Users users){
+    public Users toEntity(Users users) {
         return Users.builder()
                 .id(users.getId())
                 .loginId(users.getLoginId())
-                .password(users.getPassword())
+                .password(users.hashPassword(password))
                 .name(users.getName())
                 .email(email)
                 .gender(users.getGender())

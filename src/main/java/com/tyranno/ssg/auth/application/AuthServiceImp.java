@@ -14,6 +14,7 @@ import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -94,6 +95,7 @@ public class AuthServiceImp implements AuthService {
     public void changePassword(PasswordChangeDto passwordChangeDto) {
         Users users = usersRepository.findByLoginId((passwordChangeDto.getLoginId()))
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+      ;
         usersRepository.save(passwordChangeDto.toEntity(users));
     }
 }
