@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 //		@Server(url = "https://tyrannoback.com", description = "Default Server URL")
 //})
 @EnableWebMvc
-@EnableJpaAuditing
+@EnableJpaAuditing // global listener 연결
 @SpringBootApplication
 @Slf4j
 public class SsgApplication {

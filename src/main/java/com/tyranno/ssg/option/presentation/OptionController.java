@@ -34,8 +34,9 @@ public class OptionController {
     private final OptionService optionService;
 
 
-    @Operation(summary = "선택 가능 옵션 조회", description = "선택 가능한 옵션을 조회한다.")
-    @GetMapping("/{productId}")
+
+    @Operation(summary = "선택 가능 옵션 조회 (String)", description = "선택 가능한 옵션(문자)을 조회한다.")
+    @GetMapping("/string/{productId}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "선택 가능 옵션 조회 완료"),
             @ApiResponse(responseCode = "400", description = "선택 가능 옵션 조회 중 오류 발생")})
@@ -44,6 +45,21 @@ public class OptionController {
 
         return ResponseEntity.ok().body(optionAble);
     }
+
+    @Tag(name = "상품 옵션", description = "옵션 API")
+    @Operation(summary = "선택 가능 옵션 조회 (List)", description = "선택 가능한 옵션을 조회한다.")
+    @GetMapping("/{productId}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "선택 가능 옵션 조회 완료"),
+            @ApiResponse(responseCode = "400", description = "선택 가능 옵션 조회 중 오류 발생")})
+    public ResponseEntity<?> findOptionsList(@Parameter(description = "상품 ID") @PathVariable(value = "productId") Long productId) {
+        List<Option> optionAbleList = optionService.findOptionAbleList(productId);
+
+        return ResponseEntity.ok().body(optionAbleList);
+    }
+
+
+
 }
 //         @GetMapping("/find-options")
 //         public List<Option> filter(

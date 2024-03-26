@@ -11,46 +11,28 @@ import lombok.*;
 @Entity
 @Table(name = "`option`")
 @Getter
-@Setter
+@ToString
 public class Option {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productId")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sizeId")
     private Size size;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "colorId")
     private Color color;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "etcId")
     private Etc etc;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ExtraId")
     private Extra extra;
 
     @Column(nullable = false)
     private Integer stock;
-    @Override
-    public String toString() {
-        return "Option{" +
-                "id=" + id +
-                ", stock=" + stock +
-                ", color='" + (color != null ? color.getColor() : "None") + '\'' +
-                ", size='" + (size != null ? size.getSize() : "None") + '\'' +
-                ", product=" + (product != null ? product.getId() : "None") +
-                ", extra='" + (extra != null ? extra.getExtraName() : "None") + '\'' +
-                ", etc='" + (etc != null ? etc.getAdditionalOption() : "None") + '\'' +
-                '}';
-    }
-
 
 }
