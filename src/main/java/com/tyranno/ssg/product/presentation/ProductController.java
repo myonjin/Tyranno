@@ -1,6 +1,7 @@
 package com.tyranno.ssg.product.presentation;
 
 import com.tyranno.ssg.category.application.CategoryService;
+import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
 import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
 import com.tyranno.ssg.product.application.ProductService;
 import com.tyranno.ssg.product.domain.Product;
@@ -44,24 +45,32 @@ public class ProductController {
         }
     }
 
-    @Operation(summary = "상품 리스트", description = "상품 리스트를 받아오기", tags = { "Get ProductList" })
+    @Operation(summary = "상품 ID 리스트", description = "상품 ID 리스트를 받아오기", tags = { "Get ProductIDList" })
     @GetMapping("/productList")
-    public ResponseEntity<List<ProductDto>> getProductList(
+    public ResponseEntity<CategoryProductIdListDto> ProductIdList(
             @RequestParam(required = false) Long largeId,
             @RequestParam(required = false) Long middleId,
             @RequestParam(required = false) Long smallId,
             @RequestParam(required = false) Long detailId,
             @RequestParam(defaultValue = "5") String sortCriterion
     ) {
-        List<ProductDto> productDtos = productService.getProductList(largeId,middleId,smallId,detailId,sortCriterion);
-        if (productDtos != null) {
-            return ResponseEntity.ok(productDtos);
+        CategoryProductIdListDto categoryProductIdListDto = productService.productIdList(largeId,middleId,smallId,detailId,sortCriterion);
+        if (categoryProductIdListDto != null) {
+            return ResponseEntity.ok(categoryProductIdListDto);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-
-
+    @Operation(summary = "리스트용 상품 정보", description = "상품 ID로 상품정보", tags = { "Get ProductInformation" })
+    @GetMapping("/productList/{productId}")
+    public ResponseEntity<ProductDto> ProductInformation(Long productId) {
+        ProductDto productDto = productService.productInformation(productId);
+        if (productDto != null) {
+            return ResponseEntity.ok(productDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

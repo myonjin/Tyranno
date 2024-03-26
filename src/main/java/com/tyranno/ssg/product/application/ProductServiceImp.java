@@ -1,5 +1,6 @@
 package com.tyranno.ssg.product.application;
 
+import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
 import com.tyranno.ssg.category.infrastructure.CategoryRepository;
 import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
 import com.tyranno.ssg.product.domain.Discount;
@@ -84,80 +85,28 @@ public class ProductServiceImp implements ProductService{
         }
     }
 
-    // Discount 객체 구하기
     @Override
-    public DiscountDto findDiscountByProductId(Long id){
-        Discount discount = discountRepository.findByProductId(id);
-        return DiscountDto.builder()
-                .build();
+    public CategoryProductIdListDto productIdList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion) {
+        Optional<List<Long>> productIds = Optional.ofNullable(categoryRepositoryImp.getProductIdList(largeId, middleId, smallId, detailId, sortCriterion));
+        CategoryProductIdListDto categoryProductIdListDto = new CategoryProductIdListDto();
+
+        productIds.ifPresent(categoryProductIdListDto::setProductIds);
+
+        return categoryProductIdListDto;
     }
 
-
-
     @Override
-    public List<ProductDto> getProductList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion) {
-        List<Product> productList = categoryRepositoryImp.getProductList(largeId, middleId, smallId, detailId, sortCriterion);
-        List<ProductDto> productDtos = new ArrayList<>();
-
-        if (productList != null) {
-            for (Product product : productList) {
-                log.info("product : {}",product);
-                String vendorName = vendorProductRepository.findByProductId(product.getId()).getVendor().getVendorName();
-                String imageUrl = productThumRepository.findByProductIdAndPriority(product.getId(),1).getImageUrl();
-
-                ProductDto productDto = new ProductDto();
-                productDto.setProductId(product.getId());
-                productDto.setProductName(product.getProductName());
-                productDto.setPrice(product.getProductPrice());
-                productDto.setProductRate(product.getProductRate());
-                productDto.setReviewCount(product.getReviewCount());
-                productDto.setVendorName(vendorName);
-                productDto.setImageUrl(imageUrl);
-//                ProductDto.builder()
-//                        .productId(productDto.getProductId())
-//                        .productName(productDto.getProductName())
-//                        .price(product.getProductPrice())
-//                        .productRate(product.getProductRate())
-//                        .reviewCount(product.getReviewCount()).vendorName(product.)
-
-                productDtos.add(productDto);
-            }
-        }
-
-        return productDtos;
+    public ProductDto productInformation(Long productId){
+        Optional<Product> product = productRepository.findById(productId);
+        ProductDto productDto = new ProductDto();
+        product.ifPresent(p -> {
+            productDto.setProductId(p.getId());
+            productDto.setProductName(p.getProductName());
+            productDto.setPrice(p.getProductPrice());
+            productDto.setProductRate(p.getProductRate());
+            productDto.setReviewCount(p.getReviewCount());
+        });
+        return productDto;
     }
-
-
-    @Override
-    public List<ProductDto> getProductListSorted(List<ProductDto> beforeProductDtoList, String sortCriterion) {
-        // productIds를 이용하여 제품 정보 조회
-        List<ProductDto> productDtos = new ArrayList<>(beforeProductDtoList);
-
-        // 정렬 로직 추가
-        if ("1".equals(sortCriterion)) {
-            // 낮은 가격 순
-            Collections.sort(productDtos, Comparator.comparing(ProductDto::getPrice));
-            log.info("정렬방법: 낮은 가격순 ");
-        } else if ("2".equals(sortCriterion)) {
-            // 높은 가격 순
-            Collections.sort(productDtos, Comparator.comparing(ProductDto::getPrice).reversed());
-            log.info("정렬방법: 높은 가격순");
-        } else if ("3".equals(sortCriterion)) {
-            // 할인율 높은 순
-            Collections.sort(productDtos, Comparator.comparing(ProductDto::getDiscount).reversed());
-            log.info("정렬방법: 할인율 높은 순");
-        } else if ("4".equals(sortCriterion)) {
-            // 리뷰 많은 순
-            Collections.sort(productDtos, Comparator.comparing(ProductDto::getReviewCount).reversed());
-            log.info("정렬방법: 리뷰 많은 순");
-        } else {
-            Collections.sort(productDtos, Comparator.comparing(ProductDto::getProductId));
-            log.info("정렬방법: 기본(아이디 순)");
-        }
-        // 기타 필요한 정렬 조건 추가
-
-        return productDtos;
-    }
-
 
 }

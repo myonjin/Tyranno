@@ -34,6 +34,18 @@ public class CategoryRepositoryImp extends QuerydslRepositorySupport {
                         detailIdEq(category, detailId))
                 .fetch();
     }
+    public List<Long> getProductIdList(Long largeId, Long middleId,
+                                        Long smallId, Long detailId, String sortCriterion) {
+        QCategory category = QCategory.category;
+        return jpaQueryFactory.select(category.product.id)
+                .from(category)
+                .where(
+                        largeIdEq(category, largeId),
+                        middleIdEq(category, middleId),
+                        smallIdEq(category, smallId),
+                        detailIdEq(category, detailId))
+                .fetch();
+    }
 
     private BooleanExpression largeIdEq(QCategory category, Long largeId) {
         if (largeId == null) {

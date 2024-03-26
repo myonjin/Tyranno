@@ -2,21 +2,25 @@ package com.tyranno.ssg.category.dto;
 
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.dto.ProductDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Builder
-@Data
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CategoryDto {
     private ProductDto product;
     private Long detailId;
     private Long smallId;
     private Long middleId;
     private Long largeId;
+
+    @Builder
+    public CategoryDto(ProductDto product, Long detailId, Long smallId, Long middleId, Long largeId) {
+        this.product = product;
+        this.detailId = detailId;
+        this.smallId = smallId;
+        this.middleId = middleId;
+        this.largeId = largeId;
+    }
 }
