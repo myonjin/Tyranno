@@ -1,24 +1,22 @@
 package com.tyranno.ssg.users.presentation;
 
-import com.tyranno.ssg.global.GlobalException;
+import com.tyranno.ssg.auth.dto.PasswordModifyDto;
 import com.tyranno.ssg.global.ResponseEntity;
-import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.application.UsersService;
 import com.tyranno.ssg.users.dto.LoginDto;
-import com.tyranno.ssg.users.dto.PasswordModifyDto;
+import com.tyranno.ssg.users.dto.PasswordChangeDto;
 import com.tyranno.ssg.users.dto.SignUpDto;
 import com.tyranno.ssg.users.dto.UserIdentifyDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-//new ResponseEntity<>(message, headers, HttpStatus.OK);
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/users")
+@Slf4j
 public class UsersController {
 
     private final UsersService usersService;
@@ -40,7 +38,7 @@ public class UsersController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> logIn(@Valid @RequestBody LoginDto logInDto) {
+    public ResponseEntity<?> logIn(@RequestBody LoginDto logInDto) {
 
         return new ResponseEntity<>(usersService.loginUsers(logInDto));
     }
@@ -50,12 +48,13 @@ public class UsersController {
 
         return new ResponseEntity<>(usersService.findLoginId(userIdentifyDto));
     }
-
     @PutMapping("/change_pw")
-    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordModifyDto passwordModifyDto, Authentication authentication) {
-        String uuid = authentication.getName();
-        usersService.changePassword(passwordModifyDto, uuid);
+    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
+        log.info(String.valueOf(passwordChangeDto));
+        usersService.changePassword(passwordChangeDto);
         return new ResponseEntity<>("비밀번호 변경 성공");
     }
+
+
 
 }

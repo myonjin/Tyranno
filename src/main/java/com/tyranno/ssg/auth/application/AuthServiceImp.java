@@ -1,6 +1,6 @@
 package com.tyranno.ssg.auth.application;
 
-import com.tyranno.ssg.auth.dto.MarketingModifyDto;
+import com.tyranno.ssg.auth.dto.PasswordModifyDto;
 import com.tyranno.ssg.auth.dto.UsersInfoDto;
 import com.tyranno.ssg.auth.dto.UsersModifyDto;
 import com.tyranno.ssg.global.GlobalException;
@@ -22,11 +22,14 @@ public class AuthServiceImp implements AuthService{
     private final MarketingRepository marketingRepository;
     private final MarketingInformationRepository marketingInformationRepository;
 
-    public Users getUsers(String uuid){
-        return usersRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-    }
 
+
+    @Transactional
+    @Override
+    public void modifyPassword(PasswordModifyDto passwordModifyDto, String uuid) {
+        Users users = getUsers(uuid);;
+        users.hashPassword(passwordModifyDto.getNewPassword());
+    }
 
     @Transactional
     @Override
@@ -74,5 +77,9 @@ public class AuthServiceImp implements AuthService{
     public void resignUsers(String uuid) {
         Users users = getUsers(uuid);
         users.resign();
+    }
+    public Users getUsers(String uuid){
+        return usersRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
     }
 }

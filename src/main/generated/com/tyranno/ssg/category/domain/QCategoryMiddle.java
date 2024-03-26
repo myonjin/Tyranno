@@ -26,6 +26,8 @@ public class QCategoryMiddle extends EntityPathBase<CategoryMiddle> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath middleImageUrl = createString("middleImageUrl");
+
     public final StringPath middleName = createString("middleName");
 
     public QCategoryMiddle(String variable) {
