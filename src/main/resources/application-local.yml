@@ -38,3 +38,4 @@ JWT:
 logging:
   level:
     com.tyranno.ssg: trace
+
