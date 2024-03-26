@@ -1,6 +1,7 @@
 package com.tyranno.ssg.product.application;
 
 import com.tyranno.ssg.category.infrastructure.CategoryRepository;
+import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
 import com.tyranno.ssg.product.domain.Discount;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
@@ -38,6 +39,7 @@ public class ProductServiceImp implements ProductService{
     private final ProductThumRepository productThumRepository;
 //    private final CategoryRepository categoryRepository;
     private final DiscountRepository discountRepository;
+    private final CategoryRepositoryImp categoryRepositoryImp;
 
     //    private final LikeRepository likeRepository;
 
@@ -93,53 +95,30 @@ public class ProductServiceImp implements ProductService{
 
 
     @Override
-    public List<ProductDto> getProductList(List<Long> productIds) {
-        log.info("Received productIds: {}", productIds);
-
+    public List<ProductDto> getProductList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion) {
+        List<Product> productList = categoryRepositoryImp.getProductList(largeId, middleId, smallId, detailId, sortCriterion);
         List<ProductDto> productDtos = new ArrayList<>();
 
-        for (Long productId : productIds) {
-            Optional<Product> productOptional = productRepository.findById(productId);
+        if (productList != null) {
+            for (Product product : productList) {
+                log.info("product : {}",product);
+                String vendorName = vendorProductRepository.findByProductId(product.getId()).getVendor().getVendorName();
+                String imageUrl = productThumRepository.findByProductIdAndPriority(product.getId(),1).getImageUrl();
 
-            if (productOptional.isPresent()) {
-                Product product = productOptional.get();
-                ProductDto productDto = convertToDto(product);
-
-                // 로그 기록
-                log.info("ProductID : {}", productDto.getProductId());
-
-                // VendorProduct 조회
-                VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId());
-                if (vendorProduct != null) {
-                    log.info("vendorProduct 검색용 ProductID {}: {}", product.getId(), vendorProduct);
-                    Vendor vendor = vendorProduct.getVendor();
-                    if (vendor != null) {
-                        productDto.setVendorName(vendor.getVendorName()); // Vendor 정보 설정
-                    }
-                } else {
-                    log.info("VendorProduct 없음");
-                }
-
-                // ProductThum 조회
-                ProductThum productThum = productThumRepository.findByProductIdAndPriority(product.getId(),1);
-                if (productThum != null) {
-                    log.info("ProductThum에 검색하는 ProductID {}: {}", product.getId(), productThum); // 1개만 들고 올거라 썸네일 1번
-                    productDto.setImageUrl(productThum.getImageUrl()); // ImageUrl 설정
-                } else {
-                    log.info("ProductThum 없음");
-                }
-
-                // Discount 조회
-                Discount discount = discountRepository.findByProductId(product.getId());
-                if (discount != null) {
-                    log.info("Discount 검색용 ProductID {}: {}", product.getId(), discount);
-                    productDto.setDiscount(discount.getDiscount()); // Discount 정보 설정
-                } else {
-                    log.info("Discount 없음");
-                    productDto.setDiscount(0);
-                }
-
-                productDto.setIsLiked((byte) 99); // isLiked를 무조건 99로 설정 Like테이블 안만들어서 이렇게 한거임 나중에 수정
+                ProductDto productDto = new ProductDto();
+                productDto.setProductId(product.getId());
+                productDto.setProductName(product.getProductName());
+                productDto.setPrice(product.getProductPrice());
+                productDto.setProductRate(product.getProductRate());
+                productDto.setReviewCount(product.getReviewCount());
+                productDto.setVendorName(vendorName);
+                productDto.setImageUrl(imageUrl);
+//                ProductDto.builder()
+//                        .productId(productDto.getProductId())
+//                        .productName(productDto.getProductName())
+//                        .price(product.getProductPrice())
+//                        .productRate(product.getProductRate())
+//                        .reviewCount(product.getReviewCount()).vendorName(product.)
 
                 productDtos.add(productDto);
             }
@@ -148,14 +127,6 @@ public class ProductServiceImp implements ProductService{
         return productDtos;
     }
 
-    private ProductDto convertToDto(Product product) {
-        return ProductDto.builder()
-                .productId(product.getId())
-                .productName(product.getProductName())
-                .price(product.getProductPrice())
-                .productRate(product.getProductRate())
-                .build();
-    }
 
     @Override
     public List<ProductDto> getProductListSorted(List<ProductDto> beforeProductDtoList, String sortCriterion) {

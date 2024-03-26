@@ -1,6 +1,7 @@
 package com.tyranno.ssg.product.presentation;
 
 import com.tyranno.ssg.category.application.CategoryService;
+import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
 import com.tyranno.ssg.product.application.ProductService;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.dto.ProductDetailDto;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -51,41 +53,9 @@ public class ProductController {
             @RequestParam(required = false) Long detailId,
             @RequestParam(defaultValue = "5") String sortCriterion
     ) {
-        // 각각의 경우에 대한 로그
-        log.debug("파라미터 - largeId: {}, middleId: {}, smallId: {}, detailId: {}, sortCriterion: {}", largeId, middleId, smallId, detailId, sortCriterion);
-
-        List<ProductDto> productDtoList;
-        List<ProductDto> beforeProductDtoList;
-
-        if (largeId != null && middleId == null && smallId == null && detailId == null) {
-            // largeId만 존재하는 경우
-            log.info("largeId: {}", largeId);
-            List<Long> productIds = categoryService.getProductIdsByLargeId(largeId);
-            beforeProductDtoList = productService.getProductList(productIds);
-        } else if (largeId == null && middleId != null && smallId == null && detailId == null) {
-            // middleId만 존재하는 경우
-            log.info("middleId: {}", middleId);
-            List<Long> productIds = categoryService.getProductIdsByMiddleId(middleId);
-            beforeProductDtoList = productService.getProductList(productIds);
-        } else if (largeId == null && middleId == null && smallId != null && detailId == null) {
-            // smallId만 존재하는 경우
-            log.info("smallId: {}", smallId);
-            List<Long> productIds = categoryService.getProductIdsBySmallId(smallId);
-            beforeProductDtoList = productService.getProductList(productIds);
-        } else if (largeId == null && middleId == null && smallId == null && detailId != null) {
-            // detailId만 존재하는 경우
-            log.info("detailId: {}", detailId);
-            List<Long> productIds = categoryService.getProductIdsByDetailId(detailId);
-            beforeProductDtoList = productService.getProductList(productIds);
-        } else {
-            // 나머지 경우
-            log.error("없다 이놈아");
-            return ResponseEntity.badRequest().build();
-        }
-        productDtoList = productService.getProductListSorted(beforeProductDtoList, sortCriterion);
-
-        if (!productDtoList.isEmpty()) {
-            return ResponseEntity.ok(productDtoList);
+        List<ProductDto> productDtos = productService.getProductList(largeId,middleId,smallId,detailId,sortCriterion);
+        if (productDtos != null) {
+            return ResponseEntity.ok(productDtos);
         } else {
             return ResponseEntity.notFound().build();
         }

@@ -13,7 +13,7 @@ public interface ProductService {
 
     DiscountDto findDiscountByProductId(Long id);
 
-    List<ProductDto> getProductList(List<Long> productIds);
+    List<ProductDto> getProductList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion);
 
     List<ProductDto> getProductListSorted(List<ProductDto> beforeProductDtoList, String sortBy);
 }
