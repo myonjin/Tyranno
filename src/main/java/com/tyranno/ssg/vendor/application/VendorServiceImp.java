@@ -16,7 +16,7 @@ public class VendorServiceImp implements VendorService{
         this.vendorProductRepository = vendorProductRepository;
     }
 
-    @Override
+    @Override // vendorProduct 테이블에서 productId로 vendorId를 찾기
     public VendorProduct findByProductId(Long productId) {
         return vendorProductRepository.findByProductId(productId);
     };
