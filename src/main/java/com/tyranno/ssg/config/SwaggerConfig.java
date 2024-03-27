@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "Tyranno_developes API",
                 description = "Springdoc을 사용한 Swagger UI 테스트",
-                version = "vi"
+                version = "v1"
         )
 )
 @Configuration
@@ -33,19 +33,5 @@ public class SwaggerConfig {
                 .addSecurityItem(securityRequirement)
                 .components(components);
     }
-    //    @Bean
-//    public OpenAPI openAPI() {
-//        return new OpenAPI()
-//                .components(new Components())
-//                .info(apiInfo());
-//    }
-
-//    private Info apiInfo() {
-//        return new Info()
-//                .title("Tyranno_developes API")
-//                .description("Springdoc을 사용한 Swagger UI 테스트")
-//                .version("1.0.0");
-//    }
-
 
 }

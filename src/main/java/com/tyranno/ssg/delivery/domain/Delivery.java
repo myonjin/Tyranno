@@ -2,7 +2,6 @@ package com.tyranno.ssg.delivery.domain;
 
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +20,10 @@ public class Delivery {
     @JoinColumn(name = "userId")
     private Users users; // 회원정보 들고오기
 
+    @Column(nullable = false)
     private Byte isBaseDelivery;
 
+    @Column(nullable = false)
     private String deliveryName;
 
     @Column(nullable = false)
