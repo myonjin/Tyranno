@@ -21,9 +21,9 @@ public class QCategoryLarge extends EntityPathBase<CategoryLarge> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath largeImageUrl = createString("largeImageUrl");
-
     public final StringPath largeName = createString("largeName");
+
+    public final StringPath largeUrl = createString("largeUrl");
 
     public QCategoryLarge(String variable) {
         super(CategoryLarge.class, forVariable(variable));

@@ -1,24 +1,18 @@
 package com.tyranno.ssg.auth.application;
 
-import com.tyranno.ssg.auth.dto.PasswordModifyDto;
-import com.tyranno.ssg.auth.dto.UsersInfoDto;
-import com.tyranno.ssg.auth.dto.UsersModifyDto;
-import com.tyranno.ssg.users.domain.Users;
-import jakarta.transaction.Transactional;
+import com.tyranno.ssg.auth.dto.*;
+import com.tyranno.ssg.users.dto.PasswordModifyDto;
 
 public interface AuthService {
 
-    void modifyPassword(PasswordModifyDto passwordModifyDto, String uuid);
+    void createUsers(SignUpDto signUpDto);
 
-    void modifyShinsegaeMaketing(Byte isAgree, String uuid);
+    String loginUsers(LoginDto loginDto);
 
-    void modifySsgMaketing(Byte isAgree, String uuid);
+    void checkLoginId(IdCheckDto idCheckDto);
 
-    void modifyUsers(UsersModifyDto usersModifyDto, String uuid);
+    String findLoginId(UserIdentifyDto userIdentifyDto);
 
-    UsersInfoDto getUsersInfo(String uuid);
+    void changePassword(PasswordChangeDto passwordChangeDto);
 
-    void resignUsers(String uuid);
-
-    Users getUsers(String uuid);
 }

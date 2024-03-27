@@ -9,5 +9,4 @@ public class GlobalException extends RuntimeException{
     public GlobalException(ResponseStatus status) {
         this.status = status;
     }
-
 }
