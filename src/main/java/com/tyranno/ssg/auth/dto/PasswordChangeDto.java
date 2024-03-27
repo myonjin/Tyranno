@@ -1,16 +1,22 @@
-package com.tyranno.ssg.users.dto;
+package com.tyranno.ssg.auth.dto;
 
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordModifyDto {
+@ToString
+public class PasswordChangeDto {
+    @NotNull
+    private String loginId;
     @NotNull
     private String newPassword;
 

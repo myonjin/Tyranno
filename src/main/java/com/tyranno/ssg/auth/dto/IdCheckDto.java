@@ -10,13 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsersInfoDto {
+public class IdCheckDto {
     @NotNull
     private String loginId;
-    @NotNull
-    private String name;
-    @NotNull
-    private String phoneNumber;
-    @NotNull
-    private String email;
 }

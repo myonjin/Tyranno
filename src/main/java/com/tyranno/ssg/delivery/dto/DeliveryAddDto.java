@@ -12,16 +12,16 @@ import lombok.NonNull;
 public class DeliveryAddDto {
     @NotNull
     private String deliveryName;
-    @NonNull
+    @NotNull
     private Integer zipCode;
-    @NonNull
+    @NotNull
     private String deliveryBase;
-    @NonNull
+    @NotNull
     private String deliveryDetail;
-    @NonNull
+    @NotNull
     private String receiverName;
-    @NonNull
+    @NotNull
     private String phoneNumber;
-    @NonNull
+    @NotNull
     private String homeNumber;
 }
