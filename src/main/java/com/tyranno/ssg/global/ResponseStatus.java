@@ -60,9 +60,9 @@ public enum ResponseStatus {
 //
 //    // Marketing
     NO_EXIST_MARKETING(false, 2200, "마케팅동의여부가 조회되지 않습니다."),
-    NO_FORMATING(false, 2201, "마케팅동의 형식에 맞지 않습니다.");
-//    // Address
-//    NO_EXIST_ADDRESS(false, 2300, "존재하지 않는 주소입니다."),
+    NO_FORMATING(false, 2201, "마케팅동의 형식에 맞지 않습니다."),
+//    // Delivery
+    NO_EXIST_DELIVERY(false, 2300, "존재하지 않는 배송지입니다.");
 //
 //
 //    /**
