@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -21,11 +22,10 @@ public class SecurityConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtTokenProvider;
-    private final String[] allowedUrls = {"/api/v1/users/**", "/api/v1/product/**", "/api/v1/category/**", "/api/v1/cart/**", "/api/v1/recent/**",
+    private final String[] allowedUrls = {"/api/v1/auth/**", "/api/v1/product/**", "/api/v1/category/**", "/api/v1/cart/**", "/api/v1/recent/**",
             "/api/v1/option/**", "/api/v1/event/**", "/api/v1/question/**", "/api/v1/search/**",
             "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**"};
-//    private final String[] allowedUrls = {"/api/v1/auth/**","/api/v1/address/**","/api/v1/review/**","/api/v1/order/**","/api/v1/like/**",
-//            "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**"};
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         return request -> {
@@ -35,6 +35,11 @@ public class SecurityConfiguration {
             cors.setAllowedHeaders(List.of("*"));
             return cors;
         };
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

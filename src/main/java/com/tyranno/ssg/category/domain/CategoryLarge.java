@@ -15,5 +15,5 @@ public class CategoryLarge {
 
     private String largeName;
 
-    private String largeUrl;
+    private String largeImageUrl;
 }

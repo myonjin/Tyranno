@@ -27,4 +27,6 @@ public class MarketingInformation extends GlobalTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "marketingId") // 이 필드는 Users 엔티티의 id와 매핑됩니다.
     private Marketing marketing;
+
+
 }
