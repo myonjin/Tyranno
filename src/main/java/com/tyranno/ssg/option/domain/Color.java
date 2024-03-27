@@ -5,9 +5,11 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 @Builder
 @Entity
 @Getter
+@ToString
 public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,3 +18,4 @@ public class Color {
     @Column(nullable = false)
     private String color;
 }
+

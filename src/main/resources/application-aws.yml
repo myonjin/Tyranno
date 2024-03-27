@@ -29,8 +29,7 @@ springdoc:
     display-request-duration: true
     operations-sorter: alpha
   api-docs:
-    path: /api-docs
-  # show-actuator:
+    path: api-docs
 # jwt
 JWT:
   HEADER: Authorization
