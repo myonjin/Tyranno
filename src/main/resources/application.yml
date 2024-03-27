@@ -1,6 +1,5 @@
 spring:
   profiles:
-    default: aws
-
+    default: local
 
 
