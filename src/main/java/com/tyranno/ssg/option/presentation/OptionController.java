@@ -1,8 +1,10 @@
 package com.tyranno.ssg.option.presentation;
 
 
+import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.option.application.OptionService;
 import com.tyranno.ssg.option.domain.Option;
+import com.tyranno.ssg.option.dto.OptionAbleListDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,7 +17,6 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,20 +44,20 @@ public class OptionController {
     public ResponseEntity<?> findOptions(@Parameter(description = "상품 ID") @PathVariable(value = "productId") Long productId) {
         List<String> optionAble = optionService.findOptionAble(productId);
 
-        return ResponseEntity.ok().body(optionAble);
+        return new ResponseEntity<>(optionAble);
     }
 
-//    @Tag(name = "상품 옵션", description = "옵션 API")
-//    @Operation(summary = "선택 가능 옵션 조회 (List)", description = "선택 가능한 옵션을 조회한다.")
-//    @GetMapping("/{productId}")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = "선택 가능 옵션 조회 완료"),
-//            @ApiResponse(responseCode = "400", description = "선택 가능 옵션 조회 중 오류 발생")})
-//    public ResponseEntity<?> findOptionsList(@Parameter(description = "상품 ID") @PathVariable(value = "productId") Long productId) {
-//        List<Option> optionAbleList = optionService.findOptionAbleList(productId);
-//
-//        return ResponseEntity.ok().body(optionAbleList);
-//    }
+    @Tag(name = "상품 옵션", description = "옵션 API")
+    @Operation(summary = "선택 가능 옵션 조회 (List)", description = "선택 가능한 옵션을 조회한다.")
+    @GetMapping("/{productId}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "선택 가능 옵션 조회 완료"),
+            @ApiResponse(responseCode = "400", description = "선택 가능 옵션 조회 중 오류 발생")})
+    public ResponseEntity<?> findOptionsList(@Parameter(description = "상품 ID") @PathVariable(value = "productId") Long productId) {
+        List<OptionAbleListDto> optionAbleList = optionService.findOptionAbleList(productId);
+
+        return new ResponseEntity<>("null");
+    }
 
 
 
