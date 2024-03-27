@@ -22,6 +22,16 @@ public class OptionAbleListDto {
     private List<Size> sizeList;
     private List<Etc> etcList;
     private List<Extra> extraList;
+
+
+    public static OptionAbleListDto fromEntity(List<Color> colorList, List<Size> sizeList, List<Etc> etcList, List<Extra> extraList) {
+        return OptionAbleListDto.builder()
+                .colorList(colorList)
+                .sizeList(sizeList)
+                .etcList(etcList)
+                .extraList(extraList)
+                .build();
+    }
 }
 
 

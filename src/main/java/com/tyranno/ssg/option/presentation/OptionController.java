@@ -58,7 +58,7 @@ public class OptionController {
     public ResponseEntity<?> findOptionsList(@Parameter(description = "상품 ID") @PathVariable(value = "productId") Long productId) {
         List<OptionAbleListDto> optionAbleList = optionService.findOptionAbleList(productId);
 
-        return new ResponseEntity<>("null");
+        return new ResponseEntity<>(optionAbleList);
     }
 
     @Tag(name = "상품 옵션", description = "옵션 API")

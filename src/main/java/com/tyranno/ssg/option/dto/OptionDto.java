@@ -29,18 +29,6 @@ public class OptionDto {
     @NotNull
     private Integer stock;
 
-    //    public static OptionDto fromEntity(Option option) {
-//        return OptionDto.builder()
-//                .optionId(option.getId())
-//                .productName(option.getProduct().getProductName())
-//                .productPrice(option.getProduct().getProductPrice())
-//                .color(option.getColor() != null ? option.getColor().getColor() : null)
-//                .size(option.getSize() != null ? option.getSize().getSize() : null)
-//                .extra(option.getExtra() != null ? option.getExtra().getExtraName() : null)
-//                .etc(option.getExtra() != null ? option.getEtc().getAdditionalOption() : null)
-//                .stock(option.getStock())
-//                .build();
-//    }
     public static OptionDto fromEntity(Option option) {
         return OptionDto.builder()
                 .optionId(option.getId())
@@ -54,3 +42,15 @@ public class OptionDto {
                 .build();
     }
 }
+//    public static OptionDto fromEntity(Option option) {
+//        return OptionDto.builder()
+//                .optionId(option.getId())
+//                .productName(option.getProduct().getProductName())
+//                .productPrice(option.getProduct().getProductPrice())
+//                .color(option.getColor() != null ? option.getColor().getColor() : null)
+//                .size(option.getSize() != null ? option.getSize().getSize() : null)
+//                .extra(option.getExtra() != null ? option.getExtra().getExtraName() : null)
+//                .etc(option.getExtra() != null ? option.getEtc().getAdditionalOption() : null)
+//                .stock(option.getStock())
+//                .build();
+//    }
