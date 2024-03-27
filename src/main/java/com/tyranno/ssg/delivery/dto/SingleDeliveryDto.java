@@ -1,16 +1,17 @@
 package com.tyranno.ssg.delivery.dto;
 
 import com.tyranno.ssg.delivery.domain.Delivery;
-import com.tyranno.ssg.users.domain.Users;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeliveryAddDto {
+@Builder
+public class SingleDeliveryDto {
     @NotNull
     private String deliveryName;
     @NotNull
@@ -26,17 +27,16 @@ public class DeliveryAddDto {
 
     private String homeNumber;
 
-    public Delivery toEntity(Users users) {
-        return Delivery.builder()
-                .users(users)
-                .isBaseDelivery((byte) 99)
-                .deliveryName(deliveryName)
-                .zipCode(zipCode)
-                .deliveryBase(deliveryBase)
-                .deliveryDetail(deliveryDetail)
-                .receiverName(receiverName)
-                .phoneNumber(phoneNumber)
-                .homeNumber(homeNumber)
+
+    public static SingleDeliveryDto fromEntity(Delivery delivery) {
+        return SingleDeliveryDto.builder()
+                .deliveryName(delivery.getDeliveryName())
+                .zipCode(delivery.getZipCode())
+                .deliveryBase(delivery.getDeliveryBase())
+                .deliveryDetail(delivery.getDeliveryDetail())
+                .receiverName(delivery.getReceiverName())
+                .phoneNumber(delivery.getPhoneNumber())
+                .homeNumber(delivery.getHomeNumber())
                 .build();
     }
 }
