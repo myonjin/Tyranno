@@ -8,8 +8,11 @@ import com.tyranno.ssg.option.domain.Extra;
 import com.tyranno.ssg.option.domain.Option;
 import com.tyranno.ssg.option.domain.Size;
 import com.tyranno.ssg.option.dto.ColorStockDto;
+import com.tyranno.ssg.option.dto.EtcStockDto;
+import com.tyranno.ssg.option.dto.ExtraStockDto;
 import com.tyranno.ssg.option.dto.OptionAbleListDto;
 import com.tyranno.ssg.option.dto.OptionDto;
+import com.tyranno.ssg.option.dto.SizeStockDto;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
 import com.tyranno.ssg.option.infrastructure.OptionRepositoryImpl;
 import java.util.stream.Collectors;
@@ -60,41 +63,78 @@ public class OptionServiceImp implements OptionService {
 
         List<Option> options = optionRepository.findAllByProductId(productId)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.DUPLICATE_ID));
-//        log.info(options.toString());
-        List<Color> colors = options.stream()
-                .map(Option::getColor) // Option -> Color로 매핑
-                .filter(Objects::nonNull) // null이 아닌 Color 객체만 필터링
-                .distinct() // 중복 제거
-                .toList(); // List<Color>로 수집
         Map<Long, ColorStockDto> colorStockMap = options.stream()
                 .filter(option -> option.getColor() != null)
-                .map(option -> new ColorStockDto(option.getColor().getId(), option.getColor().getColor(), option.getStock()))
+                .map(option -> new ColorStockDto(option.getColor().getId(), option.getColor().getColor(),
+                        option.getStock()))
                 .collect(Collectors.toMap(
                         ColorStockDto::getColorId,
                         dto -> dto,
-                        (existingDto, newDto) -> new ColorStockDto(existingDto.getColorId(), existingDto.getColor(), existingDto.getStock() + newDto.getStock())
+                        (existingDto, newDto) -> new ColorStockDto(existingDto.getColorId(), existingDto.getColor(),
+                                existingDto.getStock() + newDto.getStock())
                 ));
-        log.info(colorStockMap.toString());
-        List<Size> sizes = options.stream()
-                .map(Option::getSize)
-                .filter(Objects::nonNull)
-                .distinct()
-                .toList();
-        List<Extra> extras = options.stream()
-                .map(Option::getExtra)
-                .filter(Objects::nonNull)
-                .distinct()
-                .toList();
-        List<Etc> etcs = options.stream()
-                .map(Option::getEtc)
-                .filter(Objects::nonNull)
-                .distinct()
-                .toList();
-
+        Map<Long, SizeStockDto> sizeStockMap = options.stream()
+                .filter(option -> option.getSize() != null)
+                .map(option -> new SizeStockDto(option.getSize().getId(), option.getSize().getSize(),
+                        option.getStock()))
+                .collect(Collectors.toMap(
+                        SizeStockDto::getSizeId,
+                        dto -> dto,
+                        (existingDto, newDto) -> new SizeStockDto(existingDto.getSizeId(), existingDto.getSize(),
+                                existingDto.getStock() + newDto.getStock())
+                ));
+        Map<Long, EtcStockDto> etcStockMap = options.stream()
+                .filter(option -> option.getEtc() != null)
+                .map(option -> new EtcStockDto(option.getEtc().getId(), option.getEtc().getAdditionalOption(),
+                        option.getStock()))
+                .collect(Collectors.toMap(
+                        EtcStockDto::getEtcId,
+                        dto -> dto,
+                        (existingDto, newDto) -> new EtcStockDto(existingDto.getEtcId(),
+                                existingDto.getAdditionalOption(), existingDto.getStock() + newDto.getStock())
+                ));
+        Map<Long, ExtraStockDto> extraStockMap = options.stream()
+                .filter(option -> option.getExtra() != null)
+                .map(option -> new ExtraStockDto(option.getExtra().getId(), option.getExtra().getExtraName(),
+                        option.getStock(), option.getExtra().getExtraPrice()))
+                .collect(Collectors.toMap(
+                        ExtraStockDto::getExtraId,
+                        dto -> dto,
+                        (existingDto, newDto) -> new ExtraStockDto(existingDto.getExtraId(), existingDto.getExtraName(),
+                                existingDto.getStock() + newDto.getStock(),
+                                existingDto.getExtraPrice() + newDto.getExtraPrice())
+                ));
+        //        log.info(options.toString());
+//        List<Color> colors = options.stream()
+//                .map(Option::getColor) // Option -> Color로 매핑
+//                .filter(Objects::nonNull) // null이 아닌 Color 객체만 필터링
+//                .distinct() // 중복 제거
+//                .toList(); // List<Color>로 수집
+//        log.info(colorStockMap.toString());
+//        List<Size> sizes = options.stream()
+//                .map(Option::getSize)
+//                .filter(Objects::nonNull)
+//                .distinct()
+//                .toList();
+//
+//        List<Extra> extras = options.stream()
+//                .map(Option::getExtra)
+//                .filter(Objects::nonNull)
+//                .distinct()
+//                .toList();
+//        List<Etc> etcs = options.stream()
+//                .map(Option::getEtc)
+//                .filter(Objects::nonNull)
+//                .distinct()
+//                .toList();
 
 //        log.info(colors.toString());
-        return List.of(OptionAbleListDto.fromEntity(colors, sizes, etcs, extras));
+//        return List.of(OptionAbleListDto.fromEntity(colors, sizes, etcs, extras));
+        return List.of(OptionAbleListDto.fromEntity(new ArrayList<>(colorStockMap.values()),
+                new ArrayList<>(sizeStockMap.values()), new ArrayList<>(etcStockMap.values()),
+                new ArrayList<>(extraStockMap.values())));
     }
+
 
     @Override
     public List<OptionDto> getOptionProduct(Long productId, Long colorId, Long sizeId, Long extraId, Long etcId) {

@@ -18,13 +18,13 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class OptionAbleListDto {
-    private List<Color> colorList;
-    private List<Size> sizeList;
-    private List<Etc> etcList;
-    private List<Extra> extraList;
+    private List<ColorStockDto> colorList;
+    private List<SizeStockDto> sizeList;
+    private List<EtcStockDto> etcList;
+    private List<ExtraStockDto> extraList;
 
 
-    public static OptionAbleListDto fromEntity(List<Color> colorList, List<Size> sizeList, List<Etc> etcList, List<Extra> extraList) {
+    public static OptionAbleListDto fromEntity(List<ColorStockDto> colorList, List<SizeStockDto> sizeList, List<EtcStockDto> etcList, List<ExtraStockDto> extraList) {
         return OptionAbleListDto.builder()
                 .colorList(colorList)
                 .sizeList(sizeList)
