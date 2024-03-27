@@ -7,10 +7,12 @@ import com.tyranno.ssg.option.domain.Etc;
 import com.tyranno.ssg.option.domain.Extra;
 import com.tyranno.ssg.option.domain.Option;
 import com.tyranno.ssg.option.domain.Size;
+import com.tyranno.ssg.option.dto.ColorStockDto;
 import com.tyranno.ssg.option.dto.OptionAbleListDto;
 import com.tyranno.ssg.option.dto.OptionDto;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
 import com.tyranno.ssg.option.infrastructure.OptionRepositoryImpl;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -58,11 +60,21 @@ public class OptionServiceImp implements OptionService {
 
         List<Option> options = optionRepository.findAllByProductId(productId)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.DUPLICATE_ID));
+//        log.info(options.toString());
         List<Color> colors = options.stream()
                 .map(Option::getColor) // Option -> Color로 매핑
                 .filter(Objects::nonNull) // null이 아닌 Color 객체만 필터링
                 .distinct() // 중복 제거
                 .toList(); // List<Color>로 수집
+        Map<Long, ColorStockDto> colorStockMap = options.stream()
+                .filter(option -> option.getColor() != null)
+                .map(option -> new ColorStockDto(option.getColor().getId(), option.getColor().getColor(), option.getStock()))
+                .collect(Collectors.toMap(
+                        ColorStockDto::getColorId,
+                        dto -> dto,
+                        (existingDto, newDto) -> new ColorStockDto(existingDto.getColorId(), existingDto.getColor(), existingDto.getStock() + newDto.getStock())
+                ));
+        log.info(colorStockMap.toString());
         List<Size> sizes = options.stream()
                 .map(Option::getSize)
                 .filter(Objects::nonNull)
@@ -87,7 +99,7 @@ public class OptionServiceImp implements OptionService {
     @Override
     public List<OptionDto> getOptionProduct(Long productId, Long colorId, Long sizeId, Long extraId, Long etcId) {
         List<Option> optionProducts = optionRepositoryImp.getOptionProduct(productId, colorId, sizeId, extraId, etcId);
-        log.info(optionProducts.toString());
+//        log.info(optionProducts.toString());
         return optionProducts.stream()
                 .map(OptionDto::fromEntity)
                 .toList();
