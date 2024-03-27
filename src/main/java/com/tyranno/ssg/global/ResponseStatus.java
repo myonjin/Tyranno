@@ -36,30 +36,31 @@ public enum ResponseStatus {
 //     */
 //    // Token, Code
 //    TOKEN_EXPIRED(false, 2001, "토큰이 만료되었습니다."),
-//    TOKEN_NOT_VALID(false, 2002, "토큰이 유효하지 않습니다."),
+    TOKEN_NOT_VALID(false, 2002, "토큰이 유효하지 않습니다."),
 //    TOKEN_NULL(false, 2003, "토큰이 존재하지 않습니다."),
 //    JWT_CREATE_FAILED(false, 2004, "토큰 생성에 실패했습니다."),
 //    JWT_VALID_FAILED(false, 2005, "토큰 검증에 실패했습니다."),
 //    EXPIRED_AUTH_CODE(false, 2006, "인증번호가 만료되었거나 존재하지 않는 유저입니다."),
 //    WRONG_AUTH_CODE(false, 2007, "인증번호가 일치하지 않습니다."),
+
 //
 //    // USERS
     DUPLICATE_ID(false, 2100, "사용중인 아이디입니다."),
-    //    DUPLICATED_USERS(false, 2101, "이미 가입된 유저입니다."),
+//    DUPLICATED_USERS(false, 2101, "이미 가입된 유저입니다."),
 //    MASSAGE_SEND_FAILED(false, 2102, "인증번호 전송에 실패했습니다."),
 //    MASSAGE_VALID_FAILED(false, 2103, "인증번호가 일치하지 않습니다."),
 //    FAILED_TO_LOGIN(false, 2104, "아이디 또는 패스워드를 다시 확인하세요."),
     FAILED_TO_LOGIN_ID(false, 2104, "아이디를 다시 확인하세요."),
     FAILED_TO_LOGIN_PW(false, 2104, "패스워드를 다시 확인하세요."),
     //    WITHDRAWAL_USERS(false, 2105, "탈퇴한 회원입니다."),
-    NO_EXIST_USERS(false, 2106, "존재하지 않는 유저 정보입니다."),
-    //    USERS_STATUS_IS_NOT_FOUND(false, 2107, "존재하지 않는 유저 상태입니다."),
+    NO_EXIST_USERS(false, 2106, "존재하지 않는 유저 정보입니다."), //    USERS_STATUS_IS_NOT_FOUND(false, 2107, "존재하지 않는 유저 상태입니다."),
 //    PASSWORD_SAME_FAILED(false, 2108, "현재 사용중인 비밀번호 입니다."),
 //    PASSWORD_CONTAIN_NUM_FAILED(false, 2109, "휴대폰 번호를 포함한 비밀번호 입니다."),
 //    PASSWORD_CONTAIN_EMAIL_FAILED(false, 2110, "이메일이 포함된 비밀번호 입니다."),
 //
 //    // Marketing
-    NO_EXIST_MARKETING(false, 2200, "마케팅동의여부가 조회되지 않습니다.");
+    NO_EXIST_MARKETING(false, 2200, "마케팅동의여부가 조회되지 않습니다."),
+    NO_FORMATING(false, 2201, "마케팅동의 형식에 맞지 않습니다.");
 //    // Address
 //    NO_EXIST_ADDRESS(false, 2300, "존재하지 않는 주소입니다."),
 //

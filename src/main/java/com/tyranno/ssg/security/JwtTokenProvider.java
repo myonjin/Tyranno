@@ -1,5 +1,7 @@
 package com.tyranno.ssg.security;
 
+import com.tyranno.ssg.global.GlobalException;
+import com.tyranno.ssg.global.ResponseStatus;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,6 +26,14 @@ public class JwtTokenProvider {
 
     private final Environment env;
 
+    public String tokenToUuid(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            String jwt = token.substring(7);
+            return getUuid(jwt);
+        }
+        // 토큰이 유효하지 않은 경우, 에러 메시지 반환
+        throw new GlobalException(ResponseStatus.TOKEN_NOT_VALID);
+    }
     public String getUuid(String jwt) {
         return extractClaim(jwt, Claims::getSubject);
     }
