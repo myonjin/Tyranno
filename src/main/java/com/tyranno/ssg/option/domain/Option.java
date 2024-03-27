@@ -17,19 +17,19 @@ public class Option {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Size size;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Color color;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Etc etc;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Extra extra;
 
     @Column(nullable = false)

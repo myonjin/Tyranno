@@ -5,23 +5,21 @@ import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.option.domain.Color;
 import com.tyranno.ssg.option.domain.Option;
 import com.tyranno.ssg.option.dto.OptionAbleListDto;
+import com.tyranno.ssg.option.dto.OptionDto;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
+import com.tyranno.ssg.option.infrastructure.OptionRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.awt.SystemColor.info;
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class OptionServiceImp implements OptionService{
     private final OptionRepository optionRepository;
-
+    private final OptionRepositoryImpl optionRepositoryImp;
     @Override
     public List<String> findOptionAble(Long productId) {
         // 옵션 리스트 ex ["색상","사이즈"]
@@ -51,12 +49,16 @@ public class OptionServiceImp implements OptionService{
                 .filter(Objects::nonNull) // null이 아닌 Color 객체만 필터링
                 .distinct() // 중복 제거
                 .toList(); // List<Color>로 수집
-        log.info(colors.toString());
-
-
-
-
-
+//        log.info(colors.toString());
         return null;
     }
+    @Override
+    public List<OptionDto> getOptionProduct(Long productId, Long colorId, Long sizeId, Long extraId, Long etcId) {
+        List<Option> optionProducts = optionRepositoryImp.getOptionProduct(productId, colorId, sizeId, extraId, etcId);
+        log.info(optionProducts.toString());
+        return optionProducts.stream()
+                .map(OptionDto::fromEntity)
+                .toList();
+    }
+
 }

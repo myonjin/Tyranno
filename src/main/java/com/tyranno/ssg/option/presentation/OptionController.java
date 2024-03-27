@@ -5,15 +5,18 @@ import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.option.application.OptionService;
 import com.tyranno.ssg.option.domain.Option;
 import com.tyranno.ssg.option.dto.OptionAbleListDto;
+import com.tyranno.ssg.option.dto.OptionDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -35,7 +38,6 @@ public class OptionController {
     private final OptionService optionService;
 
 
-
     @Operation(summary = "선택 가능 옵션 조회 (String)", description = "선택 가능한 옵션(문자)을 조회한다.")
     @GetMapping("/string/{productId}")
     @ApiResponses({
@@ -49,7 +51,7 @@ public class OptionController {
 
     @Tag(name = "상품 옵션", description = "옵션 API")
     @Operation(summary = "선택 가능 옵션 조회 (List)", description = "선택 가능한 옵션을 조회한다.")
-    @GetMapping("/{productId}")
+    @GetMapping("/list/{productId}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "선택 가능 옵션 조회 완료"),
             @ApiResponse(responseCode = "400", description = "선택 가능 옵션 조회 중 오류 발생")})
@@ -59,7 +61,21 @@ public class OptionController {
         return new ResponseEntity<>("null");
     }
 
+    @Tag(name = "상품 옵션", description = "옵션 API")
+    @Operation(summary = "선택한 옵션 ID 조회 및 정보", description = "선택한 옵션을 조회한다..")
+    @GetMapping("/{productId}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "옵션 조회 완료"),
+            @ApiResponse(responseCode = "400", description = "옵션 조회 중 오류 발생")})
+    public ResponseEntity<?> getOptionProduct(@Parameter(description = "상품 ID") @PathVariable(value = "productId") Long productId,
+                                               @RequestParam(value = "color", required = false) Long colorId,
+                                               @RequestParam(value = "size", required = false) Long sizeId,
+                                               @RequestParam(value = "extra", required = false) Long extraId,
+                                               @RequestParam(value = "etc", required = false) Long etcId){
 
+        List<OptionDto> optionProduct = optionService.getOptionProduct(productId, colorId, sizeId, extraId, etcId);
+        return new ResponseEntity<>(optionProduct);
+    }
 
 }
 //         @GetMapping("/find-options")

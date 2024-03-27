@@ -1,5 +1,6 @@
 package com.tyranno.ssg.option.infrastructure;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tyranno.ssg.option.domain.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,11 +19,8 @@ public interface OptionRepository extends JpaRepository<Option, Long>{
     Optional<List<?>> findName(@Param("productId") Long productId);
 
     Optional<List<Option>> findAllByProductId(@Param("productId") Long productId);
-//    Option findByProductId(Long productId);
 
 
 
-//    List<Option> findByProductId(Long productId);
-//
-//    List<String> findOptionAble(Long productId);
+
 }
