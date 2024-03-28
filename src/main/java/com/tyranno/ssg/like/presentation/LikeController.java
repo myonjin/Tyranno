@@ -52,7 +52,7 @@ public class LikeController {
     @GetMapping("/modifyView/{delivery_id}")
     public ResponseEntity<?> getModifyView(@PathVariable Long delivery_id) {
 
-        SingleDeliveryDto singleDelivery = deliveryService.getSingleDelivery(delivery_id);
+        DeliveryDetailDto singleDelivery = deliveryService.getDetailDelivery(delivery_id);
 
         return new ResponseEntity<>(singleDelivery);
     }

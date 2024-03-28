@@ -1,5 +1,7 @@
 package com.tyranno.ssg.cart.presentation;
 
+import com.tyranno.ssg.cart.application.CartService;
+import com.tyranno.ssg.cart.dto.Request.CartAddDto;
 import com.tyranno.ssg.delivery.application.DeliveryService;
 import com.tyranno.ssg.delivery.dto.*;
 import com.tyranno.ssg.global.ResponseEntity;
@@ -14,65 +16,51 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@Tag(name = "배송지", description = "Delivery API")
-@RequestMapping("/api/v1/delivery")
+@Tag(name = "장바구니", description = "Cart API")
+@RequestMapping("/api/v1/cart")
 public class CartController {
 
-    private final DeliveryService deliveryService;
+    private final CartService cartService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Operation(summary = "배송지 등록", description = "새 배송지를 등록한다.")
+    @Operation(summary = "장바구니 담기", description = "새 배송지를 등록한다.")
     @PostMapping
-    public ResponseEntity<?> addDelivery(@Valid @RequestBody DeliveryAddDto deliveryAddDto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> addDelivery(@Valid @RequestBody CartAddDto cartAddDto, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
-        deliveryService.addDelivery(deliveryAddDto,uuid);
-
+        cartService.addCart(cartAddDto, uuid);
         return new ResponseEntity<>("배송지 등록 완료");
     }
 
-    @Operation(summary = "배송지 삭제", description = "기존 등록된 배송지를 삭제한다.")
-    @DeleteMapping("/{delivery_id}")
-    public ResponseEntity<?> deleteDelivery(@PathVariable Long delivery_id) {
-
-        deliveryService.deleteDelivery(delivery_id);
+    @Operation(summary = "장바구니 리스트 조회", description = "기존 등록된 배송지를 삭제한다.")
+    @GetMapping
+    public ResponseEntity<?> deleteDelivery(@RequestHeader("Authorization") String token) {
+        String uuid = jwtTokenProvider.tokenToUuid(token);
 
         return new ResponseEntity<>( "배송지가 삭제되었습니다.");
     }
 
-    @Operation(summary = "배송지 목록 조회", description = "한 유저에 대한 모든 배송지를 조회한다.")
-    @GetMapping("/list")
-    public ResponseEntity<?> getDeliveryList(@RequestHeader("Authorization") String token) {
-        String uuid = jwtTokenProvider.tokenToUuid(token);
-        List<DeliveryListDto> deliveryList = deliveryService.getDeliveryList(uuid);
+    @Operation(summary = "장바구니 선택항목 삭제", description = "한 유저에 대한 모든 배송지를 조회한다.")
+    @DeleteMapping
+    public ResponseEntity<?> getDeliveryList(@RequestBody List<Long> cartDeleteList) {
+
 
         return new ResponseEntity<>(deliveryList);
     }
 
-    @Operation(summary = "배송지 수정 화면 조회", description = "배송지 수정화면에 기존 배송지 정보를 띄우기 위해 조회한다.")
-    @GetMapping("/modifyView/{delivery_id}")
-    public ResponseEntity<?> getModifyView(@PathVariable Long delivery_id) {
+    @Operation(summary = "장바구니 삭제", description = "배송지 수정화면에 기존 배송지 정보를 띄우기 위해 조회한다.")
+    @DeleteMapping("/{cart_id}")
+    public ResponseEntity<?> getModifyView(@PathVariable Long cart_id) {
 
-        SingleDeliveryDto singleDelivery = deliveryService.getSingleDelivery(delivery_id);
 
         return new ResponseEntity<>(singleDelivery);
     }
 
-    @Operation(summary = "배송지 수정", description = "한 기존 배송지를 수정한다.")
+    @Operation(summary = "상품 수량 변경", description = "한 기존 배송지를 수정한다.")
     @PutMapping
     public ResponseEntity<?> modifyDelivery(@Valid @RequestBody DeliveryModifyDto deliveryModifyDto) {
 
-        deliveryService.modifyDelivery(deliveryModifyDto);
 
         return new ResponseEntity<>("배송지 수정 완료");
-    }
-
-    @Operation(summary = "기본 배송지 변경", description = "한 유저의 기존 배송지 지정을 변경한다.")
-    @PutMapping("/changeDefault")
-    public ResponseEntity<?> modifyBaseDelivery(@Valid @RequestBody BaseDeliveryModifyDto baseDeliveryModifyDto) {
-
-        deliveryService.modifyBaseDelivery(baseDeliveryModifyDto);
-
-        return new ResponseEntity<>("기본배송지로 설정되었습니다.");
     }
 
 

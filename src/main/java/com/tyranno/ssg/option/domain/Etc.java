@@ -14,5 +14,5 @@ public class Etc {
     private Long id;
 
     @Column(nullable = false)
-    private String additional_option;
+    private String additionalOption;
 }

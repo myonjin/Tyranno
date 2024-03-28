@@ -8,7 +8,7 @@ import com.tyranno.ssg.cart.infrastructure.CartRepository;
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.option.domain.Option;
-import com.tyranno.ssg.option.infrastucture.OptionRepository;
+import com.tyranno.ssg.option.infrastructure.OptionRepository;
 import com.tyranno.ssg.product.infrastructure.DiscountRepository;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
 import com.tyranno.ssg.users.domain.Users;
