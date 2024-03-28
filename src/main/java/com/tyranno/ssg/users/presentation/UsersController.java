@@ -25,7 +25,7 @@ public class UsersController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "비밀번호 재설정(로그인 O)", description = "마이페이지에서 비밀번호 재설정")
-    @PutMapping("/modify_pw")
+    @PutMapping("/modifyPassword")
     public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordModifyDto passwordModifyDto, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         usersService.modifyPassword(passwordModifyDto, uuid);
@@ -33,7 +33,7 @@ public class UsersController {
     }
 
     @Operation(summary = "신세계포인트 선택정보동의 변경", description = "마이페이지에서 신세계옵션 동의정보 변경")
-    @PutMapping("/shinsegae_marketing")
+    @PutMapping("/shinsegaeMarketing")
     public ResponseEntity<?> modifyShinsegaeMaketing(@Valid @RequestBody MarketingModifyDto marketingModifyDto, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         usersService.modifyMarketing(marketingModifyDto, MarketingType.SHINSEGAE_OPTION, uuid);
@@ -41,7 +41,7 @@ public class UsersController {
     }
 
     @Operation(summary = "ssg 마케팅정보동의 변경", description = "마이페이지에서 ssg 동의정보 변경")
-    @PutMapping("/ssg_marketing")
+    @PutMapping("/ssgMarketing")
     public ResponseEntity<?> modifySsgMaketing(@Valid @RequestBody MarketingModifyDto marketingModifyDto, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         usersService.modifyMarketing(marketingModifyDto, MarketingType.SSG, uuid);

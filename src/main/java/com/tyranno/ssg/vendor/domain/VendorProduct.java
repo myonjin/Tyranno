@@ -2,7 +2,10 @@ package com.tyranno.ssg.vendor.domain;
 
 import com.tyranno.ssg.product.domain.Product;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,10 +18,8 @@ public class VendorProduct {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vendorId")
     private Vendor vendor;
 
     @ManyToOne
-    @JoinColumn(name = "productId")
     private Product product;
 }

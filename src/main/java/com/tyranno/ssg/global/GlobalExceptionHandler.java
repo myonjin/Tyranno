@@ -11,14 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-     /*
-     * 발생한 예외 처리
-        등록한 에외 처리
-        런타임 에러
-        @Valid 에러
-     * */
-
     @ExceptionHandler(GlobalException.class)
     protected ResponseEntity<?> BaseError(GlobalException e, HttpServletRequest request) {
         log.error("errorStatus: {}, url: {}, message: {}", e.getStatus(), request.getRequestURI(), e.getMessage());
@@ -27,14 +19,14 @@ public class GlobalExceptionHandler {
     }
 
     //    runtime error
-    @ExceptionHandler(RuntimeException.class)
-    protected ResponseEntity<?> RuntimeError(RuntimeException e, HttpServletRequest request) {
-        log.error("url: {}, message: {}", request.getRequestURI(), e.getMessage());
+//    @ExceptionHandler({RuntimeException.class, MethodArgumentNotValidException.class})
+//    protected ResponseEntity<?> RuntimeError(RuntimeException e, HttpServletRequest request) {
+//        log.error("url: {}, message: {}", request.getRequestURI(), e.getMessage());
+//
+//        return new ResponseEntity<>(ResponseStatus.INTERNAL_SERVER_ERROR);
+//    }
 
-        return new ResponseEntity<>(ResponseStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(value = {RuntimeException.class, MethodArgumentNotValidException.class})
     public ResponseEntity<?> processVaildationError(MethodArgumentNotValidException e, HttpServletRequest request) {
         log.error("url: {}, message: {}", request.getRequestURI(), e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
