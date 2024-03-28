@@ -62,7 +62,12 @@ public enum ResponseStatus {
     NO_EXIST_MARKETING(false, 2200, "마케팅동의여부가 조회되지 않습니다."),
     NO_FORMATING(false, 2201, "마케팅동의 형식에 맞지 않습니다."),
 //    // Delivery
-    NO_EXIST_DELIVERY(false, 2300, "존재하지 않는 배송지입니다.");
+    NO_EXIST_DELIVERY(false, 2300, "존재하지 않는 배송지입니다."),
+
+    // Vendor
+    NO_EXIST_VENDOR(false, 7200, "Vendor가 조회되지 않습니다."),
+    NO_EXIST_VENDORPRODUCT(false, 7201, "VendorProduct가 조회되지 않습니다."),
+    NO_EXIST_PRODUCTTHUM(false, 7001, "ProductThum이 조회되지 않습니다");
 //
 //
 //    /**

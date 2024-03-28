@@ -3,13 +3,12 @@ package com.tyranno.ssg.product.application;
 import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
 import com.tyranno.ssg.category.infrastructure.CategoryRepository;
 import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
+import com.tyranno.ssg.global.GlobalException;
+import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.product.domain.Discount;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
-import com.tyranno.ssg.product.dto.DiscountDto;
-import com.tyranno.ssg.product.dto.ProductDetailDto;
-import com.tyranno.ssg.product.dto.ProductDto;
-import com.tyranno.ssg.product.dto.ProductListDto;
+import com.tyranno.ssg.product.dto.*;
 import com.tyranno.ssg.product.infrastructure.DiscountRepository;
 import com.tyranno.ssg.product.infrastructure.ProductRepository;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
@@ -96,7 +95,7 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
-    public ProductDto productInformation(Long productId){
+    public ProductDto getProductInformation(Long productId){
         Optional<Product> product = productRepository.findById(productId);
         ProductDto productDto = new ProductDto();
         product.ifPresent(p -> {
@@ -107,6 +106,13 @@ public class ProductServiceImp implements ProductService{
             productDto.setReviewCount(p.getReviewCount());
         });
         return productDto;
+    }
+
+    @Override
+    public ProductThumDto getProductThumPriority1(Long productId){
+        return productThumRepository.findByProductIdAndPriority(productId, 1)
+                .map(ProductThumDto::FromEntity)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCTTHUM));
     }
 
 }

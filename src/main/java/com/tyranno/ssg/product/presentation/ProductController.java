@@ -65,7 +65,7 @@ public class ProductController {
     @Operation(summary = "리스트용 상품 정보", description = "상품 ID로 상품정보", tags = { "Get ProductInformation" })
     @GetMapping("/productList/{productId}")
     public ResponseEntity<ProductDto> ProductInformation(Long productId) {
-        ProductDto productDto = productService.productInformation(productId);
+        ProductDto productDto = productService.getProductInformation(productId);
         if (productDto != null) {
             return ResponseEntity.ok(productDto);
         } else {

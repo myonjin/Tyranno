@@ -1,10 +1,18 @@
 package com.tyranno.ssg.vendor.application;
 
+import com.tyranno.ssg.global.GlobalException;
+import com.tyranno.ssg.global.ResponseStatus;
+import com.tyranno.ssg.users.dto.UsersInfoDto;
+import com.tyranno.ssg.vendor.domain.Vendor;
 import com.tyranno.ssg.vendor.domain.VendorProduct;
+import com.tyranno.ssg.vendor.dto.VendorDto;
+import com.tyranno.ssg.vendor.dto.VendorProductDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
 import com.tyranno.ssg.vendor.infrastructure.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class VendorServiceImp implements VendorService{
@@ -17,8 +25,18 @@ public class VendorServiceImp implements VendorService{
     }
 
     @Override // vendorProduct 테이블에서 productId로 vendorId를 찾기
-    public VendorProduct findByProductId(Long productId) {
-        return vendorProductRepository.findByProductId(productId);
-    };
+    public VendorProductDto findByProductId(Long productId) {
+        return vendorProductRepository.findByProductId(productId)
+                .map(VendorProductDto::FromEntity)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDORPRODUCT));
+    }
+
+    @Override // vendor에서 vendorId로 조회
+    public VendorDto findById(Long productId) {
+        Long id = findByProductId(productId).getVendorId();
+        return vendorRepository.findById(id)
+                .map(VendorDto::FromEntity)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDOR));
+    }
 
 }
