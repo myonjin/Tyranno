@@ -4,6 +4,7 @@ import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
 import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
+import com.tyranno.ssg.product.domain.Discount;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
 import com.tyranno.ssg.product.dto.*;
@@ -54,20 +55,28 @@ public class ProductServiceImp implements ProductService{
             // vendor 담기
             // 상품 아이디로 판매자-상품 중간테이블에서 조회
             Optional<VendorProduct> vendorProduct = vendorProductRepository.findByProductId(product.getId());
-            List<VendorDto> vendorDtos = new ArrayList<>();
-            if (vendorProduct.isPresent()) {
-                VendorDto vendorDto = new VendorDto();
-//                vendorDto.setVendorId(vendorProduct.getVendor().getId());
-//                vendorDto.setVendorName(vendorProduct.getVendor().getVendorName());
-                vendorDtos.add(vendorDto);
+            List<VendorDto> vendorDtos = vendorProduct
+                    .map(vp -> {
+                        VendorDto vendorDto = new VendorDto();
+                        vendorDto.setVendorId(vp.getVendor().getId());
+                        vendorDto.setVendorName(vp.getVendor().getVendorName());
+                        return vendorDto;
+                    })
+                    .map(Collections::singletonList)
+                    .orElse(Collections.emptyList());
+            Optional<Discount> discountOptional = discountRepository.findByProductId(product.getId());
+            int discountValue = 0;
+            if (discountOptional.isPresent()) {
+               discountValue = discountOptional.get().getDiscount();
             }
+
             // ProductDto 생성 및 값 설정
             return ProductDetailDto.builder()
                     .productName(product.getProductName())
                     .price(product.getProductPrice())
                     .productRate(product.getProductRate())
                     .detailContent(product.getDetailContent())
-//                    .discount(product.getDiscount()) //다른곳에서 오는거
+                    .discount(discountValue) //다른곳에서 오는거
                     .reviewCount(product.getReviewCount())
                     .vendor(vendorDtos) // 다른곳에서 오는거
                     .imageUrl(imageUrls) // 다른곳에서 오는거
