@@ -10,16 +10,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor  // final로 선언된 필드를 초기화 하는 생성자를 만들어준다.
@@ -30,6 +24,11 @@ public class OptionController {
 
     private final OptionService optionService;
 
+    @Operation(summary = "옵션 정보 조회", description = "한 옵션 필드들의 이름들과 총 가격을 조회한다.")
+    @GetMapping("/names/{option_id}")
+    public ResponseEntity<?> getOptionNames(@PathVariable Long option_id) {
+        return new ResponseEntity<>(optionService.getOptionNames(option_id));
+    }
 
     @Operation(summary = "선택 가능 옵션 조회 (String)", description = "선택 가능한 옵션(문자)을 조회한다.")
     @GetMapping("/string/{product_id}")

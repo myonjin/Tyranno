@@ -6,14 +6,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsersModifyDto { //회원 인증 정보 - 유저가 입력, 비밀번호 변경 시 사용
+public class UserIdentifyDto {
     @NotNull
-    private String password;
+    private String name;
     @NotNull
     private String phoneNumber;
     @NotNull
-    private String email;
+    private Byte gender;
+    @NotNull
+    private LocalDate birth;
 }

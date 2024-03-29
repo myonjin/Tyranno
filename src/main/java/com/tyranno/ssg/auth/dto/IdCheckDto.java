@@ -1,18 +1,16 @@
-package com.tyranno.ssg.users.dto;
+package com.tyranno.ssg.auth.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class PasswordChangeDto {
+public class IdCheckDto {
     @NotNull
     private String loginId;
-    @NotNull
-    private String newPassword;
 }

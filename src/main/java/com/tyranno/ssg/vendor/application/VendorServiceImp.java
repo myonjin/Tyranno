@@ -1,5 +1,7 @@
 package com.tyranno.ssg.vendor.application;
 
+import com.tyranno.ssg.global.GlobalException;
+import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
 import com.tyranno.ssg.vendor.infrastructure.VendorRepository;
@@ -18,7 +20,8 @@ public class VendorServiceImp implements VendorService{
 
     @Override
     public VendorProduct findByProductId(Long productId) {
-        return vendorProductRepository.findByProductId(productId);
+        return vendorProductRepository.findByProductId(productId)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDORPRODUCT));
     };
 
 }

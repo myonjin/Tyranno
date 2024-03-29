@@ -1,21 +1,19 @@
 package com.tyranno.ssg.users.application;
 
-import com.tyranno.ssg.users.dto.LoginDto;
-import com.tyranno.ssg.auth.dto.PasswordModifyDto;
-import com.tyranno.ssg.users.dto.PasswordChangeDto;
-import com.tyranno.ssg.users.dto.SignUpDto;
-import com.tyranno.ssg.users.dto.UserIdentifyDto;
+import com.tyranno.ssg.users.domain.Users;
+import com.tyranno.ssg.users.dto.*;
+
 
 public interface UsersService {
 
-    void createUsers(SignUpDto signUpDto);
+    void modifyPassword(PasswordModifyDto passwordModifyDto, String uuid);
+    void modifyMarketing(MarketingModifyDto marketingModifyDto, MarketingType marketingType, String uuid);
 
-    String loginUsers(LoginDto loginDto);
+    void modifyUsers(UsersModifyDto usersModifyDto, String uuid);
 
-    void checkLoginId(String loginId);
+    UsersInfoDto getUsersInfo(String uuid);
 
-    String findLoginId(UserIdentifyDto userIdentifyDto);
+    void resignUsers(String uuid);
 
-    void changePassword(PasswordChangeDto passwordChangeDto);
-
+    Users getUsers(String uuid);
 }

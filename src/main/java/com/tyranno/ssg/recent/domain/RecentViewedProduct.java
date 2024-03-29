@@ -20,11 +20,9 @@ public class RecentViewedProduct extends GlobalCreateTime {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usersId")
     private Users users;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productId")
     private Product product;
 
     @Column(nullable = false)

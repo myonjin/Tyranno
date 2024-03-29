@@ -22,8 +22,9 @@ public class SecurityConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtTokenProvider;
-    private final String[] allowedUrls = {"/api/v1/**","/api/v1/users/**", "/api/v1/product/**", "/api/v1/category/**", "/api/v1/cart/**", "/api/v1/recent/**",
-            "/api/v1/option/**", "/api/v1/event/**", "/api/v1/question/**", "/api/v1/search/**",
+
+    private final String[] allowedUrls = {"/api/v1/auth/**", "/api/v1/product/**", "/api/v1/category/**", "/api/v1/cart/**", "/api/v1/recent/**",
+            "/api/v1/option/**", "/api/v1/event/**", "/api/v1/question/**", "/api/v1/search/**", "/api/v1/vendor/**",
             "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**"};
 
     @Bean
