@@ -21,7 +21,4 @@ public class Like {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
-
-    @Column(nullable = false)
-    private Byte isLiked;
 }
