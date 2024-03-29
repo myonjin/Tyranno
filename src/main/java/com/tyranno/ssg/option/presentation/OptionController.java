@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Slf4j
@@ -32,39 +31,38 @@ public class OptionController {
     }
 
     @Operation(summary = "선택 가능 옵션 조회 (String)", description = "선택 가능한 옵션(문자)을 조회한다.")
-    @GetMapping("/string/{productId}")
+    @GetMapping("/string/{product_id}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "선택 가능 옵션 조회 완료"),
             @ApiResponse(responseCode = "400", description = "선택 가능 옵션 조회 중 오류 발생")})
-    public ResponseEntity<?> findOptions(@Parameter(description = "상품 ID") @PathVariable(value = "productId") Long productId) {
-        List<String> optionAble = optionService.findOptionAble(productId);
+    public ResponseEntity<?> getOptions(@Parameter(description = "상품 ID") @PathVariable(value = "product_id") Long productId) {
+        List<String> optionAble = optionService.getOptionAble(productId);
 
         return new ResponseEntity<>(optionAble);
     }
 
-    @Tag(name = "상품 옵션", description = "옵션 API")
     @Operation(summary = "선택 가능 옵션 조회 (List)", description = "선택 가능한 옵션을 조회한다.")
-    @GetMapping("/list/{productId}")
+    @GetMapping("/list/000{product_id}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "선택 가능 옵션 조회 완료"),
             @ApiResponse(responseCode = "400", description = "선택 가능 옵션 조회 중 오류 발생")})
-    public ResponseEntity<?> findOptionsList(@Parameter(description = "상품 ID") @PathVariable(value = "productId") Long productId) {
-        List<OptionAbleListDto> optionAbleList = optionService.findOptionAbleList(productId);
+    public ResponseEntity<?> getOptionsList(@Parameter(description = "상품 ID") @PathVariable(value = "product_id") Long productId) {
+        List<OptionAbleListDto> optionAbleList = optionService.getOptionAbleList(productId);
 
         return new ResponseEntity<>(optionAbleList);
     }
 
-    @Tag(name = "상품 옵션", description = "옵션 API")
+
     @Operation(summary = "선택한 옵션 ID 조회 및 정보", description = "선택한 옵션을 조회한다..")
-    @GetMapping("/{productId}")
+    @GetMapping("/{product_id}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "옵션 조회 완료"),
             @ApiResponse(responseCode = "400", description = "옵션 조회 중 오류 발생")})
-    public ResponseEntity<?> getOptionProduct(@Parameter(description = "상품 ID") @PathVariable(value = "productId") Long productId,
-                                              @RequestParam(value = "color", required = false) Long colorId,
-                                              @RequestParam(value = "size", required = false) Long sizeId,
-                                              @RequestParam(value = "extra", required = false) Long extraId,
-                                              @RequestParam(value = "etc", required = false) Long etcId) {
+    public ResponseEntity<?> getOptionProduct(@Parameter(description = "상품 ID") @PathVariable(value = "product_id") Long productId,
+                                               @RequestParam(value = "color", required = false) Long colorId,
+                                               @RequestParam(value = "size", required = false) Long sizeId,
+                                               @RequestParam(value = "extra", required = false) Long extraId,
+                                               @RequestParam(value = "etc", required = false) Long etcId){
 
         List<OptionDto> optionProduct = optionService.getOptionProduct(productId, colorId, sizeId, extraId, etcId);
         return new ResponseEntity<>(optionProduct);
