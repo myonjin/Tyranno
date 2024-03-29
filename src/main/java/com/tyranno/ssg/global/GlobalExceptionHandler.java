@@ -19,14 +19,14 @@ public class GlobalExceptionHandler {
     }
 
     //    runtime error
-//    @ExceptionHandler({RuntimeException.class, MethodArgumentNotValidException.class})
-//    protected ResponseEntity<?> RuntimeError(RuntimeException e, HttpServletRequest request) {
-//        log.error("url: {}, message: {}", request.getRequestURI(), e.getMessage());
-//
-//        return new ResponseEntity<>(ResponseStatus.INTERNAL_SERVER_ERROR);
-//    }
+    @ExceptionHandler(RuntimeException.class)
+    protected ResponseEntity<?> RuntimeError(RuntimeException e, HttpServletRequest request) {
+        log.error("url: {}, message: {}", request.getRequestURI(), e.getMessage());
 
-    @ExceptionHandler(value = {RuntimeException.class, MethodArgumentNotValidException.class})
+        return new ResponseEntity<>(ResponseStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> processVaildationError(MethodArgumentNotValidException e, HttpServletRequest request) {
         log.error("url: {}, message: {}", request.getRequestURI(), e.getMessage());
         BindingResult bindingResult = e.getBindingResult();

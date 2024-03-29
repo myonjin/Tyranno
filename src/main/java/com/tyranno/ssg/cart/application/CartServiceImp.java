@@ -14,6 +14,7 @@ import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
 import com.tyranno.ssg.users.domain.Users;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class CartServiceImp implements CartService {
     private final ProductThumRepository productThumRepository;
     private final DiscountRepository discountRepository;
 
+    @Transactional
     @Override
     public void addCart(CartAddDto cartAddDto, String uuid) {
         Users users = usersRepository.findByUuid(uuid)
@@ -69,16 +71,20 @@ public class CartServiceImp implements CartService {
         }).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public void deleteCartList(List<Long> cartDeleteList) {
+
         cartRepository.deleteByIdIn(cartDeleteList);
     }
 
+    @Transactional
     @Override
-    public void deleteSingleCart(Long cartId) {
+    public void deleteCart(Long cartId) {
         cartRepository.deleteById(cartId);
     }
 
+    @Transactional
     @Override
     public void modifyItemCount(CartCountModifyDto cartCountModifyDto) {
         Cart cart = cartRepository.findById(cartCountModifyDto.getCartId())

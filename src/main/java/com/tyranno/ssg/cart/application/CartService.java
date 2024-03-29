@@ -10,6 +10,6 @@ public interface CartService {
     void addCart(CartAddDto cartAddDto, String uuid);
     List<CartListDto> getCartList(String uuid);
     void deleteCartList(List<Long> cartDeleteList);
-    void deleteSingleCart(Long cartId);
+    void deleteCart(Long cartId);
     void modifyItemCount(CartCountModifyDto cartCountModifyDto);
 }
