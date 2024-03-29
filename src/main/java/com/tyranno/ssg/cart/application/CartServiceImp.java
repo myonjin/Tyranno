@@ -44,10 +44,6 @@ public class CartServiceImp implements CartService {
         if (cartRepository.existsByOption(option)) {
             throw new GlobalException(ResponseStatus.ALREADY_EXIST_OPTION);
         }
-        // 이미 추가할려는 상품이 장바구니에 존재
-        if (cartRepository.existsByOptionProduct(option.getProduct())) {
-            throw new GlobalException(ResponseStatus.ALREADY_EXIST_PRODUCT);
-        }
         cartRepository.save(cartAddDto.toEntity(users, option));
     }
 

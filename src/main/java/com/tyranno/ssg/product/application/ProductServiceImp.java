@@ -52,7 +52,8 @@ public class ProductServiceImp implements ProductService {
                     .toList();
             // vendor 담기
             // 상품 아이디로 판매자-상품 중간테이블에서 조회
-            VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId());
+            VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId())
+                    .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDORPRODUCT));
             List<VendorDto> vendorDtos = new ArrayList<>();
             if (vendorProduct != null) {
                 VendorDto vendorDto = new VendorDto();
@@ -104,7 +105,8 @@ public class ProductServiceImp implements ProductService {
                 log.info("ProductID : {}", productDto.getProductId());
 
                 // VendorProduct 조회
-                VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId());
+                VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId())
+                        .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDORPRODUCT));
                 if (vendorProduct != null) {
                     log.info("vendorProduct 검색용 ProductID {}: {}", product.getId(), vendorProduct);
                     Vendor vendor = vendorProduct.getVendor();

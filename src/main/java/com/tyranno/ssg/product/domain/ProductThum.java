@@ -15,7 +15,6 @@ public class ProductThum {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productId")
     private Product product;
 
     private String imageUrl; // 이미지링크

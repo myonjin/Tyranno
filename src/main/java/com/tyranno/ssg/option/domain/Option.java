@@ -11,28 +11,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Table(name = "`option`")
-@Getter
-@ToString
 public class Option {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-<<<<<<< Updated upstream
-    @ManyToOne
-    private Product product;
-
-    @ManyToOne
-    private Size size;
-
-    @ManyToOne
-    private Color color;
-
-    @ManyToOne
-    private Etc etc;
-
-    @ManyToOne
-=======
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
@@ -46,16 +29,13 @@ public class Option {
     private Etc etc;
 
     @ManyToOne(fetch = FetchType.LAZY)
->>>>>>> Stashed changes
     private Extra extra;
 
     @Column(nullable = false)
     private Integer stock;
 
-<<<<<<< Updated upstream
-=======
-    @Builder
 
+    @Builder
     public Option(Long id, Product product, Size size, Color color, Etc etc, Extra extra, Integer stock) {
         this.id = id;
         this.product = product;
@@ -65,5 +45,4 @@ public class Option {
         this.extra = extra;
         this.stock = stock;
     }
->>>>>>> Stashed changes
 }

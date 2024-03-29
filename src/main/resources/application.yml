@@ -1,9 +1,5 @@
 spring:
   profiles:
-<<<<<<< Updated upstream
-    default: aws
-=======
     default: local
 
 
->>>>>>> Stashed changes
