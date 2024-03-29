@@ -3,7 +3,10 @@ package com.tyranno.ssg.like.domain;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +24,4 @@ public class Like {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
-
-    @Column(nullable = false)
-    private Byte isLiked;
 }
