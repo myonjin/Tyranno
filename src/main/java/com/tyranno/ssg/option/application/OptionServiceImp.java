@@ -30,7 +30,7 @@ public class OptionServiceImp implements OptionService {
     private final OptionRepositoryImpl optionRepositoryImp;
 
     @Override
-    public List<String> findOptionAble(Long productId) {
+    public List<String> getOptionAble(Long productId) {
         // 옵션 리스트 ex ["색상","사이즈"]
         LinkedHashSet<String> optionAble = new LinkedHashSet<>(); // 요소를 추가된 순서대로 순회 가능하게 한다.
         List<?> options = optionRepository.findName(productId)
@@ -59,7 +59,7 @@ public class OptionServiceImp implements OptionService {
     }
 
     @Override
-    public List<OptionAbleListDto> findOptionAbleList(Long productId) {
+    public List<OptionAbleListDto> getOptionAbleList(Long productId) {
 
         List<Option> options = optionRepository.findAllByProductId(productId)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.DUPLICATE_ID));
@@ -116,7 +116,7 @@ public class OptionServiceImp implements OptionService {
 //                .filter(Objects::nonNull)
 //                .distinct()
 //                .toList();
-//
+
 //        List<Extra> extras = options.stream()
 //                .map(Option::getExtra)
 //                .filter(Objects::nonNull)
