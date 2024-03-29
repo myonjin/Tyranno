@@ -28,4 +28,6 @@ public class Order {
 
     @Column(nullable = false)
     private Integer money;
+
+
 }

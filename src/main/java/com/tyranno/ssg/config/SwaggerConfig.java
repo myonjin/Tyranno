@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(
                 title = "Tyranno_developes API",
                 description = "Springdoc을 사용한 Swagger UI 테스트",
-                version = "vi"
+                version = "v1"
         )
 )
 @Configuration

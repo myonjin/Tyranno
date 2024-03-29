@@ -1,5 +1,6 @@
 package com.tyranno.ssg.option.domain;
 
+import com.tyranno.ssg.product.domain.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,27 +10,29 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "`option`")
+@Getter
+@ToString
 public class Option {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sizeId")
+    @ManyToOne
+    private Product product;
+
+    @ManyToOne
     private Size size;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "colorId")
+    @ManyToOne
     private Color color;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "etcId")
+    @ManyToOne
     private Etc etc;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ExtraId")
+    @ManyToOne
     private Extra extra;
 
     @Column(nullable = false)
     private Integer stock;
+
 }

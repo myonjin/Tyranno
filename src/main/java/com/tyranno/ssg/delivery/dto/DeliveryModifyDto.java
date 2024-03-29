@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeliveryAddDto {
+public class DeliveryModifyDto {
+    @NotNull
+    private Long id;
     @NotNull
     private String deliveryName;
     @NotNull
@@ -26,10 +28,11 @@ public class DeliveryAddDto {
 
     private String homeNumber;
 
-    public Delivery toEntity(Users users) {
+    public Delivery toEntity(Delivery delivery) {
         return Delivery.builder()
-                .users(users)
-                .isBaseDelivery((byte) 99)
+                .id(delivery.getId())
+                .users(delivery.getUsers())
+                .isBaseDelivery(delivery.getIsBaseDelivery())
                 .deliveryName(deliveryName)
                 .zipCode(zipCode)
                 .deliveryBase(deliveryBase)
