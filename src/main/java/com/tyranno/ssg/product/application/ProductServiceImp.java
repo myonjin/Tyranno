@@ -1,7 +1,6 @@
 package com.tyranno.ssg.product.application;
 
-import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
-import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
+
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.product.domain.Discount;
@@ -15,6 +14,8 @@ import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.dto.VendorDto;
 import com.tyranno.ssg.vendor.dto.VendorProductDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
+import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
+import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,19 +26,18 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProductServiceImp implements ProductService{
+public class ProductServiceImp implements ProductService {
 
 
     // JPA로 productId를 통해 조회하기
     private final ProductRepository productRepository;
     private final VendorProductRepository vendorProductRepository;
     private final ProductThumRepository productThumRepository;
-//    private final CategoryRepository categoryRepository;
+    //    private final CategoryRepository categoryRepository;
     private final DiscountRepository discountRepository;
     private final CategoryRepositoryImp categoryRepositoryImp;
 
     //    private final LikeRepository likeRepository;
-
 
 
     @Override
@@ -91,7 +91,6 @@ public class ProductServiceImp implements ProductService{
     public CategoryProductIdListDto productIdList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion) {
         Optional<List<Long>> productIds = Optional.ofNullable(categoryRepositoryImp.getProductIdList(largeId, middleId, smallId, detailId, sortCriterion));
         CategoryProductIdListDto categoryProductIdListDto = new CategoryProductIdListDto();
-
         productIds.ifPresent(categoryProductIdListDto::setProductIds);
 
         return categoryProductIdListDto;

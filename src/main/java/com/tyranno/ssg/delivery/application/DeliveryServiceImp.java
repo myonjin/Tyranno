@@ -43,9 +43,9 @@ public class DeliveryServiceImp implements DeliveryService {
     }
 
     @Override
-    public SingleDeliveryDto getSingleDelivery(Long deliveryId) {
+    public DeliveryDetailDto getDetailDelivery(Long deliveryId) {
         Delivery delivery = getDelivery(deliveryId);
-        return SingleDeliveryDto.fromEntity(delivery);
+        return DeliveryDetailDto.fromEntity(delivery);
     }
 
     @Override

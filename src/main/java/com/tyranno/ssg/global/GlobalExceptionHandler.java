@@ -11,14 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-     /*
-     * 발생한 예외 처리
-        등록한 에외 처리
-        런타임 에러
-        @Valid 에러
-     * */
-
     @ExceptionHandler(GlobalException.class)
     protected ResponseEntity<?> BaseError(GlobalException e, HttpServletRequest request) {
         log.error("errorStatus: {}, url: {}, message: {}", e.getStatus(), request.getRequestURI(), e.getMessage());

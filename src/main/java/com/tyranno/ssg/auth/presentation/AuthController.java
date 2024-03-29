@@ -28,7 +28,7 @@ public class AuthController {
     }
 
     @Operation(summary = "아이디 중복 검사", description = "회원 가입 시 기존 회원과 아이디 중복 여부 체크")
-    @PostMapping("/id_check")
+    @PostMapping("/id-check")
     public ResponseEntity<?> checkIdExist(@RequestBody IdCheckDto idCheckDto) {
 
         authService.checkLoginId(idCheckDto);
@@ -51,7 +51,7 @@ public class AuthController {
     }
 
     @Operation(summary = "비밀번호 변경(로그인 x)", description = "비밀번호 찾기 에서의 비밀번호 변경")
-    @PutMapping("/change_pw")
+    @PutMapping("/change-pw")
     public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
         authService.changePassword(passwordChangeDto);
         return new ResponseEntity<>("비밀번호 변경 성공");

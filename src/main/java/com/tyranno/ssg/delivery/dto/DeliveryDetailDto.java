@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SingleDeliveryDto {
+public class DeliveryDetailDto {
     @NotNull
     private String deliveryName;
     @NotNull
@@ -28,8 +28,8 @@ public class SingleDeliveryDto {
     private String homeNumber;
 
 
-    public static SingleDeliveryDto fromEntity(Delivery delivery) {
-        return SingleDeliveryDto.builder()
+    public static DeliveryDetailDto fromEntity(Delivery delivery) {
+        return DeliveryDetailDto.builder()
                 .deliveryName(delivery.getDeliveryName())
                 .zipCode(delivery.getZipCode())
                 .deliveryBase(delivery.getDeliveryBase())

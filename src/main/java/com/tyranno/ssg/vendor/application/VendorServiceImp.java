@@ -2,9 +2,6 @@ package com.tyranno.ssg.vendor.application;
 
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
-import com.tyranno.ssg.users.dto.UsersInfoDto;
-import com.tyranno.ssg.vendor.domain.Vendor;
-import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.dto.VendorDto;
 import com.tyranno.ssg.vendor.dto.VendorProductDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
