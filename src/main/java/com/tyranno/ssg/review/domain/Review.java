@@ -21,11 +21,9 @@ public class Review extends GlobalCreateTime {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usersId")
     private Users users; // 회원 테이블
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productId")
     private Product product; // 상품 테이블
 
     @Column(nullable = false)

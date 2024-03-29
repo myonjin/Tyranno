@@ -1,13 +1,13 @@
 package com.tyranno.ssg.product.application;
 
-import com.tyranno.ssg.category.infrastructure.CategoryRepository;
+import com.tyranno.ssg.global.GlobalException;
+import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.product.domain.Discount;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
 import com.tyranno.ssg.product.dto.DiscountDto;
 import com.tyranno.ssg.product.dto.ProductDetailDto;
 import com.tyranno.ssg.product.dto.ProductDto;
-import com.tyranno.ssg.product.dto.ProductListDto;
 import com.tyranno.ssg.product.infrastructure.DiscountRepository;
 import com.tyranno.ssg.product.infrastructure.ProductRepository;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
@@ -17,30 +17,25 @@ import com.tyranno.ssg.vendor.dto.VendorDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProductServiceImp implements ProductService{
+public class ProductServiceImp implements ProductService {
 
 
     // JPA로 productId를 통해 조회하기
     private final ProductRepository productRepository;
     private final VendorProductRepository vendorProductRepository;
     private final ProductThumRepository productThumRepository;
-//    private final CategoryRepository categoryRepository;
+    //    private final CategoryRepository categoryRepository;
     private final DiscountRepository discountRepository;
 
     //    private final LikeRepository likeRepository;
-
 
 
     @Override
@@ -57,7 +52,8 @@ public class ProductServiceImp implements ProductService{
                     .toList();
             // vendor 담기
             // 상품 아이디로 판매자-상품 중간테이블에서 조회
-            VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId());
+            VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId())
+                    .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDORPRODUCT));
             List<VendorDto> vendorDtos = new ArrayList<>();
             if (vendorProduct != null) {
                 VendorDto vendorDto = new VendorDto();
@@ -84,12 +80,12 @@ public class ProductServiceImp implements ProductService{
 
     // Discount 객체 구하기
     @Override
-    public DiscountDto findDiscountByProductId(Long id){
-        Discount discount = discountRepository.findByProductId(id);
+    public DiscountDto findDiscountByProductId(Long id) {
+        Discount discount = discountRepository.findByProductId(id)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT));
         return DiscountDto.builder()
                 .build();
     }
-
 
 
     @Override
@@ -109,7 +105,8 @@ public class ProductServiceImp implements ProductService{
                 log.info("ProductID : {}", productDto.getProductId());
 
                 // VendorProduct 조회
-                VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId());
+                VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId())
+                        .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDORPRODUCT));
                 if (vendorProduct != null) {
                     log.info("vendorProduct 검색용 ProductID {}: {}", product.getId(), vendorProduct);
                     Vendor vendor = vendorProduct.getVendor();
@@ -121,7 +118,9 @@ public class ProductServiceImp implements ProductService{
                 }
 
                 // ProductThum 조회
-                ProductThum productThum = productThumRepository.findByProductIdAndPriority(product.getId(),1);
+                ProductThum productThum = productThumRepository.findByProductIdAndPriority(product.getId(), 1)
+                        .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCTTHUM));
+
                 if (productThum != null) {
                     log.info("ProductThum에 검색하는 ProductID {}: {}", product.getId(), productThum); // 1개만 들고 올거라 썸네일 1번
                     productDto.setImageUrl(productThum.getImageUrl()); // ImageUrl 설정
@@ -130,7 +129,8 @@ public class ProductServiceImp implements ProductService{
                 }
 
                 // Discount 조회
-                Discount discount = discountRepository.findByProductId(product.getId());
+                Discount discount = discountRepository.findByProductId(product.getId())
+                        .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT));
                 if (discount != null) {
                     log.info("Discount 검색용 ProductID {}: {}", product.getId(), discount);
                     productDto.setDiscount(discount.getDiscount()); // Discount 정보 설정

@@ -2,25 +2,19 @@ package com.tyranno.ssg.option.application;
 
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
-import com.tyranno.ssg.option.domain.Color;
-import com.tyranno.ssg.option.domain.Etc;
-import com.tyranno.ssg.option.domain.Extra;
 import com.tyranno.ssg.option.domain.Option;
-import com.tyranno.ssg.option.domain.Size;
-import com.tyranno.ssg.option.dto.ColorStockDto;
-import com.tyranno.ssg.option.dto.EtcStockDto;
-import com.tyranno.ssg.option.dto.ExtraStockDto;
-import com.tyranno.ssg.option.dto.OptionAbleListDto;
-import com.tyranno.ssg.option.dto.OptionDto;
-import com.tyranno.ssg.option.dto.SizeStockDto;
+import com.tyranno.ssg.option.dto.*;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
 import com.tyranno.ssg.option.infrastructure.OptionRepositoryImpl;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,6 +22,13 @@ import java.util.*;
 public class OptionServiceImp implements OptionService {
     private final OptionRepository optionRepository;
     private final OptionRepositoryImpl optionRepositoryImp;
+
+    @Override
+    public OptionNamesDto getOptionNames(Long optionId) {
+        return optionRepository.findById(optionId)
+                .map(option -> OptionNamesDto.FromEntity(option, option.getProduct()))
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION));
+    }
 
     @Override
     public List<String> findOptionAble(Long productId) {
@@ -38,21 +39,14 @@ public class OptionServiceImp implements OptionService {
 //        options.forEach(option -> log.info(option.toString()));
         for (Object option : options) {
             Option opt = (Option) option;
-            if (opt.getStock() == 0) {
-                continue;
-            }
-            if (opt.getColor() != null) {
-                optionAble.add("color");
-            }
-            if (opt.getSize() != null) {
-                optionAble.add("size");
-            }
-            if (opt.getExtra() != null) {
-                optionAble.add("extra");
-            }
-            if (opt.getEtc() != null) {
-                optionAble.add("etc");
-            }
+            if (opt.getStock() == 0) continue;
+            if (opt.getColor() != null) optionAble.add("color");
+
+            if (opt.getSize() != null) optionAble.add("size");
+
+            if (opt.getExtra() != null) optionAble.add("extra");
+
+            if (opt.getEtc() != null) optionAble.add("etc");
         }
 
         return new ArrayList<>(optionAble);

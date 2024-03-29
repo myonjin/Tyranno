@@ -17,7 +17,6 @@ public class Delivery {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
     private Users users; // 회원정보 들고오기
 
     @Column(nullable = false)

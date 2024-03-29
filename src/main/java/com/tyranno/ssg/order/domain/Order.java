@@ -16,11 +16,9 @@ public class Order {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "optionId")
     private Option option;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orderListId")
     private OrderList orderList;
 
     @Column(nullable = false)

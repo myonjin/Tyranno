@@ -14,7 +14,6 @@ public class ReviewImage {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reviewId")
     private Review review; // 리뷰 테이블
 
     private String reviewImageUrl; // 리뷰이미지 링크

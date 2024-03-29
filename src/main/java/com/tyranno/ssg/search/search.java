@@ -18,7 +18,6 @@ public class search extends GlobalCreateTime {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usersId")
     private Users users;
 
     @Column(nullable = false)

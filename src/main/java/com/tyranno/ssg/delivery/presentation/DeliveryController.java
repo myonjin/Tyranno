@@ -1,6 +1,5 @@
 package com.tyranno.ssg.delivery.presentation;
 
-import com.tyranno.ssg.auth.dto.SignUpDto;
 import com.tyranno.ssg.delivery.application.DeliveryService;
 import com.tyranno.ssg.delivery.dto.*;
 import com.tyranno.ssg.global.ResponseEntity;
@@ -53,9 +52,9 @@ public class DeliveryController {
     @GetMapping("/modifyView/{delivery_id}")
     public ResponseEntity<?> getModifyView(@PathVariable Long delivery_id) {
 
-        SingleDeliveryDto singleDelivery = deliveryService.getSingleDelivery(delivery_id);
+        DeliveryDetailDto Delivery = deliveryService.getDetailDelivery(delivery_id);
 
-        return new ResponseEntity<>(singleDelivery);
+        return new ResponseEntity<>(Delivery);
     }
 
     @Operation(summary = "배송지 수정", description = "한 기존 배송지를 수정한다.")

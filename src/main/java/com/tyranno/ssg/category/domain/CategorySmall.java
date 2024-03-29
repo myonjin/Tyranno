@@ -14,7 +14,6 @@ public class CategorySmall {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryMiddleId")
     private CategoryMiddle categoryMiddle;
 
     private String smallName;

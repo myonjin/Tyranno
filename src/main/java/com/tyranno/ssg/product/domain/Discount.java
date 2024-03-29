@@ -22,6 +22,5 @@ public class Discount {
     private LocalDateTime discountEnd;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productId")
     private Product product;
 }
