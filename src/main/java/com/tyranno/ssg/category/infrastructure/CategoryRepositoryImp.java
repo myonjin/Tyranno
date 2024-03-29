@@ -21,19 +21,6 @@ public class CategoryRepositoryImp extends QuerydslRepositorySupport {
         this.categoryService = categoryService;
         this.jpaQueryFactory = jpaQueryFactory;
     }
-
-    public List<Product> getProductList(Long largeId, Long middleId,
-                                        Long smallId, Long detailId, String sortCriterion) {
-        QCategory category = QCategory.category;
-        return jpaQueryFactory.select(category.product)
-                .from(category)
-                .where(
-                        largeIdEq(category, largeId),
-                        middleIdEq(category, middleId),
-                        smallIdEq(category, smallId),
-                        detailIdEq(category, detailId))
-                .fetch();
-    }
     public List<Long> getProductIdList(Long largeId, Long middleId,
                                         Long smallId, Long detailId, String sortCriterion) {
         QCategory category = QCategory.category;

@@ -12,7 +12,6 @@ public class CategoryProductIdListDto {
     private List<Long> productIds;
 
     @Builder
-
     public void setProductIds(List<Long> productIds) {
         this.productIds = productIds;
     }

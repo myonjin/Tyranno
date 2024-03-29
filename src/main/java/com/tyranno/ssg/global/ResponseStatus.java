@@ -64,10 +64,12 @@ public enum ResponseStatus {
 //    // Delivery
     NO_EXIST_DELIVERY(false, 2300, "존재하지 않는 배송지입니다."),
 
-    // Vendor
+    // Product
+    NO_EXIST_PRODUCT(false, 7001, "Product가 조회되지 않습니다"),
     NO_EXIST_VENDOR(false, 7200, "Vendor가 조회되지 않습니다."),
     NO_EXIST_VENDORPRODUCT(false, 7201, "VendorProduct가 조회되지 않습니다."),
-    NO_EXIST_PRODUCTTHUM(false, 7001, "ProductThum이 조회되지 않습니다");
+    NO_EXIST_PRODUCTTHUM(false, 7001, "ProductThum이 조회되지 않습니다"),
+    NO_EXIST_DISCOUNT(false,7300 , "Discount가 조회되지 않습니다");
 //
 //
 //    /**

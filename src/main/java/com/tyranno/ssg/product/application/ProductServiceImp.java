@@ -1,31 +1,25 @@
 package com.tyranno.ssg.product.application;
 
 import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
-import com.tyranno.ssg.category.infrastructure.CategoryRepository;
 import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
-import com.tyranno.ssg.product.domain.Discount;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
 import com.tyranno.ssg.product.dto.*;
 import com.tyranno.ssg.product.infrastructure.DiscountRepository;
 import com.tyranno.ssg.product.infrastructure.ProductRepository;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
-import com.tyranno.ssg.vendor.domain.Vendor;
 import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.dto.VendorDto;
+import com.tyranno.ssg.vendor.dto.VendorProductDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,12 +53,12 @@ public class ProductServiceImp implements ProductService{
                     .toList();
             // vendor 담기
             // 상품 아이디로 판매자-상품 중간테이블에서 조회
-            VendorProduct vendorProduct = vendorProductRepository.findByProductId(product.getId());
+            Optional<VendorProduct> vendorProduct = vendorProductRepository.findByProductId(product.getId());
             List<VendorDto> vendorDtos = new ArrayList<>();
-            if (vendorProduct != null) {
+            if (vendorProduct.isPresent()) {
                 VendorDto vendorDto = new VendorDto();
-                vendorDto.setVendorId(vendorProduct.getVendor().getId());
-                vendorDto.setVendorName(vendorProduct.getVendor().getVendorName());
+//                vendorDto.setVendorId(vendorProduct.getVendor().getId());
+//                vendorDto.setVendorName(vendorProduct.getVendor().getVendorName());
                 vendorDtos.add(vendorDto);
             }
             // ProductDto 생성 및 값 설정
@@ -95,24 +89,24 @@ public class ProductServiceImp implements ProductService{
     }
 
     @Override
-    public ProductDto getProductInformation(Long productId){
-        Optional<Product> product = productRepository.findById(productId);
-        ProductDto productDto = new ProductDto();
-        product.ifPresent(p -> {
-            productDto.setProductId(p.getId());
-            productDto.setProductName(p.getProductName());
-            productDto.setPrice(p.getProductPrice());
-            productDto.setProductRate(p.getProductRate());
-            productDto.setReviewCount(p.getReviewCount());
-        });
-        return productDto;
+    public ProductInformationDto getProductInformation(Long productId){ // productList에 출력할 상품내용 불러오기
+        return productRepository.findById(productId)
+                .map(ProductInformationDto::FromEntity)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
     }
 
     @Override
-    public ProductThumDto getProductThumPriority1(Long productId){
+    public ProductThumDto getProductThumPriority1(Long productId){ // productList에서 상품 썸네일 불러오기
         return productThumRepository.findByProductIdAndPriority(productId, 1)
                 .map(ProductThumDto::FromEntity)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCTTHUM));
+    }
+
+    @Override
+    public  DiscountDto getDiscount(Long productId) {
+        return discountRepository.findByProductId(productId)
+                .map(DiscountDto::FromEntity)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT));
     }
 
 }

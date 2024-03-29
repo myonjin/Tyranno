@@ -7,6 +7,6 @@ import com.tyranno.ssg.vendor.dto.VendorProductDto;
 import java.util.Optional;
 
 public interface VendorService {
-    VendorProductDto findByProductId(Long productId);
+    VendorProductDto getVendorByProductId(Long productId);
     VendorDto findById(Long id);
 }
