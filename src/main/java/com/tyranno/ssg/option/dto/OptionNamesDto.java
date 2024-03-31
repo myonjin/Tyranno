@@ -16,15 +16,13 @@ public class OptionNamesDto {
     private String size;
     private String additional_option;
     private String extra_name;
-    private int total_price;
 
-    public static OptionNamesDto FromEntity(Option option, Product product) {
+    public static OptionNamesDto FromEntity(Option option) {
         return OptionNamesDto.builder()
                 .color(option.getColor() != null ? option.getColor().getColor() : null)
                 .size(option.getSize() != null ? option.getSize().getSize() : null)
                 .additional_option(option.getEtc() != null ? option.getEtc().getAdditionalOption() : null)
                 .extra_name(option.getExtra() != null ? option.getExtra().getExtraName() : null)
-                .total_price(option.getExtra() != null ? option.getExtra().getExtraPrice() + product.getProductPrice() : product.getProductPrice())
                 .build();
     }
 }

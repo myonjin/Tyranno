@@ -15,21 +15,23 @@ import java.util.List;
 @Builder
 public class CartListDto {
     private Long cartId;
-    private Long productId;
     private Long optionId;
-    private String imageUrl; //
-    private int productPrice;
-    private int discount; //
+    private String productName;
+    private String imageUrl;
+    private int totalPrice;
+    private int discount;
     private int count;
     private int isKeep;
-    private String vendorName; //
+    private String vendorName;
 
     public static CartListDto FromEntity(Cart cart, String imageUrl, int discount, String vendorName) {
         return CartListDto.builder()
                 .cartId(cart.getId())
-                .productId(cart.getOption().getProduct().getId())
                 .optionId(cart.getOption().getId())
+                .productName(cart.getOption().getProduct().getProductName())
                 .imageUrl(imageUrl)
+                .totalPrice(cart.getOption().getProduct().getProductPrice() + (
+                        cart.getOption().getExtra() != null ? cart.getOption().getExtra().getExtraPrice() : 0))
                 .discount(discount)
                 .count(cart.getCount())
                 .isKeep(cart.getIsKeep())
