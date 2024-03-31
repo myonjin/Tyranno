@@ -42,7 +42,7 @@ public class OptionController {
     }
 
     @Operation(summary = "선택 가능 옵션 조회 (List)", description = "선택 가능한 옵션을 조회한다.")
-    @GetMapping("/list/000{product_id}")
+    @GetMapping("/list/{product_id}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "선택 가능 옵션 조회 완료"),
             @ApiResponse(responseCode = "400", description = "선택 가능 옵션 조회 중 오류 발생")})
@@ -52,7 +52,7 @@ public class OptionController {
         return new ResponseEntity<>(optionAbleList);
     }
 
-
+    @Tag(name = "상품 옵션", description = "옵션 API")
     @Operation(summary = "선택한 옵션 ID 조회 및 정보", description = "선택한 옵션을 조회한다..")
     @GetMapping("/{product_id}")
     @ApiResponses({
