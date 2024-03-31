@@ -26,8 +26,5 @@ public class Cart {
 
     private Integer count;
 
-    @Column(nullable = false)
-    private Byte isIncluded;
-
     private Byte isKeep;
 }
