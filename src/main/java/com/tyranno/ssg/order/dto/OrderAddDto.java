@@ -2,6 +2,7 @@ package com.tyranno.ssg.order.dto;
 
 import com.tyranno.ssg.global.GlobalCreateTime;
 import com.tyranno.ssg.order.domain.OrderList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,20 +13,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderAddDto {
 
-    private long optionId;
+    private List<OptionIdListDto> optionIdList;
+
     private String deliveryRequest;
     private String deliveryBase;
     private String deliveryDetail;
     private int zipCode;
+
     private String receiverName;
     private String receiverPhoneNumber;
+
     private String orderName;
-    private String orderNumber;
+    private String orderNumber; // 주문번호
     private String orderEmail;
-    private int count;
-    private int money;
+
     private int totalMoney;
-    private int discount;
 
     public OrderList toEntity(String uuid, OrderAddDto orderAddDto, String createdOrderNumber) {
         return OrderList.builder()
