@@ -1,5 +1,6 @@
 package com.tyranno.ssg.order.domain;
 
+import com.tyranno.ssg.global.GlobalCreateTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,12 +17,13 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-public class OrderList {
+public class OrderList extends GlobalCreateTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long usersId;
+    @Column(nullable = false)
+    private String uuid;
 
     private String deliveryRequest;
 
@@ -64,4 +66,10 @@ public class OrderList {
 
     @Column(nullable = false)
     private Byte isOrderConfirm;
+
+
+//    public OrderList(String createdOrderNumber) {
+//        this.orderNumber = createdOrderNumber;
+//    }
+
 }
