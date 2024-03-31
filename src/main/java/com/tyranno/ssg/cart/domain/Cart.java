@@ -3,7 +3,10 @@ package com.tyranno.ssg.cart.domain;
 import com.tyranno.ssg.option.domain.Option;
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,11 +19,9 @@ public class Cart {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
     private Users users; // 회원 테이블(Users)
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "optionId")
     private Option option; // 옵션 테이블
 
     private Integer count;
