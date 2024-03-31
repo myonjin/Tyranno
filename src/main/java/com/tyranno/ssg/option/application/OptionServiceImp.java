@@ -104,7 +104,7 @@ public class OptionServiceImp implements OptionService {
                                 existingDto.getStock() + newDto.getStock(),
                                 existingDto.getExtraPrice() + newDto.getExtraPrice())
                 ));
-        //        log.info(options.toString());
+//                log.info(options.toString());
 //        List<Color> colors = options.stream()
 //                .map(Option::getColor) // Option -> Color로 매핑
 //                .filter(Objects::nonNull) // null이 아닌 Color 객체만 필터링
