@@ -31,6 +31,7 @@ public class Delivery {
     @Column(nullable = false)
     private String deliveryBase;
 
+    @Column(nullable = false)
     private String deliveryDetail;
 
     @Column(nullable = false)

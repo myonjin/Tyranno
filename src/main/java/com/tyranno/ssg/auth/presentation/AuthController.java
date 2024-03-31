@@ -36,6 +36,15 @@ public class AuthController {
         return new ResponseEntity<>("사용할 수 있는 아이디입니다.");
     }
 
+    @Operation(summary = "이메일 중복 검사", description = "회원 가입 시 기존 회원과 이메일 중복 여부 체크")
+    @PostMapping("/email-check")
+    public ResponseEntity<?> checkIdExist(@RequestBody EmailCheckDto emailCheckDto) {
+
+        authService.checkEmail(emailCheckDto);
+
+        return new ResponseEntity<>("사용할 수 있는 이메일입니다.");
+    }
+
     @Operation(summary = "로그인", description = "로그인")
     @PostMapping("/login")
     public ResponseEntity<?> logIn(@Valid @RequestBody LoginDto logInDto) {

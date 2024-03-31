@@ -14,5 +14,4 @@ import lombok.NoArgsConstructor;
 public class CartAddDto {
     private Long optionId;
     private int count;
-    private Byte isKeep;
 }

@@ -10,6 +10,7 @@ public interface AuthService {
     String loginUsers(LoginDto loginDto);
 
     void checkLoginId(IdCheckDto idCheckDto);
+    void checkEmail(EmailCheckDto emailCheckDto);
 
     String findLoginId(UserIdentifyDto userIdentifyDto);
 

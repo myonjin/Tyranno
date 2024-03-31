@@ -65,7 +65,7 @@ public class CartServiceImp implements CartService {
         if (cartRepository.existsByOptionAndUsers(option, users)) {
             Cart cart = cartRepository.findByOptionAndUsers(option, users);
 
-            Cart.builder()
+            cart = Cart.builder()
                     .id(cart.getId())
                     .users(cart.getUsers())
                     .option(cart.getOption())
@@ -73,6 +73,7 @@ public class CartServiceImp implements CartService {
                     .isKeep(cart.getIsKeep())
                     .build();
 
+            cartRepository.save(cart);
             return "이미 있는 제품을 다시 담았습니다.";
         }
         // 새로운 상품의 옵션을 장바구니에 담았을 때

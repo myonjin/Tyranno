@@ -36,18 +36,12 @@ public class AuthServiceImp implements AuthService {
 
         //마케팅
         for (MarketingType type : MarketingType.values()) {
-            Byte isAgree = 99; // default : 99 - 비동의
-            switch (type) {
-                case SHINSEGAE:
-                    isAgree = signUpDto.getShinsegaeMarketingAgree();
-                    break;
-                case SHINSEGAE_OPTION:
-                    isAgree = signUpDto.getShinsegaeOptionAgree();
-                    break;
-                case SSG:
-                    isAgree = signUpDto.getSsgMarketingAgree();
-                    break;
-            }
+
+            Byte isAgree = switch (type) {
+                case SHINSEGAE -> signUpDto.getShinsegaeMarketingAgree();
+                case SHINSEGAE_OPTION -> signUpDto.getShinsegaeOptionAgree();
+                case SSG -> signUpDto.getSsgMarketingAgree();
+            }; // default : 99 - 비동의
 
             MarketingInformation marketingInformation = MarketingInformation.builder()
                     .isAgree(isAgree)
@@ -67,6 +61,13 @@ public class AuthServiceImp implements AuthService {
     public void checkLoginId(IdCheckDto idCheckDto) {
         if (usersRepository.existsByLoginId(idCheckDto.getLoginId())) {
             throw new GlobalException(ResponseStatus.DUPLICATE_ID);
+        }
+    }
+
+    @Override
+    public void checkEmail(EmailCheckDto emailCheckDto) {
+        if (usersRepository.existsByEmail(emailCheckDto.getEmail())) {
+            throw new GlobalException(ResponseStatus.DUPLICATE_EMAIL);
         }
     }
 

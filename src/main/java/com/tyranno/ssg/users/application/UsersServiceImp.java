@@ -30,8 +30,7 @@ public class UsersServiceImp implements UsersService {
     @Transactional
     @Override
     public void modifyPassword(PasswordModifyDto passwordModifyDto, String uuid) {
-        Users users = usersRepository.findByUuid((uuid))
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        Users users = getUsers(uuid);
         usersRepository.save(passwordModifyDto.toEntity(users));
     }
 
