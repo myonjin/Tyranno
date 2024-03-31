@@ -27,7 +27,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestHeader("Authorization") String token, @RequestBody OrderAddDto orderAddDto) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
-        orderService.addOrder(orderAddDto, uuid);
+        orderService.addOrderList(orderAddDto, uuid);
         return new ResponseEntity<>("주문 생성");
     }
 }
