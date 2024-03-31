@@ -19,6 +19,7 @@ public record ResponseEntity<T>(Boolean isSuccess, String message, int code, T r
     public ResponseEntity(ResponseStatus status) {
         this(false, status.getMessage(), status.getCode(), null);
     }
+
     // 요청 실패한 경우 @RuntimeError
     public ResponseEntity(ResponseStatus status, String message) {
         this(false, message, status.getCode(), null);
