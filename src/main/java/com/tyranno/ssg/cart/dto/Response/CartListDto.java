@@ -32,10 +32,10 @@ public class CartListDto {
                 .imageUrl(imageUrl)
                 .totalPrice(cart.getOption().getProduct().getProductPrice() + (
                         cart.getOption().getExtra() != null ? cart.getOption().getExtra().getExtraPrice() : 0))
-                .discount(discount)
+                .discount(discount) // 할인율 적용금액도 주기 //비회원은?
                 .count(cart.getCount())
                 .isKeep(cart.getIsKeep())
                 .vendorName(vendorName)
                 .build();
-    }
+    }//밴더 끼리 묵ㄲ기
 }

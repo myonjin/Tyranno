@@ -85,8 +85,10 @@ public enum ResponseStatus {
 
     // Vendor
     NO_EXIST_VENDORPRODUCT(false, 8000, "존재하지 않는 판매자상품입니다."),
-    NO_EXIST_VENDOR(false, 8100, "존재하지 않는 판매자입니다.");
+    NO_EXIST_VENDOR(false, 8100, "존재하지 않는 판매자입니다."),
 
+    // 문자인증
+    NO_MATCH_CERTIFICATION_NUMBER(false, 9000, "인증번호가 일치하지 않습니다.");
 
     private final boolean isSuccess;
     private final int code;
