@@ -42,7 +42,7 @@ out/
 # src/main/resources/application.yml
 
 ### Key Files ###
-src/main/resources/firebase/serviceAccountKey.json
+**/application-local.yml
 
 ### .DS_store ###
 .DS_Store
