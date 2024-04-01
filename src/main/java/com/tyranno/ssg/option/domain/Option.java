@@ -16,15 +16,19 @@ public class Option {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Product product;
 
+    @ManyToOne
     private Size size;
 
+    @ManyToOne
     private Color color;
 
+    @ManyToOne
     private Etc etc;
 
+    @ManyToOne
     private Extra extra;
 
     @Column(nullable = false)
