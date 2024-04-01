@@ -11,7 +11,6 @@ import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +23,12 @@ public class UsersServiceImp implements UsersService {
     public Users getUsers(String uuid) {
         return usersRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+    }
+
+    @Override
+    public String getUserName(String uuid) {
+        Users users = getUsers(uuid);
+        return users.getName();
     }
 
 
