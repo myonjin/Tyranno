@@ -111,7 +111,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public  DiscountDto getDiscount(Long productId) {
+    public  DiscountDto getDiscount(Long productId) { // discount에서 할인정보 불러오기
         return discountRepository.findByProductId(productId)
                 .map(DiscountDto::FromEntity)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT));
