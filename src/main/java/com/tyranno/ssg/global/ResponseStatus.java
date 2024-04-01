@@ -68,7 +68,7 @@ public enum ResponseStatus {
     // Option
     NO_EXIST_OPTION(false, 4000, "존재하지 않는 옵션입니다."),
     ALREADY_EXIST_OPTION(false, 4001, "이미 존재하는 옵션입니니다."),
-
+    NO_SELECTED_OPTION(false,4003,"선택된 옵션이 없습니다."),
     // Cart
     NO_EXIST_CART(false, 5000, "존재하지 않는 장바구니입니다."),
 

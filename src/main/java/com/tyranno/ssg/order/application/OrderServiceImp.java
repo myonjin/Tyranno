@@ -12,6 +12,8 @@ import com.tyranno.ssg.order.dto.OrderAddDto;
 import com.tyranno.ssg.order.infrastructure.OrderListRepository;
 import com.tyranno.ssg.order.infrastructure.OrderRepository;
 import java.util.Random;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class OrderServiceImp implements OrderService {
     private final OrderRepository orderRepository;
     private final OptionRepository optionRepository;
     @Override
+    @Transactional
     public void addOrderList(OrderAddDto orderAddDto, String uuid) {
         // 1. orderList에 임의의 주문번호를 넣어줌
         OrderList orderList = orderAddDto.toEntity(uuid, orderAddDto, "99");

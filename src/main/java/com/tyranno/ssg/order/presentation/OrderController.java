@@ -30,4 +30,12 @@ public class OrderController {
         orderService.addOrderList(orderAddDto, uuid);
         return new ResponseEntity<>("주문 생성");
     }
+
+    //비회원 주문 생성
+    @Operation(summary = "비회원 주문 생성", description = "비회원 주문을 생성한다.")
+    @PostMapping("/non-member")
+    public ResponseEntity<?> createNonMemberOrder(@RequestBody OrderAddDto orderAddDto) {
+        orderService.addOrderList(orderAddDto, "nonmember");
+        return new ResponseEntity<>("비회원 주문 생성");
+    }
 }

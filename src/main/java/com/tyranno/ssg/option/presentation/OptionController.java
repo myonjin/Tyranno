@@ -64,7 +64,6 @@ public class OptionController {
                                                @RequestParam(value = "size", required = false) Long sizeId,
                                                @RequestParam(value = "extra", required = false) Long extraId,
                                                @RequestParam(value = "etc", required = false) Long etcId){
-
         List<OptionDto> optionProduct = optionService.getOptionProduct(productId, colorId, sizeId, extraId, etcId);
         return new ResponseEntity<>(optionProduct);
     }
