@@ -3,6 +3,6 @@ package com.tyranno.ssg.text;
 import lombok.Getter;
 
 @Getter
-public class SmsRequestDto {
+public class SmsSendDto {
     private String phoneNumber;
 }

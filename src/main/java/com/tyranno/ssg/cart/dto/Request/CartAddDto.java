@@ -12,19 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartAddDto {
-    @NotNull
     private Long optionId;
-    @NotNull
     private int count;
-    @NotNull
-    private Byte isKeep;
-
-    public Cart toEntity(Users users, Option option) {
-        return Cart.builder()
-                .users(users)
-                .option(option)
-                .count(count)
-                .isKeep(isKeep)
-                .build();
-    }
 }
