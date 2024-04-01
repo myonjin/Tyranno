@@ -14,7 +14,6 @@ import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,18 +36,12 @@ public class AuthServiceImp implements AuthService {
 
         //마케팅
         for (MarketingType type : MarketingType.values()) {
-            Byte isAgree = 99; // default : 99 - 비동의
-            switch (type) {
-                case SHINSEGAE:
-                    isAgree = signUpDto.getShinsegaeMarketingAgree();
-                    break;
-                case SHINSEGAE_OPTION:
-                    isAgree = signUpDto.getShinsegaeOptionAgree();
-                    break;
-                case SSG:
-                    isAgree = signUpDto.getSsgMarketingAgree();
-                    break;
-            }
+
+            Byte isAgree = switch (type) {
+                case SHINSEGAE -> signUpDto.getShinsegaeMarketingAgree();
+                case SHINSEGAE_OPTION -> signUpDto.getShinsegaeOptionAgree();
+                case SSG -> signUpDto.getSsgMarketingAgree();
+            }; // default : 99 - 비동의
 
             MarketingInformation marketingInformation = MarketingInformation.builder()
                     .isAgree(isAgree)
@@ -72,13 +65,20 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
+    public void checkEmail(EmailCheckDto emailCheckDto) {
+        if (usersRepository.existsByEmail(emailCheckDto.getEmail())) {
+            throw new GlobalException(ResponseStatus.DUPLICATE_EMAIL);
+        }
+    }
+
+    @Override
     public String loginUsers(LoginDto loginDto) {
         Users users = usersRepository.findByLoginId(loginDto.getLoginId())
-                .orElseThrow(() -> new GlobalException(ResponseStatus.FAILED_TO_LOGIN_ID));
+                .orElseThrow(() -> new GlobalException(ResponseStatus.FAILED_TO_LOGIN));
 
         if (bCryptPasswordEncoder.matches(loginDto.getPassword(), users.getPassword())) {
             return jwtTokenProvider.generateToken(users);
-        } else throw new GlobalException(ResponseStatus.FAILED_TO_LOGIN_PW);
+        } else throw new GlobalException(ResponseStatus.FAILED_TO_LOGIN);
     }
 
 
@@ -95,7 +95,7 @@ public class AuthServiceImp implements AuthService {
     public void changePassword(PasswordChangeDto passwordChangeDto) {
         Users users = usersRepository.findByLoginId((passwordChangeDto.getLoginId()))
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-      ;
+        ;
         usersRepository.save(passwordChangeDto.toEntity(users));
     }
 }

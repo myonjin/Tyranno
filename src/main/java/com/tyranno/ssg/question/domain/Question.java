@@ -20,11 +20,9 @@ public class Question extends GlobalTime {
     private Long id; // Q&A 아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usersId")
     private Users users;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productId")
     private Product product;
 
     private String title; // 제목

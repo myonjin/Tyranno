@@ -3,14 +3,11 @@ package com.tyranno.ssg.cart.domain;
 import com.tyranno.ssg.option.domain.Option;
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Getter
 public class Cart {
@@ -27,4 +24,13 @@ public class Cart {
     private Integer count;
 
     private Byte isKeep;
+
+    @Builder
+    public Cart(Long id, Users users, Option option, Integer count, Byte isKeep) {
+        this.id = id;
+        this.users = users;
+        this.option = option;
+        this.count = count;
+        this.isKeep = isKeep;
+    }
 }

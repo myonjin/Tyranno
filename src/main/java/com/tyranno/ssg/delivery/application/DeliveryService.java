@@ -10,7 +10,7 @@ public interface DeliveryService {
     void addDelivery(DeliveryAddDto deliveryInfoDto, String uuid);
     void deleteDelivery(Long deliveryId);
     List<DeliveryListDto> getDeliveryList(String uuid);
-    SingleDeliveryDto getSingleDelivery(Long deliveryId);
+    DeliveryDetailDto getDetailDelivery(Long deliveryId);
     void modifyDelivery(DeliveryModifyDto deliveryModifyDto);
     void modifyBaseDelivery(BaseDeliveryModifyDto baseDeliveryModifyDto);
     Delivery getDelivery(Long deliveryId);

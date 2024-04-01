@@ -2,25 +2,19 @@ package com.tyranno.ssg.option.application;
 
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
-import com.tyranno.ssg.option.domain.Color;
-import com.tyranno.ssg.option.domain.Etc;
-import com.tyranno.ssg.option.domain.Extra;
 import com.tyranno.ssg.option.domain.Option;
-import com.tyranno.ssg.option.domain.Size;
-import com.tyranno.ssg.option.dto.ColorStockDto;
-import com.tyranno.ssg.option.dto.EtcStockDto;
-import com.tyranno.ssg.option.dto.ExtraStockDto;
-import com.tyranno.ssg.option.dto.OptionAbleListDto;
-import com.tyranno.ssg.option.dto.OptionDto;
-import com.tyranno.ssg.option.dto.SizeStockDto;
+import com.tyranno.ssg.option.dto.*;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
 import com.tyranno.ssg.option.infrastructure.OptionRepositoryImpl;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,7 +24,15 @@ public class OptionServiceImp implements OptionService {
     private final OptionRepositoryImpl optionRepositoryImp;
 
     @Override
-    public List<String> findOptionAble(Long productId) {
+
+    public OptionNamesDto getOptionNames(Long optionId) {
+        return optionRepository.findById(optionId)
+                .map(OptionNamesDto::FromEntity)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION));
+    }
+
+    @Override
+    public List<String> getOptionAble(Long productId) {
         // 옵션 리스트 ex ["색상","사이즈"]
         LinkedHashSet<String> optionAble = new LinkedHashSet<>(); // 요소를 추가된 순서대로 순회 가능하게 한다.
         List<?> options = optionRepository.findName(productId)
@@ -38,28 +40,21 @@ public class OptionServiceImp implements OptionService {
 //        options.forEach(option -> log.info(option.toString()));
         for (Object option : options) {
             Option opt = (Option) option;
-            if (opt.getStock() == 0) {
-                continue;
-            }
-            if (opt.getColor() != null) {
-                optionAble.add("color");
-            }
-            if (opt.getSize() != null) {
-                optionAble.add("size");
-            }
-            if (opt.getExtra() != null) {
-                optionAble.add("extra");
-            }
-            if (opt.getEtc() != null) {
-                optionAble.add("etc");
-            }
+            if (opt.getStock() == 0) continue;
+            if (opt.getColor() != null) optionAble.add("color");
+
+            if (opt.getSize() != null) optionAble.add("size");
+
+            if (opt.getExtra() != null) optionAble.add("extra");
+
+            if (opt.getEtc() != null) optionAble.add("etc");
         }
 
         return new ArrayList<>(optionAble);
     }
 
     @Override
-    public List<OptionAbleListDto> findOptionAbleList(Long productId) {
+    public List<OptionAbleListDto> getOptionAbleList(Long productId) {
 
         List<Option> options = optionRepository.findAllByProductId(productId)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.DUPLICATE_ID));
@@ -116,7 +111,7 @@ public class OptionServiceImp implements OptionService {
 //                .filter(Objects::nonNull)
 //                .distinct()
 //                .toList();
-//
+
 //        List<Extra> extras = options.stream()
 //                .map(Option::getExtra)
 //                .filter(Objects::nonNull)

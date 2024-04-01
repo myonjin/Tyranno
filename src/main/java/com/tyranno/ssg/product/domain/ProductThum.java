@@ -3,9 +3,7 @@ package com.tyranno.ssg.product.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Getter
 public class ProductThum {
@@ -15,7 +13,6 @@ public class ProductThum {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "productId")
     private Product product;
 
     private String imageUrl; // 이미지링크
@@ -24,4 +21,13 @@ public class ProductThum {
     private Byte priority; // 우선순위
 
     private String imageName; // alt
+
+    @Builder
+    public ProductThum(Long id, Product product, String imageUrl, Byte priority, String imageName) {
+        this.id = id;
+        this.product = product;
+        this.imageUrl = imageUrl;
+        this.priority = priority;
+        this.imageName = imageName;
+    }
 }
