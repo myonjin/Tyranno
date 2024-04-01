@@ -3,6 +3,7 @@ package com.tyranno.ssg.cart.presentation;
 import com.tyranno.ssg.cart.application.CartService;
 import com.tyranno.ssg.cart.dto.Request.CartAddDto;
 import com.tyranno.ssg.cart.dto.Request.CartCountModifyDto;
+import com.tyranno.ssg.cart.dto.Request.CartKeepModifyDto;
 import com.tyranno.ssg.cart.dto.Request.CartOptionModifyDto;
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.security.JwtTokenProvider;
@@ -78,6 +79,13 @@ public class CartController {
     public ResponseEntity<?> countUsersCart(@RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         return new ResponseEntity<>(cartService.getUsersCartCount(uuid));
+    }
+
+    @Operation(summary = "계속 담아두기 여부 변경", description = "한 장바구니의 계속 담아두기(isKeep) 여부를 변경한다. isKeep 는 Byte 타입")
+    @PutMapping("/keep")
+    public ResponseEntity<?> modifyCartIsKeep(@RequestBody CartKeepModifyDto cartKeepModifyDto) {
+        cartService.modifyCartIsKeep(cartKeepModifyDto);
+        return new ResponseEntity<>("계속 담아두기 여부가 변경되었습니다.");
     }
 
 

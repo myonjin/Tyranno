@@ -146,7 +146,7 @@ public class CartServiceImp implements CartService {
     }
 
     @Override
-    public void modifyCartKeep(CartKeepModifyDto cartKeepModifyDto){
+    public void modifyCartIsKeep(CartKeepModifyDto cartKeepModifyDto){
         Cart cart = getCart(cartKeepModifyDto.getCartId());
         cartRepository.save(cartKeepModifyDto.toEntity(cart));
     }

@@ -15,6 +15,4 @@ public interface UsersService {
     UsersInfoDto getUsersInfo(String uuid);
 
     void resignUsers(String uuid);
-
-    Users getUsers(String uuid);
 }

@@ -20,17 +20,11 @@ public class UsersServiceImp implements UsersService {
     private final MarketingRepository marketingRepository;
     private final MarketingInformationRepository marketingInformationRepository;
 
-    public Users getUsers(String uuid) {
-        return usersRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-    }
-
     @Override
     public String getUserName(String uuid) {
         Users users = getUsers(uuid);
         return users.getName();
     }
-
 
     @Transactional
     @Override
@@ -86,5 +80,8 @@ public class UsersServiceImp implements UsersService {
         usersRepository.save(users);
     }
 
-
+    private Users getUsers(String uuid) {
+        return usersRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+    }
 }

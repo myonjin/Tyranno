@@ -22,5 +22,5 @@ public interface CartService {
 
     int getUsersCartCount(String uuid);
 
-    void modifyCartKeep(CartKeepModifyDto cartKeepModifyDto);
+    void modifyCartIsKeep(CartKeepModifyDto cartKeepModifyDto);
 }
