@@ -25,7 +25,7 @@ public record ResponseEntity<T>(Boolean isSuccess, String message, int code, T r
         this(false, message, status.getCode(), null);
     }
 
-    //요청에 실패한 경우 @Vaild annotantion error 판매자
+    //요청에 실패한 경우 @Vaild annotantion error
     public ResponseEntity(Exception e, String message) {
         this(false, message, 3000, null);
     }

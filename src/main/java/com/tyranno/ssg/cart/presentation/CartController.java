@@ -22,15 +22,23 @@ public class CartController {
     private final CartService cartService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Operation(summary = "장바구니 담기", description = "한 상품을 장바구니에 담는다.")
+    @Operation(summary = "장바구니 담기 (상품 상세페이지)", description = "상품 상세페이지에서 장바구니에 상품을 담는다.")
     @PostMapping
-    public ResponseEntity<?> addDelivery(@Valid @RequestBody CartAddDto cartAddDto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> addDeliveryAtDetail(@RequestBody CartAddDto cartAddDto, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
-        cartService.addCart(cartAddDto, uuid);
-        return new ResponseEntity<>("장바구니 추가 완료");
+        String result = cartService.addCartByOption(cartAddDto, uuid);
+        return new ResponseEntity<>(result);
     }
 
-    @Operation(summary = "장바구니 리스트 조회", description = "한 유저의 모든 장바구니 항목을 조회한다.")
+    @Operation(summary = "장바구니 담기 (상품 리스트)", description = "상품 리스트에서 장바구니에 상품을 담는다.")
+    @PostMapping("/{product_id}")
+    public ResponseEntity<?> addDeliveryAtList(@PathVariable Long product_id, @RequestHeader("Authorization") String token) {
+        String uuid = jwtTokenProvider.tokenToUuid(token);
+        String result = cartService.addCartByProduct(product_id, uuid);
+        return new ResponseEntity<>(result);
+    }
+
+    @Operation(summary = "장바구니 리스트 조회", description = "한 유저의 모든 장바구니 항목을 조회한다.(totalPrice 는 productPrice + extraPrice (discount 적용 x)")
     @GetMapping
     public ResponseEntity<?> deleteDelivery(@RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);

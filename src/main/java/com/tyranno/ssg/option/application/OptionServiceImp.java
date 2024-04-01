@@ -27,7 +27,7 @@ public class OptionServiceImp implements OptionService {
 
     public OptionNamesDto getOptionNames(Long optionId) {
         return optionRepository.findById(optionId)
-                .map(option -> OptionNamesDto.FromEntity(option, option.getProduct()))
+                .map(OptionNamesDto::FromEntity)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION));
     }
 
