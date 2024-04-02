@@ -13,10 +13,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor  // final로 선언된 필드를 초기화 하는 생성자를 만들어준다.
+@RequiredArgsConstructor
 @RestController
 @Tag(name = "상품 옵션", description = "옵션 API")
 @RequestMapping("/api/v1/option")
@@ -24,7 +25,7 @@ public class OptionController {
 
     private final OptionService optionService;
 
-    @Operation(summary = "옵션 정보 조회", description = "한 옵션 필드들의 이름들과 총 가격을 조회한다.")
+    @Operation(summary = "옵션 이름 조회", description = "한 옵션 id에 대한 이름들을 조회한다.")
     @GetMapping("/names/{option_id}")
     public ResponseEntity<?> getOptionNames(@PathVariable Long option_id) {
         return new ResponseEntity<>(optionService.getOptionNames(option_id));
@@ -59,10 +60,10 @@ public class OptionController {
             @ApiResponse(responseCode = "200", description = "옵션 조회 완료"),
             @ApiResponse(responseCode = "400", description = "옵션 조회 중 오류 발생")})
     public ResponseEntity<?> getOptionProduct(@Parameter(description = "상품 ID") @PathVariable(value = "product_id") Long productId,
-                                               @RequestParam(value = "color", required = false) Long colorId,
-                                               @RequestParam(value = "size", required = false) Long sizeId,
-                                               @RequestParam(value = "extra", required = false) Long extraId,
-                                               @RequestParam(value = "etc", required = false) Long etcId){
+                                              @RequestParam(value = "color", required = false) Long colorId,
+                                              @RequestParam(value = "size", required = false) Long sizeId,
+                                              @RequestParam(value = "extra", required = false) Long extraId,
+                                              @RequestParam(value = "etc", required = false) Long etcId) {
 
         List<OptionDto> optionProduct = optionService.getOptionProduct(productId, colorId, sizeId, extraId, etcId);
         return new ResponseEntity<>(optionProduct);

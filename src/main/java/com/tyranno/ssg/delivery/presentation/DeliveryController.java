@@ -25,7 +25,7 @@ public class DeliveryController {
     @PostMapping
     public ResponseEntity<?> addDelivery(@Valid @RequestBody DeliveryAddDto deliveryAddDto, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
-        deliveryService.addDelivery(deliveryAddDto,uuid);
+        deliveryService.addDelivery(deliveryAddDto, uuid);
 
         return new ResponseEntity<>("배송지 등록 완료");
     }
@@ -36,7 +36,7 @@ public class DeliveryController {
 
         deliveryService.deleteDelivery(delivery_id);
 
-        return new ResponseEntity<>( "배송지가 삭제되었습니다.");
+        return new ResponseEntity<>("배송지가 삭제되었습니다.");
     }
 
     @Operation(summary = "배송지 목록 조회", description = "한 유저에 대한 모든 배송지를 조회한다.")
@@ -49,7 +49,7 @@ public class DeliveryController {
     }
 
     @Operation(summary = "배송지 수정 화면 조회", description = "배송지 수정화면에 기존 배송지 정보를 띄우기 위해 조회한다.")
-    @GetMapping("/modifyView/{delivery_id}")
+    @GetMapping("/modify-view/{delivery_id}")
     public ResponseEntity<?> getModifyView(@PathVariable Long delivery_id) {
 
         DeliveryDetailDto Delivery = deliveryService.getDetailDelivery(delivery_id);

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "문자인증", description = "Text API")
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1/auth/text")
 public class SmsController {
 
     private final SmsService smsService;
