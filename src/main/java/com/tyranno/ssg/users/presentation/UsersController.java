@@ -66,10 +66,9 @@ public class UsersController {
 
     @Operation(summary = "회원 정보 조회", description = "회원정보 변경 시 기존 정보를 창에 띄우기 위한 api")
     @GetMapping
-    public ResponseEntity<?> getUsersInfo() {
-//        String uuid = jwtTokenProvider.tokenToUuid(token);
-        log.info("@@@@@@@@@@@@@@@@@@@@@");
-        return null;
+    public ResponseEntity<?> getUsersInfo(@RequestHeader("Authorization") String token) {
+        String uuid = jwtTokenProvider.tokenToUuid(token);
+        return new ResponseEntity<>(usersService.getUsersInfo(uuid));
     }
 
     @Operation(summary = "회원 탈퇴", description = "회원 상태를 탈퇴로 변경")
