@@ -40,6 +40,7 @@ out/
 # application.yml
 # *.yml
 # src/main/resources/application.yml
+**/application-local.yml
 
 ### Key Files ###
 src/main/resources/firebase/serviceAccountKey.json
