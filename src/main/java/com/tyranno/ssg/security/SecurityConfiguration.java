@@ -14,6 +14,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -29,17 +32,18 @@ public class SecurityConfiguration {
             "/api/v1/option/**", "/api/v1/event/**", "/api/v1/question/**", "/api/v1/search/**", "/api/v1/vendor/**",
             "/api/v1/like/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**"};
 
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        return request -> {
-//            var cors = new org.springframework.web.cors.CorsConfiguration();
-//            cors.setAllowedOriginPatterns(List.of("*"));
-//            cors.setAllowCredentials(true);
-//            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//            cors.setAllowedHeaders(List.of("*"));
-//            return cors;
-//        };
-//    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        return request -> {
+            var cors = new org.springframework.web.cors.CorsConfiguration();
+            cors.setAllowedOriginPatterns(List.of("*"));
+            cors.setAllowedOrigins(List.of("http://localhost:3000"));
+            cors.setAllowCredentials(true);
+            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            cors.setAllowedHeaders(List.of("*"));
+            return cors;
+        };
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -67,13 +71,13 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-            AuthenticationManager authenticationManager = http.getSharedObject(
-                    AuthenticationManager.class);
-            http
-                    .addFilter(config.corsFilter()); // cors 에 대해 허락하는 필터
-        }
-    }
+//    public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
+//        @Override
+//        public void configure(HttpSecurity http) throws Exception {
+//            AuthenticationManager authenticationManager = http.getSharedObject(
+//                    AuthenticationManager.class);
+//            http
+//                    .addFilter(config.corsFilter()); // cors 에 대해 허락하는 필터
+//        }
+//    }
 }
