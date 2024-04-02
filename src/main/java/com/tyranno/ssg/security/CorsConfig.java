@@ -13,7 +13,7 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedMethods(CorsConfiguration.ALL)
                 .allowedHeaders(CorsConfiguration.ALL)
-                .allowedOriginPatterns(CorsConfiguration.ALL) //모든 ip 에 응답 허용
+                .allowedOriginPatterns("http://localhost:3000") //모든 ip 에 응답 허용
                 .exposedHeaders(CorsConfiguration.ALL)
                 .allowCredentials(true);
     }
