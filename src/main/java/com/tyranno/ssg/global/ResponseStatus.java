@@ -90,6 +90,9 @@ public enum ResponseStatus {
     // 문자인증
     NO_MATCH_CERTIFICATION_NUMBER(false, 9000, "인증번호가 일치하지 않습니다.");
 
+    // Order
+    NO_EXIST_ORDER_LIST(false,9000,"존재하지 않는 주문내역입니다.");
+
     private final boolean isSuccess;
     private final int code;
     private final String message;

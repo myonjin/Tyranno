@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "`order`")
+@Getter
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,6 +3,7 @@ package com.tyranno.ssg.order.presentation;
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.order.application.OrderService;
 import com.tyranno.ssg.order.dto.OrderAddDto;
+import com.tyranno.ssg.order.dto.OrderListDto;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,6 +21,8 @@ public class OrderController {
     @Operation(summary = "주문 내역 조회", description = "주문 내역을 조회한다.")
     @GetMapping
     public ResponseEntity<?> getOrderList(@RequestHeader("Authorization") String token) {
+        String uuid = jwtTokenProvider.tokenToUuid(token);
+        OrderListDto orderListDto = orderService.getOrderList(uuid);
         return new ResponseEntity<>("주문 내역 조회");
     }
 
