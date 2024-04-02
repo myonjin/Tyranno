@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Tag(name = "회원", description = "Users API")
 @RequestMapping("/api/v1/users")
+@Slf4j
 public class UsersController {
 
     private final UsersService usersService;
@@ -29,6 +31,7 @@ public class UsersController {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         return new ResponseEntity<>(usersService.getUserName(uuid));
     }
+
     @Operation(summary = "비밀번호 재설정(로그인 O)", description = "마이페이지에서 비밀번호 재설정")
     @PutMapping("/modify-pw")
     public ResponseEntity<?> changePassword(@RequestBody PasswordModifyDto passwordModifyDto, @RequestHeader("Authorization") String token) {
@@ -63,9 +66,10 @@ public class UsersController {
 
     @Operation(summary = "회원 정보 조회", description = "회원정보 변경 시 기존 정보를 창에 띄우기 위한 api")
     @GetMapping
-    public ResponseEntity<?> getUsersInfo(@RequestHeader("Authorization") String token) {
-        String uuid = jwtTokenProvider.tokenToUuid(token);
-        return new ResponseEntity<>(usersService.getUsersInfo(uuid));
+    public ResponseEntity<?> getUsersInfo() {
+//        String uuid = jwtTokenProvider.tokenToUuid(token);
+        log.info("@@@@@@@@@@@@@@@@@@@@@");
+        return null;
     }
 
     @Operation(summary = "회원 탈퇴", description = "회원 상태를 탈퇴로 변경")
