@@ -34,7 +34,7 @@ springdoc:
     redis:
       host: ${TYRANNO_SERVER}
       port: 6379
-      password: ${RADIS_PASSWORD}
+      password: ${REDIS_PASSWORD}
 
 # jwt
 JWT:
