@@ -23,9 +23,15 @@ public class UsersController {
     private final UsersService usersService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Operation(summary = "사용자 이름 조회", description = "유저 이름을 조회한다.")
+    @GetMapping("/name")
+    public ResponseEntity<?> getUsersName(@RequestHeader("Authorization") String token) {
+        String uuid = jwtTokenProvider.tokenToUuid(token);
+        return new ResponseEntity<>(usersService.getUserName(uuid));
+    }
     @Operation(summary = "비밀번호 재설정(로그인 O)", description = "마이페이지에서 비밀번호 재설정")
     @PutMapping("/modify-pw")
-    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordModifyDto passwordModifyDto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> changePassword(@RequestBody PasswordModifyDto passwordModifyDto, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         usersService.modifyPassword(passwordModifyDto, uuid);
         return new ResponseEntity<>("비밀번호 변경 성공");
@@ -33,7 +39,7 @@ public class UsersController {
 
     @Operation(summary = "신세계포인트 선택정보동의 변경", description = "마이페이지에서 신세계옵션 동의정보 변경")
     @PutMapping("/shinsegae-marketing")
-    public ResponseEntity<?> modifyShinsegaeMaketing(@Valid @RequestBody MarketingModifyDto marketingModifyDto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> modifyShinsegaeMaketing(@RequestBody MarketingModifyDto marketingModifyDto, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         usersService.modifyMarketing(marketingModifyDto, MarketingType.SHINSEGAE_OPTION, uuid);
         return new ResponseEntity<>("신세계 동의 변경 성공");

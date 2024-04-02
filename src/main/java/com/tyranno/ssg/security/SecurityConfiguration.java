@@ -27,16 +27,16 @@ public class SecurityConfiguration {
             "/api/v1/option/**", "/api/v1/event/**", "/api/v1/question/**", "/api/v1/search/**", "/api/v1/vendor/**",
             "/api/v1/like/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**"};
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        return request -> {
-            var cors = new org.springframework.web.cors.CorsConfiguration();
-            cors.setAllowedOriginPatterns(List.of("*"));
-            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-            cors.setAllowedHeaders(List.of("*"));
-            return cors;
-        };
-    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        return request -> {
+//            var cors = new org.springframework.web.cors.CorsConfiguration();
+//            cors.setAllowedOriginPatterns(List.of("*"));
+//            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//            cors.setAllowedHeaders(List.of("*"));
+//            return cors;
+//        };
+//    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

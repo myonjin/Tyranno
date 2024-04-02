@@ -3,6 +3,8 @@ package com.tyranno.ssg.cart.application;
 import com.tyranno.ssg.cart.domain.Cart;
 import com.tyranno.ssg.cart.dto.Request.CartAddDto;
 import com.tyranno.ssg.cart.dto.Request.CartCountModifyDto;
+import com.tyranno.ssg.cart.dto.Request.CartKeepModifyDto;
+import com.tyranno.ssg.cart.dto.Request.CartOptionModifyDto;
 import com.tyranno.ssg.cart.dto.Response.CartListDto;
 import com.tyranno.ssg.cart.infrastructure.CartRepository;
 import com.tyranno.ssg.global.GlobalException;
@@ -123,10 +125,34 @@ public class CartServiceImp implements CartService {
 
     @Transactional
     @Override
-    public void modifyItemCount(CartCountModifyDto cartCountModifyDto) {
-        Cart cart = cartRepository.findById(cartCountModifyDto.getCartId())
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_CART));
-
+    public void modifyCount(CartCountModifyDto cartCountModifyDto) {
+        Cart cart = getCart(cartCountModifyDto.getCartId());
         cartRepository.save(cartCountModifyDto.toEntity(cart));
+    }
+
+    @Transactional
+    @Override
+    public void modifyOption(CartOptionModifyDto cartOptionModifyDto) {
+        Cart cart = getCart(cartOptionModifyDto.getCartId());
+        Option option = optionRepository.findById(cartOptionModifyDto.getOptionId())
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION));
+
+        cartRepository.save(cartOptionModifyDto.toEntity(cart, option));
+    }
+
+    @Override
+    public int getUsersCartCount(String uuid) {
+        return cartRepository.countByUserUuid(uuid);
+    }
+
+    @Override
+    public void modifyCartIsKeep(CartKeepModifyDto cartKeepModifyDto){
+        Cart cart = getCart(cartKeepModifyDto.getCartId());
+        cartRepository.save(cartKeepModifyDto.toEntity(cart));
+    }
+
+    private Cart getCart(Long cartId){
+        return cartRepository.findById(cartId)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_CART));
     }
 }
