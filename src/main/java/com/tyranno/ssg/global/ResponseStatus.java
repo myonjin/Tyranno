@@ -88,7 +88,7 @@ public enum ResponseStatus {
     NO_EXIST_VENDOR(false, 8100, "존재하지 않는 판매자입니다."),
 
     // 문자인증
-    NO_MATCH_CERTIFICATION_NUMBER(false, 9000, "인증번호가 일치하지 않습니다.");
+    NO_MATCH_CERTIFICATION_NUMBER(false, 9000, "인증번호가 일치하지 않습니다."),
 
     // Order
     NO_EXIST_ORDER_LIST(false,9000,"존재하지 않는 주문내역입니다.");
