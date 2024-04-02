@@ -49,7 +49,7 @@ public class DeliveryController {
     }
 
     @Operation(summary = "배송지 수정 화면 조회", description = "배송지 수정화면에 기존 배송지 정보를 띄우기 위해 조회한다.")
-    @GetMapping("/modifyView/{delivery_id}")
+    @GetMapping("/modify-view/{delivery_id}")
     public ResponseEntity<?> getModifyView(@PathVariable Long delivery_id) {
 
         DeliveryDetailDto Delivery = deliveryService.getDetailDelivery(delivery_id);
