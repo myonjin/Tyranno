@@ -30,6 +30,12 @@ springdoc:
     operations-sorter: alpha
   api-docs:
     path: /api-docs
+  data:
+    redis:
+      host: ${TYRANNO_SERVER}
+      port: 6379
+      password: ${REDIS_PASSWORD}
+
 # jwt
 JWT:
   HEADER: Authorization
