@@ -1,6 +1,7 @@
 package com.tyranno.ssg.cart.infrastructure;
 
 import com.tyranno.ssg.cart.domain.Cart;
+import com.tyranno.ssg.delivery.domain.Delivery;
 import com.tyranno.ssg.option.domain.Option;
 import com.tyranno.ssg.users.domain.Users;
 import io.lettuce.core.dynamic.annotation.Param;
