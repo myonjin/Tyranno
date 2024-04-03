@@ -54,14 +54,4 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-
-//    public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
-//        @Override
-//        public void configure(HttpSecurity http) throws Exception {
-//            AuthenticationManager authenticationManager = http.getSharedObject(
-//                    AuthenticationManager.class);
-//            http
-//                    .addFilter(config.corsFilter()); // cors 에 대해 허락하는 필터
-//        }
-//    }
 }
