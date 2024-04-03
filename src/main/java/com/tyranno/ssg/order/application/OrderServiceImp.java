@@ -16,6 +16,7 @@ import com.tyranno.ssg.order.infrastructure.OrderRepository;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -83,15 +84,17 @@ public class OrderServiceImp implements OrderService {
         }
     }
 
-    public OrderListDto getOrderList(String uuid) {
-        List<OrderList> orderLists = orderListRepository.findAllByUuid(uuid);  //주문 리스트
-//                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_ORDER_LIST)); // 에러 처리
+    public List<OrderListDto> getOrderList(String uuid) {
+        List<OrderList> orderLists = orderListRepository.findAllByUuid(uuid); // 주문 리스트
+        List<OrderListDto> orderListDtos = new ArrayList<OrderListDto>(); // OrderListDto 객체들을 담을 리스트 생성
+
+
+
         for (OrderList orderList : orderLists) {
-//            log.info(orderList.toString());
+            log.info(orderList.toString());
             List<Order> orders = orderRepository.findAllByOrderListId(orderList.getId());
             List<OrderDto> orderDtoList = orders.stream()
                     .map(order -> {
-
                         Long productId = order.getOption().getProduct().getId();
                         String vendorName = vendorProductRepository.findByProductId(productId)
                                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDOR)).getVendor()
@@ -118,20 +121,22 @@ public class OrderServiceImp implements OrderService {
                                 .discount(discount)
                                 .build();
                     }).toList();
-        }
-        //주문 목록 불러오기
 
-        return OrderListDto
-                .builder()
-                .orderListId(orderList.getId())
-                .totalMoney(orderList.getTotalMoney())
-                .orderNumber(orderList.getOrderNumber())
-                .orderDate(orderList.getCreatedAt())
-                .receiverName(orderList.getReceiverName())
-                .orderDtoList(orderDtoList)
-                .isOrderConfirm(orderList.getIsOrderConfirm())
-                .orderStatus(orderList.getOrderStatus())
-                .build();
+            // 생성된 OrderListDto를 리스트에 추가
+            orderListDtos.add(OrderListDto
+                    .builder()
+                    .orderListId(orderList.getId())
+                    .totalMoney(orderList.getTotalMoney())
+                    .orderNumber(orderList.getOrderNumber())
+                    .orderDate(orderList.getCreatedAt().toString())
+                    .receiverName(orderList.getReceiverName())
+                    .orderDtoList(orderDtoList)
+                    .isOrderConfirm(orderList.getIsOrderConfirm())
+                    .orderStatus(orderList.getOrderStatus())
+                    .build());
+        }
+
+        return orderListDtos; // 수정된 부분: OrderListDto 객체들을 담은 리스트 반환
     }
 
 

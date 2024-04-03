@@ -8,5 +8,5 @@ import java.util.List;
 public interface OrderService {
     void addOrderList(OrderAddDto orderAddDto, String uuid);
 
-    OrderListDto getOrderList(String uuid);
+    List<OrderListDto> getOrderList(String uuid);
 }

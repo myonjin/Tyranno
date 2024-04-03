@@ -8,6 +8,7 @@ import com.tyranno.ssg.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,21 +17,22 @@ import java.util.List;
 @RestController
 @Tag(name = "주문", description = "Order API")
 @RequestMapping("/api/v1/order")
+@Slf4j
 public class OrderController {
     private final JwtTokenProvider jwtTokenProvider;
     private final OrderService orderService;
 
     @Operation(summary = "주문 내역 조회", description = "주문 내역을 조회한다.")
     @GetMapping
-    public ResponseEntity<?> getOrderList(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<List<OrderListDto>> getOrderList(@RequestHeader(value = "Authorization",required = false) String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
-        OrderListDto orderListDto = orderService.getOrderList(uuid);
-        return new ResponseEntity<>(List.of(orderListDto));
+        List<OrderListDto> orderListDto = orderService.getOrderList(uuid);
+        return new ResponseEntity<>(orderListDto);
     }
 
     @Operation(summary = "주문 생성", description = "주문을 생성한다.")
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestHeader("Authorization") String token, @RequestBody OrderAddDto orderAddDto) {
+    public ResponseEntity<String> createOrder(@RequestHeader("Authorization") String token, @RequestBody OrderAddDto orderAddDto) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         orderService.addOrderList(orderAddDto, uuid);
         return new ResponseEntity<>("주문 생성");

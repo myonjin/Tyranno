@@ -2,10 +2,7 @@ package com.tyranno.ssg.order.domain;
 
 import com.tyranno.ssg.global.GlobalCreateTime;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @EntityListeners(AuditingEntityListener.class)
+@ToString
 public class OrderList extends GlobalCreateTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

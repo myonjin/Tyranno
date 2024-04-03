@@ -1,6 +1,7 @@
 package com.tyranno.ssg.order.dto;
 
 
+import com.tyranno.ssg.order.domain.OrderList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class OrderListDto {
 
     private int totalMoney; //총 결제 금액
     private String orderNumber; //주문 번호
-    private LocalDateTime orderDate; //주문 일자
+    private String orderDate; //주문 일자
 
     private String receiverName; //받는사람 이름
 
@@ -26,4 +27,18 @@ public class OrderListDto {
 
     private byte isOrderConfirm; //주문 확정
     private byte orderStatus; //주문 상태
+
+//    public static OrderListDto fromEntity(OrderList orderList, List<OrderDto> orderDtoList) {
+//        return OrderListDto
+//                .builder()
+//                .orderListId(orderList.getId())
+//                .totalMoney(orderList.getTotalMoney())
+//                .orderNumber(orderList.getOrderNumber())
+//                .orderDate(orderList.getCreatedAt())
+//                .receiverName(orderList.getReceiverName())
+//                .orderDtoList(orderDtoList)
+//                .isOrderConfirm(orderList.getIsOrderConfirm())
+//                .orderStatus(orderList.getOrderStatus())
+//                .build();
+//    }
 }
