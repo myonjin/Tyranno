@@ -26,6 +26,7 @@ spring:
       port: 6379
       password: {REDIS_PASSWORD}
 
+
 # swagger
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
@@ -36,10 +37,12 @@ springdoc:
     operations-sorter: alpha
   api-docs:
     path: /api-docs
+
 # jwt
 JWT:
   SECRET_KEY: 395c0719ce36e1fe04e4a6e4386f97735a18bec33f73b8d8d65adc188697dfe795bfa81a7f59a777704d1f8b9ce1baa99dad4c670d75be52efc4bfa7d9c39db5
   EXPIRATION_TIME: 8640000
+
 COOLSMS:
   APIKEY: ${COOLSMS_APIKEY}
   APISECRET: ${COOLSMS_APISECRET}
