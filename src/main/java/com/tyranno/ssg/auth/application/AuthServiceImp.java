@@ -83,11 +83,10 @@ public class AuthServiceImp implements AuthService {
 
 
     @Override
-    public String findLoginId(UserIdentifyDto userIdentifyDto) {
-        Users users = usersRepository.findByNameAndPhoneNumberAndGenderAndBirth(
-                userIdentifyDto.getName(), userIdentifyDto.getPhoneNumber(), userIdentifyDto.getGender(), userIdentifyDto.getBirth()
-        ).orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-        return users.getLoginId(); //jpql
+    public String getLoginId(PhoneNumberDto phoneNumberDto) {
+        Users users = usersRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber())
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        return users.getLoginId();
     }
 
     @Transactional
@@ -97,5 +96,12 @@ public class AuthServiceImp implements AuthService {
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
         ;
         usersRepository.save(passwordChangeDto.toEntity(users));
+    }
+
+    @Override
+    public void checkPhoneNumber(PhoneNumberDto phoneNumberDto) {
+        if(usersRepository.existsByPhoneNumber(phoneNumberDto.getPhoneNumber())) {
+            throw new GlobalException(ResponseStatus.DUPLICATED_USERS);
+        }
     }
 }

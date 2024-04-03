@@ -1,11 +1,11 @@
-package com.tyranno.ssg.text.application;
+package com.tyranno.ssg.sms.application;
 
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
-import com.tyranno.ssg.text.infrastructure.SmsCertification;
-import com.tyranno.ssg.text.application.SmsService;
-import com.tyranno.ssg.text.dto.SmsCertificationDto;
-import com.tyranno.ssg.text.dto.SmsSendDto;
+import com.tyranno.ssg.sms.dto.SmsCertificationDto;
+import com.tyranno.ssg.sms.dto.SmsSendDto;
+import com.tyranno.ssg.sms.infrastructure.SmsCertification;
+import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
@@ -20,13 +20,12 @@ import java.util.Random;
 public class SmsServiceImp implements SmsService {
     private final DefaultMessageService messageService;
     private final String fromNumber;
-
     private final SmsCertification smsCertification;
-
 
     public SmsServiceImp(@Value("${COOLSMS.APIKEY}") String apiKey,
                          @Value("${COOLSMS.APISECRET}") String apiSecret,
-                         @Value("${COOLSMS.FROMNUMBER}") String fromNumber, SmsCertification smsCertification) {
+                         @Value("${COOLSMS.FROMNUMBER}") String fromNumber, SmsCertification smsCertification,
+                         UsersRepository usersRepository) {
         this.fromNumber = fromNumber;
         this.smsCertification = smsCertification;
         this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecret, "https://api.coolsms.co.kr");
@@ -39,7 +38,6 @@ public class SmsServiceImp implements SmsService {
             String random = Integer.toString(rand.nextInt(10));
             randomNum += random;
         }
-
         return randomNum;
     }
 
@@ -70,7 +68,7 @@ public class SmsServiceImp implements SmsService {
         return (smsCertification.hasKey(requestDto.getPhoneNumber()) &&
                 smsCertification.getSmsCertification(requestDto.getPhoneNumber())
                         .equals(requestDto.getRandomNumber()));
-                // 폰 넘버가 key값으로 redis에 있고 && redis에 저장된 인증번호와 이용자 입력번호가 일치한다면 true
+        // 폰 넘버가 key값으로 redis에 있고 && redis에 저장된 인증번호와 이용자 입력번호가 일치한다면 true
     }
 
 

@@ -47,7 +47,7 @@ public enum ResponseStatus {
 //    // USERS
     DUPLICATE_ID(false, 2100, "사용중인 아이디입니다."),
     DUPLICATE_EMAIL(false, 2101, "사용중인 이메일입니다."),
-    //    DUPLICATED_USERS(false, 2101, "이미 가입된 유저입니다."),
+    DUPLICATED_USERS(false, 2102, "이미 가입된 유저입니다."),
 //    MASSAGE_SEND_FAILED(false, 2102, "인증번호 전송에 실패했습니다."),
 //    MASSAGE_VALID_FAILED(false, 2103, "인증번호가 일치하지 않습니다."),
     FAILED_TO_LOGIN(false, 2104, "아이디 또는 패스워드를 다시 확인하세요."),

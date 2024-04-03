@@ -1,4 +1,4 @@
-package com.tyranno.ssg.text.infrastructure;
+package com.tyranno.ssg.sms.infrastructure;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

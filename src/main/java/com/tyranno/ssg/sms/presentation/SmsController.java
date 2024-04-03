@@ -1,9 +1,9 @@
-package com.tyranno.ssg.text.presentation;
+package com.tyranno.ssg.sms.presentation;
 
 import com.tyranno.ssg.global.ResponseEntity;
-import com.tyranno.ssg.text.dto.SmsSendDto;
-import com.tyranno.ssg.text.application.SmsService;
-import com.tyranno.ssg.text.dto.SmsCertificationDto;
+import com.tyranno.ssg.sms.dto.SmsSendDto;
+import com.tyranno.ssg.sms.application.SmsService;
+import com.tyranno.ssg.sms.dto.SmsCertificationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "문자인증", description = "Text API")
-@RequestMapping("/api/v1/auth/text")
+@RequestMapping("/api/v1/sms")
 public class SmsController {
 
     private final SmsService smsService;
 
     // 인증번호 전송
-    @Operation(summary = "인증번호 전송", description = "인증번호 4자리를 전송한다.")
+    @Operation(summary = "인증번호 전송", description = "인증번호 4자리를 전송한다. 이거 전에 휴대폰번호 중복 점증 api 호출 필요")
     @PostMapping("/send")
     public SingleMessageSentResponse sendOne(@RequestBody SmsSendDto smsSendDto) {
+
         return smsService.sendOne(smsSendDto);
     }
 
@@ -33,6 +34,6 @@ public class SmsController {
     @PostMapping("/verify")
     public ResponseEntity<String> verifySms(@RequestBody SmsCertificationDto requestDto) {
         smsService.verifySms(requestDto);
-        return new ResponseEntity<>("문자인증에 성공하였습니다.");
+        return new ResponseEntity<>("인증이 완료되었습니다.");
     }
 }
