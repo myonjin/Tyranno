@@ -17,6 +17,7 @@ public interface DeliveryService {
     void modifyDelivery(DeliveryModifyDto deliveryModifyDto);
 
     void modifyBaseDelivery(BaseDeliveryModifyDto baseDeliveryModifyDto);
+  
     String getBaseDeliveryName(String uuid);
 
     Delivery getDelivery(Long deliveryId);

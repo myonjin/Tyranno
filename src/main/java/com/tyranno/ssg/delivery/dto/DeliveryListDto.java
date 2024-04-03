@@ -19,13 +19,14 @@ public class DeliveryListDto {
 
     private Integer zipCode;
 
-    private String deliveryBase;
+    private String deliveryBase
 
     private String deliveryDetail;
 
     private String receiverName;
 
     private String phoneNumber;
+
 
     public static DeliveryListDto fromEntity(Delivery delivery) {
         return DeliveryListDto.builder()

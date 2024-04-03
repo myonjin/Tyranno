@@ -82,6 +82,4 @@ public class DeliveryController {
 
         return new ResponseEntity<>(deliveryService.getBaseDeliveryName(uuid));
     }
-
-
 }

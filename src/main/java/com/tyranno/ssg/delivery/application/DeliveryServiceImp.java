@@ -75,6 +75,7 @@ public class DeliveryServiceImp implements DeliveryService {
         Users users = getUsers(uuid);
         Delivery delivery = deliveryRepository.findByIsBaseDeliveryAndUsers((byte) 11, users)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
+
         return delivery.getDeliveryName();
     }
 
