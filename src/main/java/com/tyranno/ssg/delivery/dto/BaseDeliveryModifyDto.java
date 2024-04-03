@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseDeliveryModifyDto {
-    @NotNull
-    private Long id;
+
+    private Long deliveryId;
 
     public Delivery toEntity(Delivery delivery,Byte isBaseDelivery) {
         return Delivery.builder()

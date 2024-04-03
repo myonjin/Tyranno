@@ -22,12 +22,10 @@ public class DeliveryListDto {
     private String deliveryBase;
 
     private String deliveryDetail;
-//
-//    private String receiverName;
-//
-//    private String phoneNumber;
-//
-//    private String homeNumber;
+
+    private String receiverName;
+
+    private String phoneNumber;
 
     public static DeliveryListDto fromEntity(Delivery delivery) {
         return DeliveryListDto.builder()
@@ -37,9 +35,8 @@ public class DeliveryListDto {
                 .zipCode(delivery.getZipCode())
                 .deliveryBase(delivery.getDeliveryBase())
                 .deliveryDetail(delivery.getDeliveryDetail())
-//                .receiverName(delivery.getReceiverName())
-//                .phoneNumber(delivery.getPhoneNumber())
-//                .homeNumber(delivery.getHomeNumber())
+                .receiverName(delivery.getReceiverName())
+                .phoneNumber(delivery.getPhoneNumber())
                 .build();
 
 
