@@ -25,7 +25,7 @@ public class DeliveryController {
     @PostMapping
     public ResponseEntity<?> addDelivery(@Valid @RequestBody DeliveryAddDto deliveryAddDto, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
-        deliveryService.addDelivery(deliveryAddDto,uuid);
+        deliveryService.addDelivery(deliveryAddDto, uuid);
 
         return new ResponseEntity<>("배송지 등록 완료");
     }
@@ -36,7 +36,7 @@ public class DeliveryController {
 
         deliveryService.deleteDelivery(delivery_id);
 
-        return new ResponseEntity<>( "배송지가 삭제되었습니다.");
+        return new ResponseEntity<>("배송지가 삭제되었습니다.");
     }
 
     @Operation(summary = "배송지 목록 조회", description = "한 유저에 대한 모든 배송지를 조회한다.")
@@ -49,7 +49,7 @@ public class DeliveryController {
     }
 
     @Operation(summary = "배송지 수정 화면 조회", description = "배송지 수정화면에 기존 배송지 정보를 띄우기 위해 조회한다.")
-    @GetMapping("/modifyView/{delivery_id}")
+    @GetMapping("/modify-view/{delivery_id}")
     public ResponseEntity<?> getModifyView(@PathVariable Long delivery_id) {
 
         DeliveryDetailDto Delivery = deliveryService.getDetailDelivery(delivery_id);
@@ -67,7 +67,7 @@ public class DeliveryController {
     }
 
     @Operation(summary = "기본 배송지 변경", description = "한 유저의 기존 배송지 지정을 변경한다.")
-    @PutMapping("/changeDefault")
+    @PutMapping("/change-base")
     public ResponseEntity<?> modifyBaseDelivery(@Valid @RequestBody BaseDeliveryModifyDto baseDeliveryModifyDto) {
 
         deliveryService.modifyBaseDelivery(baseDeliveryModifyDto);
@@ -75,5 +75,10 @@ public class DeliveryController {
         return new ResponseEntity<>("기본배송지로 설정되었습니다.");
     }
 
-
+    @Operation(summary = "기본 배송지 별칭 조회", description = "한 유저의 기존 배송지 별칭을 조회한다.")
+    @GetMapping("/base-name")
+    public ResponseEntity<?> getBaseDeliveryName(@RequestHeader("Authorization") String token) {
+        String uuid = jwtTokenProvider.tokenToUuid(token);
+        return new ResponseEntity<>(deliveryService.getBaseDeliveryName(uuid));
+    }
 }

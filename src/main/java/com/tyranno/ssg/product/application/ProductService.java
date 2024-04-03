@@ -9,5 +9,5 @@ public interface ProductService {
     ProductDetailDto productDetail(Long id);
     ProductInformationDto getProductInformation(Long productId);
     ProductThumDto getProductThumPriority1(Long productId);
-    DiscountDto getDiscount(Long productId);
+    int getDiscount(Long productId);
 }
