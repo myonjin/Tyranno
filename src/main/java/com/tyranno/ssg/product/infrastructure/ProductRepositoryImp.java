@@ -1,12 +1,12 @@
 package com.tyranno.ssg.product.infrastructure;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tyranno.ssg.category.domain.Category;
 import com.tyranno.ssg.category.domain.QCategory;
-import com.tyranno.ssg.product.application.ProductService;
 import com.tyranno.ssg.product.domain.Product;
-import com.tyranno.ssg.product.domain.QProduct;
+import com.tyranno.ssg.product.domain.QDiscount;
 import jakarta.annotation.Nullable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,9 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
 
     public List<Long> getProductIdList(Long largeId, Long middleId,
                                        Long smallId, Long detailId, String sortCriterion, @Nullable Integer paging) {
+        OrderSpecifier<?> orderSpecifier = createOrderSpecifier(sortCriterion);
         QCategory category = QCategory.category;
+        QDiscount discount = QDiscount.discount1;
         return jpaQueryFactory.select(category.product.id)
                 .from(category)
                 .where(
@@ -33,6 +35,7 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
                         middleIdEq(category, middleId),
                         smallIdEq(category, smallId),
                         detailIdEq(category, detailId))
+                .orderBy(orderSpecifier)
                 .limit(20)
                 .fetch();
     }
@@ -68,5 +71,16 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
     private BooleanExpression gtBoardId(@Nullable Integer paging) {
         QCategory category = QCategory.category;
         return paging == null ? null : category.product.id.gt(paging);
+    }
+
+    private OrderSpecifier<?> createOrderSpecifier(String sortCriterion) {
+        QCategory category = QCategory.category;
+        return switch (sortCriterion) {
+            case "1" -> new OrderSpecifier<>(Order.ASC, category.product.productPrice);
+            case "2" -> new OrderSpecifier<>(Order.DESC, category.product.productPrice);
+            case "3" -> new OrderSpecifier<>(Order.DESC, category.product.productRate);
+            case "4" -> new OrderSpecifier<>(Order.DESC, category.product.reviewCount);
+            default -> new OrderSpecifier<>(Order.ASC, category.product.id);
+        };
     }
 }
