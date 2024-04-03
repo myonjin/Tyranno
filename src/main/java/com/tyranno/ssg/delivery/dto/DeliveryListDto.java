@@ -26,8 +26,6 @@ public class DeliveryListDto {
     private String receiverName;
 
     private String phoneNumber;
-//
-//    private String homeNumber;
 
     public static DeliveryListDto fromEntity(Delivery delivery) {
         return DeliveryListDto.builder()
@@ -39,7 +37,6 @@ public class DeliveryListDto {
                 .deliveryDetail(delivery.getDeliveryDetail())
                 .receiverName(delivery.getReceiverName())
                 .phoneNumber(delivery.getPhoneNumber())
-//                .homeNumber(delivery.getHomeNumber())
                 .build();
 
 

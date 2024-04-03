@@ -6,7 +6,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tyranno.ssg.category.domain.QCategory;
 import com.tyranno.ssg.product.domain.Product;
-import com.tyranno.ssg.product.domain.QDiscount;
 import jakarta.annotation.Nullable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
@@ -23,14 +22,13 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
     }
 
     public List<Long> getProductIdList(Long largeId, Long middleId,
-                                       Long smallId, Long detailId, String sortCriterion, @Nullable Integer paging) {
+                                       Long smallId, Long detailId, String sortCriterion, @Nullable Integer lastIndex) {
         OrderSpecifier<?> orderSpecifier = createOrderSpecifier(sortCriterion);
         QCategory category = QCategory.category;
-        QDiscount discount = QDiscount.discount1;
         return jpaQueryFactory.select(category.product.id)
                 .from(category)
                 .where(
-                        gtBoardId(paging),
+                        gtBoardId(lastIndex),
                         largeIdEq(category, largeId),
                         middleIdEq(category, middleId),
                         smallIdEq(category, smallId),
@@ -68,9 +66,9 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
         return category.detailId.eq(detailId);
     }
 
-    private BooleanExpression gtBoardId(@Nullable Integer paging) {
+    private BooleanExpression gtBoardId(@Nullable Integer lastIndex) {
         QCategory category = QCategory.category;
-        return paging == null ? null : category.product.id.gt(paging);
+        return lastIndex == null ? null : category.product.id.gt(lastIndex);
     }
 
     private OrderSpecifier<?> createOrderSpecifier(String sortCriterion) {

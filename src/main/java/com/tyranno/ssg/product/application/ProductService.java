@@ -11,5 +11,5 @@ public interface ProductService {
     int getDiscount(Long productId);
 
     ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion,
-                                      Integer paging);
+                                      Integer lastIndex);
 }

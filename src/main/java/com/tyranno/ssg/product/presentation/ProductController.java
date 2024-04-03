@@ -53,11 +53,11 @@ public class ProductController {
             @RequestParam(required = false) Long middleId,
             @RequestParam(required = false) Long smallId,
             @RequestParam(required = false) Long detailId,
-            @RequestParam(defaultValue = "5") String sortCriterion,
-            @RequestParam(defaultValue = "1") String paging
+            @RequestParam(defaultValue = "0") String sortCriterion,
+            @RequestParam(defaultValue = "0") String lastIndex
     ) {
         ProductIdListDto productIdListDto = productService.getProductIdList(largeId, middleId, smallId,
-                detailId, sortCriterion, Integer.parseInt(paging));
+                detailId, sortCriterion, Integer.parseInt(lastIndex));
         return new com.tyranno.ssg.global.ResponseEntity<>(productIdListDto);
     }
 

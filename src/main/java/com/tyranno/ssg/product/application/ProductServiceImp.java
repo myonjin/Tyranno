@@ -111,13 +111,23 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
-                                                     String sortCriterion, Integer paging) {
+                                             String sortCriterion, Integer lastIndex) { // productList
         List<Long> productIds = productRepositoryImp.getProductIdList(largeId, middleId,
-                smallId, detailId, sortCriterion, paging);
+                smallId, detailId, sortCriterion, lastIndex);
+
         ProductIdListDto productIdListDto = new ProductIdListDto();
-        productIdListDto.setProductIds(productIds);
+
+        List<Map<String, Long>> productIdList = new ArrayList<>();
+        for (int i = 0; i < productIds.size(); i++) { // 순서 보여주려고 추가한 값
+            Map<String, Long> productMap = new HashMap<>();
+            productMap.put("productId" + (i + 1), productIds.get(i));
+            productIdList.add(productMap);
+        }
+        productIdListDto.setProductIds(productIdList);
 
         return productIdListDto;
     }
+
+
 
 }

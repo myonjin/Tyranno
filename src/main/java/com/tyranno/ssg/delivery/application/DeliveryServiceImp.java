@@ -56,13 +56,13 @@ public class DeliveryServiceImp implements DeliveryService {
 
     @Override
     public void modifyBaseDelivery(BaseDeliveryModifyDto baseDeliveryModifyDto) {
+        Delivery newBasedelivery = getDelivery(baseDeliveryModifyDto.getDeliveryId());
         // 기존 기본배송지 취소
-        Delivery delivery = deliveryRepository.findByIsBaseDelivery((byte) 11)
+        Delivery Basedelivery = deliveryRepository.findByIsBaseDeliveryAndUsers((byte) 11, newBasedelivery.getUsers())
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
-        deliveryRepository.save(baseDeliveryModifyDto.toEntity(delivery, (byte) 99));
+        deliveryRepository.save(baseDeliveryModifyDto.toEntity(Basedelivery, (byte) 99));
         // 새 기본배송지 설정
-        delivery = getDelivery(baseDeliveryModifyDto.getId());
-        deliveryRepository.save(baseDeliveryModifyDto.toEntity(delivery, (byte) 11));
+        deliveryRepository.save(baseDeliveryModifyDto.toEntity(newBasedelivery, (byte) 11));
     }
 
     public Delivery getDelivery(Long deliveryId) {
