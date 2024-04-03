@@ -19,7 +19,7 @@ public class DeliveryListDto {
 
     private Integer zipCode;
 
-    private String deliveryBase
+    private String deliveryBase;
 
     private String deliveryDetail;
 
@@ -39,8 +39,5 @@ public class DeliveryListDto {
                 .receiverName(delivery.getReceiverName())
                 .phoneNumber(delivery.getPhoneNumber())
                 .build();
-
-
-
     }
 }
