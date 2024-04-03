@@ -4,6 +4,7 @@ import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.order.application.OrderService;
 import com.tyranno.ssg.order.dto.OrderAddDto;
 import com.tyranno.ssg.order.dto.OrderListDto;
+import com.tyranno.ssg.order.dto.ResponseNonOrderDto;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 @RequiredArgsConstructor
 @RestController
@@ -37,12 +39,25 @@ public class OrderController {
         orderService.addOrderList(orderAddDto, uuid);
         return new ResponseEntity<>("주문 생성");
     }
-
+    /**
+     * 비회원 주문 생성
+     * @uuid nonmember
+     */
     //비회원 주문 생성
     @Operation(summary = "비회원 주문 생성", description = "비회원 주문을 생성한다.")
     @PostMapping("/non-member")
-    public ResponseEntity<?> createNonMemberOrder(@RequestBody OrderAddDto orderAddDto) {
-        orderService.addOrderList(orderAddDto, "nonmember");
+    public ResponseEntity<String> createNonMemberOrder(@RequestBody OrderAddDto orderAddDto) {
+        int randomNumber = new Random().nextInt(900000) + 100000;
+        orderService.addOrderList(orderAddDto, randomNumber +"");
         return new ResponseEntity<>("비회원 주문 생성");
     }
+    //비회원 조회
+    @Operation(summary = "비회원 주문 내역 조회", description = "비회원 주문 내역을 조회한다.")
+    @GetMapping
+    public ResponseEntity<List<OrderListDto>> getOrderList(@RequestBody ResponseNonOrderDto responseNonOrderDto) {
+        List<OrderListDto> orderListDto = orderService.getOrderList(responseNonOrderDto);
+        return new ResponseEntity<>(orderListDto);
+    }
+
+
 }

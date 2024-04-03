@@ -7,10 +7,7 @@ import com.tyranno.ssg.option.domain.Option;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
 import com.tyranno.ssg.order.domain.Order;
 import com.tyranno.ssg.order.domain.OrderList;
-import com.tyranno.ssg.order.dto.OptionIdListDto;
-import com.tyranno.ssg.order.dto.OrderAddDto;
-import com.tyranno.ssg.order.dto.OrderDto;
-import com.tyranno.ssg.order.dto.OrderListDto;
+import com.tyranno.ssg.order.dto.*;
 import com.tyranno.ssg.order.infrastructure.OrderListRepository;
 import com.tyranno.ssg.order.infrastructure.OrderRepository;
 
@@ -88,8 +85,62 @@ public class OrderServiceImp implements OrderService {
         List<OrderList> orderLists = orderListRepository.findAllByUuid(uuid); // 주문 리스트
         List<OrderListDto> orderListDtos = new ArrayList<OrderListDto>(); // OrderListDto 객체들을 담을 리스트 생성
 
+        for (OrderList orderList : orderLists) {
+            log.info(orderList.toString());
+            List<Order> orders = orderRepository.findAllByOrderListId(orderList.getId());
+            List<OrderDto> orderDtoList = orders.stream()
+                    .map(order -> {
+                        Long productId = order.getOption().getProduct().getId();
+                        String vendorName = vendorProductRepository.findByProductId(productId)
+                                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDOR)).getVendor()
+                                .getVendorName();
+
+                        String imgUrl = productThumRepository.findByProductIdAndPriority(productId, 1)
+                                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCTTHUM))
+                                .getImageUrl();
+
+                        int discount = discountRepository.findByProductId(productId)
+                                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT))
+                                .getDiscount();
+
+                        return OrderDto.builder()
+                                .orderId(order.getId())
+                                .productId(productId)
+                                .optionId(order.getOption().getId())
+                                .count(order.getCount())
+                                .money(order.getMoney())
+                                .productName(order.getOption().getProduct().getProductName())
+                                .price(order.getOption().getProduct().getProductPrice())
+                                .vendorName(vendorName)
+                                .imageUrl(imgUrl)
+                                .discount(discount)
+                                .build();
+                    }).toList();
+
+            // 생성된 OrderListDto를 리스트에 추가
+            orderListDtos.add(OrderListDto
+                    .builder()
+                    .orderListId(orderList.getId())
+                    .totalMoney(orderList.getTotalMoney())
+                    .orderNumber(orderList.getOrderNumber())
+                    .orderDate(orderList.getCreatedAt().toString())
+                    .receiverName(orderList.getReceiverName())
+                    .orderDtoList(orderDtoList)
+                    .isOrderConfirm(orderList.getIsOrderConfirm())
+                    .orderStatus(orderList.getOrderStatus())
+                    .build());
+        }
+
+        return orderListDtos; // 수정된 부분: OrderListDto 객체들을 담은 리스트 반환
+    }
 
 
+    public List<OrderListDto> getOrderList(ResponseNonOrderDto responseNonOrderDto) {
+
+        List<OrderList> orderLists = orderListRepository.findByOrderNameAndOrderPhoneNumberAndOrderNumber
+                (responseNonOrderDto.getOrderName(), responseNonOrderDto.getOrderPhoneNumber(), responseNonOrderDto.getOrderNumber()); // 주문 리스트
+
+        List<OrderListDto> orderListDtos = new ArrayList<OrderListDto>(); // OrderListDto 객체들을 담을 리스트 생성
         for (OrderList orderList : orderLists) {
             log.info(orderList.toString());
             List<Order> orders = orderRepository.findAllByOrderListId(orderList.getId());
