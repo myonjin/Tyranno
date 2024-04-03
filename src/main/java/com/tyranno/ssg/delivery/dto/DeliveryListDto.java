@@ -39,7 +39,5 @@ public class DeliveryListDto {
                 .receiverName(delivery.getReceiverName())
                 .phoneNumber(delivery.getPhoneNumber())
                 .build();
-
-
     }
 }
