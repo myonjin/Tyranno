@@ -22,9 +22,9 @@ spring:
       password: xlfksh97
   data:
     redis:
-      host: {TYRANNO_SERVER}
+      host: ${TYRANNO_SERVER}
       port: 6379
-      password: {REDIS_PASSWORD}
+      password: ${REDIS_PASSWORD}
 
 
 # swagger
