@@ -66,14 +66,20 @@ public class DeliveryController {
         return new ResponseEntity<>("배송지 수정 완료");
     }
 
-    @Operation(summary = "기본 배송지 변경", description = "한 유저의 기존 배송지 지정을 변경한다.")
+    @Operation(summary = "기본 배송지 변경", description = "한 유저의 기존 배송지 지정을 변경한다.(기존배송지로 지정하려는 delivery의 id 입력)")
     @PutMapping("/change-base")
-    public ResponseEntity<?> modifyBaseDelivery(@Valid @RequestBody BaseDeliveryModifyDto baseDeliveryModifyDto) {
+    public ResponseEntity<?> modifyBaseDelivery(@RequestBody BaseDeliveryModifyDto baseDeliveryModifyDto) {
 
         deliveryService.modifyBaseDelivery(baseDeliveryModifyDto);
 
         return new ResponseEntity<>("기본배송지로 설정되었습니다.");
     }
 
+    @Operation(summary = "기본 배송지 별칭 조회", description = "한 유저의 기존 배송지 별칭을 조회한다.")
+    @GetMapping("/base-name")
+    public ResponseEntity<?> getBaseDeliveryName(@RequestHeader("Authorization") String token) {
+        String uuid = jwtTokenProvider.tokenToUuid(token);
 
+        return new ResponseEntity<>(deliveryService.getBaseDeliveryName(uuid));
+    }
 }

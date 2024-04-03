@@ -47,7 +47,7 @@ dependencies {
     //문자인증
     //implementation 'net.nurigo:javaSDK:2.2'
     implementation 'net.nurigo:sdk:4.3.0'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.4.10'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 }
 
