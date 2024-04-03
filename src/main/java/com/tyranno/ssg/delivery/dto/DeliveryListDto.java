@@ -19,7 +19,7 @@ public class DeliveryListDto {
 
     private Integer zipCode;
 
-    private String deliveryBase
+    private String deliveryBase;
 
     private String deliveryDetail;
 
