@@ -70,6 +70,14 @@ public class DeliveryServiceImp implements DeliveryService {
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
     }
 
+    @Override
+    public String getBaseDeliveryName(String uuid) {
+        Users users = getUsers(uuid);
+        Delivery delivery = deliveryRepository.findByIsBaseDeliveryAndUsers((byte) 11, users)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
+        return delivery.getDeliveryName();
+    }
+
     public Users getUsers(String uuid) {
         return usersRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
