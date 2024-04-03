@@ -27,7 +27,6 @@ public class DeliveryListDto {
 
     private String phoneNumber;
 
-
     public static DeliveryListDto fromEntity(Delivery delivery) {
         return DeliveryListDto.builder()
                 .id(delivery.getId())
