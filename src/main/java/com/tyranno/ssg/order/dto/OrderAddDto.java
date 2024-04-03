@@ -24,7 +24,7 @@ public class OrderAddDto {
     private String receiverPhoneNumber;
 
     private String orderName;
-    private String orderNumber; // 주문번호
+    private String orderPhoneNumber;
     private String orderEmail;
 
     private int totalMoney;
@@ -39,7 +39,9 @@ public class OrderAddDto {
                 .receiverName(orderAddDto.getReceiverName())
                 .receiverPhoneNumber(orderAddDto.getReceiverPhoneNumber())
                 .orderName(orderAddDto.getOrderName())
+                .orderPhoneNumber(orderAddDto.getOrderPhoneNumber())
                 .orderEmail(orderAddDto.getOrderEmail())
+                .orderStatus((byte) 0)
                 .orderNumber(createdOrderNumber)
                 .totalMoney(orderAddDto.getTotalMoney())
                 .isOrderConfirm((byte) 0)

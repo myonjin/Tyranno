@@ -19,10 +19,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Random;
 
-import com.tyranno.ssg.product.domain.ProductThum;
 import com.tyranno.ssg.product.infrastructure.DiscountRepository;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
-import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -86,57 +84,43 @@ public class OrderServiceImp implements OrderService {
     }
 
     public OrderListDto getOrderList(String uuid) {
-        OrderList orderList = orderListRepository.findByUuid(uuid)  //주문 리스트
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_ORDER_LIST)); // 에러 처리
+        List<OrderList> orderLists = orderListRepository.findAllByUuid(uuid);  //주문 리스트
+//                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_ORDER_LIST)); // 에러 처리
+        for (OrderList orderList : orderLists) {
+//            log.info(orderList.toString());
+            List<Order> orders = orderRepository.findAllByOrderListId(orderList.getId());
+            List<OrderDto> orderDtoList = orders.stream()
+                    .map(order -> {
 
+                        Long productId = order.getOption().getProduct().getId();
+                        String vendorName = vendorProductRepository.findByProductId(productId)
+                                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDOR)).getVendor()
+                                .getVendorName();
+
+                        String imgUrl = productThumRepository.findByProductIdAndPriority(productId, 1)
+                                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCTTHUM))
+                                .getImageUrl();
+
+                        int discount = discountRepository.findByProductId(productId)
+                                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT))
+                                .getDiscount();
+
+                        return OrderDto.builder()
+                                .orderId(order.getId())
+                                .productId(productId)
+                                .optionId(order.getOption().getId())
+                                .count(order.getCount())
+                                .money(order.getMoney())
+                                .productName(order.getOption().getProduct().getProductName())
+                                .price(order.getOption().getProduct().getProductPrice())
+                                .vendorName(vendorName)
+                                .imageUrl(imgUrl)
+                                .discount(discount)
+                                .build();
+                    }).toList();
+        }
         //주문 목록 불러오기
-        List<Order> orders = orderRepository.findAllByOrderListId(orderList.getId());
-        //vendor 불러오기
 
-
-        List<OrderDto> orderDtoList = orders.stream()
-                .map(order -> {
-
-                    Long productId = order.getOption().getProduct().getId();
-                    String vendorName = vendorProductRepository.findByProductId(productId)
-                            .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDOR)).getVendor().getVendorName();
-
-                    String imgUrl = productThumRepository.findByProductIdAndPriority(productId, 1)
-                            .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCTTHUM)).getImageUrl();
-
-//                    int discount = discountRepository.
-
-                    return OrderDto.builder()
-                            .orderId(order.getId())
-                            .productId(order.getOption().getProduct().getId())
-                            .optionId(order.getOption().getId())
-                            .count(order.getCount())
-                            .money(order.getMoney())
-                            .productName(order.getOption().getProduct().getProductName())
-                            .price(order.getOption().getProduct().getProductPrice())
-//                                    .vendorName(order.getOption().getProduct().get)
-//                                    .imageUrl(order.getOption().getProduct().get())
-//                                    .discount(order.getOption().getProduct().get())
-                            .build();
-                }).collect(Collectors.toList());
-
-//                        VendorProduct vendorProduct = vendorProductRepository.findByProductId();
-//                        VendorDto vendorDto = new VendorDto();
-//
-//                         OrderDto.builder()
-//                        .orderId(order.getId())
-//                        .productId(order.getOption().getProduct().getId())
-//                        .optionId(order.getOption().getId())
-//                        .count(order.getCount())
-//                        .money(order.getMoney())
-//                        .productName(order.getOption().getProduct().getProductName())
-//                        .price(order.getOption().getProduct().getProductPrice())
-//                        .vendorName(order.getOption().getProduct().get)
-//                        .imageUrl(order.getOption().getProduct().get())
-//                        .discount(order.getOption().getProduct().get())
-//                        .build())
-//                .toList();
-//                );
         return OrderListDto
                 .builder()
                 .orderListId(orderList.getId())

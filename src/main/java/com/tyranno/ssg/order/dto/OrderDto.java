@@ -19,11 +19,8 @@ public class OrderDto {
     private int money; //주문 금액
 
     private String productName; //상품 이름
-    private int price; //상
-    private String vendorName;
-    private String imageUrl;
-    private int discount;
-
-
-
+    private int price; //상품 가격
+    private String vendorName; // 판매자 이름
+    private String imageUrl; // 상품 이미지
+    private int discount; // 할인율
 }

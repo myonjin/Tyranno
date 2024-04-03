@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @Tag(name = "주문", description = "Order API")
@@ -23,7 +25,7 @@ public class OrderController {
     public ResponseEntity<?> getOrderList(@RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         OrderListDto orderListDto = orderService.getOrderList(uuid);
-        return new ResponseEntity<>("주문 내역 조회");
+        return new ResponseEntity<>(List.of(orderListDto));
     }
 
     @Operation(summary = "주문 생성", description = "주문을 생성한다.")
