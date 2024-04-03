@@ -11,5 +11,5 @@ public interface ProductService {
     CategoryProductIdListDto productIdList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion);
     ProductInformationDto getProductInformation(Long productId);
     ProductThumDto getProductThumPriority1(Long productId);
-    DiscountDto getDiscount(Long productId);
+    int getDiscount(Long productId);
 }

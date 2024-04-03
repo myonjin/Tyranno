@@ -1,9 +1,9 @@
 package com.tyranno.ssg.product.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
@@ -13,21 +13,16 @@ public class Discount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Integer discount;
-
-    private LocalDateTime discountStart;
-
-    private LocalDateTime discountEnd;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
     @Builder
-    public Discount(Long id, Integer discount, LocalDateTime discountStart, LocalDateTime discountEnd, Product product) {
+    public Discount(Long id, Integer discount, Product product) {
         this.id = id;
         this.discount = discount;
-        this.discountStart = discountStart;
-        this.discountEnd = discountEnd;
         this.product = product;
     }
 }
