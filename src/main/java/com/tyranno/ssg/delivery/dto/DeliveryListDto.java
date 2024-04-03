@@ -41,6 +41,5 @@ public class DeliveryListDto {
                 .build();
 
 
-
     }
 }

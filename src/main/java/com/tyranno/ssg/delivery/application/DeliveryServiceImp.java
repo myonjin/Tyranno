@@ -73,7 +73,9 @@ public class DeliveryServiceImp implements DeliveryService {
     @Override
     public String getBaseDeliveryName(String uuid) {
         Users users = getUsers(uuid);
-        Delivery delivery = deliveryRepository.findByUsersAndIsBaseDelivery(users, (byte) 11);
+        Delivery delivery = deliveryRepository.findByIsBaseDeliveryAndUsers((byte) 11, users)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
+
         return delivery.getDeliveryName();
     }
 
