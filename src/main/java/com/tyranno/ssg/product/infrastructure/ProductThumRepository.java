@@ -10,6 +10,4 @@ public interface ProductThumRepository extends JpaRepository<ProductThum, Long> 
 
     List<ProductThum> findAllByProductId(Long id);
     Optional<ProductThum> findByProductIdAndPriority(Long id, int priority);
-
-    Optional<ProductThum> findByProductId(Long id);
 }
