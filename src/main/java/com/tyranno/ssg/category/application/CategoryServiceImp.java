@@ -88,14 +88,4 @@ public class CategoryServiceImp implements CategoryService{
         return details;
     }
 
-    @Override
-    public CategoryProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
-                                                     String sortCriterion) {
-        Optional<List<Long>> productIds = Optional.ofNullable(categoryRepositoryImp.getProductIdList(largeId, middleId,
-                smallId, detailId, sortCriterion));
-        CategoryProductIdListDto categoryProductIdListDto = new CategoryProductIdListDto();
-        productIds.ifPresent(categoryProductIdListDto::setProductIds);
-
-        return categoryProductIdListDto;
-    }
 }

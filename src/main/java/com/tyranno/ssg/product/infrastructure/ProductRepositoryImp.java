@@ -1,10 +1,13 @@
 package com.tyranno.ssg.product.infrastructure;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.tyranno.ssg.category.domain.Category;
 import com.tyranno.ssg.category.domain.QCategory;
 import com.tyranno.ssg.product.application.ProductService;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.QProduct;
+import jakarta.annotation.Nullable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
@@ -12,22 +15,58 @@ import java.util.List;
 
 @Repository
 public class ProductRepositoryImp extends QuerydslRepositorySupport {
-
-    private final ProductService productService;
     private final JPAQueryFactory jpaQueryFactory;
 
-    public ProductRepositoryImp(ProductService productService, JPAQueryFactory jpaQueryFactory) {
+    public ProductRepositoryImp(JPAQueryFactory jpaQueryFactory) {
         super(Product.class);
-        this.productService = productService;
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public List<Product> getProductList(Long largeId, Long middleId,
-                                        Long smallId, Long detailId, String sortCriterion) {
+    public List<Long> getProductIdList(Long largeId, Long middleId,
+                                       Long smallId, Long detailId, String sortCriterion, @Nullable Integer paging) {
         QCategory category = QCategory.category;
-        return jpaQueryFactory.select(category.product)
+        return jpaQueryFactory.select(category.product.id)
                 .from(category)
-                .where(category.largeId.eq(largeId))
+                .where(
+                        gtBoardId(paging),
+                        largeIdEq(category, largeId),
+                        middleIdEq(category, middleId),
+                        smallIdEq(category, smallId),
+                        detailIdEq(category, detailId))
+                .limit(20)
                 .fetch();
+    }
+
+    private BooleanExpression largeIdEq(QCategory category, Long largeId) {
+        if (largeId == null) {
+            return null;
+        }
+        return category.largeId.eq(largeId);
+    }
+
+    private BooleanExpression middleIdEq(QCategory category, Long middleId) {
+        if (middleId == null) {
+            return null;
+        }
+        return category.middleId.eq(middleId);
+    }
+
+    private BooleanExpression smallIdEq(QCategory category, Long smallId) {
+        if (smallId == null) {
+            return null;
+        }
+        return category.smallId.eq(smallId);
+    }
+
+    private BooleanExpression detailIdEq(QCategory category, Long detailId) {
+        if (detailId == null) {
+            return null;
+        }
+        return category.detailId.eq(detailId);
+    }
+
+    private BooleanExpression gtBoardId(@Nullable Integer paging) {
+        QCategory category = QCategory.category;
+        return paging == null ? null : category.product.id.gt(paging);
     }
 }

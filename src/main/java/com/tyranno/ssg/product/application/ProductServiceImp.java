@@ -9,12 +9,11 @@ import com.tyranno.ssg.product.domain.ProductThum;
 import com.tyranno.ssg.product.dto.*;
 import com.tyranno.ssg.product.infrastructure.DiscountRepository;
 import com.tyranno.ssg.product.infrastructure.ProductRepository;
+import com.tyranno.ssg.product.infrastructure.ProductRepositoryImp;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
 import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.dto.VendorDto;
-import com.tyranno.ssg.vendor.dto.VendorProductDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
-import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
 import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +35,7 @@ public class ProductServiceImp implements ProductService {
     //    private final CategoryRepository categoryRepository;
     private final DiscountRepository discountRepository;
     private final CategoryRepositoryImp categoryRepositoryImp;
+    private final ProductRepositoryImp productRepositoryImp;
 
     //    private final LikeRepository likeRepository;
 
@@ -107,6 +107,17 @@ public class ProductServiceImp implements ProductService {
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT));
 
         return discount.getDiscount();
+    }
+
+    @Override
+    public ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
+                                                     String sortCriterion, Integer paging) {
+        List<Long> productIds = productRepositoryImp.getProductIdList(largeId, middleId,
+                smallId, detailId, sortCriterion, paging);
+        ProductIdListDto productIdListDto = new ProductIdListDto();
+        productIdListDto.setProductIds(productIds);
+
+        return productIdListDto;
     }
 
 }

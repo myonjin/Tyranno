@@ -1,7 +1,6 @@
 package com.tyranno.ssg.recent.presentation;
 
 import com.tyranno.ssg.global.ResponseEntity;
-import com.tyranno.ssg.product.dto.DiscountDto;
 import com.tyranno.ssg.recent.application.RecentService;
 import com.tyranno.ssg.recent.dto.RecentViewedDto;
 import io.swagger.v3.oas.annotations.Operation;

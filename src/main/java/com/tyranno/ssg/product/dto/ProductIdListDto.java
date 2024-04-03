@@ -1,4 +1,4 @@
-package com.tyranno.ssg.category.dto;
+package com.tyranno.ssg.product.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class CategoryProductIdListDto {
+public class ProductIdListDto {
     private List<Long> productIds;
 
     @Builder

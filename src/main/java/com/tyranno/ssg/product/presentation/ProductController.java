@@ -1,10 +1,10 @@
 package com.tyranno.ssg.product.presentation;
 
 import com.tyranno.ssg.category.application.CategoryService;
-import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.product.application.ProductService;
 import com.tyranno.ssg.product.dto.ProductDetailDto;
+import com.tyranno.ssg.product.dto.ProductIdListDto;
 import com.tyranno.ssg.product.dto.ProductInformationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,6 +44,21 @@ public class ProductController {
     @GetMapping("/discountInformation/{productId}")
     public ResponseEntity<?> getDiscountInformation(@PathVariable Long productId) {
         return new ResponseEntity<>(productService.getDiscount(productId));
+    }
+
+    @Operation(summary = "상품 ID 리스트", description = "상품 ID 리스트를 받아오기")
+    @GetMapping("/productList")
+    public ResponseEntity<?> getProductIdList(
+            @RequestParam(required = false) Long largeId,
+            @RequestParam(required = false) Long middleId,
+            @RequestParam(required = false) Long smallId,
+            @RequestParam(required = false) Long detailId,
+            @RequestParam(defaultValue = "5") String sortCriterion,
+            @RequestParam(defaultValue = "1") String paging
+    ) {
+        ProductIdListDto productIdListDto = productService.getProductIdList(largeId, middleId, smallId,
+                detailId, sortCriterion, Integer.parseInt(paging));
+        return new com.tyranno.ssg.global.ResponseEntity<>(productIdListDto);
     }
 
 }

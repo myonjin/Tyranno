@@ -84,18 +84,4 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @Operation(summary = "상품 ID 리스트", description = "상품 ID 리스트를 받아오기")
-    @GetMapping("/productList")
-    public com.tyranno.ssg.global.ResponseEntity<?> getProductIdList(
-            @RequestParam(required = false) Long largeId,
-            @RequestParam(required = false) Long middleId,
-            @RequestParam(required = false) Long smallId,
-            @RequestParam(required = false) Long detailId,
-            @RequestParam(defaultValue = "5") String sortCriterion
-    ) {
-        CategoryProductIdListDto categoryProductIdListDto = categoryService.getProductIdList(largeId, middleId, smallId,
-                detailId, sortCriterion);
-        return new com.tyranno.ssg.global.ResponseEntity<>(categoryProductIdListDto);
-    }
 }
