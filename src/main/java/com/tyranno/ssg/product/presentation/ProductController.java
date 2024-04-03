@@ -34,19 +34,6 @@ public class ProductController {
         return new ResponseEntity<>(productDetailDto);
     }
 
-    @Operation(summary = "상품 ID 리스트", description = "상품 ID 리스트를 받아오기")
-    @GetMapping("/productList")
-    public ResponseEntity<?> ProductIdList(
-            @RequestParam(required = false) Long largeId,
-            @RequestParam(required = false) Long middleId,
-            @RequestParam(required = false) Long smallId,
-            @RequestParam(required = false) Long detailId,
-            @RequestParam(defaultValue = "5") String sortCriterion
-    ) {
-        CategoryProductIdListDto categoryProductIdListDto = productService.productIdList(largeId,middleId,smallId,detailId,sortCriterion);
-        return new ResponseEntity<>(categoryProductIdListDto);
-    }
-
     @Operation(summary = "리스트용 상품 정보", description = "상품 ID로 상품정보")
     @GetMapping("/productInformation/{productId}")
     public ResponseEntity<?> ProductInformation(@PathVariable Long productId) {

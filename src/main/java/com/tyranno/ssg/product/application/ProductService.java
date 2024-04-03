@@ -7,8 +7,6 @@ public interface ProductService {
 
 
     ProductDetailDto productDetail(Long id);
-
-    CategoryProductIdListDto productIdList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion);
     ProductInformationDto getProductInformation(Long productId);
     ProductThumDto getProductThumPriority1(Long productId);
     DiscountDto getDiscount(Long productId);

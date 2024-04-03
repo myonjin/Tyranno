@@ -88,15 +88,6 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public CategoryProductIdListDto productIdList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion) {
-        Optional<List<Long>> productIds = Optional.ofNullable(categoryRepositoryImp.getProductIdList(largeId, middleId, smallId, detailId, sortCriterion));
-        CategoryProductIdListDto categoryProductIdListDto = new CategoryProductIdListDto();
-        productIds.ifPresent(categoryProductIdListDto::setProductIds);
-
-        return categoryProductIdListDto;
-    }
-
-    @Override
     public ProductInformationDto getProductInformation(Long productId){ // productList에 출력할 상품내용 불러오기
         return productRepository.findById(productId)
                 .map(ProductInformationDto::FromEntity)

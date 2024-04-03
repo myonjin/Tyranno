@@ -6,13 +6,13 @@ import com.tyranno.ssg.category.domain.CategoryMiddle;
 import com.tyranno.ssg.category.domain.CategorySmall;
 import com.tyranno.ssg.category.dto.*;
 import com.tyranno.ssg.category.infrastructure.*;
-import com.tyranno.ssg.product.domain.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,11 +24,7 @@ public class CategoryServiceImp implements CategoryService{
     private final CategoryMiddleRepository categoryMiddleRepository;
     private final CategorySmallRepository categorySmallRepository;
     private final CategoryDetailRepository categoryDetailRepository;
-
-//    @Override
-//    public CategoryProductIdListDto getProductIdByCategory() {
-//
-//    }
+    private final CategoryRepositoryImp categoryRepositoryImp;
 
     @Override
     public List<LargeCategoryDto> getLargeCategory(){ // largeCategory 조회
@@ -90,5 +86,16 @@ public class CategoryServiceImp implements CategoryService{
             details.add(dto);
         }
         return details;
+    }
+
+    @Override
+    public CategoryProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
+                                                     String sortCriterion) {
+        Optional<List<Long>> productIds = Optional.ofNullable(categoryRepositoryImp.getProductIdList(largeId, middleId,
+                smallId, detailId, sortCriterion));
+        CategoryProductIdListDto categoryProductIdListDto = new CategoryProductIdListDto();
+        productIds.ifPresent(categoryProductIdListDto::setProductIds);
+
+        return categoryProductIdListDto;
     }
 }
