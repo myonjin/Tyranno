@@ -1,6 +1,9 @@
-package com.tyranno.ssg.text;
+package com.tyranno.ssg.text.presentation;
 
 import com.tyranno.ssg.global.ResponseEntity;
+import com.tyranno.ssg.text.dto.SmsSendDto;
+import com.tyranno.ssg.text.application.SmsService;
+import com.tyranno.ssg.text.dto.SmsCertificationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +31,7 @@ public class SmsController {
     // 인증번호 확인
     @Operation(summary = "인증번호 확인", description = "문자 인증번호가 맞는지 확인한다.")
     @PostMapping("/verify")
-    public ResponseEntity<?> verifySms(@RequestBody SmsCertificationDto requestDto) {
+    public ResponseEntity<String> verifySms(@RequestBody SmsCertificationDto requestDto) {
         smsService.verifySms(requestDto);
         return new ResponseEntity<>("문자인증에 성공하였습니다.");
     }

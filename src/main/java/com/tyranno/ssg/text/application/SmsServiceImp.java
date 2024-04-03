@@ -1,8 +1,11 @@
-package com.tyranno.ssg.text;
+package com.tyranno.ssg.text.application;
 
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
-import lombok.RequiredArgsConstructor;
+import com.tyranno.ssg.text.infrastructure.SmsCertification;
+import com.tyranno.ssg.text.application.SmsService;
+import com.tyranno.ssg.text.dto.SmsCertificationDto;
+import com.tyranno.ssg.text.dto.SmsSendDto;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
@@ -48,7 +51,7 @@ public class SmsServiceImp implements SmsService {
         Message message = new Message();
         message.setFrom(fromNumber);
         message.setTo(receiverPhoneNum);
-        message.setText(String.format("[SSG] 인증번호 %s를 입력해주세요.", randomNum));
+        message.setText(String.format("[SSG] 본인확인 인증번호 [%s]를 입력해주세요.", randomNum));
 
         smsCertification.createSmsCertification(receiverPhoneNum, randomNum);
 
@@ -57,16 +60,17 @@ public class SmsServiceImp implements SmsService {
 
     @Override
     public void verifySms(SmsCertificationDto SmsCertificationDto) {
-        if (isVerify(SmsCertificationDto)) {
+        if (!isVerify(SmsCertificationDto)) {
             throw new GlobalException(ResponseStatus.NO_MATCH_CERTIFICATION_NUMBER);
         }
         smsCertification.deleteSmsCertification(SmsCertificationDto.getPhoneNumber());
     }
 
     private boolean isVerify(SmsCertificationDto requestDto) {
-        return !(smsCertification.hasKey(requestDto.getPhoneNumber()) &&
+        return (smsCertification.hasKey(requestDto.getPhoneNumber()) &&
                 smsCertification.getSmsCertification(requestDto.getPhoneNumber())
                         .equals(requestDto.getRandomNumber()));
+                // 폰 넘버가 key값으로 redis에 있고 && redis에 저장된 인증번호와 이용자 입력번호가 일치한다면 true
     }
 
 
