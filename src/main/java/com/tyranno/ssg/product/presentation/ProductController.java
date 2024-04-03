@@ -4,7 +4,6 @@ import com.tyranno.ssg.category.application.CategoryService;
 import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.product.application.ProductService;
-import com.tyranno.ssg.product.dto.DiscountDto;
 import com.tyranno.ssg.product.dto.ProductDetailDto;
 import com.tyranno.ssg.product.dto.ProductInformationDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,8 +56,7 @@ public class ProductController {
     @Operation(summary = "리스트용 할인 정보", description = "상품 ID로 할인정보")
     @GetMapping("/discountInformation/{productId}")
     public ResponseEntity<?> getDiscountInformation(@PathVariable Long productId) {
-        DiscountDto discountDto = productService.getDiscount(productId);
-        return new ResponseEntity<>(discountDto);
+        return new ResponseEntity<>(productService.getDiscount(productId));
     }
 
 }

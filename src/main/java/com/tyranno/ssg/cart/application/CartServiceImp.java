@@ -96,7 +96,7 @@ public class CartServiceImp implements CartService {
 
         return carts.stream().map(cart -> {
             Long productId = cart.getOption().getProduct().getId();
-            String imageUrl = productThumRepository.findByProductId(productId)
+            String imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1)
                     .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCTTHUM))
                     .getImageUrl();
             int discount = discountRepository.findById(productId)
