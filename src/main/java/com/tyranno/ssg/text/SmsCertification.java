@@ -10,12 +10,13 @@ import java.time.Duration;
 @Repository
 public class SmsCertification {
     private final String PREFIX = "sms:"; // key값이 중복되지 않도록 상수 선언
-    private final int LIMIT_TIME = 3 * 60; // 인증번호 유효 시간
 
     private final StringRedisTemplate stringRedisTemplate;
 
     // Redis에 저장
     public void createSmsCertification(String phone, String certificationNumber) {
+        // 인증번호 유효 시간
+        int LIMIT_TIME = 3 * 60;
         stringRedisTemplate.opsForValue()
                 .set(PREFIX + phone, certificationNumber, Duration.ofSeconds(LIMIT_TIME));
     }
@@ -32,6 +33,7 @@ public class SmsCertification {
 
     // Redis에 해당 휴대번호로 저장된 인증번호가 존재하는지 확인
     public boolean hasKey(String phone) {
-        return stringRedisTemplate.hasKey(PREFIX + phone);
+        return Boolean.TRUE.equals(stringRedisTemplate.hasKey(PREFIX + phone));
     }
+
 }
