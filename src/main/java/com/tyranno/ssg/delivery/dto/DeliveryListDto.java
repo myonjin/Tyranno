@@ -22,10 +22,10 @@ public class DeliveryListDto {
     private String deliveryBase;
 
     private String deliveryDetail;
-//
-//    private String receiverName;
-//
-//    private String phoneNumber;
+
+    private String receiverName;
+
+    private String phoneNumber;
 //
 //    private String homeNumber;
 
@@ -37,8 +37,8 @@ public class DeliveryListDto {
                 .zipCode(delivery.getZipCode())
                 .deliveryBase(delivery.getDeliveryBase())
                 .deliveryDetail(delivery.getDeliveryDetail())
-//                .receiverName(delivery.getReceiverName())
-//                .phoneNumber(delivery.getPhoneNumber())
+                .receiverName(delivery.getReceiverName())
+                .phoneNumber(delivery.getPhoneNumber())
 //                .homeNumber(delivery.getHomeNumber())
                 .build();
 
