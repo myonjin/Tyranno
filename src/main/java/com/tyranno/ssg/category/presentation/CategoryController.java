@@ -1,32 +1,28 @@
 package com.tyranno.ssg.category.presentation;
 
 import com.tyranno.ssg.category.application.CategoryService;
-import com.tyranno.ssg.category.dto.DetailCategoryDto;
-import com.tyranno.ssg.category.dto.LargeCategoryDto;
-import com.tyranno.ssg.category.dto.MiddleCategoryDto;
+import com.tyranno.ssg.category.dto.*;
 
-import com.tyranno.ssg.category.dto.SmallCategoryDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "카테고리", description = "카테고리 API")
 @Slf4j
 @RequestMapping("/api/v1/category")
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @Operation(summary = "대 카테고리", description = "대 카테고리 조회하기", tags = { "Get LargeCategory" })
+    @Operation(summary = "대 카테고리", description = "대 카테고리 조회하기")
     @GetMapping("/")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "대 카테고리 조회 완료"),
@@ -41,7 +37,7 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
     }
-    @Operation(summary = "중 카테고리", description = "중 카테고리 조회하기", tags = { "Get MiddleCategory" })
+    @Operation(summary = "중 카테고리", description = "중 카테고리 조회하기")
     @GetMapping("/large/{largeId}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "중 카테고리 조회 완료"),
@@ -57,7 +53,7 @@ public class CategoryController {
         }
     }
 
-    @Operation(summary = "소 카테고리", description = "소 카테고리 조회하기", tags = { "Get SmallCategory" })
+    @Operation(summary = "소 카테고리", description = "소 카테고리 조회하기")
     @GetMapping("/middle/{middleId}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "소 카테고리 조회 완료"),
@@ -73,7 +69,7 @@ public class CategoryController {
         }
     }
 
-    @Operation(summary = "상세 카테고리", description = "상세 카테고리 조회하기", tags = { "Get DetailCategory" })
+    @Operation(summary = "상세 카테고리", description = "상세 카테고리 조회하기")
     @GetMapping("/small/{smallId}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "상세 카테고리 조회 완료"),
@@ -89,5 +85,3 @@ public class CategoryController {
         }
     }
 }
-
-
