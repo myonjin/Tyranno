@@ -2,10 +2,7 @@ package com.tyranno.ssg.order.domain;
 
 import com.tyranno.ssg.global.GlobalCreateTime;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @EntityListeners(AuditingEntityListener.class)
+@ToString
 public class OrderList extends GlobalCreateTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,9 +39,9 @@ public class OrderList extends GlobalCreateTime {
     @Column(nullable = false)
     private String receiverPhoneNumber;
 
-    @CreatedDate
-    @Column(nullable = false)
-    private LocalDateTime orderDate;
+//    @CreatedDate
+//    @Column(nullable = false)
+//    private LocalDateTime orderDate;
 
     @Column(nullable = false)
     private String orderName;
@@ -54,12 +52,10 @@ public class OrderList extends GlobalCreateTime {
     @Column(nullable = false)
     private String orderEmail;
 
-    private String howToReceive;
-
     @Column(nullable = false)
-    private String orderNumber;
+    private String orderNumber; // 주문 번호
 
-    private Byte orderStatus;
+    private Byte orderStatus; // 주문상태 0결제완료 / 1상품준비중 / 2배송준비중 / 3배송중 / 4배송완료
 
     @Column(nullable = false)
     private Integer totalMoney;

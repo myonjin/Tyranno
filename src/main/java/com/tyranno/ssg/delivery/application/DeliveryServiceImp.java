@@ -9,6 +9,7 @@ import com.tyranno.ssg.users.domain.Users;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,12 +21,14 @@ public class DeliveryServiceImp implements DeliveryService {
     private final UsersRepository usersRepository;
     private final DeliveryRepository deliveryRepository;
 
+    @Transactional
     @Override
     public void addDelivery(DeliveryAddDto deliveryAddDto, String uuid) {
 
         deliveryRepository.save(deliveryAddDto.toEntity(getUsers(uuid)));
     }
 
+    @Transactional
     @Override
     public void deleteDelivery(Long deliveryId) {
 
@@ -48,21 +51,31 @@ public class DeliveryServiceImp implements DeliveryService {
         return DeliveryDetailDto.fromEntity(delivery);
     }
 
+    @Transactional
     @Override
     public void modifyDelivery(DeliveryModifyDto deliveryModifyDto) {
         Delivery delivery = getDelivery(deliveryModifyDto.getId());
         deliveryRepository.save(deliveryModifyDto.toEntity(delivery));
     }
 
+    @Transactional
     @Override
     public void modifyBaseDelivery(BaseDeliveryModifyDto baseDeliveryModifyDto) {
+        Delivery newBasedelivery = getDelivery(baseDeliveryModifyDto.getDeliveryId());
         // 기존 기본배송지 취소
-        Delivery delivery = deliveryRepository.findByIsBaseDelivery((byte) 11)
+        Delivery basedelivery = deliveryRepository.findByIsBaseDeliveryAndUsers((byte) 11, newBasedelivery.getUsers())
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
-        deliveryRepository.save(baseDeliveryModifyDto.toEntity(delivery, (byte) 99));
+        deliveryRepository.save(baseDeliveryModifyDto.toEntity(basedelivery, (byte) 99));
         // 새 기본배송지 설정
-        delivery = getDelivery(baseDeliveryModifyDto.getId());
-        deliveryRepository.save(baseDeliveryModifyDto.toEntity(delivery, (byte) 11));
+        deliveryRepository.save(baseDeliveryModifyDto.toEntity(newBasedelivery, (byte) 11));
+    }
+    @Override
+    public String getBaseDeliveryName(String uuid) {
+        Users users = getUsers(uuid);
+        Delivery delivery = deliveryRepository.findByIsBaseDeliveryAndUsers((byte) 11, users)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
+
+        return delivery.getDeliveryName();
     }
 
     public Delivery getDelivery(Long deliveryId) {

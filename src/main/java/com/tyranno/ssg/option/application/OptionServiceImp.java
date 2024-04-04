@@ -27,7 +27,7 @@ public class OptionServiceImp implements OptionService {
 
     public OptionNamesDto getOptionNames(Long optionId) {
         return optionRepository.findById(optionId)
-                .map(option -> OptionNamesDto.FromEntity(option, option.getProduct()))
+                .map(OptionNamesDto::FromEntity)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION));
     }
 
@@ -57,7 +57,7 @@ public class OptionServiceImp implements OptionService {
     public List<OptionAbleListDto> getOptionAbleList(Long productId) {
 
         List<Option> options = optionRepository.findAllByProductId(productId)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.DUPLICATE_ID));
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION));
         Map<Long, ColorStockDto> colorStockMap = options.stream()
                 .filter(option -> option.getColor() != null)
                 .map(option -> new ColorStockDto(option.getColor().getId(), option.getColor().getColor(),
@@ -134,7 +134,10 @@ public class OptionServiceImp implements OptionService {
     @Override
     public List<OptionDto> getOptionProduct(Long productId, Long colorId, Long sizeId, Long extraId, Long etcId) {
         List<Option> optionProducts = optionRepositoryImp.getOptionProduct(productId, colorId, sizeId, extraId, etcId);
-//        log.info(optionProducts.toString());
+        //log.info(optionProducts.toString());
+        if (optionProducts.isEmpty()) {
+            throw new GlobalException(ResponseStatus.NO_SELECTED_OPTION);
+        }
         return optionProducts.stream()
                 .map(OptionDto::fromEntity)
                 .toList();

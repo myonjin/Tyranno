@@ -46,12 +46,14 @@ public enum ResponseStatus {
     //
 //    // USERS
     DUPLICATE_ID(false, 2100, "사용중인 아이디입니다."),
+    DUPLICATE_EMAIL(false, 2101, "사용중인 이메일입니다."),
     //    DUPLICATED_USERS(false, 2101, "이미 가입된 유저입니다."),
 //    MASSAGE_SEND_FAILED(false, 2102, "인증번호 전송에 실패했습니다."),
 //    MASSAGE_VALID_FAILED(false, 2103, "인증번호가 일치하지 않습니다."),
     FAILED_TO_LOGIN(false, 2104, "아이디 또는 패스워드를 다시 확인하세요."),
     //    WITHDRAWAL_USERS(false, 2105, "탈퇴한 회원입니다."),
-    NO_EXIST_USERS(false, 2106, "존재하지 않는 유저 정보입니다."), //    USERS_STATUS_IS_NOT_FOUND(false, 2107, "존재하지 않는 유저 상태입니다."),
+    NO_EXIST_USERS(false, 2106, "존재하지 않는 유저 정보입니다."),
+    //    USERS_STATUS_IS_NOT_FOUND(false, 2107, "존재하지 않는 유저 상태입니다."),
     //    PASSWORD_SAME_FAILED(false, 2108, "현재 사용중인 비밀번호 입니다."),
 //    PASSWORD_CONTAIN_NUM_FAILED(false, 2109, "휴대폰 번호를 포함한 비밀번호 입니다."),
 //    PASSWORD_CONTAIN_EMAIL_FAILED(false, 2110, "이메일이 포함된 비밀번호 입니다."),
@@ -66,7 +68,7 @@ public enum ResponseStatus {
     // Option
     NO_EXIST_OPTION(false, 4000, "존재하지 않는 옵션입니다."),
     ALREADY_EXIST_OPTION(false, 4001, "이미 존재하는 옵션입니니다."),
-
+    NO_SELECTED_OPTION(false,4003,"선택된 옵션이 없습니다."),
     // Cart
     NO_EXIST_CART(false, 5000, "존재하지 않는 장바구니입니다."),
 
@@ -79,12 +81,18 @@ public enum ResponseStatus {
     ALREADY_EXIST_PRODUCT(false, 7001, "이미 존재하는 상품입니니다."),
     NO_EXIST_PRODUCTTHUM(false, 7100, "존재하지 않는 상품썸네일입니다."),
     NO_EXIST_DISCOUNT(false, 7200, "존재하지 않는 할인율입니다."),
+    NO_EXIST_IMAGE(false, 7300, "이미지가 존재하지 않습니다."),
 
 
     // Vendor
     NO_EXIST_VENDORPRODUCT(false, 8000, "존재하지 않는 판매자상품입니다."),
-    NO_EXIST_VENDOR(false, 8100, "존재하지 않는 판매자입니다.");
+    NO_EXIST_VENDOR(false, 8100, "존재하지 않는 판매자입니다."),
 
+    // 문자인증
+    NO_MATCH_CERTIFICATION_NUMBER(false, 9000, "인증번호가 일치하지 않습니다."),
+
+    // Order
+    NO_EXIST_ORDER_LIST(false,10000,"존재하지 않는 주문내역입니다.");
 
     private final boolean isSuccess;
     private final int code;

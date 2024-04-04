@@ -1,15 +1,15 @@
 package com.tyranno.ssg.product.application;
 
-import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
 import com.tyranno.ssg.product.dto.*;
 
 public interface ProductService {
 
 
     ProductDetailDto productDetail(Long id);
-
-    CategoryProductIdListDto productIdList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion);
-    ProductInformationDto getProductInformation(Long productId);
+    ProductInformationDto getProductInformation(Long productId, String uuid);
     ProductThumDto getProductThumPriority1(Long productId);
-    DiscountDto getDiscount(Long productId);
+    int getDiscount(Long productId);
+
+    ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId, Integer sortCriterion,
+                                      Integer lastIndex);
 }
