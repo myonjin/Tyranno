@@ -1,10 +1,10 @@
-package com.tyranno.ssg.sms.application;
+package com.tyranno.ssg.auth.sms.application;
 
+import com.tyranno.ssg.auth.sms.infrastructure.SmsCertification;
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
-import com.tyranno.ssg.sms.dto.SmsCertificationDto;
-import com.tyranno.ssg.sms.dto.SmsSendDto;
-import com.tyranno.ssg.sms.infrastructure.SmsCertification;
+import com.tyranno.ssg.auth.sms.dto.SmsCertificationDto;
+import com.tyranno.ssg.auth.sms.dto.SmsSendDto;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;

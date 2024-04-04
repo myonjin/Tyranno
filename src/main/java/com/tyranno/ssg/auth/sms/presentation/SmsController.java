@@ -1,9 +1,9 @@
-package com.tyranno.ssg.sms.presentation;
+package com.tyranno.ssg.auth.sms.presentation;
 
 import com.tyranno.ssg.global.ResponseEntity;
-import com.tyranno.ssg.sms.dto.SmsSendDto;
-import com.tyranno.ssg.sms.application.SmsService;
-import com.tyranno.ssg.sms.dto.SmsCertificationDto;
+import com.tyranno.ssg.auth.sms.dto.SmsSendDto;
+import com.tyranno.ssg.auth.sms.application.SmsService;
+import com.tyranno.ssg.auth.sms.dto.SmsCertificationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "문자인증", description = "Text API")
-@RequestMapping("/api/v1/sms")
+@RequestMapping("/api/v1/auth/sms")
 public class SmsController {
 
     private final SmsService smsService;

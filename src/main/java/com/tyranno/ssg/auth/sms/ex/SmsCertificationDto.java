@@ -1,4 +1,4 @@
-package com.tyranno.ssg.sms.ex;
+package com.tyranno.ssg.auth.sms.ex;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
