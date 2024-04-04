@@ -18,7 +18,6 @@ import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.dto.VendorDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
-import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
 import com.tyranno.ssg.vendor.infrastructure.VendorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +39,6 @@ public class ProductServiceImp implements ProductService {
     private final ProductThumRepository productThumRepository;
     //    private final CategoryRepository categoryRepository;
     private final DiscountRepository discountRepository;
-    private final CategoryRepositoryImp categoryRepositoryImp;
     private final ProductRepositoryImp productRepositoryImp;
     private final UsersRepository usersRepository;
     private final LikeRepository likeRepository;
