@@ -9,9 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Getter
 public class RecentViewedProduct extends GlobalCreateTime {
@@ -27,4 +25,13 @@ public class RecentViewedProduct extends GlobalCreateTime {
 
     @Column(nullable = false)
     private Byte isView;
+
+    @Builder
+    public RecentViewedProduct(Long id, Users users, Product product, Byte isView) {
+        this.id = id;
+        this.users = users;
+        this.product = product;
+        this.isView = isView;
+    }
+
 }
