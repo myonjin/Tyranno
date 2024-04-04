@@ -17,8 +17,6 @@ public class SsgApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SsgApplication.class, args);
-
-
 	}
 
 }
