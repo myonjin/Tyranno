@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 //@OpenAPIDefinition(servers = {
 //		@Server(url = "https://tyrannoback.com", description = "Default Server URL")
 //})
-@EnableWebMvc
+//@EnableWebMvc
 @EnableJpaAuditing
 @SpringBootApplication
 public class SsgApplication {

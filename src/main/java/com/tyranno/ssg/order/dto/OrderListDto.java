@@ -19,7 +19,7 @@ public class OrderListDto {
 
     private int totalMoney; //총 결제 금액
     private String orderNumber; //주문 번호
-    private String orderDate; //주문 일자
+    private LocalDateTime orderDate; //주문 일자
 
     private String receiverName; //받는사람 이름
 
