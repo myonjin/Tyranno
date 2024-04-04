@@ -6,6 +6,9 @@ import com.tyranno.ssg.option.domain.Option;
 import com.tyranno.ssg.option.dto.*;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
 import com.tyranno.ssg.option.infrastructure.OptionRepositoryImpl;
+import com.tyranno.ssg.product.domain.Discount;
+import com.tyranno.ssg.product.infrastructure.DiscountRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 public class OptionServiceImp implements OptionService {
     private final OptionRepository optionRepository;
     private final OptionRepositoryImpl optionRepositoryImp;
+    private final DiscountRepository discountRepository;
 
     @Override
 
@@ -138,8 +142,13 @@ public class OptionServiceImp implements OptionService {
         if (optionProducts.isEmpty()) {
             throw new GlobalException(ResponseStatus.NO_SELECTED_OPTION);
         }
+        int discount = discountRepository.findByProductId(productId)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT))
+                .getDiscount();
+
+
         return optionProducts.stream()
-                .map(OptionDto::fromEntity)
+                .map(option -> OptionDto.fromEntity(option, discount))
                 .toList();
     }
 
