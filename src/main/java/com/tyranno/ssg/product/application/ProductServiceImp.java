@@ -3,19 +3,23 @@ package com.tyranno.ssg.product.application;
 
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
+import com.tyranno.ssg.like.domain.Like;
+import com.tyranno.ssg.like.infrastructure.LikeRepository;
 import com.tyranno.ssg.product.domain.Discount;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
 import com.tyranno.ssg.product.dto.*;
 import com.tyranno.ssg.product.infrastructure.DiscountRepository;
 import com.tyranno.ssg.product.infrastructure.ProductRepository;
+import com.tyranno.ssg.product.infrastructure.ProductRepositoryImp;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
+import com.tyranno.ssg.users.domain.Users;
+import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.dto.VendorDto;
-import com.tyranno.ssg.vendor.dto.VendorProductDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
-import com.tyranno.ssg.category.dto.CategoryProductIdListDto;
 import com.tyranno.ssg.category.infrastructure.CategoryRepositoryImp;
+import com.tyranno.ssg.vendor.infrastructure.VendorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,13 +35,15 @@ public class ProductServiceImp implements ProductService {
 
     // JPA로 productId를 통해 조회하기
     private final ProductRepository productRepository;
+    private final VendorRepository vendorRepository;
     private final VendorProductRepository vendorProductRepository;
     private final ProductThumRepository productThumRepository;
     //    private final CategoryRepository categoryRepository;
     private final DiscountRepository discountRepository;
     private final CategoryRepositoryImp categoryRepositoryImp;
-
-    //    private final LikeRepository likeRepository;
+    private final ProductRepositoryImp productRepositoryImp;
+    private final UsersRepository usersRepository;
+    private final LikeRepository likeRepository;
 
 
     @Override
@@ -88,20 +94,41 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public CategoryProductIdListDto productIdList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion) {
-        Optional<List<Long>> productIds = Optional.ofNullable(categoryRepositoryImp.getProductIdList(largeId, middleId, smallId, detailId, sortCriterion));
-        CategoryProductIdListDto categoryProductIdListDto = new CategoryProductIdListDto();
-        productIds.ifPresent(categoryProductIdListDto::setProductIds);
+    public ProductInformationDto getProductInformation(Long productId, String uuid) {// productList에 출력할 상품내용 불러오기
+        Optional<Product> productOptional = productRepository.findById(productId);
 
-        return categoryProductIdListDto;
+        Product product = productOptional.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
+
+        Optional<ProductThum> imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1);
+        Long vendorId = vendorProductRepository.findByProductId(productId)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT))
+                .getId();
+        String vendorName = vendorRepository.findById(vendorId)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDOR))
+                .getVendorName();
+
+        byte isLike = 99; // 기본값으로 설정
+
+        if (uuid != null) {
+            Long usersId = getUsers(uuid).getId();
+            Optional<Like> like = likeRepository.findByProductIdAndUsersId(productId, usersId);
+            isLike = (byte) (like.isPresent() ? 11 : 99);
+        }
+
+        return ProductInformationDto.builder()
+                .productId(product.getId())
+                .productName(product.getProductName())
+                .price(product.getProductPrice())
+                .productRate(product.getProductRate())
+                .reviewCount(product.getReviewCount())
+                .isLiked(isLike)
+                .imageUrl(imageUrl.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_IMAGE)).getImageUrl())
+                .vendorName(vendorName)
+                .build();
     }
 
-    @Override
-    public ProductInformationDto getProductInformation(Long productId){ // productList에 출력할 상품내용 불러오기
-        return productRepository.findById(productId)
-                .map(ProductInformationDto::FromEntity)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
-    }
+
+
 
     @Override
     public ProductThumDto getProductThumPriority1(Long productId){ // productList에서 상품 썸네일 불러오기
@@ -117,5 +144,29 @@ public class ProductServiceImp implements ProductService {
 
         return discount.getDiscount();
     }
+
+    @Override
+    public ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
+                                             String sortCriterion, Integer lastIndex) { // productList
+        List<Long> productIds = productRepositoryImp.getProductIdList(largeId, middleId,
+                smallId, detailId, sortCriterion, lastIndex);
+
+        ProductIdListDto productIdListDto = new ProductIdListDto();
+
+        List<Map<String, Long>> productIdList = new ArrayList<>();
+        for (int i = 0; i < productIds.size(); i++) { // 순서 보여주려고 추가한 값
+            Map<String, Long> productMap = new HashMap<>();
+            productMap.put("productId" + (i + 1), productIds.get(i));
+            productIdList.add(productMap);
+        }
+        productIdListDto.setProductIds(productIdList);
+
+        return productIdListDto;
+    }
+    public Users getUsers(String uuid) {
+        return usersRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+    }
+
 
 }
