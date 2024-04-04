@@ -6,6 +6,7 @@ import com.tyranno.ssg.product.application.ProductService;
 import com.tyranno.ssg.product.dto.ProductDetailDto;
 import com.tyranno.ssg.product.dto.ProductIdListDto;
 import com.tyranno.ssg.product.dto.ProductInformationDto;
+import com.tyranno.ssg.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
-    private final CategoryService categoryService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "상품 상세페이지", description = "상품 상세페이지를 열기")
     @GetMapping("/detail/{productId}")
@@ -35,9 +36,18 @@ public class ProductController {
 
     @Operation(summary = "리스트용 상품 정보", description = "상품 ID로 상품정보")
     @GetMapping("/productInformation/{productId}")
-    public ResponseEntity<?> ProductInformation(@PathVariable Long productId) {
-        ProductInformationDto productDto = productService.getProductInformation(productId);
-        return new ResponseEntity<>(productDto);
+    public ResponseEntity<?> ProductInformation(@PathVariable Long productId,
+                                                @RequestHeader(value = "Authorization", required = false) String token) {
+        if(token != null) {
+            String uuid = jwtTokenProvider.getUuid(token);
+            ProductInformationDto productDto = productService.getProductInformation(productId,uuid);
+            return new ResponseEntity<>(productDto);
+        }
+        else {
+            String uuid = null;
+            ProductInformationDto productDto = productService.getProductInformation(productId, null);
+            return new ResponseEntity<>(productDto);
+        }
     }
 
     @Operation(summary = "리스트용 할인 정보", description = "상품 ID로 할인정보")

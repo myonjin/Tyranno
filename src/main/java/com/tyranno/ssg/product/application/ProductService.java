@@ -6,7 +6,7 @@ public interface ProductService {
 
 
     ProductDetailDto productDetail(Long id);
-    ProductInformationDto getProductInformation(Long productId);
+    ProductInformationDto getProductInformation(Long productId, String uuid);
     ProductThumDto getProductThumPriority1(Long productId);
     int getDiscount(Long productId);
 
