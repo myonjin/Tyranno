@@ -1,16 +1,17 @@
 package com.tyranno.ssg.auth.oauth.dto;
 
+import com.tyranno.ssg.auth.oauth.domain.OAuth;
 import com.tyranno.ssg.delivery.domain.Delivery;
 import com.tyranno.ssg.users.domain.Users;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDate;
 import java.util.UUID;
+
 
 @Getter
 @Builder
@@ -36,12 +37,24 @@ public class OAuthSignUpDto {
 
     private LocalDate birth;
 
+    private Byte shinsegaeMarketingAgree;
+
+    private Byte shinsegaeOptionAgree;
+
     private Byte ssgMarketingAgree;
+
+    public OAuth toOAuthEntity(Users users) {
+        return OAuth.builder()
+                .type((byte) 0) // 카카오
+                .external_id(oAuthExternalId)
+                .users(users)
+                .build();
+    }
 
     public Users toUsersEntity() {
         return Users.builder()
-                .loginId(loginId)
-                .password(new BCryptPasswordEncoder().encode(password))
+                .loginId(String.valueOf(email.hashCode()))
+                .password(RandomStringUtils.randomAlphanumeric(30))
                 .name(name)
                 .email(email)
                 .gender(gender)

@@ -5,5 +5,7 @@ import com.tyranno.ssg.auth.oauth.dto.OAuthSignUpDto;
 
 public interface OAuthService {
     String signUpOAuth(OAuthSignUpDto oAuthSignUpDto);
-    String loginUsers(LoginDto loginDto);
+    String loginOAuth(LoginDto loginDto);
+
+    String loginOAuth(OAuthSignUpDto oAuthSignUpDto);
 }

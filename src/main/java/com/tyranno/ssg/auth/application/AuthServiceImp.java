@@ -29,18 +29,34 @@ public class AuthServiceImp implements AuthService {
 
     @Transactional // 반복이 될수 있음. 모든 곳에서 붙이는건 생각해봐야함  이유가 명확해야함
     @Override
-    public void createUsers(SignUpDto signUpDto) {
+    public void singUpUsers(SignUpDto signUpDto) {
         //회원
         Users users = signUpDto.toUsersEntity();
         usersRepository.save(users);
 
         //마케팅
+        MarketingAgreeDto marketingAgreeDto = new MarketingAgreeDto(
+                signUpDto.getShinsegaeMarketingAgree(),
+                signUpDto.getShinsegaeOptionAgree(),
+                signUpDto.getSsgMarketingAgree());
+
+        addMarketingInformation(marketingAgreeDto, users);
+
+        //배송지
+        Delivery delivery = signUpDto.toDeliveryEntity(users);
+        deliveryRepository.save(delivery);
+    }
+
+    @Transactional
+    @Override
+    public void addMarketingInformation(MarketingAgreeDto marketingAgreeDto, Users users) {
+
         for (MarketingType type : MarketingType.values()) {
 
             Byte isAgree = switch (type) {
-                case SHINSEGAE -> signUpDto.getShinsegaeMarketingAgree();
-                case SHINSEGAE_OPTION -> signUpDto.getShinsegaeOptionAgree();
-                case SSG -> signUpDto.getSsgMarketingAgree();
+                case SHINSEGAE -> marketingAgreeDto.getShinsegaeMarketingAgree();
+                case SHINSEGAE_OPTION -> marketingAgreeDto.getShinsegaeOptionAgree();
+                case SSG -> marketingAgreeDto.getSsgMarketingAgree();
             }; // default : 99 - 비동의
 
             MarketingInformation marketingInformation = MarketingInformation.builder()
@@ -51,10 +67,6 @@ public class AuthServiceImp implements AuthService {
 
             marketingInformationRepository.save(marketingInformation);
         }
-
-        // 배송지
-        Delivery delivery = signUpDto.toDeliveryEntity(users);
-        deliveryRepository.save(delivery);
     }
 
     @Override

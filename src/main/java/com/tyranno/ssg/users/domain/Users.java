@@ -19,7 +19,6 @@ import java.util.List;
 
 @NoArgsConstructor
 @Entity
-@ToString
 @Getter
 public class Users extends GlobalTime implements UserDetails {
     @Id

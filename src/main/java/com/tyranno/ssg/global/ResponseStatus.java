@@ -57,10 +57,13 @@ public enum ResponseStatus {
     //    PASSWORD_SAME_FAILED(false, 2108, "현재 사용중인 비밀번호 입니다."),
 //    PASSWORD_CONTAIN_NUM_FAILED(false, 2109, "휴대폰 번호를 포함한 비밀번호 입니다."),
 //    PASSWORD_CONTAIN_EMAIL_FAILED(false, 2110, "이메일이 포함된 비밀번호 입니다."),
+
+    // OAuth
+    NO_EXIST_OAUTH(false, 2200, "존재하지 않는 소셜 회원입니다."),
 //
 //    // Marketing
-    NO_EXIST_MARKETING(false, 2200, "마케팅동의여부가 조회되지 않습니다."),
-    NO_FORMATING(false, 2201, "마케팅동의 형식에 맞지 않습니다."),
+    NO_EXIST_MARKETING(false, 2300, "마케팅동의여부가 조회되지 않습니다."),
+    NO_FORMATING(false, 2301, "마케팅동의 형식에 맞지 않습니다."),
 
     // Delivery
     NO_EXIST_DELIVERY(false, 3000, "존재하지 않는 배송지입니다."),

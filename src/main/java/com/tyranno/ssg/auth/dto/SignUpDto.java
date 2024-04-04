@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpDto { // 회원가입 정보 이걸로 받음
@@ -44,8 +43,6 @@ public class SignUpDto { // 회원가입 정보 이걸로 받음
 
     private Byte ssgMarketingAgree;
 
-    //    @Notnull
-//    private int snsLogin;
     public Users toUsersEntity() {
         return Users.builder()
                 .loginId(loginId)
