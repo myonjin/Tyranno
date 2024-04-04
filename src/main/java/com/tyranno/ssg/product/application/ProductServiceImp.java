@@ -147,7 +147,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
-                                             String sortCriterion, Integer lastIndex) { // productList
+                                             Integer sortCriterion, Integer lastIndex) { // productList
         List<Long> productIds = productRepositoryImp.getProductIdList(largeId, middleId,
                 smallId, detailId, sortCriterion, lastIndex);
 

@@ -22,7 +22,7 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
     }
 
     public List<Long> getProductIdList(Long largeId, Long middleId,
-                                       Long smallId, Long detailId, String sortCriterion, @Nullable Integer lastIndex) {
+                                       Long smallId, Long detailId, Integer sortCriterion, @Nullable Integer lastIndex) {
         OrderSpecifier<?> orderSpecifier = createOrderSpecifier(sortCriterion);
         QCategory category = QCategory.category;
         return jpaQueryFactory.select(category.product.id)
@@ -71,13 +71,13 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
         return lastIndex == null ? null : category.product.id.gt(lastIndex);
     }
 
-    private OrderSpecifier<?> createOrderSpecifier(String sortCriterion) {
+    private OrderSpecifier<?> createOrderSpecifier(Integer sortCriterion) {
         QCategory category = QCategory.category;
         return switch (sortCriterion) {
-            case "1" -> new OrderSpecifier<>(Order.ASC, category.product.productPrice);
-            case "2" -> new OrderSpecifier<>(Order.DESC, category.product.productPrice);
-            case "3" -> new OrderSpecifier<>(Order.DESC, category.product.productRate);
-            case "4" -> new OrderSpecifier<>(Order.DESC, category.product.reviewCount);
+            case 1 -> new OrderSpecifier<>(Order.ASC, category.product.productPrice);
+            case 2 -> new OrderSpecifier<>(Order.DESC, category.product.productPrice);
+            case 3 -> new OrderSpecifier<>(Order.DESC, category.product.productRate);
+            case 4 -> new OrderSpecifier<>(Order.DESC, category.product.reviewCount);
             default -> new OrderSpecifier<>(Order.ASC, category.product.id);
         };
     }
