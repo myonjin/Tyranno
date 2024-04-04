@@ -18,7 +18,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Operation(summary = "회원가입", description = "회원 가입")
+    @Operation(summary = "통합 회원가입", description = "통합 회원가입을 한다.")
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto signUpDto) {
 
@@ -45,7 +45,7 @@ public class AuthController {
         return new ResponseEntity<>("사용할 수 있는 이메일입니다.");
     }
 
-    @Operation(summary = "로그인", description = "로그인")
+    @Operation(summary = "통합 회원 로그인", description = "통합 회원 로그인을 한다.")
     @PostMapping("/login")
     public ResponseEntity<?> logIn(@RequestBody LoginDto logInDto) {
 
