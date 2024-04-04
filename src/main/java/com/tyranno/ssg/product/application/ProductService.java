@@ -10,6 +10,6 @@ public interface ProductService {
     ProductThumDto getProductThumPriority1(Long productId);
     int getDiscount(Long productId);
 
-    ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId, String sortCriterion,
+    ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId, Integer sortCriterion,
                                       Integer lastIndex);
 }

@@ -19,12 +19,10 @@ import java.util.Optional;
 @Slf4j
 public class CategoryServiceImp implements CategoryService{
 
-    private final CategoryRepository categoryRepository;
     private final CategoryLargeRepository categoryLargeRepository;
     private final CategoryMiddleRepository categoryMiddleRepository;
     private final CategorySmallRepository categorySmallRepository;
     private final CategoryDetailRepository categoryDetailRepository;
-    private final CategoryRepositoryImp categoryRepositoryImp;
 
     @Override
     public List<LargeCategoryDto> getLargeCategory(){ // largeCategory 조회
