@@ -40,9 +40,8 @@ out/
 # application.yml
 # *.yml
 # src/main/resources/application.yml
-
-### Key Files ###
 **/application-local.yml
+
 
 ### .DS_store ###
 .DS_Store
