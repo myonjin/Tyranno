@@ -96,7 +96,7 @@ public class ProductServiceImp implements ProductService {
         Optional<Product> productOptional = productRepository.findById(productId);
 
         Product product = productOptional.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
-
+        log.info(String.valueOf(product));
         Optional<ProductThum> imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1);
         Long vendorId = vendorProductRepository.findByProductId(productId)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT))
