@@ -19,6 +19,8 @@ public class OptionDto {
     @NotNull
     private Integer productPrice;
 
+    private int discount;
+
     private Color color;
 
     private Size size;
@@ -29,11 +31,12 @@ public class OptionDto {
     @NotNull
     private Integer stock;
 
-    public static OptionDto fromEntity(Option option) {
+    public static OptionDto fromEntity(Option option, int discount) {
         return OptionDto.builder()
                 .optionId(option.getId())
                 .productName(option.getProduct().getProductName())
                 .productPrice(option.getProduct().getProductPrice())
+                .discount(discount)
                 .color(option.getColor())
                 .size(option.getSize())
                 .extra(option.getExtra())

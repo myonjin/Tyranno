@@ -12,21 +12,19 @@ import java.time.LocalDateTime;
 public class RecentViewedDto {
 
     private Long id;
-    private LocalDateTime createdAt;
-    private Byte isView;
+    private Long productId;
 
     @Builder
-    public RecentViewedDto (Long id, Byte isView, LocalDateTime createdAt) {
+    public RecentViewedDto (Long id, Long productId) {
         this.id = id;
-        this.createdAt = createdAt;
-        this.isView = isView;
+
+        this.productId = productId;
     }
 
     public static RecentViewedDto FromEntity(RecentViewedProduct recentViewedProduct) {
         return RecentViewedDto.builder()
                 .id(recentViewedProduct.getId())
-                .isView(recentViewedProduct.getIsView())
-                .createdAt(recentViewedProduct.getCreatedAt())
+                .productId(recentViewedProduct.getProduct().getId())
                 .build();
     }
 
