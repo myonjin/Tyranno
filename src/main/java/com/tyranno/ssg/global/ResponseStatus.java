@@ -81,6 +81,7 @@ public enum ResponseStatus {
     ALREADY_EXIST_PRODUCT(false, 7001, "이미 존재하는 상품입니니다."),
     NO_EXIST_PRODUCTTHUM(false, 7100, "존재하지 않는 상품썸네일입니다."),
     NO_EXIST_DISCOUNT(false, 7200, "존재하지 않는 할인율입니다."),
+    NO_EXIST_IMAGE(false, 7300, "이미지가 존재하지 않습니다."),
 
 
     // Vendor
