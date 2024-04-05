@@ -2,6 +2,7 @@ package com.tyranno.ssg.auth.oauth.presentation;
 
 import com.tyranno.ssg.auth.oauth.application.OAuthService;
 import com.tyranno.ssg.auth.oauth.dto.OAuthExternalIdDto;
+import com.tyranno.ssg.auth.oauth.dto.OAuthInfoDto;
 import com.tyranno.ssg.auth.oauth.dto.OAuthSignUpDto;
 import com.tyranno.ssg.global.ResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,17 +21,23 @@ public class OAuthController {
 
     private final OAuthService oAuthService;
 
-    @Operation(summary = "소셜 회원 여부 체크", description = "이미 소셜가입한 이용자인지 확인한다.")
+    @Operation(summary = "기존 회원 여부 조회 (소셜 아이디)", description = "소셜 아이디로 기존 회원여부를 조회한다.")
     @PostMapping("/check")
-    public ResponseEntity<?> checkOAuth(@RequestBody OAuthExternalIdDto oAuthExternalIdDto) {
-        oAuthService.checkOAuth(oAuthExternalIdDto);
+    public ResponseEntity<?> checkOAuthUsers(@RequestBody OAuthInfoDto oAuthInfoDto) {
+        return new ResponseEntity<>(oAuthService.checkOAuthUsersByOAuthId(oAuthInfoDto));
+    }
+    @Operation(summary = "기존 통합회원 소셜 로그인 연결", description = "기존의 통합 회원이 소셜 회원가입을 한다.")
+    @PostMapping("/connect")
+    public ResponseEntity<?> connectOAuth(@RequestBody OAuthInfoDto oAuthInfoDto) {
+        oAuthService.connectOAuth(oAuthInfoDto);
         return new ResponseEntity<>("소셜 가입되지 않은 이용자입니다.");
     }
+
     @Operation(summary = "소셜 회원가입", description = "소셜 회원 가입을 한다.")
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody OAuthSignUpDto oAuthSignUpDto) {
-
-        return new ResponseEntity<>(oAuthService.signUpOAuth(oAuthSignUpDto));
+        oAuthService.signUpOAuth(oAuthSignUpDto);
+        return new ResponseEntity<>("소셜 회원가입이 완료되었습니다.");
     }
 
     @Operation(summary = "소셜 로그인", description = "소셜 로그인을 한다.")

@@ -19,25 +19,22 @@ public class AuthController {
     private final AuthService authService;
 
     @Operation(summary = "기존 회원 여부 조회 (휴대폰 번호)", description = "휴대폰 번호로 소셜, 통합 회원인지를 조회한다.")
-    @PostMapping("/check/phone")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto signUpDto) {
+    @PostMapping("/check")
+    public ResponseEntity<?> checkOAuthUsers(@RequestBody PhoneNumberDto phoneNumberDto) {
 
-        authService.singUpUsers(signUpDto);
-
-        return new ResponseEntity<>("회원가입 완료");
+        return new ResponseEntity<>(authService.checkOAuthUsersByPhoneNum(phoneNumberDto));
     }
-
     @Operation(summary = "기존 소셜 회원 통합회원 연결", description = "기존의 소셜 회원이 통합 회원가입을 한다.")
-    @PostMapping("/connect-users")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto signUpDto) {
+    @PostMapping("/connect")
+    public ResponseEntity<?> connectUsers(@RequestBody ConnectUsersDto connectUsersDto) {
 
-        authService.singUpUsers(signUpDto);
+        authService.connectUsers(connectUsersDto);
 
         return new ResponseEntity<>("회원가입 완료");
     }
     @Operation(summary = "통합 회원가입", description = "통합 회원가입을 한다.")
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto signUpDto) {
+    public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpDto) {
 
         authService.singUpUsers(signUpDto);
 

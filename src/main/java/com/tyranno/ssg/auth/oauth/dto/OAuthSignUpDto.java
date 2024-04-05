@@ -18,8 +18,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OAuthSignUpDto {
 
-    private Long oAuthExternalId;
-
     private String name;
 
     private String deliveryBase;
@@ -41,6 +39,8 @@ public class OAuthSignUpDto {
     private Byte shinsegaeOptionAgree;
 
     private Byte ssgMarketingAgree;
+
+    private Long oAuthExternalId;
 
     public OAuth toOAuthEntity(Users users) {
         return OAuth.builder()

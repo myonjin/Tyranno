@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OAuthInfoDto {
 
-    private Long oAuthExternalId;
-
     private String name;
 
     private String email;
+
+    private Long oAuthExternalId;
 
     public OAuth toEntity(Users users) {
         return OAuth.builder()
