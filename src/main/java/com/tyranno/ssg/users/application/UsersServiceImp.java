@@ -74,6 +74,7 @@ public class UsersServiceImp implements UsersService {
                 .phoneNumber(users.getPhoneNumber())
                 .birth(users.getBirth())
                 .status(1) // 탈퇴
+                .isRegistered(users.getIsRegistered())
                 .uuid(users.getUuid())
                 .build();
 

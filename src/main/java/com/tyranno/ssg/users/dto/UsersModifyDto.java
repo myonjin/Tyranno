@@ -28,6 +28,7 @@ public class UsersModifyDto { //회원 인증 정보 - 유저가 입력, 비밀�
                 .phoneNumber(phoneNumber)
                 .birth(users.getBirth())
                 .status(users.getStatus())
+                .isRegistered(users.getIsRegistered())
                 .uuid(users.getUuid())
                 .build();
 

@@ -60,6 +60,8 @@ public enum ResponseStatus {
 
     // OAuth
     NO_EXIST_OAUTH(false, 2200, "존재하지 않는 소셜 회원입니다."),
+    DUPLICATE_OAUTH(false, 2201, "이미 가입된 소셜 회원입니다."),
+
 //
 //    // Marketing
     NO_EXIST_MARKETING(false, 2300, "마케팅동의여부가 조회되지 않습니다."),
@@ -70,7 +72,7 @@ public enum ResponseStatus {
 
     // Option
     NO_EXIST_OPTION(false, 4000, "존재하지 않는 옵션입니다."),
-    ALREADY_EXIST_OPTION(false, 4001, "이미 존재하는 옵션입니니다."),
+    DUPLICATE_OPTION(false, 4001, "이미 존재하는 옵션입니니다."),
 
     // Cart
     NO_EXIST_CART(false, 5000, "존재하지 않는 장바구니입니다."),

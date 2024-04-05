@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface OAuthRepository extends JpaRepository<OAuth, Long> {
     Optional<OAuth> findByExternalId(Long externalId);
+    boolean existsByUsersId(Long usersId);
+
 }

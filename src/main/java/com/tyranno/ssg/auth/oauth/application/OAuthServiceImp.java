@@ -12,17 +12,14 @@ import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.domain.Users;
-import com.tyranno.ssg.users.infrastructure.MarketingInformationRepository;
-import com.tyranno.ssg.users.infrastructure.MarketingRepository;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OAuthServiceImp implements OAuthService {
+public class OAuthServiceImp implements com.tyranno.ssg.auth.oauth.application.OAuthService {
     private final UsersRepository usersRepository;
     private final DeliveryRepository deliveryRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -37,7 +34,7 @@ public class OAuthServiceImp implements OAuthService {
         Users users = usersRepository.findByNameAndEmail(oAuthSignUpDto.getName(), oAuthSignUpDto.getEmail());
 
         // 통합회원 가입 이력이 없을 시
-        if (users == null) {
+        if (users.getIsRegistered() == 0) {
             //회원
             users = oAuthSignUpDto.toUsersEntity();
             usersRepository.save(users);

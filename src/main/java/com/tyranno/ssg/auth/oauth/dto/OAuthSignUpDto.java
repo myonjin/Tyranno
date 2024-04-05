@@ -46,7 +46,7 @@ public class OAuthSignUpDto {
     public OAuth toOAuthEntity(Users users) {
         return OAuth.builder()
                 .type((byte) 0) // 카카오
-                .externalId(oAuthExternalId)
+                .externalId(oAuthExternalId) // externalId 설정
                 .users(users)
                 .build();
     }
@@ -61,6 +61,7 @@ public class OAuthSignUpDto {
                 .phoneNumber(phoneNumber)
                 .birth(birth)
                 .status(0) // 활동중
+                .isRegistered((byte) 1)  // true
                 .uuid(UUID.randomUUID().toString())
                 .build();
     }
