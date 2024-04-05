@@ -96,6 +96,7 @@ public class CartServiceImp implements CartService {
             String imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1)
                     .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCTTHUM))
                     .getImageUrl();
+
             int discount = discountRepository.findById(productId)
                     .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT))
                     .getDiscount();
