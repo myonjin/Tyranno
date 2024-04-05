@@ -95,14 +95,14 @@ public class OrderServiceImp implements OrderService {
         }
         List<Long> willDeleteCartId = new ArrayList<>();
 
-        log.info("orderOptionIds : " + orderOptionIds);
-        log.info("CartList : " + CartList);
+//        log.info("orderOptionIds : " + orderOptionIds);
+//        log.info("CartList : " + CartList);
         for (Cart cart : CartList) {
             if (orderOptionIds.contains(cart.getOption().getId())) {
                 willDeleteCartId.add(cart.getId());
             }
         }
-        log.info("willDeleteCartOptionId : " + willDeleteCartId);
+//        log.info("willDeleteCartOptionId : " + willDeleteCartId);
         // 장바구니에서 삭제
         cartRepository.deleteByIdIn(willDeleteCartId);
 
