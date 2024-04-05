@@ -96,7 +96,7 @@ public class ProductServiceImp implements ProductService {
         Optional<Product> productOptional = productRepository.findById(productId);
 
         Product product = productOptional.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
-
+        log.info(String.valueOf(product));
         Optional<ProductThum> imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1);
         Long vendorId = vendorProductRepository.findByProductId(productId)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT))
@@ -104,7 +104,11 @@ public class ProductServiceImp implements ProductService {
         String vendorName = vendorRepository.findById(vendorId)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDOR))
                 .getVendorName();
-
+        Optional<Discount> discountOptional = discountRepository.findByProductId(product.getId());
+        int discountValue = 0;
+        if (discountOptional.isPresent()) {
+            discountValue = discountOptional.get().getDiscount();
+        }
         byte isLike = 99; // 기본값으로 설정
 
         if (uuid != null) {
@@ -122,6 +126,7 @@ public class ProductServiceImp implements ProductService {
                 .isLiked(isLike)
                 .imageUrl(imageUrl.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_IMAGE)).getImageUrl())
                 .vendorName(vendorName)
+                .discount(discountValue)
                 .build();
     }
 

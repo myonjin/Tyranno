@@ -39,13 +39,15 @@ public class ProductController {
     public ResponseEntity<?> ProductInformation(@PathVariable Long productId,
                                                 @RequestHeader(value = "Authorization", required = false) String token) {
         if(token != null) {
-            String uuid = jwtTokenProvider.getUuid(token);
+            String uuid = jwtTokenProvider.tokenToUuid(token);
             ProductInformationDto productDto = productService.getProductInformation(productId,uuid);
+            log.info(String.valueOf(productDto));
             return new ResponseEntity<>(productDto);
         }
         else {
             String uuid = null;
             ProductInformationDto productDto = productService.getProductInformation(productId, null);
+            log.info(String.valueOf(productDto));
             return new ResponseEntity<>(productDto);
         }
     }
