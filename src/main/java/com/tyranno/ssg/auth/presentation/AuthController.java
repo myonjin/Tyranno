@@ -18,6 +18,23 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @Operation(summary = "기존 회원 여부 조회 (휴대폰 번호)", description = "휴대폰 번호로 소셜, 통합 회원인지를 조회한다.")
+    @PostMapping("/check/phone")
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto signUpDto) {
+
+        authService.singUpUsers(signUpDto);
+
+        return new ResponseEntity<>("회원가입 완료");
+    }
+
+    @Operation(summary = "기존 소셜 회원 통합회원 연결", description = "기존의 소셜 회원이 통합 회원가입을 한다.")
+    @PostMapping("/connect-users")
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto signUpDto) {
+
+        authService.singUpUsers(signUpDto);
+
+        return new ResponseEntity<>("회원가입 완료");
+    }
     @Operation(summary = "통합 회원가입", description = "통합 회원가입을 한다.")
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto signUpDto) {
@@ -66,14 +83,14 @@ public class AuthController {
         return new ResponseEntity<>("비밀번호 변경 성공");
     }
 
-    @Operation(summary = "휴대폰 번호 중복 검사", description = "회원가입 시 문자인증 전, 휴대폰번호로 이미 가입된 유저인지 판별한다.")
-    @PostMapping("/phone-number-check")
-    public ResponseEntity<String> checkPhoneNumberExist(@RequestBody PhoneNumberDto phoneNumberDto) {
-
-        authService.checkPhoneNumber(phoneNumberDto);
-
-        return new ResponseEntity<>("가입되지 않은 휴대폰번호 입니다.");
-    }
+//    @Operation(summary = "휴대폰 번호 중복 검사", description = "회원가입 시 문자인증 전, 휴대폰 번호로 이미 가입된 유저인지 판별한다.")
+//    @PostMapping("/phone-number-check")
+//    public ResponseEntity<String> checkPhoneNumberExist(@RequestBody PhoneNumberDto phoneNumberDto) {
+//
+//        authService.checkPhoneNumber(phoneNumberDto);
+//
+//        return new ResponseEntity<>("사용 가능한 휴대폰 번호 입니다.");
+//    }
 
 }
 

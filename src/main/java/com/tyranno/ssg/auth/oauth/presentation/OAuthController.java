@@ -20,6 +20,12 @@ public class OAuthController {
 
     private final OAuthService oAuthService;
 
+    @Operation(summary = "소셜 회원 여부 체크", description = "이미 소셜가입한 이용자인지 확인한다.")
+    @PostMapping("/check")
+    public ResponseEntity<?> checkOAuth(@RequestBody OAuthExternalIdDto oAuthExternalIdDto) {
+        oAuthService.checkOAuth(oAuthExternalIdDto);
+        return new ResponseEntity<>("소셜 가입되지 않은 이용자입니다.");
+    }
     @Operation(summary = "소셜 회원가입", description = "소셜 회원 가입을 한다.")
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody OAuthSignUpDto oAuthSignUpDto) {

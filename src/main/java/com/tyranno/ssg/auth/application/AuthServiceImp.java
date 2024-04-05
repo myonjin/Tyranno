@@ -1,6 +1,7 @@
 package com.tyranno.ssg.auth.application;
 
 import com.tyranno.ssg.auth.dto.*;
+import com.tyranno.ssg.auth.oauth.infrastructure.OAuthRepository;
 import com.tyranno.ssg.delivery.domain.Delivery;
 import com.tyranno.ssg.delivery.infrastructure.DeliveryRepository;
 import com.tyranno.ssg.global.GlobalException;
@@ -26,6 +27,25 @@ public class AuthServiceImp implements AuthService {
     private final DeliveryRepository deliveryRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final OAuthRepository oAuthRepository;
+
+    @Override
+    // 기존 회원 여부 조회 (휴대폰 번호)
+    public String checkOAuthUsersByPhoneNum(PhoneNumberDto phoneNumberDto) {
+        Users users = usersRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber())
+                .orElseThrow(() ->new GlobalException(ResponseStatus.NO_SIGNUP));
+
+        return oAuthRepository.existsByUsers(users) ?  "소셜 회원입니다." : "통합 회원입니다.";
+    }
+    @Transactional // 기존 소셜 회원 통합회원 연결
+    @Override
+    public void connectUsers(ConnectUsersDto connectUsersDto) {
+        Users users = usersRepository.findByPhoneNumber(connectUsersDto.getPhoneNumber())
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+
+        // logId, password, 통합회원 여부 적용
+        connectUsersDto.toEntity(users);
+    }
 
     @Transactional // 반복이 될수 있음. 모든 곳에서 붙이는건 생각해봐야함  이유가 명확해야함
     @Override

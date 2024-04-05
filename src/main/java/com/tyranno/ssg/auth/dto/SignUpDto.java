@@ -53,6 +53,7 @@ public class SignUpDto { // 회원가입 정보 이걸로 받음
                 .phoneNumber(phoneNumber)
                 .birth(birth)
                 .status(0) // 활동중
+                .isRegistered((byte) 1) // 통합회원 여부 true
                 .uuid(UUID.randomUUID().toString())
                 .build();
     }

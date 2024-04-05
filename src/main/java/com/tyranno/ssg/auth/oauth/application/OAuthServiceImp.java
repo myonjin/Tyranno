@@ -4,6 +4,7 @@ import com.tyranno.ssg.auth.application.AuthService;
 import com.tyranno.ssg.auth.dto.MarketingAgreeDto;
 import com.tyranno.ssg.auth.oauth.domain.OAuth;
 import com.tyranno.ssg.auth.oauth.dto.OAuthExternalIdDto;
+import com.tyranno.ssg.auth.oauth.dto.OAuthInfoDto;
 import com.tyranno.ssg.auth.oauth.dto.OAuthSignUpDto;
 import com.tyranno.ssg.auth.oauth.infrastructure.OAuthRepository;
 import com.tyranno.ssg.delivery.domain.Delivery;
@@ -19,52 +20,60 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OAuthServiceImp implements com.tyranno.ssg.auth.oauth.application.OAuthService {
+public class OAuthServiceImp implements OAuthService {
     private final UsersRepository usersRepository;
     private final DeliveryRepository deliveryRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final OAuthRepository oAuthRepository;
     private final AuthService authService;
 
+
+    @Override
+    // 기존 회원 여부 조회 (소셜 아이디)
+    public String checkOAuthUsersByOAuthId(OAuthInfoDto oAuthInfoDto) {
+
+        if (oAuthRepository.existsByExternalId(oAuthInfoDto.getOAuthExternalId())) {
+            return "소셜 회원입니다.";
+        }
+        else if(usersRepository.existsByNameAndEmail(oAuthInfoDto.getName(), oAuthInfoDto.getEmail())) {
+            return "통합 회원입니다.";
+        }
+        else return "회원가입 이력이 없습니다.";
+    }
+
+    @Override
+    @Transactional
+    public void connectOAuth(OAuthInfoDto oAuthInfoDto){
+        Users users = usersRepository.findByNameAndEmail(oAuthInfoDto.getName(), oAuthInfoDto.getEmail())
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        oAuthRepository.save(oAuthInfoDto.toEntity(users));
+    }
+
     @Transactional
     @Override
-    public String signUpOAuth(OAuthSignUpDto oAuthSignUpDto) {
-        String result = "";
-        //회원
-        Users users = usersRepository.findByNameAndEmail(oAuthSignUpDto.getName(), oAuthSignUpDto.getEmail());
+    public void signUpOAuth(OAuthSignUpDto oAuthSignUpDto) {
 
-        // 통합회원 가입 이력이 없을 시
-        if (users.getIsRegistered() == 0) {
-            //회원
-            users = oAuthSignUpDto.toUsersEntity();
-            usersRepository.save(users);
+        Users users = oAuthSignUpDto.toUsersEntity();
+        usersRepository.save(users);
 
-            //마케팅
-            MarketingAgreeDto marketingAgreeDto = new MarketingAgreeDto(
-                    oAuthSignUpDto.getShinsegaeMarketingAgree(),
-                    oAuthSignUpDto.getShinsegaeOptionAgree(),
-                    oAuthSignUpDto.getSsgMarketingAgree());
+        MarketingAgreeDto marketingAgreeDto = new MarketingAgreeDto(
+                oAuthSignUpDto.getShinsegaeMarketingAgree(),
+                oAuthSignUpDto.getShinsegaeOptionAgree(),
+                oAuthSignUpDto.getSsgMarketingAgree());
 
-            authService.addMarketingInformation(marketingAgreeDto, users);
+        authService.addMarketingInformation(marketingAgreeDto, users);
 
-            // 배송지
-            Delivery delivery = oAuthSignUpDto.toDeliveryEntity(users);
-            deliveryRepository.save(delivery);
-
-            result = "소셜 회원가입에 성공하였습니다.";
-        } else result = "통합 회원 정보와 연결하였습니다.";
+        Delivery delivery = oAuthSignUpDto.toDeliveryEntity(users);
+        deliveryRepository.save(delivery);
 
         oAuthRepository.save(oAuthSignUpDto.toOAuthEntity(users));
+}
 
-        return result;
+@Override
+public String loginOAuth(OAuthExternalIdDto oAuthExternalIdDto) {
+    OAuth oAuth = oAuthRepository.findByExternalId(oAuthExternalIdDto.getOAuthExternalId())
+            .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OAUTH));
 
-    }
-
-    @Override
-    public String loginOAuth(OAuthExternalIdDto oAuthExternalIdDto) {
-        OAuth oAuth = oAuthRepository.findByExternalId(oAuthExternalIdDto.getOAuthExternalId())
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OAUTH));
-
-        return jwtTokenProvider.generateToken(oAuth.getUsers());
-    }
+    return jwtTokenProvider.generateToken(oAuth.getUsers());
+}
 }
