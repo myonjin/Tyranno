@@ -129,10 +129,6 @@ public class ProductServiceImp implements ProductService {
                 .discount(discountValue)
                 .build();
     }
-
-
-
-
     @Override
     public ProductThumDto getProductThumPriority1(Long productId){ // productList에서 상품 썸네일 불러오기
         return productThumRepository.findByProductIdAndPriority(productId, 1)
@@ -141,10 +137,18 @@ public class ProductServiceImp implements ProductService {
     }
     @Override
     public ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
-                                             Integer sortCriterion, Integer lastIndex) { // productList
-        List<Long> productIds = productRepositoryImp.getProductIdList(largeId, middleId,
-                smallId, detailId, sortCriterion, lastIndex);
-
+                                             Integer sortCriterion, Integer lastIndex, String searchKeyword) { // productList
+        List<Long> productIds;
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+            // 상품명으로 검색
+            log.info("상품명 실행");
+            productIds = productRepositoryImp.searchProductIdsByKeyword(searchKeyword, sortCriterion, lastIndex);
+        } else {
+            // 카테고리로 검색
+            log.info("카테고리 실행");
+            productIds = productRepositoryImp.searchProductIdsByCategory(largeId, middleId, smallId, detailId,
+                    sortCriterion, lastIndex);
+        }
         ProductIdListDto productIdListDto = new ProductIdListDto();
 
         List<Map<String, Long>> productIdList = new ArrayList<>();
@@ -161,6 +165,4 @@ public class ProductServiceImp implements ProductService {
         return usersRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
     }
-
-
 }
