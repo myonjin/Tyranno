@@ -53,7 +53,8 @@ public class OrderServiceImp implements OrderService {
         /** 주문리스트 번호와 옵션아이디 넣어준다
          *  개수와 가격도 넣어준다 stream으로
          */
-        addOrder(savedOrderList, orderAddDto);
+        addOrder(savedOrderList, orderAddDto,uuid);
+
 
     }
 
@@ -72,9 +73,10 @@ public class OrderServiceImp implements OrderService {
         return formattedDate + "-" + orderUuidNumber + "-" + randomNumber;
     }
 
-    private void addOrder(OrderList savedOrderList, OrderAddDto orderAddDto) {
+    private void addOrder(OrderList savedOrderList, OrderAddDto orderAddDto, String uuid) {
         for (OptionIdListDto optionIdListDto : orderAddDto.getOptionIdList()) {
-            Option option = optionRepository.findById(optionIdListDto.getOptionId())
+            Long optionId = optionIdListDto.getOptionId();
+            Option option = optionRepository.findById(optionId)
                     .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION)); // 에러 처리
             Order order = optionIdListDto.toEntity(savedOrderList, option, optionIdListDto);
             orderRepository.save(order);
