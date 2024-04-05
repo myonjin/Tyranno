@@ -1,6 +1,8 @@
 package com.tyranno.ssg.order.application;
 
 
+import com.tyranno.ssg.cart.domain.Cart;
+import com.tyranno.ssg.cart.infrastructure.CartRepository;
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.option.domain.Option;
@@ -39,6 +41,7 @@ public class OrderServiceImp implements OrderService {
     private final VendorProductRepository vendorProductRepository;
     private final ProductThumRepository productThumRepository;
     private final DiscountRepository discountRepository;
+    private final CartRepository cartRepository;
 
     @Override
     @Transactional
@@ -50,10 +53,15 @@ public class OrderServiceImp implements OrderService {
         // 4. 저장된 orderList Id (PK) 값을 가져오기 위해서 저장
         OrderList savedOrderList = orderListRepository.save(orderList);
 
+        // 5. CartList 가져오기
+        List<Cart> CartList = cartRepository.findByUsersUuid(uuid);
+
         /** 주문리스트 번호와 옵션아이디 넣어준다
          *  개수와 가격도 넣어준다 stream으로
          */
-        addOrder(savedOrderList, orderAddDto);
+        addOrder(savedOrderList, orderAddDto,CartList);
+
+
 
     }
 
@@ -72,13 +80,34 @@ public class OrderServiceImp implements OrderService {
         return formattedDate + "-" + orderUuidNumber + "-" + randomNumber;
     }
 
-    private void addOrder(OrderList savedOrderList, OrderAddDto orderAddDto) {
+    private void addOrder(OrderList savedOrderList, OrderAddDto orderAddDto, List<Cart> CartList) {
+
+        List<Long> orderOptionIds = new ArrayList<>();
         for (OptionIdListDto optionIdListDto : orderAddDto.getOptionIdList()) {
-            Option option = optionRepository.findById(optionIdListDto.getOptionId())
+            Long optionId = optionIdListDto.getOptionId();
+            // 주문한 옵션 아이디 리스트에 담아주기
+            orderOptionIds.add(optionId);
+
+            Option option = optionRepository.findById(optionId)
                     .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION)); // 에러 처리
             Order order = optionIdListDto.toEntity(savedOrderList, option, optionIdListDto);
             orderRepository.save(order);
         }
+        List<Long> willDeleteCartId = new ArrayList<>();
+
+//        log.info("orderOptionIds : " + orderOptionIds);
+//        log.info("CartList : " + CartList);
+        for (Cart cart : CartList) {
+            if (orderOptionIds.contains(cart.getOption().getId())) {
+                willDeleteCartId.add(cart.getId());
+            }
+        }
+//        log.info("willDeleteCartOptionId : " + willDeleteCartId);
+        // 장바구니에서 삭제
+        cartRepository.deleteByIdIn(willDeleteCartId);
+
+
+
     }
 
     public List<OrderListDto> getOrderList(String uuid) {
