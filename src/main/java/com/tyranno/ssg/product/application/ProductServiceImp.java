@@ -139,15 +139,6 @@ public class ProductServiceImp implements ProductService {
                 .map(ProductThumDto::FromEntity)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCTTHUM));
     }
-
-    @Override
-    public int getDiscount(Long productId) { // discount에서 할인정보 불러오기
-        Discount discount = discountRepository.findByProductId(productId)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT));
-
-        return discount.getDiscount();
-    }
-
     @Override
     public ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
                                              Integer sortCriterion, Integer lastIndex) { // productList

@@ -3,7 +3,6 @@ package com.tyranno.ssg.like.application;
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.like.domain.Like;
-import com.tyranno.ssg.like.dto.LikeDto;
 import com.tyranno.ssg.like.infrastructure.LikeRepository;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.infrastructure.ProductRepository;
@@ -23,15 +22,7 @@ public class LikeServiceImp implements LikeService{
     private final LikeRepository likeRepository;
     private final UsersRepository usersRepository;
     private final ProductRepository productRepository;
-    @Override
-    public LikeDto getLikeByProductIdAndUsersId(Long productId, String uuid) {
 
-        Long usersId =  usersRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS)).getId();
-        return likeRepository.findByProductIdAndUsersId(productId, usersId)
-                .map(LikeDto::FromEntity)
-                .orElse(new LikeDto());
-    }
     @Override
     @Transactional
     public boolean modifyLike(Long productId, String uuid) {

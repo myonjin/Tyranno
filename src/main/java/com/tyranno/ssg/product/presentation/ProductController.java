@@ -52,12 +52,6 @@ public class ProductController {
         }
     }
 
-    @Operation(summary = "리스트용 할인 정보", description = "상품 ID로 할인정보")
-    @GetMapping("/discountInformation/{productId}")
-    public ResponseEntity<?> getDiscountInformation(@PathVariable Long productId) {
-        return new ResponseEntity<>(productService.getDiscount(productId));
-    }
-
     @Operation(summary = "상품 ID 리스트", description = "상품 ID 리스트를 받아오기")
     @GetMapping("/productList")
     public ResponseEntity<?> getProductIdList(
