@@ -3,6 +3,7 @@ package com.tyranno.ssg.auth.oauth.application;
 import com.tyranno.ssg.auth.application.AuthService;
 import com.tyranno.ssg.auth.dto.MarketingAgreeDto;
 import com.tyranno.ssg.auth.oauth.domain.OAuth;
+import com.tyranno.ssg.auth.oauth.dto.OAuthExternalIdDto;
 import com.tyranno.ssg.auth.oauth.dto.OAuthSignUpDto;
 import com.tyranno.ssg.auth.oauth.infrastructure.OAuthRepository;
 import com.tyranno.ssg.delivery.domain.Delivery;
@@ -23,11 +24,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OAuthServiceImp implements OAuthService {
     private final UsersRepository usersRepository;
-    private final MarketingRepository marketingRepository;
-    private final MarketingInformationRepository marketingInformationRepository;
     private final DeliveryRepository deliveryRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final OAuthRepository oAuthRepository;
     private final AuthService authService;
 
@@ -66,8 +64,8 @@ public class OAuthServiceImp implements OAuthService {
     }
 
     @Override
-    public String loginOAuth(OAuthSignUpDto oAuthSignUpDto) {
-        OAuth oAuth = oAuthRepository.findByExternalId(oAuthSignUpDto.getOAuthExternalId())
+    public String loginOAuth(OAuthExternalIdDto oAuthExternalIdDto) {
+        OAuth oAuth = oAuthRepository.findByExternalId(oAuthExternalIdDto.getOAuthExternalId())
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OAUTH));
 
         return jwtTokenProvider.generateToken(oAuth.getUsers());
