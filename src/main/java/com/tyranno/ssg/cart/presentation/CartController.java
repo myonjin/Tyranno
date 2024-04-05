@@ -31,7 +31,7 @@ public class CartController {
         return new ResponseEntity<>(result);
     }
 
-    @Operation(summary = "장바구니 담기 (상품 리스트)", description = "상품 리스트에서 장바구니에 상품을 담는다./api/v1/cart/names/{option_id} 으로 옵션 정보 조회 api 호출 필요")
+    @Operation(summary = "장바구니 담기 (상품 리스트)", description = "상품 리스트에서 장바구니에 상품을 담는다.")
     @PostMapping("/{product_id}")
     public ResponseEntity<?> addCartAtList(@PathVariable Long product_id, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
@@ -39,7 +39,7 @@ public class CartController {
         return new ResponseEntity<>(result);
     }
 
-    @Operation(summary = "장바구니 리스트 조회", description = "한 유저의 모든 장바구니 항목을 조회한다.")
+    @Operation(summary = "장바구니 리스트 조회", description = "한 유저의 모든 장바구니 항목을 조회한다./api/v1/cart/names/{option_id} 으로 옵션 정보 조회 api 호출 필요")
     @GetMapping
     public ResponseEntity<?> getCartList(@RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
