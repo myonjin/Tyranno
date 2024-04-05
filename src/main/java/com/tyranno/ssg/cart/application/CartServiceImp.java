@@ -1,10 +1,7 @@
 package com.tyranno.ssg.cart.application;
 
 import com.tyranno.ssg.cart.domain.Cart;
-import com.tyranno.ssg.cart.dto.Request.CartAddDto;
-import com.tyranno.ssg.cart.dto.Request.CartCountModifyDto;
-import com.tyranno.ssg.cart.dto.Request.CartKeepModifyDto;
-import com.tyranno.ssg.cart.dto.Request.CartOptionModifyDto;
+import com.tyranno.ssg.cart.dto.Request.*;
 import com.tyranno.ssg.cart.dto.Response.CartListDto;
 import com.tyranno.ssg.cart.infrastructure.CartRepository;
 import com.tyranno.ssg.global.GlobalException;
@@ -112,9 +109,9 @@ public class CartServiceImp implements CartService {
 
     @Transactional
     @Override
-    public void deleteCartList(List<Long> cartDeleteList) {
-
-        cartRepository.deleteByIdIn(cartDeleteList);
+    public void deleteCartList(List<CartIdDto> cartDeleteList) {
+        List<Long> cartIdList = cartDeleteList.stream().map(CartIdDto::getCartId).toList();
+        cartRepository.deleteByIdIn(cartIdList);
     }
 
     @Transactional
