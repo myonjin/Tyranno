@@ -8,9 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Getter
 @Table(name = "`like`")
@@ -24,4 +22,11 @@ public class Like {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
+
+    @Builder
+    public Like(Long id, Users users, Product product) {
+        this.id = id;
+        this.users = users;
+        this.product = product;
+    }
 }

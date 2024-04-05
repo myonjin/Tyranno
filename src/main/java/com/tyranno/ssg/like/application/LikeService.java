@@ -4,4 +4,5 @@ import com.tyranno.ssg.like.dto.LikeDto;
 
 public interface LikeService {
     LikeDto getLikeByProductIdAndUsersId(Long productId, String uuid);
+    boolean modifyLike(Long productId, String uuid);
 }
