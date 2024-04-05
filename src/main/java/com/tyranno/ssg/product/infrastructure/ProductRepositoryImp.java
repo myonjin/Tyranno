@@ -3,9 +3,13 @@ package com.tyranno.ssg.product.infrastructure;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tyranno.ssg.category.domain.QCategory;
 import com.tyranno.ssg.product.domain.Product;
+import com.tyranno.ssg.product.domain.QProduct;
+import com.tyranno.ssg.vendor.domain.QVendor;
+import com.tyranno.ssg.vendor.domain.QVendorProduct;
 import jakarta.annotation.Nullable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
@@ -21,7 +25,7 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public List<Long> getProductIdList(Long largeId, Long middleId,
+    public List<Long> searchProductIdsByCategory(Long largeId, Long middleId,
                                        Long smallId, Long detailId, Integer sortCriterion, @Nullable Integer lastIndex) {
         OrderSpecifier<?> orderSpecifier = createOrderSpecifier(sortCriterion);
         QCategory category = QCategory.category;
@@ -33,6 +37,52 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
                         middleIdEq(category, middleId),
                         smallIdEq(category, smallId),
                         detailIdEq(category, detailId))
+                .orderBy(orderSpecifier)
+                .limit(20)
+                .fetch();
+    }
+
+    public List<Long> searchProductIdsByKeyword(String searchKeyword, Integer sortCriterion, Integer lastIndex) {
+        OrderSpecifier<?> orderSpecifier = createProductSpecifier(sortCriterion);
+        QProduct product = QProduct.product;
+        QVendor vendor = QVendor.vendor;
+        QVendorProduct vendorProduct = QVendorProduct.vendorProduct;
+
+        // Vendor에서 vendorId
+        List<Long> vendorIds = jpaQueryFactory.select(vendor.id)
+                .from(vendor)
+                .where(vendor.vendorName.likeIgnoreCase("%" + searchKeyword + "%"))
+                .fetch();
+
+        // VendorProduct에서 상품 ID
+        BooleanExpression vendorExpression = vendorIds.isEmpty() ? null : vendorProduct.vendor.id.in(vendorIds);
+
+        // 검색 키워드
+        BooleanExpression searchExpression = searchKeyword != null ?
+                product.productName.likeIgnoreCase("%" + searchKeyword + "%") : null;
+
+        // 일반 상품
+        BooleanExpression generalProductExpression = searchKeyword != null ?
+                searchExpression.and(product.notIn(
+                        JPAExpressions.select(vendorProduct.product)
+                                .from(vendorProduct)
+                                .innerJoin(vendorProduct.vendor, vendor)
+                                .where(vendor.id.in(vendorIds))
+                )) : null;
+
+        BooleanExpression finalExpression = null;
+        if (vendorExpression != null && searchExpression != null) {
+            finalExpression = vendorExpression.and(searchExpression);
+        } else if (vendorExpression != null) {
+            finalExpression = vendorExpression;
+        } else if (searchExpression != null) {
+            finalExpression = searchExpression;
+        }
+        return jpaQueryFactory.select(vendorProduct.id)
+                .from(vendorProduct)
+                .where(
+                        gtProductBoardId(lastIndex),
+                        finalExpression.or(generalProductExpression))
                 .orderBy(orderSpecifier)
                 .limit(20)
                 .fetch();
@@ -70,6 +120,10 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
         QCategory category = QCategory.category;
         return lastIndex == null ? null : category.product.id.gt(lastIndex);
     }
+    private BooleanExpression gtProductBoardId(@Nullable Integer lastIndex) {
+        QProduct product = QProduct.product;
+        return lastIndex == null ? null : product.id.gt(lastIndex);
+    }
 
     private OrderSpecifier<?> createOrderSpecifier(Integer sortCriterion) {
         QCategory category = QCategory.category;
@@ -79,6 +133,16 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
             case 3 -> new OrderSpecifier<>(Order.DESC, category.product.productRate);
             case 4 -> new OrderSpecifier<>(Order.DESC, category.product.reviewCount);
             default -> new OrderSpecifier<>(Order.ASC, category.product.id);
+        };
+    }
+    private OrderSpecifier<?> createProductSpecifier(Integer sortCriterion) {
+        QProduct product = QProduct.product;
+        return switch (sortCriterion) {
+            case 1 -> new OrderSpecifier<>(Order.ASC, product.productPrice);
+            case 2 -> new OrderSpecifier<>(Order.DESC, product.productPrice);
+            case 3 -> new OrderSpecifier<>(Order.DESC, product.productRate);
+            case 4 -> new OrderSpecifier<>(Order.DESC, product.reviewCount);
+            default -> new OrderSpecifier<>(Order.ASC, product.id);
         };
     }
 }

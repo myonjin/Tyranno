@@ -60,10 +60,11 @@ public class ProductController {
             @RequestParam(required = false) Long smallId,
             @RequestParam(required = false) Long detailId,
             @RequestParam(defaultValue = "5") Integer sortCriterion,
-            @RequestParam(defaultValue = "0") Integer lastIndex
+            @RequestParam(defaultValue = "0") Integer lastIndex,
+            @RequestParam(required = false) String searchKeyword
     ) {
         ProductIdListDto productIdListDto = productService.getProductIdList(largeId, middleId, smallId,
-                detailId, sortCriterion, lastIndex);
+                detailId, sortCriterion, lastIndex, searchKeyword);
         return new com.tyranno.ssg.global.ResponseEntity<>(productIdListDto);
     }
 

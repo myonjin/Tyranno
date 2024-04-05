@@ -9,5 +9,5 @@ public interface ProductService {
     ProductInformationDto getProductInformation(Long productId, String uuid);
     ProductThumDto getProductThumPriority1(Long productId);
     ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId, Integer sortCriterion,
-                                      Integer lastIndex);
+                                      Integer lastIndex, String searchKeyword);
 }
