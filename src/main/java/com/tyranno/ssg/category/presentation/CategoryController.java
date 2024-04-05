@@ -38,7 +38,7 @@ public class CategoryController {
         }
     }
     @Operation(summary = "중 카테고리", description = "중 카테고리 조회하기")
-    @GetMapping("/large/{largeId}")
+    @GetMapping("/middle/{largeId}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "중 카테고리 조회 완료"),
             @ApiResponse(responseCode = "400", description = "중 카테고리 조회 중 오류 발생")})
@@ -54,7 +54,7 @@ public class CategoryController {
     }
 
     @Operation(summary = "소 카테고리", description = "소 카테고리 조회하기")
-    @GetMapping("/middle/{middleId}")
+    @GetMapping("/small/{middleId}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "소 카테고리 조회 완료"),
             @ApiResponse(responseCode = "400", description = "소 카테고리 조회 중 오류 발생")})
@@ -70,7 +70,7 @@ public class CategoryController {
     }
 
     @Operation(summary = "상세 카테고리", description = "상세 카테고리 조회하기")
-    @GetMapping("/small/{smallId}")
+    @GetMapping("/detail/{smallId}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "상세 카테고리 조회 완료"),
             @ApiResponse(responseCode = "400", description = "상세 카테고리 조회 중 오류 발생")})

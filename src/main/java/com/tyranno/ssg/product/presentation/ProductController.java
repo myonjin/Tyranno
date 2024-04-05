@@ -34,7 +34,8 @@ public class ProductController {
         return new ResponseEntity<>(productDetailDto);
     }
 
-    @Operation(summary = "리스트용 상품 정보", description = "상품 ID로 상품정보")
+    @Operation(summary = "리스트용 상품 정보", description = "상품 ID로 상품정보" +
+            "isLike 포함, image 한개만 포함")
     @GetMapping("/productInformation/{productId}")
     public ResponseEntity<?> ProductInformation(@PathVariable Long productId,
                                                 @RequestHeader(value = "Authorization", required = false) String token) {
@@ -52,7 +53,15 @@ public class ProductController {
         }
     }
 
-    @Operation(summary = "상품 ID 리스트", description = "상품 ID 리스트를 받아오기")
+    @Operation(summary = "상품 ID 리스트", description = "상품 ID 리스트를 받아오기,\n\n" +
+            "sortCriterion 1: 낮은 가격순,\n\n" +
+            "sortCriterion 2: 높은 가격순,\n\n" +
+            "sortCriterion 3: 평점 높은 순,\n\n" +
+            "sortCriterion 4: 리뷰 많은 순,\n\n" +
+            "sortCriterion 5: 상품 아이디 순(기본값),\n\n" +
+            "카테고리는 필요한 것만 1개 넣기,\n\n" +
+            "lastIndex는 무한 스크롤을 위해 이전에 받았던 상품 아이디를 넣으면 그 이후 값 조회\n\n" +
+            "검색어는 카테고리 값 넣지 않고 넣어야 함")
     @GetMapping("/productList")
     public ResponseEntity<?> getProductIdList(
             @RequestParam(required = false) Long largeId,
