@@ -1,10 +1,8 @@
 package com.tyranno.ssg.category.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Getter
 @NoArgsConstructor
 public class SmallCategoryDto {
     private Long smallId;
