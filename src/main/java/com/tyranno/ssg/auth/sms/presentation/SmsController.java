@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "문자인증", description = "Text API")
+@Tag(name = "문자인증", description = "Sms API")
 @RequestMapping("/api/v1/auth/sms")
 public class SmsController {
 
