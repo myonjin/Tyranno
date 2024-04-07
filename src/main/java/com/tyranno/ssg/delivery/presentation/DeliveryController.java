@@ -3,6 +3,7 @@ package com.tyranno.ssg.delivery.presentation;
 import com.tyranno.ssg.delivery.application.DeliveryService;
 import com.tyranno.ssg.delivery.dto.*;
 import com.tyranno.ssg.delivery.dto.response.BaseDeliveryInfoDto;
+import com.tyranno.ssg.delivery.dto.response.OrderDeliveryInfoDto;
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,6 +56,14 @@ public class DeliveryController {
         String uuid = jwtTokenProvider.tokenToUuid(token);
 
         return new ResponseEntity<>(deliveryService.getBaseDeliveryInfo(uuid));
+    }
+
+    @Operation(summary = "주문 배송지 정보 조회", description = "주문 시 기본배송지의 정보를 조회한다.")
+    @GetMapping("/order")
+    public ResponseEntity<OrderDeliveryInfoDto> getOrderDeliveryInfo(@RequestHeader("Authorization") String token) {
+        String uuid = jwtTokenProvider.tokenToUuid(token);
+
+        return new ResponseEntity<>(deliveryService.getOrderDeliveryInfo(uuid));
     }
 
     @Operation(summary = "배송지 수정 화면 조회", description = "배송지 수정화면에 기존 배송지 정보를 띄우기 위해 조회한다.")

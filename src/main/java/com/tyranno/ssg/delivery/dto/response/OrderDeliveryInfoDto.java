@@ -1,7 +1,6 @@
 package com.tyranno.ssg.delivery.dto.response;
 
 import com.tyranno.ssg.delivery.domain.Delivery;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BaseDeliveryInfoDto {
+public class OrderDeliveryInfoDto {
 
     private String receiverName;
 
@@ -19,19 +18,21 @@ public class BaseDeliveryInfoDto {
 
     private String deliveryName;
 
-    private Integer zipCode;
-
     private String deliveryBase;
 
     private String deliveryDetail;
 
+    private Integer zipCode;
 
-    public static BaseDeliveryInfoDto fromEntity(Delivery delivery) {
-        return BaseDeliveryInfoDto.builder()
+    public static OrderDeliveryInfoDto fromEntity(Delivery delivery) {
+        return OrderDeliveryInfoDto.builder()
+                .receiverName(delivery.getReceiverName())
+                .phoneNumber(delivery.getPhoneNumber())
                 .deliveryName(delivery.getDeliveryName())
-                .zipCode(delivery.getZipCode())
                 .deliveryBase(delivery.getDeliveryBase())
                 .deliveryDetail(delivery.getDeliveryDetail())
+                .zipCode(delivery.getZipCode())
                 .build();
     }
 }
+

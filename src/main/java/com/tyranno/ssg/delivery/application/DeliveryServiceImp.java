@@ -3,6 +3,7 @@ package com.tyranno.ssg.delivery.application;
 import com.tyranno.ssg.delivery.domain.Delivery;
 import com.tyranno.ssg.delivery.dto.*;
 import com.tyranno.ssg.delivery.dto.response.BaseDeliveryInfoDto;
+import com.tyranno.ssg.delivery.dto.response.OrderDeliveryInfoDto;
 import com.tyranno.ssg.delivery.infrastructure.DeliveryRepository;
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
@@ -52,6 +53,12 @@ public class DeliveryServiceImp implements DeliveryService {
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
         return BaseDeliveryInfoDto.fromEntity(delivery);
     }
+    @Override
+    public OrderDeliveryInfoDto getOrderDeliveryInfo(String uuid){
+        Delivery delivery = deliveryRepository.findByIsBaseDeliveryAndUsers((byte) 11, getUsers(uuid))
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
+        return OrderDeliveryInfoDto.fromEntity(delivery);
+    }
 
     @Override
     public DeliveryDetailDto getDetailDelivery(Long deliveryId) {
@@ -84,6 +91,7 @@ public class DeliveryServiceImp implements DeliveryService {
 
         return delivery.getDeliveryName();
     }
+
 
     public Delivery getDelivery(Long deliveryId) {
         return deliveryRepository.findById(deliveryId)
