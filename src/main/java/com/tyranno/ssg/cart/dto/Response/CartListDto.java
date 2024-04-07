@@ -16,6 +16,7 @@ import java.util.List;
 public class CartListDto {
     private Long cartId;
     private Long optionId;
+    private Long productId;
     private String productName;
     private String imageUrl;
     private int totalPrice;
@@ -28,6 +29,7 @@ public class CartListDto {
         return CartListDto.builder()
                 .cartId(cart.getId())
                 .optionId(cart.getOption().getId())
+                .productId(cart.getOption().getProduct().getId())
                 .productName(cart.getOption().getProduct().getProductName())
                 .imageUrl(imageUrl)
                 .totalPrice(cart.getOption().getProduct().getProductPrice() + (

@@ -1,36 +1,37 @@
-package com.tyranno.ssg.users.dto;
+package com.tyranno.ssg.auth.dto;
 
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsersModifyDto { //회원 인증 정보 - 유저가 입력, 비밀번호 변경 시 사용
-    @NotNull
-    private String password;
-    @NotNull
+public class ConnectUsersDto {
     private String phoneNumber;
     @NotNull
-    private String email;
+    private String loginId;
+    @NotNull
+    private String password;
 
     public Users toEntity(Users users) {
         return Users.builder()
                 .id(users.getId())
-                .loginId(users.getLoginId())
-                .password(users.hashPassword(password))
+                .loginId(loginId)
+                .password(new BCryptPasswordEncoder().encode(password))
                 .name(users.getName())
-                .email(email)
+                .email(users.getEmail())
                 .gender(users.getGender())
-                .phoneNumber(phoneNumber)
+                .phoneNumber(users.getPhoneNumber())
                 .birth(users.getBirth())
                 .status(users.getStatus())
-                .isRegistered(users.getIsRegistered())
+                .isRegistered((byte) 1) // 통합회원 여부 true
                 .uuid(users.getUuid())
                 .build();
-
     }
 }

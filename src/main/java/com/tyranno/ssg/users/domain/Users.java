@@ -1,12 +1,10 @@
 package com.tyranno.ssg.users.domain;
 
 import com.tyranno.ssg.global.GlobalTime;
-import com.tyranno.ssg.users.dto.UsersInfoDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +17,6 @@ import java.util.List;
 
 @NoArgsConstructor
 @Entity
-@ToString
 @Getter
 public class Users extends GlobalTime implements UserDetails {
     @Id
@@ -51,6 +48,9 @@ public class Users extends GlobalTime implements UserDetails {
     private Integer status;
 
     @Column(nullable = false)
+    private Byte isRegistered;
+
+    @Column(nullable = false)
     private String uuid;
 
     public String hashPassword(String password) {
@@ -58,7 +58,7 @@ public class Users extends GlobalTime implements UserDetails {
     }
 
     @Builder
-    public Users(Long id, String loginId, String password, String name, String email, Byte gender, String phoneNumber, LocalDate birth, Integer status, String uuid) {
+    public Users(Long id, String loginId, String password, String name, String email, Byte gender, String phoneNumber, LocalDate birth, Integer status, Byte isRegistered, String uuid) {
         this.id = id;
         this.loginId = loginId;
         this.password = password;
@@ -68,9 +68,9 @@ public class Users extends GlobalTime implements UserDetails {
         this.phoneNumber = phoneNumber;
         this.birth = birth;
         this.status = status;
+        this.isRegistered = isRegistered;
         this.uuid = uuid;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

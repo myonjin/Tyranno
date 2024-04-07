@@ -1,15 +1,12 @@
-package com.tyranno.ssg.text.ex;
+package com.tyranno.ssg.auth.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SmsCertificationDto {
+public class PhoneNumberDto {
     private String phoneNumber;
-    private String randomNumber;
 }
