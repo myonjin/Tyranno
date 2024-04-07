@@ -8,10 +8,7 @@ import com.tyranno.ssg.global.ResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,7 +19,7 @@ public class OAuthController {
     private final OAuthService oauthService;
 
     @Operation(summary = "기존 회원 여부 조회 (소셜 아이디)", description = "소셜 아이디로 기존 회원여부를 조회한다.")
-    @PostMapping("/check")
+    @GetMapping("/check")
     public ResponseEntity<?> checkOAuthUsers(@RequestBody OAuthInfoDto oauthInfoDto) {
         return new ResponseEntity<>(oauthService.checkOAuthUsersByOAuthId(oauthInfoDto));
     }
