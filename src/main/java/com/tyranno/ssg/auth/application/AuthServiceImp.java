@@ -120,7 +120,7 @@ public class AuthServiceImp implements AuthService {
         Users users = usersRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber())
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
         // 소셜 회원일 경우
-        if (users.getIsRegistered() == 0) throw new GlobalException(ResponseStatus.NO_EXIST_USERS);
+        if (users.getIsRegistered() == 0) throw new GlobalException(ResponseStatus.NO_REGISTER);
 
         return users.getLoginId();
     }
