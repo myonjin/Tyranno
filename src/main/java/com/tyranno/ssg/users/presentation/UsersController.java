@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Tag(name = "회원", description = "Users API")
 @RequestMapping("/api/v1/users")
-@Slf4j
 public class UsersController {
 
     private final UsersService usersService;
