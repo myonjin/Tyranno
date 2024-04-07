@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
@@ -30,7 +27,8 @@ public class PasswordChangeDto {
                 .gender(users.getGender())
                 .phoneNumber(users.getPhoneNumber())
                 .birth(users.getBirth())
-                .status(users.getStatus()) // 활동중
+                .status(users.getStatus())
+                .isRegistered(users.getIsRegistered())
                 .uuid(users.getUuid())
                 .build();
     }

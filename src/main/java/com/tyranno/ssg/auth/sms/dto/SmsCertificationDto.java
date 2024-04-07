@@ -1,4 +1,4 @@
-package com.tyranno.ssg.text;
+package com.tyranno.ssg.auth.sms.dto;
 
 import lombok.Getter;
 

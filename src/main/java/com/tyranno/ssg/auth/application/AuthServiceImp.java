@@ -1,6 +1,7 @@
 package com.tyranno.ssg.auth.application;
 
 import com.tyranno.ssg.auth.dto.*;
+import com.tyranno.ssg.auth.oauth.infrastructure.OAuthRepository;
 import com.tyranno.ssg.delivery.domain.Delivery;
 import com.tyranno.ssg.delivery.infrastructure.DeliveryRepository;
 import com.tyranno.ssg.global.GlobalException;
@@ -26,21 +27,57 @@ public class AuthServiceImp implements AuthService {
     private final DeliveryRepository deliveryRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final OAuthRepository oauthRepository;
 
-    @Transactional // 반복이 될수 있음. 모든 곳에서 붙이는건 생각해봐야함  이유가 명확해야함
     @Override
-    public void createUsers(SignUpDto signUpDto) {
+    // 기존 회원 여부 조회 (휴대폰 번호)
+    public String checkOAuthUsersByPhoneNum(PhoneNumberDto phoneNumberDto) {
+        Users users = usersRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber())
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_SIGNUP));
+        if(users.getIsRegistered() == 1) return "통합 회원입니다.";
+        return oauthRepository.existsByUsers(users) ? "소셜 회원입니다." : "통합회원 여부가 false인데 oauth table이 없음";
+    }
+
+    @Transactional // 기존 소셜 회원 통합회원 연결
+    @Override
+    public void connectUsers(ConnectUsersDto connectUsersDto) {
+        Users users = usersRepository.findByPhoneNumber(connectUsersDto.getPhoneNumber())
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+
+        // logId, password, 통합회원 여부 적용
+        usersRepository.save(connectUsersDto.toEntity(users));
+    }
+
+    @Transactional
+    @Override
+    public void singUpUsers(SignUpDto signUpDto) {
         //회원
         Users users = signUpDto.toUsersEntity();
         usersRepository.save(users);
 
         //마케팅
+        MarketingAgreeDto marketingAgreeDto = new MarketingAgreeDto(
+                signUpDto.getShinsegaeMarketingAgree(),
+                signUpDto.getShinsegaeOptionAgree(),
+                signUpDto.getSsgMarketingAgree());
+
+        addMarketingInformation(marketingAgreeDto, users);
+
+        //배송지
+        Delivery delivery = signUpDto.toDeliveryEntity(users);
+        deliveryRepository.save(delivery);
+    }
+
+    @Transactional
+    @Override
+    public void addMarketingInformation(MarketingAgreeDto marketingAgreeDto, Users users) {
+
         for (MarketingType type : MarketingType.values()) {
 
             Byte isAgree = switch (type) {
-                case SHINSEGAE -> signUpDto.getShinsegaeMarketingAgree();
-                case SHINSEGAE_OPTION -> signUpDto.getShinsegaeOptionAgree();
-                case SSG -> signUpDto.getSsgMarketingAgree();
+                case SHINSEGAE -> marketingAgreeDto.getShinsegaeMarketingAgree();
+                case SHINSEGAE_OPTION -> marketingAgreeDto.getShinsegaeOptionAgree();
+                case SSG -> marketingAgreeDto.getSsgMarketingAgree();
             }; // default : 99 - 비동의
 
             MarketingInformation marketingInformation = MarketingInformation.builder()
@@ -51,10 +88,6 @@ public class AuthServiceImp implements AuthService {
 
             marketingInformationRepository.save(marketingInformation);
         }
-
-        // 배송지
-        Delivery delivery = signUpDto.toDeliveryEntity(users);
-        deliveryRepository.save(delivery);
     }
 
     @Override
@@ -83,11 +116,13 @@ public class AuthServiceImp implements AuthService {
 
 
     @Override
-    public String findLoginId(UserIdentifyDto userIdentifyDto) {
-        Users users = usersRepository.findByNameAndPhoneNumberAndGenderAndBirth(
-                userIdentifyDto.getName(), userIdentifyDto.getPhoneNumber(), userIdentifyDto.getGender(), userIdentifyDto.getBirth()
-        ).orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-        return users.getLoginId(); //jpql
+    public String getLoginId(PhoneNumberDto phoneNumberDto) {
+        Users users = usersRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber())
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        // 소셜 회원일 경우
+        if (users.getIsRegistered() == 0) throw new GlobalException(ResponseStatus.NO_EXIST_USERS);
+
+        return users.getLoginId();
     }
 
     @Transactional
@@ -97,5 +132,12 @@ public class AuthServiceImp implements AuthService {
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
         ;
         usersRepository.save(passwordChangeDto.toEntity(users));
+    }
+
+    @Override
+    public void checkPhoneNumber(PhoneNumberDto phoneNumberDto) {
+        if (usersRepository.existsByPhoneNumber(phoneNumberDto.getPhoneNumber())) {
+            throw new GlobalException(ResponseStatus.DUPLICATED_USERS);
+        }
     }
 }

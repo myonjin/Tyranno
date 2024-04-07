@@ -1,5 +1,7 @@
-package com.tyranno.ssg.text;
+package com.tyranno.ssg.auth.sms.application;
 
+import com.tyranno.ssg.auth.sms.dto.SmsCertificationDto;
+import com.tyranno.ssg.auth.sms.dto.SmsSendDto;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 
 public interface SmsService {
