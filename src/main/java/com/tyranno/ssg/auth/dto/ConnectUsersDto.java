@@ -21,6 +21,7 @@ public class ConnectUsersDto {
 
     public Users toEntity(Users users) {
         return Users.builder()
+                .id(users.getId())
                 .loginId(loginId)
                 .password(new BCryptPasswordEncoder().encode(password))
                 .name(users.getName())
@@ -28,7 +29,7 @@ public class ConnectUsersDto {
                 .gender(users.getGender())
                 .phoneNumber(users.getPhoneNumber())
                 .birth(users.getBirth())
-                .status(0) // 활동중
+                .status(users.getStatus())
                 .isRegistered((byte) 1) // 통합회원 여부 true
                 .uuid(users.getUuid())
                 .build();

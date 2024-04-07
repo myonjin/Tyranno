@@ -24,18 +24,18 @@ public class OAuthServiceImp implements OAuthService {
     private final UsersRepository usersRepository;
     private final DeliveryRepository deliveryRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final OAuthRepository oAuthRepository;
+    private final OAuthRepository oauthRepository;
     private final AuthService authService;
 
 
     @Override
     // 기존 회원 여부 조회 (소셜 아이디)
-    public String checkOAuthUsersByOAuthId(OAuthInfoDto oAuthInfoDto) {
+    public String checkOAuthUsersByOAuthId(OAuthInfoDto oauthInfoDto) {
 
-        if (oAuthRepository.existsByExternalId(oAuthInfoDto.getOAuthExternalId())) {
+        if (oauthRepository.existsByExternalId(oauthInfoDto.getOauthExternalId())) {
             return "소셜 회원입니다.";
         }
-        else if(usersRepository.existsByNameAndEmail(oAuthInfoDto.getName(), oAuthInfoDto.getEmail())) {
+        else if(usersRepository.existsByNameAndEmail(oauthInfoDto.getName(), oauthInfoDto.getEmail())) {
             return "통합 회원입니다.";
         }
         else return "회원가입 이력이 없습니다.";
@@ -43,37 +43,42 @@ public class OAuthServiceImp implements OAuthService {
 
     @Override
     @Transactional
-    public void connectOAuth(OAuthInfoDto oAuthInfoDto){
-        Users users = usersRepository.findByNameAndEmail(oAuthInfoDto.getName(), oAuthInfoDto.getEmail())
+    public void connectOAuth(OAuthInfoDto oauthInfoDto){
+        Users users = usersRepository.findByNameAndEmail(oauthInfoDto.getName(), oauthInfoDto.getEmail())
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-        oAuthRepository.save(oAuthInfoDto.toEntity(users));
+        oauthRepository.save(oauthInfoDto.toEntity(users));
     }
 
     @Transactional
     @Override
-    public void signUpOAuth(OAuthSignUpDto oAuthSignUpDto) {
+    public void signUpOAuth(OAuthSignUpDto oauthSignUpDto) {
 
-        Users users = oAuthSignUpDto.toUsersEntity();
+        Users users = oauthSignUpDto.toUsersEntity();
         usersRepository.save(users);
 
         MarketingAgreeDto marketingAgreeDto = new MarketingAgreeDto(
-                oAuthSignUpDto.getShinsegaeMarketingAgree(),
-                oAuthSignUpDto.getShinsegaeOptionAgree(),
-                oAuthSignUpDto.getSsgMarketingAgree());
+                oauthSignUpDto.getShinsegaeMarketingAgree(),
+                oauthSignUpDto.getShinsegaeOptionAgree(),
+                oauthSignUpDto.getSsgMarketingAgree());
 
         authService.addMarketingInformation(marketingAgreeDto, users);
 
-        Delivery delivery = oAuthSignUpDto.toDeliveryEntity(users);
+        Delivery delivery = oauthSignUpDto.toDeliveryEntity(users);
         deliveryRepository.save(delivery);
 
-        oAuthRepository.save(oAuthSignUpDto.toOAuthEntity(users));
+        //oauthRepository.save(oauthSignUpDto.toOAuthEntity(users));
+
+        OAuth oauth = oauthSignUpDto.toOAuthEntity(users);
+        System.out.println("OAuth External ID before save: " + oauth.getExternalId()); // 로깅 추가
+        oauthRepository.save(oauth);
+
 }
 
 @Override
-public String loginOAuth(OAuthExternalIdDto oAuthExternalIdDto) {
-    OAuth oAuth = oAuthRepository.findByExternalId(oAuthExternalIdDto.getOAuthExternalId())
+public String loginOAuth(OAuthExternalIdDto oauthExternalIdDto) {
+    OAuth oauth = oauthRepository.findByExternalId(oauthExternalIdDto.getOauthExternalId())
             .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OAUTH));
 
-    return jwtTokenProvider.generateToken(oAuth.getUsers());
+    return jwtTokenProvider.generateToken(oauth.getUsers());
 }
 }

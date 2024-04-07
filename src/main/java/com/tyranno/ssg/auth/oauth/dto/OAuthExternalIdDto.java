@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OAuthExternalIdDto {
-    private Long oAuthExternalId;
+    private Long oauthExternalId;
 }

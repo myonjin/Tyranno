@@ -30,6 +30,9 @@ public class UsersServiceImp implements UsersService {
     @Override
     public void modifyPassword(PasswordModifyDto passwordModifyDto, String uuid) {
         Users users = getUsers(uuid);
+        // 소셜 회원일 경우
+        if (users.getIsRegistered() == 0) throw new GlobalException(ResponseStatus.NO_EXIST_USERS);
+
         usersRepository.save(passwordModifyDto.toEntity(users));
     }
 

@@ -30,7 +30,7 @@ public class AuthController {
 
         authService.connectUsers(connectUsersDto);
 
-        return new ResponseEntity<>("회원가입 완료");
+        return new ResponseEntity<>("기존 소셜회원, 통합 회원가입 완료하였습니다.");
     }
     @Operation(summary = "통합 회원가입", description = "통합 회원가입을 한다.")
     @PostMapping("/signup")

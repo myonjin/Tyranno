@@ -40,12 +40,12 @@ public class OAuthSignUpDto {
 
     private Byte ssgMarketingAgree;
 
-    private Long oAuthExternalId;
+    private Long oauthExternalId;
 
     public OAuth toOAuthEntity(Users users) {
         return OAuth.builder()
                 .type((byte) 0) // 카카오
-                .externalId(oAuthExternalId) // externalId 설정
+                .externalId(oauthExternalId) // externalId 설정
                 .users(users)
                 .build();
     }

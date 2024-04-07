@@ -27,16 +27,17 @@ public class AuthServiceImp implements AuthService {
     private final DeliveryRepository deliveryRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final OAuthRepository oAuthRepository;
+    private final OAuthRepository oauthRepository;
 
     @Override
     // 기존 회원 여부 조회 (휴대폰 번호)
     public String checkOAuthUsersByPhoneNum(PhoneNumberDto phoneNumberDto) {
         Users users = usersRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber())
-                .orElseThrow(() ->new GlobalException(ResponseStatus.NO_SIGNUP));
-
-        return oAuthRepository.existsByUsers(users) ?  "소셜 회원입니다." : "통합 회원입니다.";
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_SIGNUP));
+        if(users.getIsRegistered() == 1) return "통합 회원입니다.";
+        return oauthRepository.existsByUsers(users) ? "소셜 회원입니다." : "통합회원 여부가 false인데 oauth table이 없음";
     }
+
     @Transactional // 기존 소셜 회원 통합회원 연결
     @Override
     public void connectUsers(ConnectUsersDto connectUsersDto) {
@@ -44,10 +45,10 @@ public class AuthServiceImp implements AuthService {
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
 
         // logId, password, 통합회원 여부 적용
-        connectUsersDto.toEntity(users);
+        usersRepository.save(connectUsersDto.toEntity(users));
     }
 
-    @Transactional // 반복이 될수 있음. 모든 곳에서 붙이는건 생각해봐야함  이유가 명확해야함
+    @Transactional
     @Override
     public void singUpUsers(SignUpDto signUpDto) {
         //회원
@@ -118,6 +119,9 @@ public class AuthServiceImp implements AuthService {
     public String getLoginId(PhoneNumberDto phoneNumberDto) {
         Users users = usersRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber())
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        // 소셜 회원일 경우
+        if (users.getIsRegistered() == 0) throw new GlobalException(ResponseStatus.NO_EXIST_USERS);
+
         return users.getLoginId();
     }
 
@@ -132,7 +136,7 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public void checkPhoneNumber(PhoneNumberDto phoneNumberDto) {
-        if(usersRepository.existsByPhoneNumber(phoneNumberDto.getPhoneNumber())) {
+        if (usersRepository.existsByPhoneNumber(phoneNumberDto.getPhoneNumber())) {
             throw new GlobalException(ResponseStatus.DUPLICATED_USERS);
         }
     }
