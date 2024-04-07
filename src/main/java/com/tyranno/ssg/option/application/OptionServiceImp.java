@@ -6,6 +6,9 @@ import com.tyranno.ssg.option.domain.Option;
 import com.tyranno.ssg.option.dto.*;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
 import com.tyranno.ssg.option.infrastructure.OptionRepositoryImpl;
+import com.tyranno.ssg.product.domain.Discount;
+import com.tyranno.ssg.product.infrastructure.DiscountRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 public class OptionServiceImp implements OptionService {
     private final OptionRepository optionRepository;
     private final OptionRepositoryImpl optionRepositoryImp;
+    private final DiscountRepository discountRepository;
 
     @Override
 
@@ -57,7 +61,7 @@ public class OptionServiceImp implements OptionService {
     public List<OptionAbleListDto> getOptionAbleList(Long productId) {
 
         List<Option> options = optionRepository.findAllByProductId(productId)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.DUPLICATE_ID));
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION));
         Map<Long, ColorStockDto> colorStockMap = options.stream()
                 .filter(option -> option.getColor() != null)
                 .map(option -> new ColorStockDto(option.getColor().getId(), option.getColor().getColor(),
@@ -99,7 +103,7 @@ public class OptionServiceImp implements OptionService {
                                 existingDto.getStock() + newDto.getStock(),
                                 existingDto.getExtraPrice() + newDto.getExtraPrice())
                 ));
-        //        log.info(options.toString());
+//                log.info(options.toString());
 //        List<Color> colors = options.stream()
 //                .map(Option::getColor) // Option -> Color로 매핑
 //                .filter(Objects::nonNull) // null이 아닌 Color 객체만 필터링
@@ -134,9 +138,17 @@ public class OptionServiceImp implements OptionService {
     @Override
     public List<OptionDto> getOptionProduct(Long productId, Long colorId, Long sizeId, Long extraId, Long etcId) {
         List<Option> optionProducts = optionRepositoryImp.getOptionProduct(productId, colorId, sizeId, extraId, etcId);
-//        log.info(optionProducts.toString());
+        //log.info(optionProducts.toString());
+        if (optionProducts.isEmpty()) {
+            throw new GlobalException(ResponseStatus.NO_SELECTED_OPTION);
+        }
+        int discount = discountRepository.findByProductId(productId)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT))
+                .getDiscount();
+
+
         return optionProducts.stream()
-                .map(OptionDto::fromEntity)
+                .map(option -> OptionDto.fromEntity(option, discount))
                 .toList();
     }
 

@@ -1,10 +1,7 @@
 package com.tyranno.ssg.cart.presentation;
 
 import com.tyranno.ssg.cart.application.CartService;
-import com.tyranno.ssg.cart.dto.Request.CartAddDto;
-import com.tyranno.ssg.cart.dto.Request.CartCountModifyDto;
-import com.tyranno.ssg.cart.dto.Request.CartKeepModifyDto;
-import com.tyranno.ssg.cart.dto.Request.CartOptionModifyDto;
+import com.tyranno.ssg.cart.dto.Request.*;
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +28,7 @@ public class CartController {
         return new ResponseEntity<>(result);
     }
 
-    @Operation(summary = "장바구니 담기 (상품 리스트)", description = "상품 리스트에서 장바구니에 상품을 담는다./api/v1/cart/names/{option_id} 으로 옵션 정보 조회 api 호출 필요")
+    @Operation(summary = "장바구니 담기 (상품 리스트)", description = "상품 리스트에서 장바구니에 상품을 담는다.")
     @PostMapping("/{product_id}")
     public ResponseEntity<?> addCartAtList(@PathVariable Long product_id, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
@@ -39,7 +36,7 @@ public class CartController {
         return new ResponseEntity<>(result);
     }
 
-    @Operation(summary = "장바구니 리스트 조회", description = "한 유저의 모든 장바구니 항목을 조회한다.")
+    @Operation(summary = "장바구니 리스트 조회", description = "한 유저의 모든 장바구니 항목을 조회한다./api/v1/cart/names/{option_id} 으로 옵션 정보 조회 api 호출 필요")
     @GetMapping
     public ResponseEntity<?> getCartList(@RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
@@ -48,7 +45,7 @@ public class CartController {
 
     @Operation(summary = "장바구니 선택항목 삭제", description = "선택 항목의 장바구니를 삭제한다.")
     @DeleteMapping
-    public ResponseEntity<?> deleteCartList(@RequestBody List<Long> cartDeleteList) {
+    public ResponseEntity<?> deleteCartList(@RequestBody List<CartIdDto> cartDeleteList) {
         cartService.deleteCartList(cartDeleteList);
         return new ResponseEntity<>("선택한 장바구니 항목 삭제 완료");
     }

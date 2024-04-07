@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
+@RequiredArgsConstructor  // final로 선언된 필드를 초기화 하는 생성자를 만들어준다.
 @RestController
 @Tag(name = "상품 옵션", description = "옵션 API")
 @RequestMapping("/api/v1/option")
@@ -53,7 +53,7 @@ public class OptionController {
         return new ResponseEntity<>(optionAbleList);
     }
 
-
+    @Tag(name = "상품 옵션", description = "옵션 API")
     @Operation(summary = "선택한 옵션 ID 조회 및 정보", description = "선택한 옵션을 조회한다..")
     @GetMapping("/{product_id}")
     @ApiResponses({

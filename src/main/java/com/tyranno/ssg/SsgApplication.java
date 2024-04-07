@@ -9,17 +9,16 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
-//@OpenAPIDefinition(servers = {
-//		@Server(url = "https://tyrannoback.com", description = "Default Server URL")
-//})
+@OpenAPIDefinition(servers = {
+		@Server(url = "https://tyrannoback.com", description = "Default Server URL")
+})
+
 @EnableJpaAuditing
 @SpringBootApplication
 public class SsgApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SsgApplication.class, args);
-
-
 	}
 
 }
