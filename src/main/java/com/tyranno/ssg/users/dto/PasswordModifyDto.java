@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
 @NoArgsConstructor
@@ -25,6 +24,7 @@ public class PasswordModifyDto {
                 .phoneNumber(users.getPhoneNumber())
                 .birth(users.getBirth())
                 .status(users.getStatus()) // 활동중
+                .isIntegrated(users.getIsIntegrated())
                 .uuid(users.getUuid())
                 .build();
     }

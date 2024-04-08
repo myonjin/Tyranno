@@ -1,40 +1,37 @@
-package com.tyranno.ssg.auth.dto;
+package com.tyranno.ssg.auth.oauth.dto;
 
+import com.tyranno.ssg.auth.oauth.domain.OAuth;
 import com.tyranno.ssg.delivery.domain.Delivery;
 import com.tyranno.ssg.users.domain.Users;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUpDto { // 회원가입 정보 이걸로 받음
-    @NotNull  // - 유효성 검사를 위해 넣음
-    private String loginId;
-    @NotNull
-    private String password;
-    @NotNull // - 회원 가입시 한 정보라도 안받으면 오류창
+public class OAuthSignUpDto {
+
     private String name;
-    @NotNull
+
     private String deliveryBase;
-    @NotNull
+
     private String deliveryDetail;
-    @NotNull
+
     private int zipCode;
-    @NotNull
+
     private String phoneNumber;
-    @NotNull
+
     private String email;
-    @NotNull
+
     private Byte gender;
-    @NotNull
+
     private LocalDate birth;
 
     private Byte shinsegaeMarketingAgree;
@@ -43,17 +40,27 @@ public class SignUpDto { // 회원가입 정보 이걸로 받음
 
     private Byte ssgMarketingAgree;
 
+    private Long oauthExternalId;
+
+    public OAuth toOAuthEntity(Users users) {
+        return OAuth.builder()
+                .type((byte) 0) // 카카오
+                .externalId(oauthExternalId) // externalId 설정
+                .users(users)
+                .build();
+    }
+
     public Users toUsersEntity() {
         return Users.builder()
-                .loginId(loginId)
-                .password(new BCryptPasswordEncoder().encode(password))
+                .loginId(String.valueOf(email.hashCode()))
+                .password(RandomStringUtils.randomAlphanumeric(30))
                 .name(name)
                 .email(email)
                 .gender(gender)
                 .phoneNumber(phoneNumber)
                 .birth(birth)
                 .status(0) // 활동중
-                .isIntegrated((byte) 1) // 통합회원 여부 true
+                .isIntegrated((byte) 0) // 통합회원 여부 false
                 .uuid(UUID.randomUUID().toString())
                 .build();
     }
