@@ -10,4 +10,5 @@ public interface ProductService {
     ProductThumDto getProductThumPriority1(Long productId);
     ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId, Integer sortCriterion,
                                       Integer lastIndex, String searchKeyword);
+    void updateProductRatingAndReviewCount(Long productId, Float rate);
 }
