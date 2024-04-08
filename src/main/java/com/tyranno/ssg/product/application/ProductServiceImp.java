@@ -167,8 +167,9 @@ public class ProductServiceImp implements ProductService {
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
     }
 
+    @Override
     @Transactional
-    public void updateProductRatingAndReviewCount(Long productId, float rate) {
+    public void updateProductRatingAndReviewCount(Long productId, Float rate) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
 
