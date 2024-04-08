@@ -63,6 +63,7 @@ public enum ResponseStatus {
     // OAuth
     NO_EXIST_OAUTH(false, 2200, "존재하지 않는 소셜 회원입니다."),
     DUPLICATE_OAUTH(false, 2201, "이미 가입된 소셜 회원입니다."),
+    NO_EXIST_USERS_TYPE(false, 2201, "DB 데이터 오류. 통합회원 여부가 잘못되어 있습니다"),
 
 //
 //    // Marketing

@@ -4,6 +4,7 @@ import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.payment.application.PaymentService;
+import com.tyranno.ssg.payment.dto.ApproveRequestDto;
 import com.tyranno.ssg.payment.dto.ApproveResponseDto;
 import com.tyranno.ssg.payment.dto.ReadyRequestDto;
 import com.tyranno.ssg.payment.dto.ReadyResponseDto;
@@ -22,22 +23,26 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @Operation(summary = "카카오페이 결제", description = "카카오페이 결제를 한다.")
+    @Operation(summary = "카카오페이 결제 시작", description = "카카오페이 결제를 시작한다.")
     @PostMapping("/ready")
-    public ReadyResponseDto readyToKakaoPay(@RequestBody ReadyRequestDto readyRequestDto) {
+    public ResponseEntity<ReadyResponseDto> readyToKakaoPay(@RequestBody ReadyRequestDto readyRequestDto) {
 
-        return paymentService.kakaoPayReady(readyRequestDto);
+        return new ResponseEntity<>(paymentService.kakaoPayReady(readyRequestDto));
     }
 
     /**
      * 결제 성공
      */
+    @Operation(summary = "카카오페이 결제 성공", description = "카카오페이 결제를 성공하여 pg_token을 리턴한다.")
     @GetMapping("/success")
-    public ResponseEntity<ApproveResponseDto> afterPayRequest(@RequestParam("pg_token") String pgToken) {
+    public ResponseEntity<?> afterPayRequest(@RequestParam("pg_token") String pgToken) {
+        return new ResponseEntity<>(pgToken);
+    }
+    @Operation(summary = "카카오페이 승인 요청", description = "카카오페이 결제 승인을 요청한다.")
+    @PostMapping("/approve")
+    public ResponseEntity<?> approveKakaoPay(@RequestBody ApproveRequestDto approveRequestDto) {
 
-        //  ApproveResponseDto kakaoApprove = paymentService.getKakaoPayApprove(pgToken);
-        return null;
-        //  return new ResponseEntity<>(kakaoApprove);
+        return new ResponseEntity<>(paymentService.getKakaoPayApprove(approveRequestDto));
     }
 
     /**
