@@ -153,9 +153,9 @@ public class ProductServiceImp implements ProductService {
         ProductIdListDto productIdListDto = new ProductIdListDto();
 
         List<Map<String, Long>> productIdList = new ArrayList<>();
-        for (int i = 0; i < productIds.size(); i++) { // 순서 보여주려고 추가한 값
+        for (Long productId : productIds) {
             Map<String, Long> productMap = new HashMap<>();
-            productMap.put("productId" + (i + 1), productIds.get(i));
+            productMap.put("productId", productId);
             productIdList.add(productMap);
         }
         productIdListDto.setProductIds(productIdList);

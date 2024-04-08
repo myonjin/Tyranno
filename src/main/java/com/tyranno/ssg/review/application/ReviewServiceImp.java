@@ -54,9 +54,9 @@ public class ReviewServiceImp implements ReviewService{
         log.info("Retrieved reviewIds: {}", reviewIds);
 
         List<Map<String, Long>> reviewIdList = new ArrayList<>();
-        for (int i = 0; i < reviewIds.size(); i++) {
+        for (Long reviewId : reviewIds) {
             Map<String, Long> reviewMap = new HashMap<>();
-            reviewMap.put("reviewId" + (i + 1), reviewIds.get(i));
+            reviewMap.put("reviewId", reviewId);
             reviewIdList.add(reviewMap);
         }
 
