@@ -1,12 +1,9 @@
 package com.tyranno.ssg.auth.oauth.presentation;
 
-import com.tyranno.ssg.auth.dto.UsersTypeInfoDto;
 import com.tyranno.ssg.auth.oauth.application.OAuthService;
-import com.tyranno.ssg.auth.oauth.dto.OAuthExternalIdDto;
 import com.tyranno.ssg.auth.oauth.dto.OAuthInfoDto;
 import com.tyranno.ssg.auth.oauth.dto.OAuthSignUpDto;
 import com.tyranno.ssg.global.ResponseEntity;
-import com.tyranno.ssg.users.domain.Users;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,19 +17,13 @@ public class OAuthController {
 
     private final OAuthService oauthService;
 
-    @Operation(summary = "기존 회원 여부 조회 (소셜 아이디)", description = "소셜 아이디로 기존 회원여부를 조회한다.")
-    @PostMapping("/check")
-    public ResponseEntity<UsersTypeInfoDto> checkOAuthUsers(@RequestBody OAuthInfoDto oauthInfoDto) {
-        return new ResponseEntity<>(oauthService.checkOAuthUsersByOAuthId(oauthInfoDto));
-    }
-    @Operation(summary = "기존 통합회원 소셜 로그인 연결", description = "기존의 통합 회원이 소셜 회원가입을 한다.")
-    @PostMapping("/connect")
-    public ResponseEntity<?> connectOAuth(@RequestBody OAuthInfoDto oauthInfoDto) {
-        oauthService.connectOAuth(oauthInfoDto);
-        return new ResponseEntity<>("기존 통합회원, 소셜 회원가입 완료하였습니다.");
+    @Operation(summary = "소셜 로그인", description = "기존 소셜회원은 토큰을 리턴하고(로그인), 통합회원은 소셜과 연결하고 토큰을 리턴하고, 비회원은 에러를 리턴한다.")
+    @PostMapping("/login")
+    public ResponseEntity<String> loginOAuth(@RequestBody OAuthInfoDto oauthInfoDto) {
+        return new ResponseEntity<>(oauthService.loginOAuth(oauthInfoDto));
     }
 
-    @Operation(summary = "소셜 회원가입", description = "소셜 회원 가입을 한다.")
+    @Operation(summary = "소셜 회원가입", description = "비회원이 소셜 회원 가입을 한다.")
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody OAuthSignUpDto oauthSignUpDto) {
         System.out.println("OAuth External ID: " + oauthSignUpDto.getOauthExternalId());
@@ -40,12 +31,19 @@ public class OAuthController {
         return new ResponseEntity<>("소셜 회원가입이 완료되었습니다.");
     }
 
-    @Operation(summary = "소셜 로그인", description = "소셜 로그인을 한다.")
-    @PostMapping("/login")
-    public ResponseEntity<?> logIn(@RequestBody OAuthExternalIdDto oauthExternalIdDto) {
+//    @Operation(summary = "기존 통합회원 소셜 로그인 연결", description = "기존의 통합 회원이 소셜 회원가입을 한다.")
+//    @PostMapping("/connect")
+//    public ResponseEntity<?> connectOAuth(@RequestBody OAuthInfoDto oauthInfoDto) {
+//        oauthService.connectOAuth(oauthInfoDto);
+//        return new ResponseEntity<>("기존 통합회원, 소셜 회원가입 완료하였습니다.");
+//    }
 
-        return new ResponseEntity<>(oauthService.loginOAuth(oauthExternalIdDto));
-    }
+//    @Operation(summary = "소셜 로그인", description = "소셜 로그인을 한다.")
+//    @PostMapping("/login")
+//    public ResponseEntity<?> logIn(@RequestBody OAuthExternalIdDto oauthExternalIdDto) {
+//
+//        return new ResponseEntity<>(oauthService.loginOAuth(oauthExternalIdDto));
+//    }
 
 }
 
