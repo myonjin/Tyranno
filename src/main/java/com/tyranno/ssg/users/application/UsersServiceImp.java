@@ -31,7 +31,7 @@ public class UsersServiceImp implements UsersService {
     public void modifyPassword(PasswordModifyDto passwordModifyDto, String uuid) {
         Users users = getUsers(uuid);
         // 소셜 회원일 경우
-        if (users.getIsRegistered() == 0) throw new GlobalException(ResponseStatus.NO_REGISTER);
+        if (users.getIsIntegrated() == 0) throw new GlobalException(ResponseStatus.NO_REGISTER);
 
         usersRepository.save(passwordModifyDto.toEntity(users));
     }
@@ -77,7 +77,7 @@ public class UsersServiceImp implements UsersService {
                 .phoneNumber(users.getPhoneNumber())
                 .birth(users.getBirth())
                 .status(1) // 탈퇴
-                .isRegistered(users.getIsRegistered())
+                .isIntegrated(users.getIsIntegrated())
                 .uuid(users.getUuid())
                 .build();
 

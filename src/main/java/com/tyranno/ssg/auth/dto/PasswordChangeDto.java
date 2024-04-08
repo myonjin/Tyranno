@@ -28,7 +28,7 @@ public class PasswordChangeDto {
                 .phoneNumber(users.getPhoneNumber())
                 .birth(users.getBirth())
                 .status(users.getStatus())
-                .isRegistered(users.getIsRegistered())
+                .isIntegrated(users.getIsIntegrated())
                 .uuid(users.getUuid())
                 .build();
     }

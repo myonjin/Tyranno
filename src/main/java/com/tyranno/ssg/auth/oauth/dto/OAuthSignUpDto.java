@@ -60,7 +60,7 @@ public class OAuthSignUpDto {
                 .phoneNumber(phoneNumber)
                 .birth(birth)
                 .status(0) // 활동중
-                .isRegistered((byte) 0) // 통합회원 여부 false
+                .isIntegrated((byte) 0) // 통합회원 여부 false
                 .uuid(UUID.randomUUID().toString())
                 .build();
     }
