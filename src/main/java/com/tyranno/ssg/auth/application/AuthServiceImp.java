@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImp implements AuthService {
@@ -31,11 +33,21 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     // 기존 회원 여부 조회 (휴대폰 번호)
-    public String checkOAuthUsersByPhoneNum(PhoneNumberDto phoneNumberDto) {
-        Users users = usersRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber())
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_SIGNUP));
-        if(users.getIsRegistered() == 1) return "통합 회원입니다.";
-        return oauthRepository.existsByUsers(users) ? "소셜 회원입니다." : "통합회원 여부가 false인데 oauth table이 없음";
+    public UsersTypeInfoDto checkOAuthUsersByPhoneNum(PhoneNumberDto phoneNumberDto) {
+        Optional<Users> optionalUsers = usersRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber());
+        // 비회원
+        if (optionalUsers.isEmpty()) {
+            return new UsersTypeInfoDto(UsersType.NON_USERS.getCode(), UsersType.NON_USERS.getDescription());
+        }
+
+        Users users = optionalUsers.get();
+        if (users.getIsRegistered() == 1) { // 통합회원
+            return new UsersTypeInfoDto(UsersType.INTEGRATED_USERS.getCode(), UsersType.INTEGRATED_USERS.getDescription());
+        } else if (oauthRepository.existsByUsers(users)) { // 소셜회원
+            return new UsersTypeInfoDto(UsersType.KAKAO_USERS.getCode(), UsersType.KAKAO_USERS.getDescription());
+        } else { // 회원정보가 있는데 둘다 해당되지 않을 때
+            throw new GlobalException(ResponseStatus.NO_EXIST_USERS_TYPE);
+        }
     }
 
     @Transactional // 기존 소셜 회원 통합회원 연결
