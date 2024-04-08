@@ -19,6 +19,7 @@ import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.dto.VendorDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
 import com.tyranno.ssg.vendor.infrastructure.VendorRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -164,5 +165,27 @@ public class ProductServiceImp implements ProductService {
     public Users getUsers(String uuid) {
         return usersRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+    }
+
+    @Transactional
+    public void updateProductRatingAndReviewCount(Long productId, float rate) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
+
+        // 기존 평점과 리뷰 수
+        float currentRate = product.getProductRate();
+        int currentReviewCount = product.getReviewCount();
+
+        // 새로운 평점을 계산
+        float newRate = (currentRate * currentReviewCount + rate) / (currentReviewCount + 1);
+
+        Product updatedProduct = Product.builder()
+                .id(product.getId())
+                .productRate(newRate)
+                .reviewCount(currentReviewCount + 1)
+                .build();
+
+        // 상품을 저장합니다.
+        productRepository.save(updatedProduct);
     }
 }

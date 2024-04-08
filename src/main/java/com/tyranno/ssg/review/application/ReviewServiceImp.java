@@ -9,6 +9,7 @@ import com.tyranno.ssg.order.domain.Order;
 import com.tyranno.ssg.order.domain.OrderList;
 import com.tyranno.ssg.order.infrastructure.OrderListRepository;
 import com.tyranno.ssg.order.infrastructure.OrderRepository;
+import com.tyranno.ssg.product.application.ProductService;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
 import com.tyranno.ssg.product.dto.ProductIdListDto;
@@ -43,6 +44,7 @@ public class ReviewServiceImp implements ReviewService{
     private final ReviewRepository reviewRepository;
     private final ReviewImageRepository reviewImageRepository;
     private final ReviewRepositoryImp reviewRepositoryImp;
+    private final ProductService productService;
 
     @Override
     public ReviewIdListDto getProductReviewIds(Long productId, Integer sortCriterion, Integer lastIndex) {
@@ -169,10 +171,10 @@ public class ReviewServiceImp implements ReviewService{
                 reviewImageRepository.save(reviewImage);
                 isFirstImage = false;
             }
-
             // 리뷰 저장
             reviewRepository.save(review);
-
+            // 평점 및 리뷰 수 업데이트
+            productService.updateProductRatingAndReviewCount(productId, reviewCreateDto.getRate());
 
             return "리뷰 저장 성공!";
         } catch (Exception e) {
