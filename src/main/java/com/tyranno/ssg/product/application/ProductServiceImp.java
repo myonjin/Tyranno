@@ -19,6 +19,7 @@ import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.dto.VendorDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
 import com.tyranno.ssg.vendor.infrastructure.VendorRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class ProductServiceImp implements ProductService {
                         vendorDto.setVendorName(vp.getVendor().getVendorName());
                         return vendorDto;
                     })
-                    .map(Collections::singletonList)
+                    .map(Collections::singletonList) //GPT 사용
                     .orElse(Collections.emptyList());
             Optional<Discount> discountOptional = discountRepository.findByProductId(product.getId());
             int discountValue = 0;
@@ -152,9 +153,9 @@ public class ProductServiceImp implements ProductService {
         ProductIdListDto productIdListDto = new ProductIdListDto();
 
         List<Map<String, Long>> productIdList = new ArrayList<>();
-        for (int i = 0; i < productIds.size(); i++) { // 순서 보여주려고 추가한 값
+        for (Long productId : productIds) {
             Map<String, Long> productMap = new HashMap<>();
-            productMap.put("productId" + (i + 1), productIds.get(i));
+            productMap.put("productId", productId);
             productIdList.add(productMap);
         }
         productIdListDto.setProductIds(productIdList);
@@ -164,5 +165,28 @@ public class ProductServiceImp implements ProductService {
     public Users getUsers(String uuid) {
         return usersRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+    }
+
+    @Override
+    @Transactional
+    public void updateProductRatingAndReviewCount(Long productId, Float rate) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
+
+        // 기존 평점과 리뷰 수
+        float currentRate = product.getProductRate();
+        int currentReviewCount = product.getReviewCount();
+
+        // 새로운 평점을 계산
+        float newRate = (currentRate * currentReviewCount + rate) / (currentReviewCount + 1);
+
+        Product updatedProduct = Product.builder()
+                .id(product.getId())
+                .productRate(newRate)
+                .reviewCount(currentReviewCount + 1)
+                .build();
+
+        // 상품을 저장합니다.
+        productRepository.save(updatedProduct);
     }
 }
