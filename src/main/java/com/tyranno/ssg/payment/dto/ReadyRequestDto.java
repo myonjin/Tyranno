@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReadyRequestDto {
-    private String cid;
     private String partner_order_id;
     private String partner_user_id;
     private String item_name;
