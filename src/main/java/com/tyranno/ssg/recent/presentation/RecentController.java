@@ -30,7 +30,8 @@ public class RecentController {
         return new ResponseEntity<>(recentViewedDto);
     }
 
-    @Operation(summary = "최근 본 상품 담기", description = "uuid, productId로 최근 본 상품에 담기")
+    @Operation(summary = "최근 본 상품 담기", description = "uuid, productId로 최근 본 상품에 담기, \n\n" +
+            "만약 최근 본 상품을 다시 보면 isView값을 99로 처리하고 새로 DB에 추가")
     @PostMapping("/{product_id}")
     public ResponseEntity<?> addRecent(@PathVariable Long product_id, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
