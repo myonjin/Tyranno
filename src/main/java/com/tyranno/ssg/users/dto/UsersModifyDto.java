@@ -10,22 +10,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UsersModifyDto { //회원 인증 정보 - 유저가 입력, 비밀번호 변경 시 사용
-    @NotNull
+
     private String password;
-    @NotNull
+
     private String phoneNumber;
-    @NotNull
+
     private String email;
 
     public Users toEntity(Users users) {
         return Users.builder()
                 .id(users.getId())
                 .loginId(users.getLoginId())
-                .password(users.hashPassword(password))
+                .password((password != null) ? users.hashPassword(password) : users.getPassword())
                 .name(users.getName())
-                .email(email)
+                .email(email != null ? email : users.getEmail())
                 .gender(users.getGender())
-                .phoneNumber(phoneNumber)
+                .phoneNumber(phoneNumber != null ? phoneNumber : users.getPhoneNumber())
                 .birth(users.getBirth())
                 .status(users.getStatus())
                 .isRegistered(users.getIsRegistered())
