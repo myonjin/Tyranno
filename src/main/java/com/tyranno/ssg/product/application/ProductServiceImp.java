@@ -66,7 +66,7 @@ public class ProductServiceImp implements ProductService {
                         vendorDto.setVendorName(vp.getVendor().getVendorName());
                         return vendorDto;
                     })
-                    .map(Collections::singletonList)
+                    .map(Collections::singletonList) //GPT 사용
                     .orElse(Collections.emptyList());
             Optional<Discount> discountOptional = discountRepository.findByProductId(product.getId());
             int discountValue = 0;
