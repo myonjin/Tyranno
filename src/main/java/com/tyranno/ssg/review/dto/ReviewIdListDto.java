@@ -9,10 +9,10 @@ import java.util.Map;
 @Getter
 @NoArgsConstructor
 public class ReviewIdListDto {
-    private List<Map<String, Long>> reviewIds;
+    private List<Map<String, Object>> reviewIds;
 
     @Builder
-    public ReviewIdListDto(List<Map<String, Long>> reviewIds) {
+    public ReviewIdListDto(List<Map<String, Object>> reviewIds) {
         this.reviewIds = reviewIds;
     }
 

@@ -33,6 +33,7 @@ import java.util.*;
 public class ProductServiceImp implements ProductService {
 
 
+    private static final int PAGE_SIZE = 20;
     // JPA로 productId를 통해 조회하기
     private final ProductRepository productRepository;
     private final VendorRepository vendorRepository;
@@ -138,24 +139,30 @@ public class ProductServiceImp implements ProductService {
     }
     @Override
     public ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
-                                             Integer sortCriterion, Integer lastIndex, String searchKeyword) { // productList
+                                             Integer sortCriterion, Integer page, String searchKeyword) { // productList
+        // 페이지당 항목 수 상수 선언
+        final int PAGE_SIZE = 20; // 예시로 20개로 설정
+
         List<Long> productIds;
         if (searchKeyword != null && !searchKeyword.isEmpty()) {
             // 상품명으로 검색
             log.info("상품명 실행");
-            productIds = productRepositoryImp.searchProductIdsByKeyword(searchKeyword, sortCriterion, lastIndex);
+            productIds = productRepositoryImp.searchProductIdsByKeyword(searchKeyword, sortCriterion, page);
         } else {
             // 카테고리로 검색
             log.info("카테고리 실행");
             productIds = productRepositoryImp.searchProductIdsByCategory(largeId, middleId, smallId, detailId,
-                    sortCriterion, lastIndex);
+                    sortCriterion, page);
         }
         ProductIdListDto productIdListDto = new ProductIdListDto();
 
-        List<Map<String, Long>> productIdList = new ArrayList<>();
-        for (Long productId : productIds) {
-            Map<String, Long> productMap = new HashMap<>();
+        List<Map<String, Object>> productIdList = new ArrayList<>();
+        int startIndex = (page - 1) * PAGE_SIZE; // 페이지 번호가 1부터 시작하므로 수정
+        for (int i = 0; i < productIds.size(); i++) {
+            Long productId = productIds.get(i);
+            Map<String, Object> productMap = new HashMap<>();
             productMap.put("productId", productId);
+            productMap.put("id", startIndex + i + 1); // 인덱스도 1부터 시작하도록 수정
             productIdList.add(productMap);
         }
         productIdListDto.setProductIds(productIdList);
