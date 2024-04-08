@@ -48,7 +48,7 @@ public class Users extends GlobalTime implements UserDetails {
     private Integer status;
 
     @Column(nullable = false)
-    private Byte isRegistered;
+    private Byte isIntegrated;
 
     @Column(nullable = false)
     private String uuid;
@@ -58,7 +58,7 @@ public class Users extends GlobalTime implements UserDetails {
     }
 
     @Builder
-    public Users(Long id, String loginId, String password, String name, String email, Byte gender, String phoneNumber, LocalDate birth, Integer status, Byte isRegistered, String uuid) {
+    public Users(Long id, String loginId, String password, String name, String email, Byte gender, String phoneNumber, LocalDate birth, Integer status, Byte isIntegrated, String uuid) {
         this.id = id;
         this.loginId = loginId;
         this.password = password;
@@ -68,7 +68,7 @@ public class Users extends GlobalTime implements UserDetails {
         this.phoneNumber = phoneNumber;
         this.birth = birth;
         this.status = status;
-        this.isRegistered = isRegistered;
+        this.isIntegrated = isIntegrated;
         this.uuid = uuid;
     }
 

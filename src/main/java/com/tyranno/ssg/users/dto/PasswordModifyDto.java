@@ -24,7 +24,7 @@ public class PasswordModifyDto {
                 .phoneNumber(users.getPhoneNumber())
                 .birth(users.getBirth())
                 .status(users.getStatus()) // 활동중
-                .isRegistered(users.getIsRegistered())
+                .isIntegrated(users.getIsIntegrated())
                 .uuid(users.getUuid())
                 .build();
     }
