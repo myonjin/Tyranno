@@ -19,8 +19,8 @@ public class AuthController {
     private final AuthService authService;
 
     @Operation(summary = "기존 회원 여부 조회 (휴대폰 번호)", description = "휴대폰 번호로 소셜, 통합 회원인지를 조회한다.")
-    @GetMapping("/check")
-    public ResponseEntity<?> checkOAuthUsers(@RequestBody PhoneNumberDto phoneNumberDto) {
+    @PostMapping("/check")
+    public ResponseEntity<UsersTypeInfoDto> checkOAuthUsers(@RequestBody PhoneNumberDto phoneNumberDto) {
 
         return new ResponseEntity<>(authService.checkOAuthUsersByPhoneNum(phoneNumberDto));
     }
