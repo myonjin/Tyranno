@@ -101,24 +101,18 @@ public class ProductServiceImp implements ProductService {
         Product product = productOptional.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
         log.info(String.valueOf(product));
         Optional<ProductThum> imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1);
-        Long vendorId;
-        String vendorName;
+        Long vendorId = null;
+        String vendorName = null;
 
         Optional<VendorProduct> vendorProductOptional = vendorProductRepository.findByProductId(productId);
         if (vendorProductOptional.isPresent()) {
-            vendorId = vendorProductOptional.get().getVendor().getId();
-            Optional<Vendor> vendorOptional = vendorRepository.findById(vendorId);
-            if (vendorOptional.isPresent()) {
-                vendorName = vendorOptional.get().getVendorName();
-            } else {
-                // 만약 vendor가 없다면 빈 문자열을 할당
-                vendorName = "";
+            Vendor vendor = vendorProductOptional.get().getVendor();
+            if (vendor != null) {
+                vendorId = vendor.getId();
+                vendorName = vendor.getVendorName();
             }
-        } else {
-            // 만약 vendorProduct가 없다면 빈 값을 할당
-            vendorId = null;
-            vendorName = "";
         }
+
         Optional<Discount> discountOptional = discountRepository.findByProductId(product.getId());
         int discountValue = 0;
         if (discountOptional.isPresent()) {
