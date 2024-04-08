@@ -2,6 +2,8 @@ package com.tyranno.ssg.auth.oauth.application;
 
 import com.tyranno.ssg.auth.application.AuthService;
 import com.tyranno.ssg.auth.dto.MarketingAgreeDto;
+import com.tyranno.ssg.auth.dto.UsersType;
+import com.tyranno.ssg.auth.dto.UsersTypeInfoDto;
 import com.tyranno.ssg.auth.oauth.domain.OAuth;
 import com.tyranno.ssg.auth.oauth.dto.OAuthExternalIdDto;
 import com.tyranno.ssg.auth.oauth.dto.OAuthInfoDto;
@@ -30,15 +32,15 @@ public class OAuthServiceImp implements OAuthService {
 
     @Override
     // 기존 회원 여부 조회 (소셜 아이디)
-    public String checkOAuthUsersByOAuthId(OAuthInfoDto oauthInfoDto) {
+    public UsersTypeInfoDto checkOAuthUsersByOAuthId(OAuthInfoDto oauthInfoDto) {
 
         if (oauthRepository.existsByExternalId(oauthInfoDto.getOauthExternalId())) {
-            return "소셜 회원입니다.";
+            return new UsersTypeInfoDto(UsersType.KAKAO_USERS.getCode(), UsersType.KAKAO_USERS.getDescription());
         }
         else if(usersRepository.existsByNameAndEmail(oauthInfoDto.getName(), oauthInfoDto.getEmail())) {
-            return "통합 회원입니다.";
+            return new UsersTypeInfoDto(UsersType.INTEGRATED_USERS.getCode(), UsersType.INTEGRATED_USERS.getDescription());
         }
-        else return "회원가입 이력이 없습니다.";
+        else return new UsersTypeInfoDto(UsersType.NON_USERS.getCode(), UsersType.NON_USERS.getDescription());
     }
 
     @Override
