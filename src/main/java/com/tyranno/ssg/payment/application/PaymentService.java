@@ -6,6 +6,8 @@ import com.tyranno.ssg.payment.dto.ApproveResponseDto;
 import com.tyranno.ssg.payment.dto.ReadyRequestDto;
 import com.tyranno.ssg.payment.dto.ReadyResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -17,20 +19,28 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PaymentService {
 
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
-    static final String admin_Key = "${kakaopay.admin-key}";
-    private ReadyResponseDto kakaoReady;
+
+    @Value("${kakaopay.secret-key}")
+    private String secretKey;
+
+
     public ReadyResponseDto kakaoPayReady(ReadyRequestDto request) {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(this.getReadyParameters(request), this.getHeaders());
 
+        log.info(String.valueOf(requestEntity));
         RestTemplate restTemplate = new RestTemplate();
         ReadyResponseDto response = restTemplate.postForObject(
                 "https://open-api.kakaopay.com/online/v1/payment/ready",
                 requestEntity,
                 ReadyResponseDto.class
         );
+
+        log.info(String.valueOf(response));
+
         return response;
 
     }
@@ -38,8 +48,7 @@ public class PaymentService {
     private HttpHeaders getHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
 
-
-        httpHeaders.set("Authorization", "SECRET_KEY" + admin_Key);
+        httpHeaders.set("Authorization", "SECRET_KEY " + secretKey);
         httpHeaders.set("Content-type", "application/json");
 
         return httpHeaders;
@@ -58,9 +67,9 @@ public class PaymentService {
         parameters.add("approval_url", request.getApproval_url());
         parameters.add("cancel_url", request.getCancel_url());
         parameters.add("fail_url", request.getCancel_url());
-//        parameters.add("approval_url", "http://localhost:8080/payment/success"); // 성공 시 redirect url
-//        parameters.add("cancel_url", "http://localhost:8080/payment/cancel"); // 취소 시 redirect url
-//        parameters.add("fail_url", "http://localhost:8080/payment/fail"); // 실패 시 redirect url
+//        parameters.add("approval_url", "http://localhost:8080/api/v1/pay/success"); // 성공 시 redirect url
+//        parameters.add("cancel_url", "http://localhost:8080/api/v1/pay/cancel"); // 취소 시 redirect url
+//        parameters.add("fail_url", "http://localhost:8080/api/v1/pay/fail"); // 실패 시 redirect url
 
         return parameters;
     }

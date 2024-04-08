@@ -104,7 +104,11 @@ public enum ResponseStatus {
     NO_MATCH_CERTIFICATION_NUMBER(false, 9000, "인증번호가 일치하지 않습니다."),
 
     // Order
-    NO_EXIST_ORDER_LIST(false,10000,"존재하지 않는 주문내역입니다.");
+    NO_EXIST_ORDER_LIST(false,10000,"존재하지 않는 주문내역입니다."),
+
+    // payment
+    PAY_CANCEL(false,11000,"결제가 취소되었습니다."),
+    PAY_FAILED(false,11000,"결제가 실패하였습니다.");
 
     private final boolean isSuccess;
     private final int code;

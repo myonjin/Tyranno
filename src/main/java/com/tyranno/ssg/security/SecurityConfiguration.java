@@ -24,7 +24,7 @@ public class SecurityConfiguration {
     private final CorsConfig config;
 
     private final String[] allowedUrls = {"/api/v1/auth/**", "/api/v1/product/**", "/api/v1/category/**", "/api/v1/cart/**", "/api/v1/recent/**",
-            "/api/v1/option/**", "/api/v1/event/**", "/api/v1/question/**", "/api/v1/search/**", "/api/v1/vendor/**","/api/v1/pay", "https://open-api.kakaopay.com/online/v1/payment/**",
+            "/api/v1/option/**", "/api/v1/event/**", "/api/v1/question/**", "/api/v1/search/**", "/api/v1/vendor/**","/api/v1/pay/**", "https://open-api.kakaopay.com/online/v1/payment/**",
             "/api/v1/like/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**", "/error"};
 
 
