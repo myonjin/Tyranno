@@ -2,6 +2,7 @@ package com.tyranno.ssg.review.application;
 
 import com.tyranno.ssg.review.dto.ReviewCreateDto;
 import com.tyranno.ssg.review.dto.ReviewIdListDto;
+import com.tyranno.ssg.review.dto.ReviewInformationDto;
 import com.tyranno.ssg.review.dto.ReviewPageDto;
 
 public interface ReviewService {
@@ -10,4 +11,6 @@ public interface ReviewService {
     ReviewPageDto getReviewPage(Long productId, String uuid);
 
     String addReview(Long productId, ReviewCreateDto reviewCreateDto, String uuid);
+
+    ReviewInformationDto getReviewInformation(Long reviewId);
 }

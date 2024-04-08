@@ -1,15 +1,18 @@
 package com.tyranno.ssg.review.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ReviewImageDto {
     private int priority;
     private String imageUrl;
+
+    @Builder
+
+    public ReviewImageDto(int priority, String imageUrl) {
+        this.priority = priority;
+        this.imageUrl = imageUrl;
+    }
 }

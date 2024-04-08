@@ -25,11 +25,12 @@ public class ReviewRepositoryImp extends QuerydslRepositorySupport {
     public List<Long> searchReviewIdsByProductId(Long productId, Integer sortCriterion, @Nullable Integer lastIndex) {
         OrderSpecifier<?> orderSpecifier = createOrderSpecifier(sortCriterion);
         QReview review = QReview.review;
-        return jpaQueryFactory.select(review.product.id)
+        return jpaQueryFactory.select(review.id)
                 .from(review)
                 .where(
+                        review.product.id.eq(productId),
                         gtBoardId(lastIndex)
-)
+                )
                 .orderBy(orderSpecifier)
                 .limit(20)
                 .fetch();

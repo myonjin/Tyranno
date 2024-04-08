@@ -3,6 +3,7 @@ package com.tyranno.ssg.review.application;
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.option.domain.Option;
+import com.tyranno.ssg.option.dto.OptionNamesDto;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
 import com.tyranno.ssg.order.domain.Order;
 import com.tyranno.ssg.order.domain.OrderList;
@@ -15,10 +16,7 @@ import com.tyranno.ssg.product.infrastructure.ProductRepository;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
 import com.tyranno.ssg.review.domain.Review;
 import com.tyranno.ssg.review.domain.ReviewImage;
-import com.tyranno.ssg.review.dto.ReviewCreateDto;
-import com.tyranno.ssg.review.dto.ReviewIdListDto;
-import com.tyranno.ssg.review.dto.ReviewImageDto;
-import com.tyranno.ssg.review.dto.ReviewPageDto;
+import com.tyranno.ssg.review.dto.*;
 import com.tyranno.ssg.review.infrastructure.ReviewImageRepository;
 import com.tyranno.ssg.review.infrastructure.ReviewRepository;
 import com.tyranno.ssg.review.infrastructure.ReviewRepositoryImp;
@@ -43,7 +41,7 @@ public class ReviewServiceImp implements ReviewService{
     private final OrderRepository orderRepository;
     private final OrderListRepository orderListRepository;
     private final ReviewRepository reviewRepository;
-    private final ReviewImageRepository reviewimageRepository;
+    private final ReviewImageRepository reviewImageRepository;
     private final ReviewRepositoryImp reviewRepositoryImp;
 
     @Override
@@ -168,12 +166,13 @@ public class ReviewServiceImp implements ReviewService{
                         .review(review)
                         .build();
 
-                reviewimageRepository.save(reviewImage);
+                reviewImageRepository.save(reviewImage);
                 isFirstImage = false;
             }
 
             // 리뷰 저장
             reviewRepository.save(review);
+
 
             return "리뷰 저장 성공!";
         } catch (Exception e) {
@@ -181,6 +180,37 @@ public class ReviewServiceImp implements ReviewService{
         }
     }
 
+    @Override
+    public ReviewInformationDto getReviewInformation(Long reviewId) {
+        Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
+        Review review = reviewOptional.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
 
+        List<ReviewImage> reviewImages = reviewImageRepository.findAllByReviewId(reviewId);
+        // ReviewImage를 ReviewImageDto로 변환
+        List<ReviewImageDto> reviewImageDtos = new ArrayList<>();
+        for (ReviewImage reviewImage : reviewImages) {
+            ReviewImageDto reviewImageDto = ReviewImageDto.builder()
+                    .priority(reviewImage.getPriority())
+                    .imageUrl(reviewImage.getReviewImageUrl())
+                    .build();
+            reviewImageDtos.add(reviewImageDto);
+        }
 
+        // OptionNamesDto 들고오기
+        OptionNamesDto optionNamesDto = optionRepository
+                .findById(review.getOrder().getOption().getId())
+                .map(OptionNamesDto::FromEntity)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION));
+
+        return ReviewInformationDto.builder()
+                .rate(review.getRate())
+                .createdAt(review.getCreatedAt())
+                .id(review.getId())
+                .orderNumber(review.getOrder().getOrderList().getOrderNumber())
+                .optionNamesDto(optionNamesDto)
+                .loginId(review.getUsers().getLoginId())
+                .content(review.getContent())
+                .reviewImageDtos(reviewImageDtos)
+                .build();
+    }
 }

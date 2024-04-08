@@ -3,6 +3,7 @@ package com.tyranno.ssg.review.presentation;
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.review.application.ReviewService;
 import com.tyranno.ssg.review.dto.ReviewCreateDto;
+import com.tyranno.ssg.review.dto.ReviewInformationDto;
 import com.tyranno.ssg.review.dto.ReviewPageDto;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +22,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @Operation(summary = "리뷰 Id 조회", description = "상세페이지에서 리뷰 Id 조회")
-    @GetMapping("/{product_id}")
+    @GetMapping("/list/{product_id}")
     public ResponseEntity<?> getProductReviews(@PathVariable Long product_id,
                                                @RequestParam(defaultValue = "3") Integer sortCriterion,
                                                @RequestParam(required = false) Integer lastIndex) {
@@ -38,6 +39,7 @@ public class ReviewController {
         return new ResponseEntity<>(reviewPageDto);
     }
 
+    @Operation(summary = "리뷰 작성", description = "리뷰 작성 하기")
     @PostMapping("/add/{product_id}")
     public ResponseEntity<?> createReview(@PathVariable Long product_id, @RequestBody ReviewCreateDto reviewCreateDto,
                                           @RequestHeader("Authorization") String token) {
@@ -45,5 +47,12 @@ public class ReviewController {
 
         String result = reviewService.addReview(product_id,reviewCreateDto, uuid);
         return  new ResponseEntity<>(result);
+    }
+
+    @Operation(summary = "리뷰 리스트용 정보", description = "리뷰 리스트용 정보 불러오기")
+    @GetMapping("/reviewInformation/{review_id}")
+    public ResponseEntity<?> getReviewInformation(@PathVariable Long review_id) {
+        ReviewInformationDto reviewInformationDto = reviewService.getReviewInformation(review_id);
+        return new ResponseEntity<>(reviewInformationDto);
     }
 }
