@@ -15,6 +15,7 @@ import com.tyranno.ssg.product.infrastructure.ProductRepositoryImp;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
 import com.tyranno.ssg.users.domain.Users;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
+import com.tyranno.ssg.vendor.domain.Vendor;
 import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.dto.VendorDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
@@ -100,12 +101,18 @@ public class ProductServiceImp implements ProductService {
         Product product = productOptional.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
         log.info(String.valueOf(product));
         Optional<ProductThum> imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1);
-        Long vendorId = vendorProductRepository.findByProductId(productId)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT))
-                .getId();
-        String vendorName = vendorRepository.findById(vendorId)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDOR))
-                .getVendorName();
+        Long vendorId = null;
+        String vendorName = null;
+
+        Optional<VendorProduct> vendorProductOptional = vendorProductRepository.findByProductId(productId);
+        if (vendorProductOptional.isPresent()) {
+            Vendor vendor = vendorProductOptional.get().getVendor();
+            if (vendor != null) {
+                vendorId = vendor.getId();
+                vendorName = vendor.getVendorName();
+            }
+        }
+
         Optional<Discount> discountOptional = discountRepository.findByProductId(product.getId());
         int discountValue = 0;
         if (discountOptional.isPresent()) {
