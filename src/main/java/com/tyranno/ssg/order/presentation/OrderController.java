@@ -28,7 +28,12 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<List<OrderListDto>> getOrderList(@RequestHeader(value = "Authorization",required = false) String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
+        // 주문내역 없을경우 에러처리
+        if (uuid == null) {
+            return new ResponseEntity<>(null);
+        }
         List<OrderListDto> orderListDto = orderService.getOrderList(uuid);
+
         return new ResponseEntity<>(orderListDto);
     }
 

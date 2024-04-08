@@ -25,9 +25,9 @@ public class LikeController {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         boolean isLike = likeService.modifyLike(productId, uuid);
         if (isLike) {
-            return new ResponseEntity<>("찜이 추가되었습니다.");
+            return new ResponseEntity<>("좋아요 추가!");
         } else {
-            return new ResponseEntity<>("찜이 삭제되었습니다.");
+            return new ResponseEntity<>("좋아요 삭제!");
         }
     }
 }

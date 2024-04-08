@@ -28,5 +28,8 @@ public class Order {
     @Column(nullable = false)
     private Integer money;
 
+    @Column(nullable = false)
+    private Byte isReview;
+
 
 }

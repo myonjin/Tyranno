@@ -29,16 +29,5 @@ public class OrderListDto {
     private byte orderStatus; //주문 상태
 
 //    public static OrderListDto fromEntity(OrderList orderList, List<OrderDto> orderDtoList) {
-//        return OrderListDto
-//                .builder()
-//                .orderListId(orderList.getId())
-//                .totalMoney(orderList.getTotalMoney())
-//                .orderNumber(orderList.getOrderNumber())
-//                .orderDate(orderList.getCreatedAt())
-//                .receiverName(orderList.getReceiverName())
-//                .orderDtoList(orderDtoList)
-//                .isOrderConfirm(orderList.getIsOrderConfirm())
-//                .orderStatus(orderList.getOrderStatus())
-//                .build();
-//    }
+
 }

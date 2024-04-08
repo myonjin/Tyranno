@@ -52,19 +52,3 @@ public class OrderAddDto {
 
     }
 }
-//
-//"receiverName" : "string",
-//        "deliveryBase": "string",
-//        "deliveryDetail": "string",
-//        "zipCode" : "int"
-//        "receiverPhoneNumber" : "string",
-//        "deliveryRequest":"string",
-//        "howToReceive":"string:,
-//        "orderName" : "string"
-//        "orderPhoneNumber":
-//        "orderEmail": "string"
-//        "optionId":"long",
-//        "count":"int",
-//        "money":"int"
-//        "totalMoney":"int",
-//        "discount":'int"
