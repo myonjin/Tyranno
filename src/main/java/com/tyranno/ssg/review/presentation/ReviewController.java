@@ -25,9 +25,9 @@ public class ReviewController {
     @GetMapping("/list/{product_id}")
     public ResponseEntity<?> getProductReviews(@PathVariable Long product_id,
                                                @RequestParam(defaultValue = "3") Integer sortCriterion,
-                                               @RequestParam(required = false) Integer lastIndex) {
+                                               @RequestParam(defaultValue = "1") Integer page) {
 
-        return new ResponseEntity<>(reviewService.getProductReviewIds(product_id, sortCriterion, lastIndex));
+        return new ResponseEntity<>(reviewService.getProductReviewIds(product_id, sortCriterion, page));
     }
 
     @Operation(summary = "리뷰 작성 페이지", description = "리뷰 작성 페이지 불러오기")
