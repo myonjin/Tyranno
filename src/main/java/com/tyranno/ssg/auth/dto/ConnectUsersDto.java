@@ -30,7 +30,7 @@ public class ConnectUsersDto {
                 .phoneNumber(users.getPhoneNumber())
                 .birth(users.getBirth())
                 .status(users.getStatus())
-                .isRegistered((byte) 1) // 통합회원 여부 true
+                .isIntegrated((byte) 1) // 통합회원 여부 true
                 .uuid(users.getUuid())
                 .build();
     }

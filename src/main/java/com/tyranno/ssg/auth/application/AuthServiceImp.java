@@ -41,7 +41,7 @@ public class AuthServiceImp implements AuthService {
         }
 
         Users users = optionalUsers.get();
-        if (users.getIsRegistered() == 1) { // 통합회원
+        if (users.getIsIntegrated() == 1) { // 통합회원
             return new UsersTypeInfoDto(UsersType.INTEGRATED_USERS.getCode(), UsersType.INTEGRATED_USERS.getDescription());
         } else if (oauthRepository.existsByUsers(users)) { // 소셜회원
             return new UsersTypeInfoDto(UsersType.KAKAO_USERS.getCode(), UsersType.KAKAO_USERS.getDescription());
@@ -132,7 +132,7 @@ public class AuthServiceImp implements AuthService {
         Users users = usersRepository.findByPhoneNumber(phoneNumberDto.getPhoneNumber())
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
         // 소셜 회원일 경우
-        if (users.getIsRegistered() == 0) throw new GlobalException(ResponseStatus.NO_REGISTER);
+        if (users.getIsIntegrated() == 0) throw new GlobalException(ResponseStatus.NO_REGISTER);
 
         return users.getLoginId();
     }
