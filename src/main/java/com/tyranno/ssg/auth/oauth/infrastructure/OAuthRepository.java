@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface OAuthRepository extends JpaRepository<OAuth, Long> {
-    Optional<OAuth> findByExternalId(Long externalId);
-    boolean existsByExternalId(Long externalId);
+    OAuth findByExternalId(Long externalId);
 
+    //boolean existsByExternalId(Long externalId);
     boolean existsByUsers(Users users);
 }
