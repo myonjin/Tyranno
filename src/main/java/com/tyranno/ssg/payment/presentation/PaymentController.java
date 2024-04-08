@@ -30,11 +30,10 @@ public class PaymentController {
      * 결제 성공
      */
     @GetMapping("/success")
-    public ResponseEntity<ApproveResponseDto> afterPayRequest(@RequestParam("pg_token") String pgToken) {
+    public ResponseEntity<ApproveResponseDto> afterPayRequest(@RequestBody ApproveRequestDto request) {
 
-        ApproveResponseDto kakaoApprove = paymentService.getKakaoPayApprove(pgToken);
+        ApproveResponseDto kakaoApprove = paymentService.getKakaoPayApprove(request);
 
         return new ResponseEntity<>(kakaoApprove);
     }
-
 }

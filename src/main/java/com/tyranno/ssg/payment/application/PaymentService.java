@@ -1,6 +1,6 @@
 package com.tyranno.ssg.payment.application;
 
-import com.tyranno.ssg.config.KakaoPayProperties;
+
 import com.tyranno.ssg.payment.dto.ApproveRequestDto;
 import com.tyranno.ssg.payment.dto.ApproveResponseDto;
 import com.tyranno.ssg.payment.dto.ReadyRequestDto;
@@ -21,6 +21,7 @@ public class PaymentService {
 
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
     static final String admin_Key = "${kakaopay.admin-key}";
+    private ReadyResponseDto kakaoReady;
     public ReadyResponseDto kakaoPayReady(ReadyRequestDto request) {
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(this.getReadyParameters(request), this.getHeaders());
 
@@ -47,7 +48,7 @@ public class PaymentService {
     private MultiValueMap<String, String> getReadyParameters(ReadyRequestDto request) {
 
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-        parameters.add("cid", KakaoPayProperties.cid);
+        parameters.add("cid", cid);
         parameters.add("partner_order_id", request.getPartner_order_id());
         parameters.add("partner_user_id", request.getPartner_user_id());
         parameters.add("item_name", request.getItem_name());
