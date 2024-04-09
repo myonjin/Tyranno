@@ -5,8 +5,8 @@ function Manage() {
             id: 1,
             title: '나의 주문관리',
             items: [
-                { name: '주문/배송조회', src: '/' },
-                { name: '구매 내역', src: '' },
+                { name: '주문/배송조회', src: '/mypage/manage/orderlist' },
+                { name: '구매 내역', src: '/mypage/manage/orderlist' },
                 { name: '항공권 예약조회', src: '' },
                 { name: '호텔 예약조회', src: '' },
                 { name: '선물함', src: '' },
@@ -18,7 +18,7 @@ function Manage() {
             id: 2,
             title: '나의 혜택관리',
             items: [
-                { name: '쿠폰주문/배송조회', src: '/' },
+                { name: '쿠폰주문/배송조회', src: '/mypage/manage/orderlist' },
                 { name: 'SSG MONEY', src: '' },
                 { name: '신세계포인트', src: '' },
                 { name: '미식 MONEY', src: '' },
@@ -48,7 +48,7 @@ function Manage() {
             items: [
                 { name: '회원정보 변경', src: '/mypage/manage/myinfochange' },
                 { name: '비밀번호 변경', src: '' },
-                { name: '배송지 관리', src: '' },
+                { name: '배송지 관리', src: '/mypage/manage/addresschange' },
                 { name: '맞춤정보 관리', src: '' },
                 { name: '마켓팅 수신 동의', src: '' },
                 { name: '개인정보 제3자 제공 동의', src: '' },
