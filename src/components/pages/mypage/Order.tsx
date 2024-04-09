@@ -89,16 +89,18 @@ function Order() {
                 </div>
             </div>
 
-            <p className="flex justify-center mt-4  text-xl">
-                주문/배송 조회 보러가기
-                <img
-                    width="25"
-                    height="25"
-                    src="https://img.icons8.com/sf-ultralight/25/000000/back.png"
-                    alt="back"
-                    style={{ transform: 'rotate(180deg)' }}
-                />
-            </p>
+            <Link href={'/mypage/manage/orderlist'}>
+                <p className="flex justify-center mt-4  text-xl">
+                    주문/배송 조회 보러가기
+                    <img
+                        width="25"
+                        height="25"
+                        src="https://img.icons8.com/sf-ultralight/25/000000/back.png"
+                        alt="back"
+                        style={{ transform: 'rotate(180deg)' }}
+                    />
+                </p>
+            </Link>
         </section>
     )
 }
