@@ -32,4 +32,17 @@ async function checkUserAPI(phoneNumber: string) {
     const response = await PostAPI('/api/v1/auth/check', { phoneNumber: phoneNumber })
     return response
 }
-export { signupAPI, validLoginId, findIdAPI, changePasswordAPI, sendTextAPI, checkAuthCodeAPI, checkUserAPI }
+async function validEmailAPI(email: string) {
+    const response = await PostAPI('/api/v1/auth/email-check', { email: email })
+    return response
+}
+export {
+    signupAPI,
+    validLoginId,
+    findIdAPI,
+    changePasswordAPI,
+    sendTextAPI,
+    checkAuthCodeAPI,
+    checkUserAPI,
+    validEmailAPI,
+}
