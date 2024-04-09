@@ -53,7 +53,6 @@ export default function DeliveryItemList() {
         return remoney
     }
     let link = ''
-    const [linkOpen, setLinkOpen] = useState(false)
     const handleSubmit = async () => {
         console.log('fdnjskafbadshfuidwhfiu')
         const orderOption = []
@@ -80,7 +79,7 @@ export default function DeliveryItemList() {
         const res = await orderComplete(data)
         if (res.isSuccess === true) {
             const payData: KakaoPayDataType = {
-                item_name: '테스트',
+                item_name: productData[0].productName,
                 total_amount: total,
             }
             const response = await kakaoPayReadyAPI(payData)
