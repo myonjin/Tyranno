@@ -35,12 +35,10 @@ public class ProductServiceImp implements ProductService {
 
 
     private static final int PAGE_SIZE = 20;
-    // JPA로 productId를 통해 조회하기
     private final ProductRepository productRepository;
     private final VendorRepository vendorRepository;
     private final VendorProductRepository vendorProductRepository;
     private final ProductThumRepository productThumRepository;
-    //    private final CategoryRepository categoryRepository;
     private final DiscountRepository discountRepository;
     private final ProductRepositoryImp productRepositoryImp;
     private final UsersRepository usersRepository;
@@ -144,8 +142,8 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
                                              Integer sortCriterion, Integer page, String searchKeyword) { // productList
-        // 페이지당 항목 수 상수 선언
-        final int PAGE_SIZE = 20; // 예시로 20개로 설정
+        // 페이지당 10개
+        final int PAGE_SIZE = 10;
 
         List<Long> productIds;
         if (searchKeyword != null && !searchKeyword.isEmpty()) {
@@ -161,12 +159,12 @@ public class ProductServiceImp implements ProductService {
         ProductIdListDto productIdListDto = new ProductIdListDto();
 
         List<Map<String, Object>> productIdList = new ArrayList<>();
-        int startIndex = (page - 1) * PAGE_SIZE; // 페이지 번호가 1부터 시작하므로 수정
+        int startIndex = (page - 1) * PAGE_SIZE; // 페이지 번호가 1부터 시작
         for (int i = 0; i < productIds.size(); i++) {
             Long productId = productIds.get(i);
             Map<String, Object> productMap = new HashMap<>();
             productMap.put("productId", productId);
-            productMap.put("id", startIndex + i + 1); // 인덱스도 1부터 시작하도록 수정
+            productMap.put("id", startIndex + i + 1); // 인덱스 1부터 시작
             productIdList.add(productMap);
         }
         productIdListDto.setProductIds(productIdList);
@@ -197,7 +195,7 @@ public class ProductServiceImp implements ProductService {
                 .reviewCount(currentReviewCount + 1)
                 .build();
 
-        // 상품을 저장합니다.
+        // 상품을 저장
         productRepository.save(updatedProduct);
     }
 }
