@@ -6,6 +6,7 @@ import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.payment.application.PaymentServiceImp;
 import com.tyranno.ssg.payment.dto.ReadyRequestDto;
 import com.tyranno.ssg.payment.dto.ReadyResponseDto;
+import com.tyranno.ssg.payment.dto.SuccessInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,9 +39,9 @@ public class PaymentController {
         return new ResponseEntity<>("카카오페이 결제 성공");
     }
     @Operation(summary = "카카오페이 승인 요청", description = "카카오페이 결제 승인을 요청한다.")
-    @GetMapping("/approve/{id}")
-    public ResponseEntity<?> approveKakaoPay(@PathVariable String id, @RequestParam("pg_token") String pgToken) {
-        return new ResponseEntity<>(paymentService.getKakaoPayApprove(id, pgToken));
+    @PostMapping("/approve")
+    public ResponseEntity<?> approveKakaoPay(@RequestBody SuccessInfoDto successInfoDto) {
+        return new ResponseEntity<>(paymentService.getKakaoPayApprove(successInfoDto));
     }
 
 //    @Operation(summary = "카카오페이 승인 요청", description = "카카오페이 결제 승인을 요청한다.")

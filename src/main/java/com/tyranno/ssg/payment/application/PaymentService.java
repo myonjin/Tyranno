@@ -8,7 +8,7 @@ import com.tyranno.ssg.payment.dto.SuccessInfoDto;
 public interface PaymentService {
     ReadyResponseDto kakaoPayReady(ReadyRequestDto request);
 
-    SuccessInfoDto giveSuccessInfo(String id, String pgToken);
+  //  SuccessInfoDto giveSuccessInfo(String id, String pgToken);
 
-    ApproveResponseDto getKakaoPayApprove(String id, String pgToken);
+    ApproveResponseDto getKakaoPayApprove(SuccessInfoDto successInfoDto);
 }
