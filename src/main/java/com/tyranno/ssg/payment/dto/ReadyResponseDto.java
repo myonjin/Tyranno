@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReadyResponseDto {
     private String tid;
-    private String next_redirect_app_url;
     private String next_redirect_mobile_url;
     private String next_redirect_pc_url;
 }

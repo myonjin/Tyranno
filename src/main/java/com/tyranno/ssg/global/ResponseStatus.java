@@ -111,7 +111,8 @@ public enum ResponseStatus {
 
     // payment
     PAY_CANCEL(false,11000,"결제가 취소되었습니다."),
-    PAY_FAILED(false,11000,"결제가 실패하였습니다.");
+    PAY_FAILED(false,11001,"결제가 실패하였습니다."),
+    NO_EXIST_PAYMENT(false, 11002, "존재하지 않는 구매내역입니다.");
 
 
     private final boolean isSuccess;
