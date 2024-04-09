@@ -32,11 +32,17 @@ public class PaymentController {
     /**
      * 결제 성공
      */
-    @Operation(summary = "카카오페이 결제 성공", description = "카카오페이 결제를 성공하여 pg_token을 리턴한다.")
+    @Operation(summary = "카카오페이 결제 성공", description = "카카오페이 결제 성공 시 redirect url")
     @GetMapping("/success/{id}")
+    public ResponseEntity<?> successKakaoPay() {
+        return new ResponseEntity<>("카카오페이 결제 성공");
+    }
+    @Operation(summary = "카카오페이 승인 요청", description = "카카오페이 결제 승인을 요청한다.")
+    @GetMapping("/approve/{id}")
     public ResponseEntity<?> approveKakaoPay(@PathVariable String id, @RequestParam("pg_token") String pgToken) {
         return new ResponseEntity<>(paymentService.getKakaoPayApprove(id, pgToken));
     }
+
 //    @Operation(summary = "카카오페이 승인 요청", description = "카카오페이 결제 승인을 요청한다.")
 //    @PostMapping("/approve")
 //    public ResponseEntity<?> approveKakaoPay(@RequestBody ApproveRequestDto approveRequestDto) {
