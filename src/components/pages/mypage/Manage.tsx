@@ -14,20 +14,9 @@ function Manage() {
                 { name: '정기배송 설정 관리', src: '' },
             ],
         },
+
         {
             id: 2,
-            title: '나의 혜택관리',
-            items: [
-                { name: '쿠폰주문/배송조회', src: '/mypage/manage/orderlist' },
-                { name: 'SSG MONEY', src: '' },
-                { name: '신세계포인트', src: '' },
-                { name: '미식 MONEY', src: '' },
-                { name: '맘키즈 클럽 관리', src: '' },
-                { name: 'SSG VOUCHER', src: '' },
-            ],
-        },
-        {
-            id: 3,
             title: '나의 활동관리',
 
             items: [
@@ -43,11 +32,11 @@ function Manage() {
             ],
         },
         {
-            id: 4,
+            id: 3,
             title: '나의 정보관리',
             items: [
                 { name: '회원정보 변경', src: '/mypage/manage/myinfochange' },
-                { name: '비밀번호 변경', src: '' },
+                { name: '비밀번호 변경', src: '/mypage/manage/passwordchange' },
                 { name: '배송지 관리', src: '/mypage/manage/addresschange' },
                 { name: '맞춤정보 관리', src: '' },
                 { name: '마켓팅 수신 동의', src: '' },
@@ -55,7 +44,7 @@ function Manage() {
                 { name: '제휴 멤버십 관리', src: '' },
                 { name: '로그인 정보 관리', src: '' },
                 { name: 'SNS 연결 설정', src: '' },
-                { name: '회원탈퇴', src: '' },
+                { name: '회원탈퇴', src: '/mypage/manage/removeuser' },
                 { name: '개인정보 관리', src: '/mypage/manage/myinfochange' },
             ],
         },

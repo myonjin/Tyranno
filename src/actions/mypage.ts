@@ -1,5 +1,6 @@
+import { changePasswordAPI } from '@/actions/user'
 import { ChangeInfo } from '@/types/MyInfoDataType'
-import { DeleteAPI, GetAPI, PutAPI } from './FetchAPI'
+import { DeleteAPI, GetAPI, PostAPI, PutAPI } from './FetchAPI'
 import { GetToken } from './GetToken'
 const token = GetToken()
 async function getMyInfo() {
@@ -22,4 +23,8 @@ async function removeUserAPI() {
     const response = await DeleteAPI('/api/v1/users', undefined, await token)
     return response.result
 }
-export { getMyInfo, getMynameAPI, submitChangeInfoAPI, getOrderListAPI, removeUserAPI }
+async function mchangePasswordAPI(newPassword: string) {
+    const response = await PutAPI('/api/v1/users/modify-pw', { newPassword: newPassword }, await token)
+    return response.result
+}
+export { getMyInfo, getMynameAPI, submitChangeInfoAPI, getOrderListAPI, removeUserAPI, mchangePasswordAPI }
