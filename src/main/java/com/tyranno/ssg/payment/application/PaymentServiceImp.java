@@ -90,13 +90,13 @@ public class PaymentServiceImp implements PaymentService{
 
         return parameters;
     }
+//    @Override
+//    public SuccessInfoDto giveSuccessInfo(String id, String pgToken){
+//        return new SuccessInfoDto(id, pgToken);
+//    }
     @Override
-    public SuccessInfoDto giveSuccessInfo(String id, String pgToken){
-        return new SuccessInfoDto(id, pgToken);
-    }
-    @Override
-    public ApproveResponseDto getKakaoPayApprove(String id, String pgToken) {
-        HttpEntity<HashMap<String, String>> requestEntity = new HttpEntity<>(this.getApproveParameters(id, pgToken), this.getHeaders());
+    public ApproveResponseDto getKakaoPayApprove(SuccessInfoDto successInfoDto) {
+        HttpEntity<HashMap<String, String>> requestEntity = new HttpEntity<>(this.getApproveParameters(successInfoDto.getId(), successInfoDto.getPgToken()), this.getHeaders());
 
         RestTemplate restTemplate = new RestTemplate();
 
