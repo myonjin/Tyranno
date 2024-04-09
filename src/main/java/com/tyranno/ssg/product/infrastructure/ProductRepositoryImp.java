@@ -100,7 +100,7 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
 
         if (page != null && page > 0) {
             // lastIndex가 제공된 경우, 해당 인덱스 이후의 상품을 가져오도록 offset 설정
-            int offset = (page - 1) * 10; // 20개씩 끊어서 가져오므로 20을 곱해야함
+            int offset = (page - 1) * 10; // 10개씩 끊어서 가져오므로 10을 곱해야함
             query.offset(offset);
         }
 
