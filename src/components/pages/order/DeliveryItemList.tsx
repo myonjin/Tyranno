@@ -3,9 +3,15 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { CartItemsAtom } from '@/state/CartCheckedListAtom'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
-import { getDeliveryAddressAPI, getItemsOrderAPI, getOptionListAPI, orderComplete } from '@/actions/order'
+import {
+    getDeliveryAddressAPI,
+    getItemsOrderAPI,
+    getOptionListAPI,
+    kakaoPayReadyAPI,
+    orderComplete,
+} from '@/actions/order'
 import { OrderAddressDataType } from '@/types/AddressDataType'
-import { OrderFormDataType } from '@/types/OrderDataTypte'
+import { KakaoPayDataType, OrderFormDataType } from '@/types/OrderDataTypte'
 import { MyInfo } from '@/types/MyInfoDataType'
 import { getMyInfo } from '@/actions/mypage'
 import { useRouter } from 'next/navigation'
@@ -46,7 +52,8 @@ export default function DeliveryItemList() {
         total += remoney
         return remoney
     }
-
+    let link = ''
+    const [linkOpen, setLinkOpen] = useState(false)
     const handleSubmit = async () => {
         console.log('fdnjskafbadshfuidwhfiu')
         const orderOption = []
@@ -71,8 +78,17 @@ export default function DeliveryItemList() {
             totalMoney: total + 3000,
         }
         const res = await orderComplete(data)
-        console.log(res)
-        router.push('/order/complete')
+        if (res.isSuccess === true) {
+            const payData: KakaoPayDataType = {
+                item_name: '테스트',
+                total_amount: total,
+            }
+            const response = await kakaoPayReadyAPI(payData)
+            link = response.next_redirect_pc_url
+            window.open(link)
+        }
+
+        // router.push('/order/complete')
     }
     const resetCart = useResetRecoilState(CartItemsAtom)
 
@@ -134,7 +150,7 @@ export default function DeliveryItemList() {
                 className="bg-[#ff5452] w-full p-4 sticky right-0 left-0 bottom-0 z-10 text-center"
                 onClick={() => {
                     handleSubmit()
-                    resetCart()
+                    // resetCart()
                 }}
             >
                 <span className="text-white font-normal">

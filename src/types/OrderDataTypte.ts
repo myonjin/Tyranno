@@ -16,3 +16,8 @@ interface OrderOptionFormDataType {
     count: number
     money: number //할인된 금액
 }
+
+export interface KakaoPayDataType {
+    item_name: string
+    total_amount: number
+}

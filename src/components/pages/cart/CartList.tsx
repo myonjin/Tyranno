@@ -311,7 +311,7 @@ export default function CartList() {
                 <div className="relative p-4 ">
                     <p className="text-xs text-black">
                         전체상품 {productData.length}개 {(totalMoney + discountMoney).toLocaleString()} 원 + 배송비
-                        3,000원 = {(totalMoney + discountMoney).toLocaleString()} 원
+                        3,000원 = {(totalMoney + discountMoney + 3000).toLocaleString()} 원
                     </p>
                     <p className="text-rose-600 text-xs">할인혜택 없음</p>
                 </div>
