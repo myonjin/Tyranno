@@ -60,7 +60,7 @@ public class ProductController {
             "sortCriterion 4: 리뷰 많은 순,\n\n" +
             "sortCriterion 5: 상품 아이디 순(기본값),\n\n" +
             "카테고리는 필요한 것만 1개 넣기,\n\n" +
-            "lastIndex는 무한 스크롤을 위해 이전에 받았던 상품 아이디를 넣으면 그 이후 값 조회\n\n" +
+            "page는 무한 스크롤을 위해 1부터 시작 (1,2,3,4)이런식\n\n" +
             "검색어는 카테고리 값 넣지 않고 넣어야 함")
     @GetMapping("/productList")
     public ResponseEntity<?> getProductIdList(
@@ -69,11 +69,11 @@ public class ProductController {
             @RequestParam(required = false) Long smallId,
             @RequestParam(required = false) Long detailId,
             @RequestParam(defaultValue = "5") Integer sortCriterion,
-            @RequestParam(defaultValue = "0") Integer lastIndex,
+            @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(required = false) String searchKeyword
     ) {
         ProductIdListDto productIdListDto = productService.getProductIdList(largeId, middleId, smallId,
-                detailId, sortCriterion, lastIndex, searchKeyword);
+                detailId, sortCriterion, page, searchKeyword);
         return new com.tyranno.ssg.global.ResponseEntity<>(productIdListDto);
     }
 

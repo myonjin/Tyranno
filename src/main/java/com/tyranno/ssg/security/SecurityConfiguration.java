@@ -28,6 +28,7 @@ public class SecurityConfiguration {
             "/api/v1/like/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**", "/error"};
 
 
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

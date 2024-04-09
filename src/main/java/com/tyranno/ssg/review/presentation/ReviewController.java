@@ -21,13 +21,17 @@ public class ReviewController {
     private final JwtTokenProvider jwtTokenProvider;
     private final ReviewService reviewService;
 
-    @Operation(summary = "리뷰 Id 조회", description = "상세페이지에서 리뷰 Id 조회")
+    @Operation(summary = "리뷰 Id 조회", description = "상세페이지에서 리뷰 Id 조회,\n\n" +
+            "sortCriterion 1: 평점 높은 순,\n\n" +
+            "sortCriterion 2: 평점 낮은 순,\n\n" +
+            "sortCriterion 3: 최근 순, \n\n" +
+            "sortCriterion 4: 오래된 순")
     @GetMapping("/list/{product_id}")
     public ResponseEntity<?> getProductReviews(@PathVariable Long product_id,
                                                @RequestParam(defaultValue = "3") Integer sortCriterion,
-                                               @RequestParam(required = false) Integer lastIndex) {
+                                               @RequestParam(defaultValue = "1") Integer page) {
 
-        return new ResponseEntity<>(reviewService.getProductReviewIds(product_id, sortCriterion, lastIndex));
+        return new ResponseEntity<>(reviewService.getProductReviewIds(product_id, sortCriterion, page));
     }
 
     @Operation(summary = "리뷰 작성 페이지", description = "리뷰 작성 페이지 불러오기")
@@ -55,4 +59,18 @@ public class ReviewController {
         ReviewInformationDto reviewInformationDto = reviewService.getReviewInformation(review_id);
         return new ResponseEntity<>(reviewInformationDto);
     }
+
+    @Operation(summary = "내가 작성한 리뷰 Id 조회", description = "마이페이지에서 리뷰 Id 조회,\n\n" +
+            "sortCriterion 1: 평점 높은 순,\n\n" +
+            "sortCriterion 2: 평점 낮은 순,\n\n" +
+            "sortCriterion 3: 최근 순, \n\n" +
+            "sortCriterion 4: 오래된 순")
+    @GetMapping("/list/myReview")
+    public ResponseEntity<?> getProductReviews(@RequestHeader("Authorization") String token,
+                                               @RequestParam(defaultValue = "3") Integer sortCriterion,
+                                               @RequestParam(defaultValue = "1") Integer page) {
+        String uuid = jwtTokenProvider.tokenToUuid(token);
+        return new ResponseEntity<>(reviewService.getUsersReviewIds(uuid, sortCriterion, page));
+    }
+
 }

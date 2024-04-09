@@ -46,17 +46,17 @@ public class ReviewServiceImp implements ReviewService{
     private final ReviewRepositoryImp reviewRepositoryImp;
     private final ProductService productService;
 
-    @Override
-    public ReviewIdListDto getProductReviewIds(Long productId, Integer sortCriterion, Integer lastIndex) {
-        List<Long> reviewIds = reviewRepositoryImp.searchReviewIdsByProductId(productId, sortCriterion, lastIndex);
+    public ReviewIdListDto getProductReviewIds(Long productId, Integer sortCriterion, Integer page) {
+        final int PAGE_SIZE = 20; // 페이지당 항목 수 상수 선언
 
-        // 로그 추가: reviewIds 확인
-        log.info("Retrieved reviewIds: {}", reviewIds);
-
-        List<Map<String, Long>> reviewIdList = new ArrayList<>();
-        for (Long reviewId : reviewIds) {
-            Map<String, Long> reviewMap = new HashMap<>();
+        List<Long> reviewIds = reviewRepositoryImp.searchReviewIdsByProductId(productId, sortCriterion, page);
+        List<Map<String, Object>> reviewIdList = new ArrayList<>();
+        int startIndex = (page - 1) * PAGE_SIZE; // 페이지 번호가 1부터 시작하므로 수정
+        for (int i = 0; i < reviewIds.size(); i++) {
+            Long reviewId = reviewIds.get(i);
+            Map<String, Object> reviewMap = new HashMap<>();
             reviewMap.put("reviewId", reviewId);
+            reviewMap.put("id", startIndex + i + 1); // 인덱스도 1부터 시작하도록 수정
             reviewIdList.add(reviewMap);
         }
 
@@ -213,6 +213,26 @@ public class ReviewServiceImp implements ReviewService{
                 .loginId(review.getUsers().getLoginId())
                 .content(review.getContent())
                 .reviewImageDtos(reviewImageDtos)
+                .build();
+    }
+    @Override
+    public ReviewIdListDto getUsersReviewIds(String uuid, Integer sortCriterion, Integer page) {
+        final int PAGE_SIZE = 20; // 페이지당 항목 수 상수 선언
+        Users user = usersRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        List<Long> reviewIds = reviewRepositoryImp.searchReviewIdsByUsersId(user.getId(), sortCriterion, page);
+        List<Map<String, Object>> reviewIdList = new ArrayList<>();
+        int startIndex = (page - 1) * PAGE_SIZE; // 페이지 번호가 1부터 시작하므로 수정
+        for (int i = 0; i < reviewIds.size(); i++) {
+            Long reviewId = reviewIds.get(i);
+            Map<String, Object> reviewMap = new HashMap<>();
+            reviewMap.put("reviewId", reviewId);
+            reviewMap.put("id", startIndex + i + 1); // 인덱스도 1부터 시작하도록 수정
+            reviewIdList.add(reviewMap);
+        }
+
+        return ReviewIdListDto.builder()
+                .reviewIds(reviewIdList)
                 .build();
     }
 }

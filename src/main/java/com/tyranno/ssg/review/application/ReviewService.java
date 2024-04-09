@@ -6,8 +6,10 @@ import com.tyranno.ssg.review.dto.ReviewInformationDto;
 import com.tyranno.ssg.review.dto.ReviewPageDto;
 
 public interface ReviewService {
-    ReviewIdListDto getProductReviewIds(Long product_id, Integer sortCriterion, Integer lastIndex);
+    ReviewIdListDto getProductReviewIds(Long product_id, Integer sortCriterion, Integer page);
     ReviewPageDto getReviewPage(Long productId, String uuid);
     String addReview(Long productId, ReviewCreateDto reviewCreateDto, String uuid);
     ReviewInformationDto getReviewInformation(Long reviewId);
+
+    ReviewIdListDto getUsersReviewIds(String uuid, Integer sortCriterion, Integer page);
 }
