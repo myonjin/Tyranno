@@ -119,11 +119,15 @@ function signup() {
         }
     }
     const handleValidEmail = async () => {
-        try {
-            const res = await validEmailAPI(email)
-            alert(res.result)
-        } catch (error) {
-            console.error('Error:', error)
+        if (emailValue !== '') {
+            alert('이메일 형식이 올바르지 않습니다.')
+        } else {
+            try {
+                const res = await validEmailAPI(email)
+                alert(res.result)
+            } catch (error) {
+                console.error('Error:', error)
+            }
         }
     }
 
