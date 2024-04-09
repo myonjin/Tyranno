@@ -9,6 +9,7 @@ import com.tyranno.ssg.payment.dto.ApproveResponseDto;
 import com.tyranno.ssg.payment.dto.ReadyRequestDto;
 import com.tyranno.ssg.payment.dto.ReadyResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,16 +35,16 @@ public class PaymentController {
      * 결제 성공
      */
     @Operation(summary = "카카오페이 결제 성공", description = "카카오페이 결제를 성공하여 pg_token을 리턴한다.")
-    @GetMapping("/success")
-    public ResponseEntity<?> afterPayRequest(@RequestParam("pg_token") String pgToken) {
-        return new ResponseEntity<>(pgToken);
+    @GetMapping("/success/{id}")
+    public ResponseEntity<?> approveKakaoPay(@Parameter String id, @RequestParam("pg_token") String pgToken) {
+        return new ResponseEntity<>(paymentService.getKakaoPayApprove(id, pgToken));
     }
-    @Operation(summary = "카카오페이 승인 요청", description = "카카오페이 결제 승인을 요청한다.")
-    @PostMapping("/approve")
-    public ResponseEntity<?> approveKakaoPay(@RequestBody ApproveRequestDto approveRequestDto) {
-
-        return new ResponseEntity<>(paymentService.getKakaoPayApprove(approveRequestDto));
-    }
+//    @Operation(summary = "카카오페이 승인 요청", description = "카카오페이 결제 승인을 요청한다.")
+//    @PostMapping("/approve")
+//    public ResponseEntity<?> approveKakaoPay(@RequestBody ApproveRequestDto approveRequestDto) {
+//
+//
+//    }
 
     /**
      * 결제 진행 중 취소
