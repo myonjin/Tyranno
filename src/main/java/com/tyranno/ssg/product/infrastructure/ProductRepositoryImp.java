@@ -42,11 +42,11 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
 
         if (page != null && page > 0) {
             // page가 제공된 경우, 해당 인덱스 이후의 상품을 가져오도록 offset 설정
-            int offset = (page - 1) * 20; // 20개씩 끊어서 가져오므로 20을 곱해야함
-            query.offset(offset).limit(20);
+            int offset = (page - 1) * 10; // 10개씩 끊어서 가져오므로 10을 곱해야함
+            query.offset(offset).limit(10);
         } else {
-            // page가 null이거나 0 이하인 경우, 처음부터 20개의 상품을 가져오도록 설정
-            query.limit(20);
+            // page가 null이거나 0 이하인 경우, 처음부터 10개의 상품을 가져오도록 설정
+            query.limit(10);
         }
 
         return query.fetch();
@@ -96,11 +96,11 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
                         gtProductBoardId(page),
                         finalExpression.or(generalProductExpression))
                 .orderBy(orderSpecifier)
-                .limit(20);
+                .limit(10);
 
         if (page != null && page > 0) {
             // lastIndex가 제공된 경우, 해당 인덱스 이후의 상품을 가져오도록 offset 설정
-            int offset = (page - 1) * 20; // 20개씩 끊어서 가져오므로 20을 곱해야함
+            int offset = (page - 1) * 10; // 20개씩 끊어서 가져오므로 20을 곱해야함
             query.offset(offset);
         }
 

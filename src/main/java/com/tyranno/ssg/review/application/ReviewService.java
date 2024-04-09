@@ -10,4 +10,6 @@ public interface ReviewService {
     ReviewPageDto getReviewPage(Long productId, String uuid);
     String addReview(Long productId, ReviewCreateDto reviewCreateDto, String uuid);
     ReviewInformationDto getReviewInformation(Long reviewId);
+
+    ReviewIdListDto getUsersReviewIds(String uuid, Integer sortCriterion, Integer page);
 }
