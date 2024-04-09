@@ -49,50 +49,47 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ProductDetailDto productDetail(@PathVariable("productId") Long id) {
-        Optional<Product> Product = productRepository.findById(id);
+        Optional<Product> productOptional = productRepository.findById(id);
 
-        // 상품이 존재하는지 확인
-        if (Product.isPresent()) {
-            // 썸네일 이미지 리스트 형식으로 담기위해 불러오기
-            Product product = Product.get();
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+
             List<ProductThum> productThums = productThumRepository.findAllByProductId(product.getId());
             List<String> imageUrls = productThums.stream()
                     .map(ProductThum::getImageUrl)
                     .toList();
-            // vendor 담기
-            // 상품 아이디로 판매자-상품 중간테이블에서 조회
-            Optional<VendorProduct> vendorProduct = vendorProductRepository.findByProductId(product.getId());
-            List<VendorDto> vendorDtos = vendorProduct
-                    .map(vp -> {
-                        VendorDto vendorDto = new VendorDto();
-                        vendorDto.setVendorId(vp.getVendor().getId());
-                        vendorDto.setVendorName(vp.getVendor().getVendorName());
-                        return vendorDto;
-                    })
-                    .map(Collections::singletonList) //GPT 사용
-                    .orElse(Collections.emptyList());
-            Optional<Discount> discountOptional = discountRepository.findByProductId(product.getId());
-            int discountValue = 0;
-            if (discountOptional.isPresent()) {
-               discountValue = discountOptional.get().getDiscount();
+
+            Vendor vendor = null;
+
+            Optional<VendorProduct> vendorProductOptional = vendorProductRepository.findByProductId(id);
+            if (vendorProductOptional.isPresent()) {
+                vendor = vendorProductOptional.get().getVendor();
             }
 
-            // ProductDto 생성 및 값 설정
+            Optional<Discount> discountOptional = discountRepository.findByProductId(product.getId());
+            int discountValue = discountOptional.map(Discount::getDiscount).orElse(0);
+
+            VendorDto vendorDto = null;
+            if (vendor != null) {
+                vendorDto = VendorDto.FromEntity(vendor);
+            }
+
             return ProductDetailDto.builder()
                     .productName(product.getProductName())
                     .price(product.getProductPrice())
                     .productRate(product.getProductRate())
                     .detailContent(product.getDetailContent())
-                    .discount(discountValue) //다른곳에서 오는거
+                    .discount(discountValue)
                     .reviewCount(product.getReviewCount())
-                    .vendor(vendorDtos) // 다른곳에서 오는거
-                    .imageUrl(imageUrls) // 다른곳에서 오는거
+                    .vendor(vendorDto)
+                    .imageUrl(imageUrls)
                     .build();
         } else {
-            // 상품이 존재하지 않으면 null 반환
             return null;
         }
     }
+
+
 
     @Override
     public ProductInformationDto getProductInformation(Long productId, String uuid) {// productList에 출력할 상품내용 불러오기
