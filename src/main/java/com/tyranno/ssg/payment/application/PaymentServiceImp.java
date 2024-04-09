@@ -7,6 +7,7 @@ import com.tyranno.ssg.payment.domain.Payment;
 import com.tyranno.ssg.payment.dto.ApproveResponseDto;
 import com.tyranno.ssg.payment.dto.ReadyRequestDto;
 import com.tyranno.ssg.payment.dto.ReadyResponseDto;
+import com.tyranno.ssg.payment.dto.SuccessInfoDto;
 import com.tyranno.ssg.payment.infrastructure.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -89,7 +90,10 @@ public class PaymentServiceImp implements PaymentService{
 
         return parameters;
     }
-
+    @Override
+    public SuccessInfoDto giveSuccessInfo(String id, String pgToken){
+        return new SuccessInfoDto(id, pgToken);
+    }
     @Override
     public ApproveResponseDto getKakaoPayApprove(String id, String pgToken) {
         HttpEntity<HashMap<String, String>> requestEntity = new HttpEntity<>(this.getApproveParameters(id, pgToken), this.getHeaders());
