@@ -27,4 +27,22 @@ async function mchangePasswordAPI(newPassword: string) {
     const response = await PutAPI('/api/v1/users/modify-pw', { newPassword: newPassword }, await token)
     return response.result
 }
-export { getMyInfo, getMynameAPI, submitChangeInfoAPI, getOrderListAPI, removeUserAPI, mchangePasswordAPI }
+async function PointAgreeAPI(isAgree: number) {
+    const response = await PutAPI('/api/v1/users/shinsegae-marketing', { isAgree: isAgree }, await token)
+    return response.result
+}
+async function ssgAgreeAPI(isAgree: number) {
+    const response = await PutAPI('/api/v1/users/ssg-marketing', { isAgree: isAgree }, await token)
+    return response.result
+}
+
+export {
+    getMyInfo,
+    getMynameAPI,
+    submitChangeInfoAPI,
+    getOrderListAPI,
+    removeUserAPI,
+    mchangePasswordAPI,
+    PointAgreeAPI,
+    ssgAgreeAPI,
+}
