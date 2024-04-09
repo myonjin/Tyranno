@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,11 +23,11 @@ public class UsersModifyDto { //회원 인증 정보 - 유저가 입력, 비밀�
         return Users.builder()
                 .id(users.getId())
                 .loginId(users.getLoginId())
-                .password((password != null) ? users.hashPassword(password) : users.getPassword())
+                .password((!password.isEmpty()) ? users.hashPassword(password) : users.getPassword())
                 .name(users.getName())
-                .email(email != null ? email : users.getEmail())
+                .email((!email.isEmpty()) ? email : users.getEmail())
                 .gender(users.getGender())
-                .phoneNumber(phoneNumber != null ? phoneNumber : users.getPhoneNumber())
+                .phoneNumber((!phoneNumber.isEmpty()) ? phoneNumber : users.getPhoneNumber())
                 .birth(users.getBirth())
                 .status(users.getStatus())
                 .isIntegrated(users.getIsIntegrated())
