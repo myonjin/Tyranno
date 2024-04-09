@@ -15,6 +15,7 @@ import com.tyranno.ssg.product.infrastructure.ProductRepositoryImp;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
 import com.tyranno.ssg.users.domain.Users;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
+import com.tyranno.ssg.vendor.domain.Vendor;
 import com.tyranno.ssg.vendor.domain.VendorProduct;
 import com.tyranno.ssg.vendor.dto.VendorDto;
 import com.tyranno.ssg.vendor.infrastructure.VendorProductRepository;
@@ -33,6 +34,7 @@ import java.util.*;
 public class ProductServiceImp implements ProductService {
 
 
+    private static final int PAGE_SIZE = 20;
     // JPA로 productId를 통해 조회하기
     private final ProductRepository productRepository;
     private final VendorRepository vendorRepository;
@@ -47,50 +49,47 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ProductDetailDto productDetail(@PathVariable("productId") Long id) {
-        Optional<Product> Product = productRepository.findById(id);
+        Optional<Product> productOptional = productRepository.findById(id);
 
-        // 상품이 존재하는지 확인
-        if (Product.isPresent()) {
-            // 썸네일 이미지 리스트 형식으로 담기위해 불러오기
-            Product product = Product.get();
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+
             List<ProductThum> productThums = productThumRepository.findAllByProductId(product.getId());
             List<String> imageUrls = productThums.stream()
                     .map(ProductThum::getImageUrl)
                     .toList();
-            // vendor 담기
-            // 상품 아이디로 판매자-상품 중간테이블에서 조회
-            Optional<VendorProduct> vendorProduct = vendorProductRepository.findByProductId(product.getId());
-            List<VendorDto> vendorDtos = vendorProduct
-                    .map(vp -> {
-                        VendorDto vendorDto = new VendorDto();
-                        vendorDto.setVendorId(vp.getVendor().getId());
-                        vendorDto.setVendorName(vp.getVendor().getVendorName());
-                        return vendorDto;
-                    })
-                    .map(Collections::singletonList) //GPT 사용
-                    .orElse(Collections.emptyList());
-            Optional<Discount> discountOptional = discountRepository.findByProductId(product.getId());
-            int discountValue = 0;
-            if (discountOptional.isPresent()) {
-               discountValue = discountOptional.get().getDiscount();
+
+            Vendor vendor = null;
+
+            Optional<VendorProduct> vendorProductOptional = vendorProductRepository.findByProductId(id);
+            if (vendorProductOptional.isPresent()) {
+                vendor = vendorProductOptional.get().getVendor();
             }
 
-            // ProductDto 생성 및 값 설정
+            Optional<Discount> discountOptional = discountRepository.findByProductId(product.getId());
+            int discountValue = discountOptional.map(Discount::getDiscount).orElse(0);
+
+            VendorDto vendorDto = null;
+            if (vendor != null) {
+                vendorDto = VendorDto.FromEntity(vendor);
+            }
+
             return ProductDetailDto.builder()
                     .productName(product.getProductName())
                     .price(product.getProductPrice())
                     .productRate(product.getProductRate())
                     .detailContent(product.getDetailContent())
-                    .discount(discountValue) //다른곳에서 오는거
+                    .discount(discountValue)
                     .reviewCount(product.getReviewCount())
-                    .vendor(vendorDtos) // 다른곳에서 오는거
-                    .imageUrl(imageUrls) // 다른곳에서 오는거
+                    .vendor(vendorDto)
+                    .imageUrl(imageUrls)
                     .build();
         } else {
-            // 상품이 존재하지 않으면 null 반환
             return null;
         }
     }
+
+
 
     @Override
     public ProductInformationDto getProductInformation(Long productId, String uuid) {// productList에 출력할 상품내용 불러오기
@@ -99,12 +98,18 @@ public class ProductServiceImp implements ProductService {
         Product product = productOptional.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
         log.info(String.valueOf(product));
         Optional<ProductThum> imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1);
-        Long vendorId = vendorProductRepository.findByProductId(productId)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT))
-                .getId();
-        String vendorName = vendorRepository.findById(vendorId)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_VENDOR))
-                .getVendorName();
+        Long vendorId = null;
+        String vendorName = null;
+
+        Optional<VendorProduct> vendorProductOptional = vendorProductRepository.findByProductId(productId);
+        if (vendorProductOptional.isPresent()) {
+            Vendor vendor = vendorProductOptional.get().getVendor();
+            if (vendor != null) {
+                vendorId = vendor.getId();
+                vendorName = vendor.getVendorName();
+            }
+        }
+
         Optional<Discount> discountOptional = discountRepository.findByProductId(product.getId());
         int discountValue = 0;
         if (discountOptional.isPresent()) {
@@ -138,24 +143,30 @@ public class ProductServiceImp implements ProductService {
     }
     @Override
     public ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
-                                             Integer sortCriterion, Integer lastIndex, String searchKeyword) { // productList
+                                             Integer sortCriterion, Integer page, String searchKeyword) { // productList
+        // 페이지당 항목 수 상수 선언
+        final int PAGE_SIZE = 20; // 예시로 20개로 설정
+
         List<Long> productIds;
         if (searchKeyword != null && !searchKeyword.isEmpty()) {
             // 상품명으로 검색
             log.info("상품명 실행");
-            productIds = productRepositoryImp.searchProductIdsByKeyword(searchKeyword, sortCriterion, lastIndex);
+            productIds = productRepositoryImp.searchProductIdsByKeyword(searchKeyword, sortCriterion, page);
         } else {
             // 카테고리로 검색
             log.info("카테고리 실행");
             productIds = productRepositoryImp.searchProductIdsByCategory(largeId, middleId, smallId, detailId,
-                    sortCriterion, lastIndex);
+                    sortCriterion, page);
         }
         ProductIdListDto productIdListDto = new ProductIdListDto();
 
-        List<Map<String, Long>> productIdList = new ArrayList<>();
-        for (Long productId : productIds) {
-            Map<String, Long> productMap = new HashMap<>();
+        List<Map<String, Object>> productIdList = new ArrayList<>();
+        int startIndex = (page - 1) * PAGE_SIZE; // 페이지 번호가 1부터 시작하므로 수정
+        for (int i = 0; i < productIds.size(); i++) {
+            Long productId = productIds.get(i);
+            Map<String, Object> productMap = new HashMap<>();
             productMap.put("productId", productId);
+            productMap.put("id", startIndex + i + 1); // 인덱스도 1부터 시작하도록 수정
             productIdList.add(productMap);
         }
         productIdListDto.setProductIds(productIdList);
