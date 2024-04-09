@@ -83,9 +83,9 @@ public class PaymentServiceImp implements PaymentService{
         parameters.put("quantity", "1");
         parameters.put("total_amount", String.valueOf(request.getTotal_amount()));
         parameters.put("tax_free_amount", "0");
-        parameters.put("approval_url", "http://localhost:8080/api/v1/pay/success/" + id);
-        parameters.put("cancel_url", "http://localhost:8080/api/v1/pay/cancel");
-        parameters.put("fail_url", "http://localhost:8080/api/v1/pay/fail");
+        parameters.put("approval_url", "https://tyrannoback.com/api/v1/pay/success/" + id);
+        parameters.put("cancel_url", "https://tyrannoback.com/api/v1/pay/cancel");
+        parameters.put("fail_url", "https://tyrannoback.com/api/v1/pay/fail");
 
         return parameters;
     }
