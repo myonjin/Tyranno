@@ -14,4 +14,8 @@ async function submitChangeInfoAPI(data: ChangeInfo) {
     const response = await PutAPI('/api/v1/users', data, await token)
     return response.result
 }
-export { getMyInfo, getMynameAPI, submitChangeInfoAPI }
+async function getOrderListAPI() {
+    const response = await GetAPI('/api/v1/order', undefined, await token)
+    return response.result
+}
+export { getMyInfo, getMynameAPI, submitChangeInfoAPI, getOrderListAPI }
