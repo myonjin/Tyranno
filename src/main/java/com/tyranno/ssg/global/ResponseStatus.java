@@ -107,7 +107,11 @@ public enum ResponseStatus {
     // Order
     NO_EXIST_ORDER_LIST(false,10000,"존재하지 않는 주문내역입니다."),
     NO_EXIST_ORDERS(false, 10100, "이 상품을 주문하지 않았습니다."),
-    NO_EXIST_ORDERPRODUCT(false, 10200, "이 상품을 구매한 이력이 없습니다.");
+    NO_EXIST_ORDERPRODUCT(false, 10200, "이 상품을 구매한 이력이 없습니다."),
+
+    // Review
+    USER_HAS_NOT_PURCHASED_THE_PRODUCT(false, 11000, "상품을 구매하지 않은 사용자입니다."),
+    FAILED_TO_REVIEW(false, 11100, "리뷰 저장에 실패했습니다.");
 
     private final boolean isSuccess;
     private final int code;

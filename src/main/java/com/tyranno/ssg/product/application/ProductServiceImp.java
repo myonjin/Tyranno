@@ -97,7 +97,7 @@ public class ProductServiceImp implements ProductService {
         log.info(String.valueOf(product));
         Optional<ProductThum> imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1);
         Long vendorId = null;
-        String vendorName = null;
+        String vendorName = "";
 
         Optional<VendorProduct> vendorProductOptional = vendorProductRepository.findByProductId(productId);
         if (vendorProductOptional.isPresent()) {
@@ -186,13 +186,13 @@ public class ProductServiceImp implements ProductService {
         float currentRate = product.getProductRate();
         int currentReviewCount = product.getReviewCount();
 
-        // 새로운 평점을 계산
-        float newRate = (currentRate * currentReviewCount + rate) / (currentReviewCount + 1);
-
         Product updatedProduct = Product.builder()
                 .id(product.getId())
-                .productRate(newRate)
+                .productName(product.getProductName())
+                .productPrice(product.getProductPrice())
+                .productRate(currentRate + rate)
                 .reviewCount(currentReviewCount + 1)
+                .detailContent(product.getDetailContent())
                 .build();
 
         // 상품을 저장

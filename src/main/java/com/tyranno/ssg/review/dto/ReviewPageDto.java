@@ -1,5 +1,7 @@
 package com.tyranno.ssg.review.dto;
 
+import com.tyranno.ssg.option.dto.OptionNamesDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,16 +19,17 @@ public class ReviewPageDto {
     private Long productId;
     private String productName;
     private String productThum;
-    private Map<String, Long> optionIds = new HashMap<>();
+    private OptionNamesDto optionNamesDto;
     private String orderNumber;
     private LocalDateTime orderDate;
 
-    public ReviewPageDto(Long productId, String productName, String productThum, Map<String, Long> optionIds,
+    @Builder
+    public ReviewPageDto(Long productId, String productName, String productThum, OptionNamesDto optionNamesDto,
                          String orderNumber, LocalDateTime orderDate) {
         this.productId = productId;
         this.productName = productName;
         this.productThum = productThum;
-        this.optionIds = optionIds;
+        this.optionNamesDto = optionNamesDto;
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
     }
