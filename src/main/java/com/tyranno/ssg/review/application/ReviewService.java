@@ -1,15 +1,15 @@
 package com.tyranno.ssg.review.application;
 
-import com.tyranno.ssg.review.dto.ReviewCreateDto;
-import com.tyranno.ssg.review.dto.ReviewIdListDto;
-import com.tyranno.ssg.review.dto.ReviewInformationDto;
-import com.tyranno.ssg.review.dto.ReviewPageDto;
+import com.tyranno.ssg.review.dto.*;
+
+import java.util.List;
 
 public interface ReviewService {
-    ReviewIdListDto getProductReviewIds(Long product_id, Integer sortCriterion, Integer page);
-    ReviewPageDto getReviewPage(Long productId, String uuid);
-    String addReview(Long productId, ReviewCreateDto reviewCreateDto, String uuid);
+    ReviewIdListDto getProductReviewIds(Long productId, Integer sortCriterion, Integer page);
+    ReviewPageDto getReviewPage(Long orderId, String uuid);
+    String addReview(Long orderId, ReviewCreateDto reviewCreateDto, String uuid);
     ReviewInformationDto getReviewInformation(Long reviewId);
-
     ReviewIdListDto getUsersReviewIds(String uuid, Integer sortCriterion, Integer page);
+//    ReviewAbleOrderDto getReviewAbleOrderIds(String uuid);
+    ReviewAbleOrderIdDto getReviewAbleOrderIds(String uuid, Integer sortCriterion, Integer page);
 }

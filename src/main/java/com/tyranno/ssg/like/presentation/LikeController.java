@@ -30,6 +30,15 @@ public class LikeController {
             return new ResponseEntity<>("좋아요 삭제!");
         }
     }
+
+    @Operation(summary = "좋아요 확인", description = "uuid")
+    @GetMapping("/isLike/{product_id}")
+    public ResponseEntity<?> getLike(@PathVariable Long product_id,
+                                     @RequestHeader(value = "Authorization", required = false) String token) {
+        String uuid = jwtTokenProvider.tokenToUuid(token);
+        int result = likeService.getLike(product_id, uuid);
+        return new ResponseEntity<>(result);
+    }
 }
 
 
