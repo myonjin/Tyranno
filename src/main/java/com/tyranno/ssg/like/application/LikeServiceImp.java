@@ -43,4 +43,16 @@ public class LikeServiceImp implements LikeService{
             return true; // 찜이 추가되었음을 나타냄
         }
     }
+
+    @Override
+    public int getLike(Long productId, String uuid) {
+        Users users =  usersRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        Optional<Like> like = likeRepository.findByProductIdAndUsersId(productId, users.getId());
+        if (like.isPresent()) {
+            return 11;
+        } else {
+            return 99;
+        }
+    }
 }
