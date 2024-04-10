@@ -12,12 +12,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class ReviewCreateDto {
-    private Long productId;
-    private Long usersId;
     private String content;
     private Float rate;
-    private Long orderId;
-    private List<ReviewImageDto> reviewImages;
+    private List<String> reviewImages;
 
 //    @Builder
 //    public ReviewCreateDto(Long productId, Long usersId, String content, Float rate, Long orderId, int priority, String imageUrl) {
