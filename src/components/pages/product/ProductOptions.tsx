@@ -7,9 +7,11 @@ import Link from 'next/link'
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil'
 import { LastOptionType } from '@/types/LastOptionType'
 import { SelectedOptionItemListAtom } from '@/state/SelectedOptionListAtom'
-import { ProductDataType } from '@/types/ProductDetailDataType'
+import { CartDataType, ProductDataType } from '@/types/ProductDetailDataType'
 import { LastOptionListType } from '@/types/LastOptionType'
 import ProductSelect from './ProductSelect'
+import { cartClickAPI } from '@/actions/product'
+import { useRouter } from 'next/navigation'
 
 interface OptionListType {
     idx: number
@@ -44,7 +46,14 @@ export default function ProductOptions({
     const [selectedOptionId, setSelectedOptionId] = useState<number>(0)
     const [selectedOptionList, setSelectedOptionList] = useRecoilState(SelectedOptionItemListAtom)
     const [count, setCount] = useState(1)
+    const router = useRouter()
+    const resetSelectedOptionList = useResetRecoilState(SelectedOptionItemListAtom)
 
+    // useEffect(() => {
+    //     return () => {
+    //         resetSelectedOptionList()
+    //     }
+    // }, [])
     useEffect(() => {
         const getOptionData = async () => {
             const data = await fetch(`https://tyrannoback.com/api/v1/option/string/${productId}`, {
@@ -70,7 +79,9 @@ export default function ProductOptions({
 
     useEffect(() => {
         const getOptionDataByOptionId = async () => {
-            const res = await fetch(`https://tyrannoback.com/api/v1/option/names/${selectedOptionId}`)
+            const res = await fetch(`https://tyrannoback.com/api/v1/option/names/${selectedOptionId}`, {
+                cache: 'force-cache',
+            })
             if (res) {
                 const data = await res.json()
                 // console.log(data)
@@ -113,7 +124,23 @@ export default function ProductOptions({
         }
     }
 
+    const handleCart = async () => {
+        const data: CartDataType = {
+            optionId: selectedOptionList.optionId,
+            count: selectedOptionList.qty,
+        }
+        const res = await cartClickAPI(data)
+        console.log(res, '장바구니')
+    }
+    const handleOrder = async () => {
+        const data: CartDataType = {
+            optionId: selectedOptionList.optionId,
+            count: selectedOptionList.qty,
+        }
+        // console.log(res)
+    }
     // console.log(selectedOptionId)
+
     return (
         <>
             <div
@@ -152,12 +179,6 @@ export default function ProductOptions({
                             />
                         ))}
 
-                    {selectedOptionList.length > 0 &&
-                        selectedOptionList.map((item: LastOptionListType, idx: number) => (
-                            <div key={idx} className="p-3">
-                                <ProductSelect item={item} />
-                            </div>
-                        ))}
                     {newOptionList.length === 0 && (
                         <div className="p-3">
                             <div className="mt-5 border py-2  w-full bg-gray-100  border-black rounded-md min-h-[90px] ">
@@ -211,17 +232,25 @@ export default function ProductOptions({
                 } transition-all flex items-center h-12 fixed w-full`}
             >
                 <button
-                    onClick={selectedOptionList}
-                    className="flex justify-center items-center bg-black flex-grow h-12 "
+                    onClick={() => {
+                        handleCart()
+                        router.push('/cart')
+                        // resetSelectedOptionList()
+                    }}
+                    className="flex justify-center items-center bg-black flex-grow h-12"
                 >
-                    <Link href={'/cart'}>
-                        <span className="  text-white">장바구니</span>
-                    </Link>
+                    <span className="  text-white">장바구니</span>
                 </button>
-                <button className="flex-grow">
-                    <Link href={'/order'} className="flex justify-center items-center bg-red-500  h-12 ">
-                        <span className="  text-white">바로구매</span>
-                    </Link>
+
+                <button
+                    onClick={() => {
+                        handleOrder()
+                        router.push('/order')
+                        // resetSelectedOptionList()
+                    }}
+                    className="flex justify-center items-center bg-red-500  h-12 flex-grow"
+                >
+                    <span className="  text-white">바로구매</span>
                 </button>
             </div>
         </>
@@ -253,16 +282,13 @@ const OptionSelecter = ({
 }) => {
     const [selectedOption, setSelectedOption] = useState<string>(`선택하세요. (${item.name})`)
     const [showModal, setShowModal] = useState<boolean>(false)
-    // const [selectedOptionId, setSelectedOptionId] = useState<number>(0)
-    // const [selectedOptionList, setSelectedOptionList] = useRecoilState(SelectedOptionItemListAtom)
-    // const [selectedOptionType, setSelectedOptionType] = useState<string>('')
-    const resetSelectedOptionList = useResetRecoilState(SelectedOptionItemListAtom)
+    // const resetSelectedOptionList = useResetRecoilState(SelectedOptionItemListAtom)
 
-    useEffect(() => {
-        return () => {
-            resetSelectedOptionList()
-        }
-    }, [])
+    // useEffect(() => {
+    //     return () => {
+    //         resetSelectedOptionList()
+    //     }
+    // }, [])
     useEffect(() => {
         setNewOptionList(
             newOptionList.map((opt: OptionListType) => {
@@ -282,8 +308,6 @@ const OptionSelecter = ({
         )
     }, [selectedOption])
 
-    // console.log(selectedOptionId)
-
     return (
         <>
             <div className="px-3 py-1">
@@ -296,7 +320,12 @@ const OptionSelecter = ({
                     <div className="ml-2 text-sm ">{selectedOption}</div>
                 </div>
             </div>
-
+            {item.idx >= newOptionList.length - 1 &&
+                selectedOptionList.map((item: LastOptionListType, idx: number) => (
+                    <div key={idx} className="p-3">
+                        <ProductSelect item={item} />
+                    </div>
+                ))}
             <OptionModal
                 last={item.idx >= newOptionList.length - 1 ? true : false}
                 showModal={showModal}

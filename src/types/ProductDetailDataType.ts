@@ -11,3 +11,8 @@ export interface ProductDataType {
     }
     discount: number
 }
+
+export interface CartDataType {
+    optionId: string
+    count: number
+}

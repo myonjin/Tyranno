@@ -15,7 +15,7 @@ function ProductFooter({ data }: { data: ProductDataType }) {
     const handleLike = (islike: number) => {
         setLike(islike)
     }
-    console.log(like)
+    // console.log(like)
     return (
         <section>
             <div className="fixed bottom-0 w-screen z-[10] ">

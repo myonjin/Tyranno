@@ -1,7 +1,6 @@
 'use client'
 import { SelectedOptionItemListAtom } from '@/state/SelectedOptionListAtom'
 import { LastOptionListType } from '@/types/LastOptionType'
-import { useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 export default function ProductSelect({ item }: { item: LastOptionListType }) {
@@ -21,6 +20,7 @@ export default function ProductSelect({ item }: { item: LastOptionListType }) {
             setData(updatedData)
         }
     }
+    // console.log(item)
 
     return (
         <div>

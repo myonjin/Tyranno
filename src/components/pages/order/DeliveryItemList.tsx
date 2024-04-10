@@ -2,13 +2,14 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { CartItemsAtom } from '@/state/CartCheckedListAtom'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import { getDeliveryAddressAPI, getItemsOrderAPI, getOptionListAPI, orderComplete } from '@/actions/order'
 import { OrderAddressDataType } from '@/types/AddressDataType'
 import { OrderFormDataType } from '@/types/OrderDataTypte'
 import { MyInfo } from '@/types/MyInfoDataType'
 import { getMyInfo } from '@/actions/mypage'
 import { useRouter } from 'next/navigation'
+import { SelectedOptionItemListAtom } from '@/state/SelectedOptionListAtom'
 
 export interface OptionType {
     color: string | null
@@ -17,11 +18,13 @@ export interface OptionType {
 }
 
 export default function DeliveryItemList() {
+    const [option, setOption] = useRecoilState(SelectedOptionItemListAtom)
     const data = useRecoilValue(CartItemsAtom)
     const [productData, setProductData] = useState([]) as any[]
     const [deliveryAddress, setDeliveryAddress] = useState<OrderAddressDataType>()
     const [MyInfo, setMyInfo] = useState<MyInfo>()
     const router = useRouter()
+    console.log(option)
     let total = 0
     const fetchOptions = async () => {
         const productLists = []
