@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react'
+import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import DetailIcon from '@/images/DetailIcon.png'
 import { ProductDataType } from '@/types/ProductDetailDataType'
@@ -9,6 +10,22 @@ function ProductInformation({ data }: { data: ProductDataType }) {
 
     const toggleExpand = () => {
         setExpanded(!expanded)
+    }
+    const params = useParams<{ productId: string }>()
+    const kakaoShare = () => {
+        const { Kakao, location } = window
+        Kakao.Share.sendCustom({
+            templateId: 106857,
+            templateArgs: {
+                PRODUCT_IMG: data.imageUrl[0],
+                PRODUCT_NAME: data.productName,
+                PRODUCT_PRICE: data.price,
+                PRODUCT_DISCOUNT: data.discount,
+                PRODUCT_DISPRICE: data.price * (1 - data.discount / 100),
+                PRODUCT_VENDER: data.vendor ? data.vendor.vendorName : ' ', //null
+                PRODUCT_PATH: `product/${params.productId}`,
+            },
+        })
     }
 
     return (
@@ -20,7 +37,7 @@ function ProductInformation({ data }: { data: ProductDataType }) {
                             <p>신세계백화점</p>
                         </span>
 
-                        <button className="flex">
+                        <button onClick={() => kakaoShare()} className="flex">
                             <div className="  relative w-6 h-6 inline-block flex-shrink-0 align-middle mr-3">
                                 <Image
                                     src="https://img.icons8.com/fluency-systems-regular/48/share--v1.png"
