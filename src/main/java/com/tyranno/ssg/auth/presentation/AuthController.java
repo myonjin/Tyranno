@@ -26,7 +26,7 @@ public class AuthController {
     }
     @Operation(summary = "기존 소셜 회원 통합회원 연결", description = "기존의 소셜 회원이 통합 회원가입을 한다.")
     @PostMapping("/connect")
-    public ResponseEntity<?> connectUsers(@RequestBody ConnectUsersDto connectUsersDto) {
+    public ResponseEntity<?> connectUsers(@Valid @RequestBody ConnectUsersDto connectUsersDto) {
 
         authService.connectUsers(connectUsersDto);
 
@@ -34,7 +34,7 @@ public class AuthController {
     }
     @Operation(summary = "통합 회원가입", description = "통합 회원가입을 한다.")
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpDto) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto signUpDto) {
 
         authService.singUpUsers(signUpDto);
 
@@ -75,7 +75,7 @@ public class AuthController {
 
     @Operation(summary = "비밀번호 변경(로그인 x)", description = "비밀번호 찾기 에서의 비밀번호 변경")
     @PutMapping("/change-pw")
-    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDto passwordChangeDto) {
+    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordChangeDto passwordChangeDto) {
         authService.changePassword(passwordChangeDto);
         return new ResponseEntity<>("비밀번호 변경 성공");
     }

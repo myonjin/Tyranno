@@ -1,6 +1,7 @@
 package com.tyranno.ssg.auth.dto;
 
 import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -9,8 +10,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginDto {
-    @NotNull
+    @NotBlank(message = "아이디를 입력해주세요.")
     private String loginId;
-    @NotNull
+    @NotBlank(message = "비밀번호를 입력해주세요.")
     private String password;
 }

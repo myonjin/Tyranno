@@ -105,7 +105,7 @@ public class CartServiceImp implements CartService {
                     .getVendor().getVendorName();
 
             return CartListDto.FromEntity(cart, imageUrl, discount, vendorName);
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     @Transactional
