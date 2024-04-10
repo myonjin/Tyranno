@@ -1,8 +1,7 @@
 package com.tyranno.ssg.auth.dto;
 
-import com.tyranno.ssg.global.ValidationGroups;
+import com.tyranno.ssg.config.ValidationGroups;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,12 +2,11 @@ package com.tyranno.ssg.auth.oauth.dto;
 
 import com.tyranno.ssg.auth.oauth.domain.OAuth;
 import com.tyranno.ssg.delivery.domain.Delivery;
-import com.tyranno.ssg.global.ValidationGroups;
+import com.tyranno.ssg.config.ValidationGroups;
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;

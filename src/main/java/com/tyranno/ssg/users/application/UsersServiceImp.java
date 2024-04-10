@@ -38,14 +38,15 @@ public class UsersServiceImp implements UsersService {
 
     @Transactional
     @Override
-    public void modifyMarketing(MarketingModifyDto marketingModifyDto, Long marketing_id, String uuid) {
+    public void modifyMarketing(MarketingIsAgreeDto marketingModifyDto, Long marketing_id, String uuid) {
 
         marketingInformationRepository.save(marketingModifyDto.toEntity(getMarketingInformation(marketing_id, uuid)));
     }
 
     @Override
-    public Byte getMarketingAgree(Long marketing_id, String uuid) {
-        return getMarketingInformation(marketing_id, uuid).getIsAgree();
+    public MarketingIsAgreeDto getMarketingAgree(Long marketing_id, String uuid) {
+        Byte isAgree = getMarketingInformation(marketing_id, uuid).getIsAgree();
+        return new MarketingIsAgreeDto(isAgree);
     }
 
     private MarketingInformation getMarketingInformation(Long marketing_id, String uuid) {

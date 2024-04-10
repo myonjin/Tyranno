@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
         StringBuilder builder = new StringBuilder();
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             builder.append(fieldError.getDefaultMessage());
-            builder.append(" / ");
+            builder.append("\n");
         }
 
         return new ResponseEntity<>(e, builder.toString());

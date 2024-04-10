@@ -1,7 +1,8 @@
 package com.tyranno.ssg.users.dto;
 
-import com.tyranno.ssg.global.ValidationGroups;
+import com.tyranno.ssg.config.ValidationGroups;
 import com.tyranno.ssg.users.domain.Users;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;

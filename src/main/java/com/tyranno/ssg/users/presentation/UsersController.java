@@ -3,15 +3,16 @@ package com.tyranno.ssg.users.presentation;
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.application.UsersService;
-import com.tyranno.ssg.users.dto.MarketingModifyDto;
-import com.tyranno.ssg.users.dto.MarketingType;
+import com.tyranno.ssg.users.dto.MarketingIsAgreeDto;
 import com.tyranno.ssg.users.dto.PasswordModifyDto;
 import com.tyranno.ssg.users.dto.UsersModifyDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.tyranno.ssg.config.ValidationSequence;
 
 
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class UsersController {
 
     @Operation(summary = "비밀번호 재설정(로그인 O)", description = "마이페이지에서 비밀번호 재설정한다.")
     @PutMapping("/modify-pw")
-    public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordModifyDto passwordModifyDto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> changePassword(@Validated(ValidationSequence.class) @RequestBody PasswordModifyDto passwordModifyDto, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         usersService.modifyPassword(passwordModifyDto, uuid);
         return new ResponseEntity<>("비밀번호 변경 성공");
@@ -40,7 +41,7 @@ public class UsersController {
 
     @Operation(summary = "마케팅 동의 여부 변경", description = "신세계옵션 동의(/marketing/2), ssg 마케팅정보(/marketing/3) 동의 여부를 변경한다.")
     @PutMapping("/marketing/{marketing_id}")
-    public ResponseEntity<?> modifyShinsegaeMaketing(@RequestBody MarketingModifyDto marketingModifyDto,
+    public ResponseEntity<?> modifyShinsegaeMaketing(@Valid @RequestBody MarketingIsAgreeDto marketingModifyDto,
                                                      @PathVariable Long marketing_id,
                                                      @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
@@ -58,7 +59,7 @@ public class UsersController {
 
     @Operation(summary = "마케팅 동의 여부 조회", description = "신세계옵션 동의(/marketing/2), ssg 마케팅정보(/marketing/3) 동의 여부를 조회한다.")
     @GetMapping("/marketing/{marketing_id}")
-    public ResponseEntity<Byte> getMaketingAgree(@PathVariable Long marketing_id, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<MarketingIsAgreeDto> getMaketingAgree(@PathVariable Long marketing_id, @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         return new ResponseEntity<>(usersService.getMarketingAgree(marketing_id, uuid));
     }

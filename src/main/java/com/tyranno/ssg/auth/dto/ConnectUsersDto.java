@@ -1,16 +1,13 @@
 package com.tyranno.ssg.auth.dto;
 
-import com.tyranno.ssg.global.ValidationGroups;
+import com.tyranno.ssg.config.ValidationGroups;
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.UUID;
 
 @Getter
 @NoArgsConstructor

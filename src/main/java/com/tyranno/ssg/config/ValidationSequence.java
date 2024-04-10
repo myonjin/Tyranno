@@ -1,4 +1,4 @@
-package com.tyranno.ssg.global;
+package com.tyranno.ssg.config;
 
 import jakarta.validation.GroupSequence;
 import jakarta.validation.groups.Default;

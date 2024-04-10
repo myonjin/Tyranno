@@ -7,8 +7,8 @@ public interface UsersService {
 
     String getUserName(String uuid);
     void modifyPassword(PasswordModifyDto passwordModifyDto, String uuid);
-    void modifyMarketing(MarketingModifyDto marketingModifyDto, Long marketing_id, String uuid);
-    Byte getMarketingAgree(Long marketingType, String uuid);
+    void modifyMarketing(MarketingIsAgreeDto marketingModifyDto, Long marketing_id, String uuid);
+    MarketingIsAgreeDto getMarketingAgree(Long marketingType, String uuid);
     void modifyUsers(UsersModifyDto usersModifyDto, String uuid);
     UsersInfoDto getUsersInfo(String uuid);
     void resignUsers(String uuid);

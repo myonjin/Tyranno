@@ -35,9 +35,8 @@ public class OAuthServiceImp implements OAuthService {
         if (oauth != null) return jwtTokenProvider.generateToken(oauth.getUsers());
 
         else {
-            // 비회원인 경우
             Users users = usersRepository.findByNameAndEmail(oauthInfoDto.getName(), oauthInfoDto.getEmail())
-                    .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+                    .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS)); // 비회원인 경우
             // 통합회원인 경우
             oauth = oauthInfoDto.toEntity(users);
             oauthRepository.save(oauth);
