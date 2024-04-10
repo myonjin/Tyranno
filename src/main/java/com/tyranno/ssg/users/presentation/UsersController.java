@@ -33,7 +33,9 @@ public class UsersController {
 
     @Operation(summary = "비밀번호 재설정(로그인 O)", description = "마이페이지에서 비밀번호 재설정한다.")
     @PutMapping("/modify-pw")
-    public ResponseEntity<?> changePassword(@Validated(ValidationSequence.class) @RequestBody PasswordModifyDto passwordModifyDto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> changePassword(@Validated(ValidationSequence.class)
+                                                @RequestBody PasswordModifyDto passwordModifyDto,
+                                            @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         usersService.modifyPassword(passwordModifyDto, uuid);
         return new ResponseEntity<>("비밀번호 변경 성공");
@@ -59,7 +61,8 @@ public class UsersController {
 
     @Operation(summary = "마케팅 동의 여부 조회", description = "신세계옵션 동의(/marketing/2), ssg 마케팅정보(/marketing/3) 동의 여부를 조회한다.")
     @GetMapping("/marketing/{marketing_id}")
-    public ResponseEntity<MarketingIsAgreeDto> getMaketingAgree(@PathVariable Long marketing_id, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<MarketingIsAgreeDto> getMaketingAgree(@PathVariable Long marketing_id,
+                                                                @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         return new ResponseEntity<>(usersService.getMarketingAgree(marketing_id, uuid));
     }
@@ -73,7 +76,8 @@ public class UsersController {
 
     @Operation(summary = "회원수정", description = "마이페이지에서 회원정보 변경한다.")
     @PutMapping
-    public ResponseEntity<?> modifyUsers(@Valid @RequestBody UsersModifyDto usersModifyDto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> modifyUsers(@Valid @RequestBody UsersModifyDto usersModifyDto,
+                                         @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         usersService.modifyUsers(usersModifyDto, uuid);
         return new ResponseEntity<>("회원 정보 수정 완료");

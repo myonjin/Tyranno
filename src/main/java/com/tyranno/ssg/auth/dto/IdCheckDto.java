@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class IdCheckDto {
 
-    @NotBlank(message = "아이디는 필수 입력값입니다.", groups = ValidationGroups.NotEmptyGroup.class)
+    @NotBlank(message = "사용할 아이디를 입력하세요.", groups = ValidationGroups.NotEmptyGroup.class)
     @Pattern(regexp = "^[a-zA-Z0-9]{6,20}$",
             message = "아이디는 영어 또는 숫자로 6 ~ 20자리까지 가능합니다.",
             groups = ValidationGroups.PatternCheckGroup.class)
