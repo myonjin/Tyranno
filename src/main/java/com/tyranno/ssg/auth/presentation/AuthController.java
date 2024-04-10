@@ -43,7 +43,7 @@ public class AuthController {
 
     @Operation(summary = "아이디 중복 검사", description = "회원 가입 시 기존 회원과 아이디 중복 여부 체크")
     @PostMapping("/id-check")
-    public ResponseEntity<?> checkIdExist(@RequestBody IdCheckDto idCheckDto) {
+    public ResponseEntity<?> checkIdExist(@Valid @RequestBody IdCheckDto idCheckDto) {
 
         authService.checkLoginId(idCheckDto);
 
@@ -52,7 +52,7 @@ public class AuthController {
 
     @Operation(summary = "이메일 중복 검사", description = "회원 가입 시 기존 회원과 이메일 중복 여부 체크")
     @PostMapping("/email-check")
-    public ResponseEntity<?> checkIdExist(@RequestBody EmailCheckDto emailCheckDto) {
+    public ResponseEntity<?> checkIdExist(@Valid @RequestBody EmailCheckDto emailCheckDto) {
 
         authService.checkEmail(emailCheckDto);
 
@@ -61,7 +61,7 @@ public class AuthController {
 
     @Operation(summary = "통합 회원 로그인", description = "통합 회원 로그인을 한다.")
     @PostMapping("/login")
-    public ResponseEntity<?> logIn(@RequestBody LoginDto logInDto) {
+    public ResponseEntity<?> logIn(@Valid @RequestBody LoginDto logInDto) {
 
         return new ResponseEntity<>(authService.loginUsers(logInDto));
     }

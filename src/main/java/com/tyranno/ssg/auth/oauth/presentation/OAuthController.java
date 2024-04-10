@@ -6,6 +6,7 @@ import com.tyranno.ssg.auth.oauth.dto.OAuthSignUpDto;
 import com.tyranno.ssg.global.ResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class OAuthController {
 
     @Operation(summary = "소셜 회원가입", description = "비회원이 소셜 회원 가입을 한다.")
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody OAuthSignUpDto oauthSignUpDto) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody OAuthSignUpDto oauthSignUpDto) {
         System.out.println("OAuth External ID: " + oauthSignUpDto.getOauthExternalId());
         oauthService.signUpOAuth(oauthSignUpDto);
         return new ResponseEntity<>("소셜 회원가입이 완료되었습니다.");

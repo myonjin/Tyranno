@@ -38,9 +38,9 @@ public class UsersServiceImp implements UsersService {
 
     @Transactional
     @Override
-    public void modifyMarketing(MarketingModifyDto marketingModifyDto, MarketingType marketingType, String uuid) {
+    public void modifyMarketing(MarketingModifyDto marketingModifyDto, Long marketing_id, String uuid) {
 
-        marketingInformationRepository.save(marketingModifyDto.toEntity(getMarketingInformation(marketingType.getId(), uuid)));
+        marketingInformationRepository.save(marketingModifyDto.toEntity(getMarketingInformation(marketing_id, uuid)));
     }
 
     @Override
