@@ -16,7 +16,7 @@ public class ApproveResponseDto {
     private String cid; // 가맹점 코드
     private String partner_order_id;
     private String partner_user_id;
-    private int total;
+    private Amount amount;
     private String item_name;
     private int quantity;
     private LocalDateTime approved_at;

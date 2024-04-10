@@ -50,7 +50,7 @@ public class OrderController {
      */
     //비회원 주문 생성
     @Operation(summary = "비회원 주문 생성", description = "비회원 주문을 생성한다.")
-    @PostMapping("/non-member")
+    @PostMapping("/non-member/creat")
     public ResponseEntity<String> createNonMemberOrder(@RequestBody OrderAddDto orderAddDto) {
         int randomNumber = new Random().nextInt(900000) + 100000;
         orderService.addOrderList(orderAddDto, randomNumber +"");
@@ -58,7 +58,7 @@ public class OrderController {
     }
     //비회원 조회
     @Operation(summary = "비회원 주문 내역 조회", description = "비회원 주문 내역을 조회한다.")
-    @GetMapping("/non-member")
+    @PostMapping("/non-member")
     public ResponseEntity<List<OrderListDto>> getOrderList(@RequestBody ResponseNonOrderDto responseNonOrderDto) {
         List<OrderListDto> orderListDto = orderService.getOrderList(responseNonOrderDto);
         return new ResponseEntity<>(orderListDto);
