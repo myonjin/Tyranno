@@ -27,7 +27,7 @@ function Login() {
     const handleSumbit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        await signIn('credentials', {
+        const res = await signIn('credentials', {
             loginId,
             password,
             redirect: false,
@@ -35,6 +35,7 @@ function Login() {
 
         const session = await getSession(options)
         const sessionUser = session?.user as UserType
+
         if (sessionUser.isSuccess === true) {
             router.push('/')
         } else {
