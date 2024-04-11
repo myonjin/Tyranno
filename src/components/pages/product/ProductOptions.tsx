@@ -45,7 +45,7 @@ export default function ProductOptions({
     } as queryKeyType)
     const [selectedOptionId, setSelectedOptionId] = useState<number>(0)
     const [selectedOptionList, setSelectedOptionList] = useRecoilState(SelectedOptionItemListAtom)
-    const [count, setCount] = useState(1)
+    const [qty, setQty] = useState(1)
     const router = useRouter()
     const resetSelectedOptionList = useResetRecoilState(SelectedOptionItemListAtom)
 
@@ -98,7 +98,7 @@ export default function ProductOptions({
                             color: data.result?.color,
                             size: data.result?.size,
                             etc: data.result?.additional_option,
-                            qty: count,
+                            count: qty,
                         },
                     ])
                 }
@@ -115,12 +115,12 @@ export default function ProductOptions({
     }
 
     const totalCount = selectedOptionList.reduce((sum: number, item: LastOptionListType) => {
-        return sum + item.qty
+        return sum + item.count
     }, 0)
     // console.log(totalCount)
     const handleCountChange = (newCount: number) => {
         if (newCount >= 1) {
-            setCount(newCount)
+            setQty(newCount)
         }
     }
 
@@ -128,7 +128,7 @@ export default function ProductOptions({
         for (let i = 0; i < selectedOptionList.length; i++) {
             const data: CartDataType = {
                 optionId: selectedOptionList[i].optionId,
-                count: selectedOptionList[i].qty,
+                count: selectedOptionList[i].count,
             }
             const res = await cartClickAPI(data)
             console.log(res, '장바구니')
@@ -137,7 +137,7 @@ export default function ProductOptions({
     const handleOrder = async () => {
         const data: CartDataType = {
             optionId: selectedOptionList.optionId,
-            count: selectedOptionList.qty,
+            count: selectedOptionList.count,
         }
         // console.log(res)
     }
@@ -188,20 +188,20 @@ export default function ProductOptions({
                                 <div className="absolute ml-2 bg-white mt-2 w-20 flex items-center justify-center h-8">
                                     <button
                                         className="text-4xl font-thin mb-2"
-                                        onClick={() => handleCountChange(count - 1)}
+                                        onClick={() => handleCountChange(qty - 1)}
                                     >
                                         -
                                     </button>
-                                    <span className="mx-3">{count}</span>
+                                    <span className="mx-3">{qty}</span>
                                     <button
                                         className="text-4xl font-thin mb-2"
-                                        onClick={() => handleCountChange(count + 1)}
+                                        onClick={() => handleCountChange(qty + 1)}
                                     >
                                         +
                                     </button>
                                 </div>
                                 <div className=" absolute  right-5 text-lg font-semibold mt-5">
-                                    {(productData.price * (1 - productData.discount / 100) * count).toLocaleString()}원
+                                    {(productData.price * (1 - productData.discount / 100) * qty).toLocaleString()}원
                                 </div>
                             </div>
                         </div>
@@ -211,9 +211,7 @@ export default function ProductOptions({
 
                         <div className=" text-red-500 font-bold  text-xl">
                             {totalCount === 0 ? (
-                                <p>
-                                    {(productData.price * (1 - productData.discount / 100) * count).toLocaleString()}원
-                                </p>
+                                <p>{(productData.price * (1 - productData.discount / 100) * qty).toLocaleString()}원</p>
                             ) : (
                                 <p>
                                     {(

@@ -21,7 +21,7 @@ export interface LastOptionType {
 }
 
 export interface LastOptionListType {
-    productId : string
+    productId: string
     optionId: string
     productName: string
     price: number
@@ -29,5 +29,5 @@ export interface LastOptionListType {
     color: string | null
     size: string | null
     etc: string | null
-    qty: number
+    count: number
 }
