@@ -2,7 +2,7 @@
 import Image from 'next/image'
 // import SmallArrowIcon from '@/images/svgs/SmallArrowIcon';
 import React, { useEffect, useState, useRef } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface categoryMiddle {
     middleId: number
@@ -12,6 +12,7 @@ interface categoryMiddle {
 export default function SubCategorySlideButton() {
     const searchParams = useSearchParams()
     const largeId = searchParams.get('largeId')
+    const middleId = searchParams.get('middleId')
     const [category, setCategory] = useState<categoryMiddle[]>([] as categoryMiddle[])
     useEffect(() => {
         const getCategory = async () => {
@@ -48,40 +49,33 @@ export default function SubCategorySlideButton() {
        setIsOpenAllCategory(false);
      };
   */
+    const router = useRouter()
+    const handleClick = (middleId: number) => {
+        router.push(`/productlist?largeId=${largeId}&middleId=${middleId}`)
+    }
 
     return (
         <div className="col-start-2 col-end-auto ms-[(1rem)*-1] me-[(1rem)*-1] top-[46px] bg-white">
-            <div className="flex-start flex-shrink-0 align-middle relative pr-[54px]">
+            <div className="flex-start flex-shrink-0 align-middle relative ">
                 <div className="h-[56px] overflow-hidden text-nowrap flex">
                     <div className="flex-nowrap pt-[10px] pb-[10px] ps-3 pe-1  overflow-x-scroll">
                         {category &&
                             category.map((opt: categoryMiddle, index) => (
                                 <button
                                     key={index}
-                                    className="min-w-min h-[36px] text-xs font-semibold mr-[5px] pl-2 pr-2 bg-gray-100  text-black"
+                                    onClick={() => handleClick(opt.middleId)}
+                                    className={
+                                        'min-w-min h-[36px] text-xs font-semibold mr-[5px] pl-2 pr-2 ' +
+                                        (opt.middleId == parseInt(`${middleId}`)
+                                            ? ' bg-black text-white border-black'
+                                            : 'bg-gray-100 text-black')
+                                    }
                                 >
                                     <div> {opt.middleName}</div>
                                 </button>
                             ))}
                     </div>
-                    {/* {
-              카테고리 데이터.map((category, idx) => {
-                if (category.title === '') {
-                  return;
-                }
-                return (
-                  <button
-                    key={idx}
-                    ref={el => buttonRefs.current[idx] = el!}
-                    onClick={() => { handleCategoryClick(category.id, idx) }}
-                    className={`min-w-min h-[36px] text-xs font-semibold mr-[5px] pl-2 pr-2 
-                    ${isSelected === category.id ? 'bg-black text-white border-black' : 'bg-gray-100 text-black'}`}>
-                    // 선택 시 스타일 변경되는 부분입니다. state 설정 후 활성화시키시면 될겁니다.
-                    {category.title}
-                  </button>
-                )
-              })
-            } */}
+                    {/* 카테고리 전체보기 모달인데 안할까싶은데...... 
                     <div className="bg-white top-[10px] absolute bottom-[10px] right-0 pr-4">
                         <button
                             // onClick={handleOpenAllCategory}
@@ -96,7 +90,7 @@ export default function SubCategorySlideButton() {
                                 />
                             </div>
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
