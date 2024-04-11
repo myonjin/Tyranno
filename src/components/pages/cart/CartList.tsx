@@ -16,12 +16,16 @@ import {
     isKeepDataType,
 } from '@/types/CartDataType'
 import { countCartAPI, deleteCartIdAPI, deleteClickAPI, getCartListAPI, getOptionsAPI, isKeepAPI } from '@/actions/cart'
+import { LastOptionListType } from '@/types/LastOptionType'
+import { SelectedOptionItemListAtom } from '@/state/SelectedOptionListAtom'
 
 export default function CartList() {
+    const [option, setOption] = useRecoilState(SelectedOptionItemListAtom)
     const [productData, setProductData] = useState<CartDataType[]>([])
     const [recoilSample, setRecoilSample] = useRecoilState<number[]>(CartCheckedListAtom)
     const [recoilCartItem, setRecoilCartItem] = useRecoilState<cartToOrderDataType[]>(CartItemsAtom)
     const [recoilMoney, setRecoilMoney] = useRecoilState<cartMoneyDataType>(CartMoneyAtom)
+    console.log(option)
 
     const fetchData = async () => {
         try {
