@@ -1,7 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-
-import ShareIcon from '@/images/ShareSvg'
+import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import DetailIcon from '@/images/DetailIcon.png'
 import { ProductDataType } from '@/types/ProductDetailDataType'
@@ -11,6 +10,22 @@ function ProductInformation({ data }: { data: ProductDataType }) {
 
     const toggleExpand = () => {
         setExpanded(!expanded)
+    }
+    const params = useParams<{ productId: string }>()
+    const kakaoShare = () => {
+        const { Kakao, location } = window
+        Kakao.Share.sendCustom({
+            templateId: 106857,
+            templateArgs: {
+                PRODUCT_IMG: data.imageUrl[0],
+                PRODUCT_NAME: data.productName,
+                PRODUCT_PRICE: data.price,
+                PRODUCT_DISCOUNT: data.discount,
+                PRODUCT_DISPRICE: data.price * (1 - data.discount / 100),
+                PRODUCT_VENDER: data.vendor ? data.vendor.vendorName : ' ', //null
+                PRODUCT_PATH: `product/${params.productId}`,
+            },
+        })
     }
 
     return (
@@ -22,34 +37,36 @@ function ProductInformation({ data }: { data: ProductDataType }) {
                             <p>신세계백화점</p>
                         </span>
 
-                        <button type="button" className=" mr-3 mb-1">
-                            <ShareIcon />
+                        <button onClick={() => kakaoShare()} className="flex">
+                            <div className="  relative w-6 h-6 inline-block flex-shrink-0 align-middle mr-3">
+                                <Image
+                                    src="https://img.icons8.com/fluency-systems-regular/48/share--v1.png"
+                                    alt="공유하기"
+                                    fill
+                                />
+                            </div>
                         </button>
                     </div>
                     <div className="m-4 ">
-                        {/* <div className="mt-2 mb-1"> {data.vendor.length > 0 && data.vendor[0].vendorName}</div> */}
+                        <div className="mt-2 mb-1 font-bold"> {data.vendor && data.vendor.vendorName}</div>
                         <span className=" text-base ">{data.productName}</span>
 
                         <div>
                             <div className="mt-4">
                                 <del className="line-through text-bases text-gray-500">
-                                    {/* <p>{data.price}원</p> */}
+                                    <p>{data.price.toLocaleString()}원</p>
                                 </del>
                             </div>
                             <div className="flex space-x-2 text-2xl font-bold">
-                                <div>{/* <span className=" text-red-600 ">{data.discount}%</span> */}</div>
                                 <div>
-                                    <span>{data.price * (1 - data.discount / 100)}원</span>
+                                    <span className=" text-red-600 ">{data.discount}%</span>
+                                </div>
+                                <div>
+                                    <span>{(data.price * (1 - data.discount / 100)).toLocaleString()}원</span>
                                 </div>
                             </div>
                         </div>
                         <div className="mt-5">
-                            <div>
-                                <dl className="flex justify-between text-sm mb-5">
-                                    <dt className="text-gray-500  min-w-20">카드혜택가</dt>
-                                    <dd className=" w-10/12 font-semibold">288,800원~</dd>
-                                </dl>
-                            </div>
                             <div>
                                 <dl className="flex justify-between text-sm mb-5">
                                     <dt className="text-gray-500 min-w-20">무이자 할부</dt>
@@ -72,7 +89,7 @@ function ProductInformation({ data }: { data: ProductDataType }) {
                                     <dt className="text-gray-500 min-w-20">이벤트</dt>
                                     <dd className=" w-10/12">
                                         <p className="font-extrabold">멤버십 반품비용 무료!</p>
-                                        <span>2024.03.04 ~ 2024.03.31</span>
+                                        <span>2024.04.01 ~ 2024.04.30</span>
                                     </dd>
                                 </dl>
                             </div>
@@ -95,16 +112,23 @@ function ProductInformation({ data }: { data: ProductDataType }) {
                     <div className=" bg-gray-100 h-4 mb-5 "></div>
 
                     {!expanded && (
-                        <div className="flex items-center justify-center ">
-                            <button
-                                type="button"
-                                onClick={toggleExpand}
-                                className="w-full h-32 bg-white text-base text-center flex justify-center items-center"
-                                style={{ boxShadow: '0px -50px 30px rgba(255,255,255,0.7)' }}
+                        <div className=" ">
+                            <div className="flex  justify-center ">
+                                <Image src={data.imageUrl[0]} alt="상품미리보기" width={700} height={500} />
+                            </div>
+                            <div
+                                className="mt-4 border-t-2 -3xl"
+                                style={{ boxShadow: '0px -8px 10px 0px rgba(0, 0, 0, 0.1)' }}
                             >
-                                상세정보 펼쳐보기
-                                <Image src={DetailIcon} alt="더보기" className="  w-6 h-8" />
-                            </button>
+                                <button
+                                    type="button"
+                                    onClick={toggleExpand}
+                                    className="w-full h-12 bg-white text-base text-center flex justify-center items-center"
+                                >
+                                    상세정보 펼쳐보기
+                                    <Image src={DetailIcon} alt="더보기" className="  w-6 h-8" />
+                                </button>
+                            </div>
                         </div>
                     )}
                     {expanded && (

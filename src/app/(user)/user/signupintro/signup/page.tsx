@@ -4,7 +4,7 @@ import './signup.css'
 import { useState, useEffect } from 'react'
 import Buttons from '@/components/ui/buttons'
 import Postcode from '@/components/pages/address/Add'
-import { signupAPI, validLoginId } from '@/actions/user'
+import { signupAPI, validEmailAPI, validLoginId } from '@/actions/user'
 
 function signup() {
     const [loginId, setLoginId] = useState('')
@@ -105,6 +105,7 @@ function signup() {
                 ssgMarketingAgree: ssgMarketingAgree,
             }
             await signupAPI(requestData)
+            alert('가입 되었습니다.')
         } catch (error) {
             console.error('Error:', error)
         }
@@ -115,6 +116,18 @@ function signup() {
             alert(res.result)
         } catch (error) {
             console.error('Error:', error)
+        }
+    }
+    const handleValidEmail = async () => {
+        if (emailValue !== '') {
+            alert('이메일 형식이 올바르지 않습니다.')
+        } else {
+            try {
+                const res = await validEmailAPI(email)
+                alert(res.result)
+            } catch (error) {
+                console.error('Error:', error)
+            }
         }
     }
 
@@ -219,9 +232,6 @@ function signup() {
                             {addressDetail}
                         </span>
                     </span>
-                    <span>
-                        {addressBase} {addressDetail}
-                    </span>
                 </div>
                 <div className="box">
                     <dl className="flex">
@@ -242,7 +252,20 @@ function signup() {
                         </dt>
                     </dl>
 
-                    <input type="text" placeholder="이메일 주소" onChange={checkEmail} />
+                    <input
+                        name="loginId"
+                        type="text"
+                        // className=" mt-1 p-2 ml-7 h-10 w-full  border text-sm"
+                        placeholder="영어 또는 숫자로 6~20자리"
+                        onChange={checkEmail}
+                    />
+                    <button
+                        className=" mt-1 ml-2 h-10 w-28 text-sm  "
+                        style={{ backgroundColor: '#f0f0f0', fontWeight: 'bold' }}
+                        onClick={handleValidEmail}
+                    >
+                        중복확인
+                    </button>
                 </div>
                 <div style={{ color: 'red', fontSize: '13px', padding: '10px' }}>{emailValue}</div>
             </div>
