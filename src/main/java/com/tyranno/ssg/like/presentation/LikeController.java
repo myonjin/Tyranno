@@ -1,6 +1,8 @@
 package com.tyranno.ssg.like.presentation;
 
+import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseEntity;
+import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.like.application.LikeService;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,22 +24,33 @@ public class LikeController {
     @PostMapping("/likeButton/")
     public ResponseEntity<?> modifyLLike(@RequestParam Long productId,
                                          @RequestHeader(value = "Authorization", required = false) String token) {
-        String uuid = jwtTokenProvider.tokenToUuid(token);
-        boolean isLike = likeService.modifyLike(productId, uuid);
-        if (isLike) {
-            return new ResponseEntity<>("좋아요 추가!");
+        if(token != null) {
+            String uuid = jwtTokenProvider.tokenToUuid(token);
+            boolean isLike = likeService.modifyLike(productId, uuid);
+            if (isLike) {
+                return new ResponseEntity<>("좋아요 추가!");
+            } else {
+                return new ResponseEntity<>("좋아요 삭제!");
+            }
         } else {
-            return new ResponseEntity<>("좋아요 삭제!");
+            throw new RuntimeException(ResponseStatus.ONLY_FOR_MEMBERS.getMessage());
         }
     }
+
 
     @Operation(summary = "좋아요 확인", description = "uuid")
     @GetMapping("/isLike/{product_id}")
     public ResponseEntity<?> getLike(@PathVariable Long product_id,
                                      @RequestHeader(value = "Authorization", required = false) String token) {
-        String uuid = jwtTokenProvider.tokenToUuid(token);
-        int result = likeService.getLike(product_id, uuid);
-        return new ResponseEntity<>(result);
+        if(token != null) {
+            String uuid = jwtTokenProvider.tokenToUuid(token);
+            int result = likeService.getLike(product_id, uuid);
+            return new ResponseEntity<>(result);
+        } else {
+            int result = 99;
+            ResponseEntity<Integer> integerResponseEntity = new ResponseEntity<>(result);
+            return integerResponseEntity;
+        }
     }
 }
 
