@@ -14,8 +14,9 @@ export async function middleware(request: NextRequest) {
         }
     } else {
         if (request.nextUrl.pathname.startsWith('/user/login')) {
-            const redirectUrl = new URL('/mypage', request.nextUrl.origin)
-            return NextResponse.redirect(redirectUrl.toString())
+            // const redirectUrl = new URL('/mypage', request.nextUrl.origin)
+            // return NextResponse.redirect(redirectUrl.toString())
+            return NextResponse.redirect(new URL('/mypage', request.url))
         }
     }
 }
