@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { CartItemsAtom } from '@/state/CartCheckedListAtom'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import {
     getDeliveryAddressAPI,
     getItemsOrderAPI,
@@ -15,6 +15,7 @@ import { KakaoPayDataType, OrderFormDataType } from '@/types/OrderDataTypte'
 import { MyInfo } from '@/types/MyInfoDataType'
 import { getMyInfo } from '@/actions/mypage'
 import { useRouter } from 'next/navigation'
+import { SelectedOptionItemListAtom } from '@/state/SelectedOptionListAtom'
 
 export interface OptionType {
     color: string | null
@@ -23,16 +24,22 @@ export interface OptionType {
 }
 
 export default function DeliveryItemList() {
+    const [option, setOption] = useRecoilState(SelectedOptionItemListAtom)
     const data = useRecoilValue(CartItemsAtom)
     const [productData, setProductData] = useState([]) as any[]
     const [deliveryAddress, setDeliveryAddress] = useState<OrderAddressDataType>()
     const [MyInfo, setMyInfo] = useState<MyInfo>()
-    const router = useRouter()
+    console.log(option, '주문')
     let total = 0
     const fetchOptions = async () => {
         const productLists = []
+        for (const items of data) {
+            const product = await getItemsOrderAPI(items.productId)
+            const option = await getOptionListAPI(items.optionId)
+            productLists.push({ ...product, ...items, ...option })
+        }
 
-        for (const item of data) {
+        for (const item of option) {
             const product = await getItemsOrderAPI(item.productId)
             const option = await getOptionListAPI(item.optionId)
             productLists.push({ ...product, ...item, ...option })
@@ -43,6 +50,7 @@ export default function DeliveryItemList() {
         const myinfos = await getMyInfo()
         setMyInfo(myinfos as MyInfo)
     }
+    console.log(productData, 'tgsg')
     useEffect(() => {
         fetchOptions()
     }, [])
@@ -134,7 +142,9 @@ export default function DeliveryItemList() {
 
                             <div className="flex justify-between">
                                 <div>
-                                    <span className="line-through mr-2 text-[#666666]">{product.money}원</span>
+                                    <span className="line-through mr-2 text-[#666666]">
+                                        {product.price * product.count}원
+                                    </span>
                                     <span className="font-extrabold">
                                         {discountmoney(product.money, product.discount)}원
                                     </span>

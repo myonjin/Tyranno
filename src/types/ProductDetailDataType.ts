@@ -6,8 +6,13 @@ export interface ProductDataType {
     imageUrl: string[]
     vendor: {
         vendorName: string
-        vendorImageUrl: string | null
+        vendorImageUrl: string
         vendorId: number
-    }[]
+    }
     discount: number
+}
+
+export interface CartDataType {
+    optionId: string
+    count: number
 }
