@@ -43,4 +43,4 @@ interface OrderAddressDataType {
     deliveryDetail: string
     zipCode: number
 }
-export type { AddressDataType, AddaddressDataType, ModifyAddressDataType }
+export type { AddressDataType, AddaddressDataType, ModifyAddressDataType, CartAddressDataType, OrderAddressDataType }

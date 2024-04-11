@@ -91,7 +91,9 @@ export default function DeliveryItemList() {
                 total_amount: total,
             }
             const response = await kakaoPayReadyAPI(payData)
-            link = response.next_redirect_pc_url
+            console.log(response)
+            // link = response.next_redirect_pc_url
+            link = response.next_redirect_mobile_url
             window.open(link)
         }
 
