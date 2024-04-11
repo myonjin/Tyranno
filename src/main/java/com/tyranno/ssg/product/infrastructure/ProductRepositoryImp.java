@@ -26,23 +26,33 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
     }
 
     public List<Long> searchProductIdsByCategory(Long largeId, Long middleId,
-                                       Long smallId, Long detailId, Integer sortCriterion, @Nullable Integer lastIndex) {
+                                                 Long smallId, Long detailId, Integer sortCriterion, Integer page) {
         OrderSpecifier<?> orderSpecifier = createOrderSpecifier(sortCriterion);
         QCategory category = QCategory.category;
-        return jpaQueryFactory.select(category.product.id)
+
+        com.querydsl.jpa.impl.JPAQuery<Long> query = jpaQueryFactory
+                .select(category.product.id)
                 .from(category)
                 .where(
-                        gtBoardId(lastIndex),
                         largeIdEq(category, largeId),
                         middleIdEq(category, middleId),
                         smallIdEq(category, smallId),
                         detailIdEq(category, detailId))
-                .orderBy(orderSpecifier)
-                .limit(20)
-                .fetch();
+                .orderBy(orderSpecifier);
+
+        if (page != null && page > 0) {
+            // page가 제공된 경우, 해당 인덱스 이후의 상품을 가져오도록 offset 설정
+            int offset = (page - 1) * 10; // 10개씩 끊어서 가져오므로 10을 곱해야함
+            query.offset(offset).limit(10);
+        } else {
+            // page가 null이거나 0 이하인 경우, 처음부터 10개의 상품을 가져오도록 설정
+            query.limit(10);
+        }
+
+        return query.fetch();
     }
 
-    public List<Long> searchProductIdsByKeyword(String searchKeyword, Integer sortCriterion, Integer lastIndex) {
+    public List<Long> searchProductIdsByKeyword(String searchKeyword, Integer sortCriterion, Integer page) {
         OrderSpecifier<?> orderSpecifier = createProductSpecifier(sortCriterion);
         QProduct product = QProduct.product;
         QVendor vendor = QVendor.vendor;
@@ -78,14 +88,23 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
         } else if (searchExpression != null) {
             finalExpression = searchExpression;
         }
-        return jpaQueryFactory.select(vendorProduct.id)
+
+        com.querydsl.jpa.impl.JPAQuery<Long> query = jpaQueryFactory
+                .select(vendorProduct.id)
                 .from(vendorProduct)
                 .where(
-                        gtProductBoardId(lastIndex),
+                        gtProductBoardId(page),
                         finalExpression.or(generalProductExpression))
                 .orderBy(orderSpecifier)
-                .limit(20)
-                .fetch();
+                .limit(10);
+
+        if (page != null && page > 0) {
+            // lastIndex가 제공된 경우, 해당 인덱스 이후의 상품을 가져오도록 offset 설정
+            int offset = (page - 1) * 10; // 10개씩 끊어서 가져오므로 10을 곱해야함
+            query.offset(offset);
+        }
+
+        return query.fetch();
     }
 
     private BooleanExpression largeIdEq(QCategory category, Long largeId) {
@@ -116,13 +135,13 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
         return category.detailId.eq(detailId);
     }
 
-    private BooleanExpression gtBoardId(@Nullable Integer lastIndex) {
+    private BooleanExpression gtBoardId(@Nullable Integer page) {
         QCategory category = QCategory.category;
-        return lastIndex == null ? null : category.product.id.gt(lastIndex);
+        return page == null ? null : category.product.id.gt(page);
     }
-    private BooleanExpression gtProductBoardId(@Nullable Integer lastIndex) {
+    private BooleanExpression gtProductBoardId(@Nullable Integer page) {
         QProduct product = QProduct.product;
-        return lastIndex == null ? null : product.id.gt(lastIndex);
+        return page == null ? null : product.id.gt(page);
     }
 
     private OrderSpecifier<?> createOrderSpecifier(Integer sortCriterion) {

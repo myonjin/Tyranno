@@ -1,10 +1,7 @@
 package com.tyranno.ssg.cart.application;
 
 import com.tyranno.ssg.cart.domain.Cart;
-import com.tyranno.ssg.cart.dto.Request.CartAddDto;
-import com.tyranno.ssg.cart.dto.Request.CartCountModifyDto;
-import com.tyranno.ssg.cart.dto.Request.CartKeepModifyDto;
-import com.tyranno.ssg.cart.dto.Request.CartOptionModifyDto;
+import com.tyranno.ssg.cart.dto.Request.*;
 import com.tyranno.ssg.cart.dto.Response.CartListDto;
 import com.tyranno.ssg.cart.infrastructure.CartRepository;
 import com.tyranno.ssg.global.GlobalException;
@@ -22,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +45,7 @@ public class CartServiceImp implements CartService {
     @Override
     public String addCartByProduct(Long productId, String uuid) {
         // 옵션이 있는 상품인 경우, 바로 추가되지 않고 상품 상세페이지로 이동
-        if(!optionService.getOptionAble(productId).isEmpty()) return "상품 상세에서 옵션을 선택해주세요.";
+        if (!optionService.getOptionAble(productId).isEmpty()) return "상품 상세에서 옵션을 선택해주세요.";
 
         Option option = optionRepository.findByProductId(productId)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION));
@@ -57,6 +53,7 @@ public class CartServiceImp implements CartService {
         return addCart(uuid, option, 1); // 상품리스트에선 1개씩만 추가 가능
 
     }
+
     @Transactional
     @Override
     public String addCart(String uuid, Option option, int count) {
@@ -99,7 +96,7 @@ public class CartServiceImp implements CartService {
             String imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1)
                     .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCTTHUM))
                     .getImageUrl();
-            int discount = discountRepository.findById(productId)
+            int discount = discountRepository.findByProductId(productId)
                     .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DISCOUNT))
                     .getDiscount();
             String vendorName = vendorProductRepository.findByProductId(productId)
@@ -107,14 +104,14 @@ public class CartServiceImp implements CartService {
                     .getVendor().getVendorName();
 
             return CartListDto.FromEntity(cart, imageUrl, discount, vendorName);
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     @Transactional
     @Override
-    public void deleteCartList(List<Long> cartDeleteList) {
-
-        cartRepository.deleteByIdIn(cartDeleteList);
+    public void deleteCartList(List<CartIdDto> cartDeleteList) {
+        List<Long> cartIdList = cartDeleteList.stream().map(CartIdDto::getCartId).toList();
+        cartRepository.deleteByIdIn(cartIdList);
     }
 
     @Transactional
@@ -146,12 +143,12 @@ public class CartServiceImp implements CartService {
     }
 
     @Override
-    public void modifyCartIsKeep(CartKeepModifyDto cartKeepModifyDto){
+    public void modifyCartIsKeep(CartKeepModifyDto cartKeepModifyDto) {
         Cart cart = getCart(cartKeepModifyDto.getCartId());
         cartRepository.save(cartKeepModifyDto.toEntity(cart));
     }
 
-    private Cart getCart(Long cartId){
+    private Cart getCart(Long cartId) {
         return cartRepository.findById(cartId)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_CART));
     }

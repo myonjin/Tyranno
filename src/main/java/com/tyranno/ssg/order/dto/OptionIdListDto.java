@@ -25,6 +25,7 @@ public class OptionIdListDto {
                 .orderList(orderList)
                 .count(optionIdListDto.getCount())
                 .money(optionIdListDto.getMoney())
+                .isReview((byte)99)
                 .build();
 
     }

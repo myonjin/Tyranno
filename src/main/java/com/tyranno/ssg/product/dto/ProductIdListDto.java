@@ -10,10 +10,10 @@ import java.util.Map;
 @Getter
 @NoArgsConstructor
 public class ProductIdListDto {
-    private List<Map<String, Long>> productIds;
+    private List<Map<String, Object>> productIds;
 
     @Builder
-    public void setProductIds(List<Map<String, Long>> productIds) {
+    public void setProductIds(List<Map<String, Object>> productIds) {
         this.productIds = productIds;
     }
 }

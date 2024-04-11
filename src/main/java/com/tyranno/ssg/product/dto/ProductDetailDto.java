@@ -2,16 +2,12 @@ package com.tyranno.ssg.product.dto;
 
 import com.tyranno.ssg.vendor.domain.Vendor;
 import com.tyranno.ssg.vendor.dto.VendorDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Builder
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 public class ProductDetailDto {
     private String productName;
@@ -20,8 +16,21 @@ public class ProductDetailDto {
     private String detailContent;
 
     // 다른 곳
-    private List<VendorDto> vendor;
+    private VendorDto vendor;
     private List<String> imageUrl;
     private int discount;
     private int reviewCount;
+
+    @Builder
+
+    public ProductDetailDto(String productName, int price, float productRate, String detailContent, VendorDto vendor, List<String> imageUrl, int discount, int reviewCount) {
+        this.productName = productName;
+        this.price = price;
+        this.productRate = productRate;
+        this.detailContent = detailContent;
+        this.vendor = vendor;
+        this.imageUrl = imageUrl;
+        this.discount = discount;
+        this.reviewCount = reviewCount;
+    }
 }
