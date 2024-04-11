@@ -6,7 +6,6 @@ import ExpectedPaymoney from '@/components/pages/order/ExpectedPaymoney'
 import TermsOfService from '@/components/pages/order/TermsOfService'
 import InformationOfOrderer from '@/components/pages/order/InformationOfOrderer'
 import DeliveryItemList from '@/components/pages/order/DeliveryItemList'
-import ButtonOfOrder from '@/components/ui/ButtonOfOrder'
 
 export default function OrderPage() {
     return (

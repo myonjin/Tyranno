@@ -3,7 +3,13 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { CartItemsAtom } from '@/state/CartCheckedListAtom'
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
-import { getDeliveryAddressAPI, getItemsOrderAPI, getOptionListAPI, kakaoPayReadyAPI, orderComplete } from '@/actions/order'
+import {
+    getDeliveryAddressAPI,
+    getItemsOrderAPI,
+    getOptionListAPI,
+    kakaoPayReadyAPI,
+    orderComplete,
+} from '@/actions/order'
 import { OrderAddressDataType } from '@/types/AddressDataType'
 import { KakaoPayDataType, OrderFormDataType } from '@/types/OrderDataTypte'
 import { MyInfo } from '@/types/MyInfoDataType'
@@ -19,15 +25,19 @@ export interface OptionType {
 
 export default function DeliveryItemList() {
     const [option, setOption] = useRecoilState(SelectedOptionItemListAtom)
-    // const data = useRecoilValue(CartItemsAtom)
+    const data = useRecoilValue(CartItemsAtom)
     const [productData, setProductData] = useState([]) as any[]
     const [deliveryAddress, setDeliveryAddress] = useState<OrderAddressDataType>()
     const [MyInfo, setMyInfo] = useState<MyInfo>()
-    const router = useRouter()
     console.log(option, '주문')
     let total = 0
     const fetchOptions = async () => {
         const productLists = []
+        for (const items of data) {
+            const product = await getItemsOrderAPI(items.productId)
+            const option = await getOptionListAPI(items.optionId)
+            productLists.push({ ...product, ...items, ...option })
+        }
 
         for (const item of option) {
             const product = await getItemsOrderAPI(item.productId)
@@ -40,7 +50,7 @@ export default function DeliveryItemList() {
         const myinfos = await getMyInfo()
         setMyInfo(myinfos as MyInfo)
     }
-    // console.log(productData, 'tgsg')
+    console.log(productData, 'tgsg')
     useEffect(() => {
         fetchOptions()
     }, [])
@@ -130,12 +140,14 @@ export default function DeliveryItemList() {
 
                             <div className="flex justify-between">
                                 <div>
-                                    <span className="line-through mr-2 text-[#666666]">{product.price}원</span>
+                                    <span className="line-through mr-2 text-[#666666]">
+                                        {product.price * product.count}원
+                                    </span>
                                     <span className="font-extrabold">
-                                        {discountmoney(product.price, product.discount)}원
+                                        {discountmoney(product.money, product.discount)}원
                                     </span>
                                 </div>
-                                <span className="text-[#666666]">수량 {product.qty} 개</span>
+                                <span className="text-[#666666]">수량 {product.count} 개</span>
                             </div>
                         </div>
                     </div>
