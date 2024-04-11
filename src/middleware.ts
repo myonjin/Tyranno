@@ -14,6 +14,7 @@ export async function middleware(request: NextRequest) {
         }
     } else {
         if (request.nextUrl.pathname.startsWith('/user/login')) {
+            console.log('미들웨어 실행여부 ')
             // const redirectUrl = new URL('/mypage', request.nextUrl.origin)
             // return NextResponse.redirect(redirectUrl.toString())
             return NextResponse.redirect(new URL('/mypage', request.url))
