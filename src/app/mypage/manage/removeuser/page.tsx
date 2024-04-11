@@ -1,4 +1,4 @@
-import RemoveUser from '@/components/pages/mypage/RemoveUser'
+import RemoveUser from '@/components/pages/mypage/removeUser'
 export default function removeUser() {
     return (
         <section className="px-3 bg-white">
