@@ -9,7 +9,7 @@ public interface AuthService {
     UsersTypeInfoDto checkOAuthUsersByPhoneNum(PhoneNumberDto phoneNumberDto);
     // 기존 소셜 회원 통합회원 연결
     void connectUsers(ConnectUsersDto connectUsersDto);
-    void singUpUsers(SignUpDto signUpDto);
+    String singUpUsers(SignUpDto signUpDto);
     String loginUsers(LoginDto loginDto);
     void addMarketingInformation(MarketingAgreeDto marketingAgreeDto, Users users);
     void checkLoginId(IdCheckDto idCheckDto);

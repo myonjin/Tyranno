@@ -62,22 +62,34 @@ public class AuthServiceImp implements AuthService {
 
     @Transactional
     @Override
-    public void singUpUsers(SignUpDto signUpDto) {
-        //회원
-        Users users = signUpDto.toUsersEntity();
-        usersRepository.save(users);
+    public String singUpUsers(SignUpDto signUpDto) {
+        Optional<Users> optionalUsers = usersRepository.findByPhoneNumber(signUpDto.getPhoneNumber());
 
-        //마케팅
-        MarketingAgreeDto marketingAgreeDto = new MarketingAgreeDto(
-                signUpDto.getShinsegaeMarketingAgree(),
-                signUpDto.getShinsegaeOptionAgree(),
-                signUpDto.getSsgMarketingAgree());
+        if(optionalUsers.isPresent()) { // 소셜회원이 통합회원가입 하는 경우
+        // logId, password, 통합회원 여부 적용
+        usersRepository.save(signUpDto.connctUsers(optionalUsers.get()));
+        return "기존 소셜회원, 통합회원 연결하였습니다.";
 
-        addMarketingInformation(marketingAgreeDto, users);
+        }
+        else { // 비회원이 통합회원가입 하는 경우
+            //회원
+            Users users = signUpDto.toUsersEntity();
+            usersRepository.save(users);
 
-        //배송지
-        Delivery delivery = signUpDto.toDeliveryEntity(users);
-        deliveryRepository.save(delivery);
+            //마케팅
+            MarketingAgreeDto marketingAgreeDto = new MarketingAgreeDto(
+                    signUpDto.getShinsegaeMarketingAgree(),
+                    signUpDto.getShinsegaeOptionAgree(),
+                    signUpDto.getSsgMarketingAgree());
+
+            addMarketingInformation(marketingAgreeDto, users);
+
+            //배송지
+            Delivery delivery = signUpDto.toDeliveryEntity(users);
+            deliveryRepository.save(delivery);
+
+            return "최초 통합회원 가입 성공하였습니다.";
+        }
     }
 
     @Transactional
