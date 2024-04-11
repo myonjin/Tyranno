@@ -106,7 +106,7 @@ export default function ProductOptions({
         }
         getOptionDataByOptionId()
     }, [selectedOptionId])
-    // console.log(selectedOptionList)
+    console.log(selectedOptionList)
     // console.log(newOptionList.length)
     // console.log(productId, '상품아이디')
 
@@ -125,12 +125,14 @@ export default function ProductOptions({
     }
 
     const handleCart = async () => {
-        const data: CartDataType = {
-            optionId: selectedOptionList.optionId,
-            count: selectedOptionList.qty,
+        for (let i = 0; i < selectedOptionList.length; i++) {
+            const data: CartDataType = {
+                optionId: selectedOptionList[i].optionId,
+                count: selectedOptionList[i].qty,
+            }
+            const res = await cartClickAPI(data)
+            console.log(res, '장바구니')
         }
-        const res = await cartClickAPI(data)
-        console.log(res, '장바구니')
     }
     const handleOrder = async () => {
         const data: CartDataType = {
@@ -234,8 +236,8 @@ export default function ProductOptions({
                 <button
                     onClick={() => {
                         handleCart()
+                        resetSelectedOptionList()
                         router.push('/cart')
-                        // resetSelectedOptionList()
                     }}
                     className="flex justify-center items-center bg-black flex-grow h-12"
                 >
@@ -282,13 +284,13 @@ const OptionSelecter = ({
 }) => {
     const [selectedOption, setSelectedOption] = useState<string>(`선택하세요. (${item.name})`)
     const [showModal, setShowModal] = useState<boolean>(false)
-    // const resetSelectedOptionList = useResetRecoilState(SelectedOptionItemListAtom)
+    const resetSelectedOptionList = useResetRecoilState(SelectedOptionItemListAtom)
 
-    // useEffect(() => {
-    //     return () => {
-    //         resetSelectedOptionList()
-    //     }
-    // }, [])
+    useEffect(() => {
+        return () => {
+            resetSelectedOptionList()
+        }
+    }, [])
     useEffect(() => {
         setNewOptionList(
             newOptionList.map((opt: OptionListType) => {

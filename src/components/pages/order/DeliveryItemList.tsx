@@ -19,17 +19,17 @@ export interface OptionType {
 
 export default function DeliveryItemList() {
     const [option, setOption] = useRecoilState(SelectedOptionItemListAtom)
-    const data = useRecoilValue(CartItemsAtom)
+    // const data = useRecoilValue(CartItemsAtom)
     const [productData, setProductData] = useState([]) as any[]
     const [deliveryAddress, setDeliveryAddress] = useState<OrderAddressDataType>()
     const [MyInfo, setMyInfo] = useState<MyInfo>()
     const router = useRouter()
-    console.log(option)
+    console.log(option, '주문')
     let total = 0
     const fetchOptions = async () => {
         const productLists = []
 
-        for (const item of data) {
+        for (const item of option) {
             const product = await getItemsOrderAPI(item.productId)
             const option = await getOptionListAPI(item.optionId)
             productLists.push({ ...product, ...item, ...option })
@@ -40,6 +40,7 @@ export default function DeliveryItemList() {
         const myinfos = await getMyInfo()
         setMyInfo(myinfos as MyInfo)
     }
+    // console.log(productData, 'tgsg')
     useEffect(() => {
         fetchOptions()
     }, [])
@@ -120,12 +121,12 @@ export default function DeliveryItemList() {
 
                             <div className="flex justify-between">
                                 <div>
-                                    <span className="line-through mr-2 text-[#666666]">{product.money}원</span>
+                                    <span className="line-through mr-2 text-[#666666]">{product.price}원</span>
                                     <span className="font-extrabold">
-                                        {discountmoney(product.money, product.discount)}원
+                                        {discountmoney(product.price, product.discount)}원
                                     </span>
                                 </div>
-                                <span className="text-[#666666]">수량 {product.count} 개</span>
+                                <span className="text-[#666666]">수량 {product.qty} 개</span>
                             </div>
                         </div>
                     </div>
