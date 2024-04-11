@@ -7,7 +7,6 @@ import ClipCancleButton from './ClipCancleButton'
 import ClipEditButton from './ClipEditButton'
 import EditBar from './EditBar'
 import ClipInfoButton from './ClipInfoButton'
-import { deleteManyClips } from '@/actions/clip'
 import Link from 'next/link'
 
 //itemIds는 서버에서 받아와야함
