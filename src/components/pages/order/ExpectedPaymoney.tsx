@@ -19,7 +19,7 @@ export default function ExpectedPaymoney() {
                 <div className="mt-2 text-sm">
                     <div className="flex justify-between">
                         <span>주문금액</span>
-                        <span>{money !== undefined ? money.orderMoney.toLocaleString() : 0}원</span>
+                        <span>{money !== undefined ? (money.orderMoney + 0).toLocaleString() : 0}원</span>
                     </div>
                     <div className="flex justify-between my-1">
                         <span>배송비</span>
@@ -28,12 +28,12 @@ export default function ExpectedPaymoney() {
                     <div className="flex justify-between my-1">
                         <span>할인금액</span>
                         <span className="text-[red]">
-                            {money !== undefined ? money.discountMoney.toLocaleString() : 0}원
+                            {money !== undefined ? (money.discountMoney + 0).toLocaleString() : 0}원
                         </span>
                     </div>
                     <div className="flex justify-between text-[#888888]">
                         <span className="">└ 상품할인</span>
-                        <span>{money !== undefined ? money.discountMoney.toLocaleString() : 0}원</span>
+                        <span>{money !== undefined ? (money.discountMoney + 0).toLocaleString() : 0}원</span>
                     </div>
                 </div>
             </div>
