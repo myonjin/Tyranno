@@ -3,10 +3,18 @@ import Image from 'next/image'
 import { useState } from 'react'
 import HeartIcon from '@/images/HeartIcon.png'
 import RedHeartIcon from '@/images/RedHeartIcon.png'
-function LikeAndCart() {
+
+import { LIKEType } from '@/types/LikeType'
+// import { LikeClickAPI } from '@/actions/product'
+
+function LikeAndCart({ productId }: { productId: string }) {
     const [like, setLike] = useState<number>(99)
-    const handleLike = (islike: number) => {
-        setLike(islike)
+
+    const handleLike = async (productId: string, islike: number) => {
+        // const body: LIKEType = {
+        //     isLike: like,
+        // }
+        // const res = await LikeClickAPI(productId, body)
     }
     return (
         <div className=" flex items-center pt-[0.125rem] pb-[0.125rem] ">
@@ -14,11 +22,17 @@ function LikeAndCart() {
             <div className="flex-grow flex-shrink basis-[0%] self-stretch justify-self-stretch"></div>
 
             {like === 99 ? (
-                <button onClick={() => handleLike(11)} className=" flex justify-center items-center  w-[20px] h-[20px]">
+                <button
+                    onClick={() => handleLike(productId, 11)}
+                    className=" flex justify-center items-center  w-[20px] h-[20px]"
+                >
                     <Image src={HeartIcon} alt="안좋아요"></Image>
                 </button>
             ) : (
-                <button onClick={() => handleLike(99)} className=" flex justify-center items-center w-[20px] h-[20px]">
+                <button
+                    onClick={() => handleLike(productId, 99)}
+                    className=" flex justify-center items-center w-[20px] h-[20px]"
+                >
                     <Image src={RedHeartIcon} alt="좋아요" />
                 </button>
             )}
