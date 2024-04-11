@@ -10,9 +10,12 @@ import com.tyranno.ssg.payment.dto.SuccessInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,7 +38,8 @@ public class PaymentController {
      */
     @Operation(summary = "카카오페이 결제 성공", description = "카카오페이 결제 성공 시 redirect url")
     @GetMapping("/success/{id}")
-    public ResponseEntity<?> successKakaoPay() {
+    public ResponseEntity<?> successKakaoPay(HttpServletResponse response, @PathVariable String id, @RequestParam("pg_token") String pgToken) throws IOException {
+        response.sendRedirect("http://localhost:3000/order/complete");
         return new ResponseEntity<>("카카오페이 결제 성공");
     }
     @Operation(summary = "카카오페이 승인 요청", description = "카카오페이 결제 승인을 요청한다.")
