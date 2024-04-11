@@ -141,21 +141,14 @@ public class ProductServiceImp implements ProductService {
     }
     @Override
     public ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
-                                             Integer sortCriterion, Integer page, String searchKeyword) { // productList
+                                             Integer sortCriterion, Integer page) { // productList
         // 페이지당 10개
         final int PAGE_SIZE = 10;
 
         List<Long> productIds;
-        if (searchKeyword != null && !searchKeyword.isEmpty()) {
-            // 상품명으로 검색
-            log.info("상품명 실행");
-            productIds = productRepositoryImp.searchProductIdsByKeyword(searchKeyword, sortCriterion, page);
-        } else {
-            // 카테고리로 검색
-            log.info("카테고리 실행");
-            productIds = productRepositoryImp.searchProductIdsByCategory(largeId, middleId, smallId, detailId,
+        productIds = productRepositoryImp.searchProductIdsByCategory(largeId, middleId, smallId, detailId,
                     sortCriterion, page);
-        }
+
         ProductIdListDto productIdListDto = new ProductIdListDto();
 
         List<Map<String, Object>> productIdList = new ArrayList<>();
