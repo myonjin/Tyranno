@@ -2,30 +2,22 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import CategoryListModal from '@/components/pages/category/CategoryListModal'
 
-interface categoryMiddle {
-    middleId: number
-    middleName: string
-}
 interface category {
     largeId: number
     largeName: string
 }
-export default function CategoryProductListToolBar() {
+export default function CategoryProductListToolBar({ largeId }: { largeId: string }) {
     // 카테고리 리스트 모달 상태 관리용 useState 선언
     const [isOpenModal, setIsOpenModal] = useState(false)
-    const [category, setCategory] = useState<categoryMiddle[]>([] as categoryMiddle[])
     const [Lcategory, setLCategory] = useState<category>({} as category)
 
     // 뒤로가기 버튼 클릭용 useRouter 선언
     const router = useRouter()
-    const searchParams = useSearchParams()
-    const largeId = searchParams.get('largeId')
-    const middleId = searchParams.get('middleId')
-    // console.log(largeId, middleId)
+
     useEffect(() => {
         const getCategory1 = async () => {
             const data1 = await fetch(`https://tyrannoback.com/api/v1/category/`)
@@ -36,20 +28,6 @@ export default function CategoryProductListToolBar() {
         }
         getCategory1()
     }, [])
-    console.log(Lcategory)
-
-    useEffect(() => {
-        const getCategory = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/category/middle/${largeId}`)
-            if (data) {
-                const response = await data.json()
-                setCategory(response)
-            }
-        }
-        getCategory()
-    }, [largeId])
-
-    // console.log(category)
 
     return (
         <div className="flex flex-row w-full h-[46px] bg-white items-center pl-3 pr-3 sticky top-0 z-10">
@@ -86,12 +64,7 @@ export default function CategoryProductListToolBar() {
                     onClick={() => setIsOpenModal(!isOpenModal)}
                     className="inline-flex h-8 justify-center items-center"
                 >
-                    {category &&
-                        category.map((opt: categoryMiddle, index) => (
-                            <div key={index} className="text-sm font-bold overflow-hidden text-ellipsis">
-                                {opt.middleId === parseInt(`${middleId}`) && <div>{opt.middleName}</div>}
-                            </div>
-                        ))}
+                    <div className="text-sm font-bold overflow-hidden text-ellipsis">{<div>전체보기</div>}</div>
 
                     <div className={` relative w-3 h-3 inline-block ml-1 ${isOpenModal ? 'rotate-180' : ''}`}>
                         <Image src="https://img.icons8.com/material-sharp/24/give-way--v2.png" alt="더보기" fill />

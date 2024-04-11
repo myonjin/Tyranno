@@ -11,6 +11,9 @@ export interface product {
 async function getProductList(largeId: string, middleId: string) {
     const data = await fetch(
         `https://tyrannoback.com/api/v1/product/productList?largeId=${largeId}&middleId=${middleId}`,
+        {
+            cache: 'force-cache',
+        },
     )
     if (data) {
         const response = await data.json()
@@ -21,8 +24,6 @@ async function getProductList(largeId: string, middleId: string) {
 
 async function CategoryProductListPage({ searchParams }: { searchParams: { [key: string]: string } }) {
     const params = searchParams
-    // console.log(params)
-
     const productListIdData: product[] = await getProductList(params.largeId, params.middleId)
 
     return (
