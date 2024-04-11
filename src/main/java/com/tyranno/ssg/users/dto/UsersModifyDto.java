@@ -22,7 +22,6 @@ public class UsersModifyDto { //회원 인증 정보 - 유저가 입력, 비밀�
 
     @Pattern(regexp = "^$|^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$",
             message = "올바르지 않은 이메일 형식입니다.")
-
     private String email;
 
     public Users toEntity(Users users) {

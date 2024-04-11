@@ -7,10 +7,12 @@ import com.tyranno.ssg.config.ValidationSequence;
 import com.tyranno.ssg.global.ResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,8 +33,7 @@ public class OAuthController {
     public ResponseEntity<?> signUp(@Validated(ValidationSequence.class)
                                         @RequestBody OAuthSignUpDto oauthSignUpDto) {
 
-        oauthService.signUpOAuth(oauthSignUpDto);
-        return new ResponseEntity<>("소셜 회원가입이 완료되었습니다.");
+        return new ResponseEntity<>(oauthService.signUpOAuth(oauthSignUpDto));
     }
 
 //    @Operation(summary = "기존 통합회원 소셜 로그인 연결", description = "기존의 통합 회원이 소셜 회원가입을 한다.")

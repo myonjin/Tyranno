@@ -2,6 +2,7 @@ package com.tyranno.ssg.users.dto;
 
 import com.tyranno.ssg.users.domain.MarketingInformation;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MarketingIsAgreeDto {
 
-    @NotBlank
+    @NotNull
     private Byte isAgree;
 
     public MarketingInformation toEntity(MarketingInformation marketingInformation) {

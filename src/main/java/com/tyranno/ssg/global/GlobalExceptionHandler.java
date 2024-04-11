@@ -36,6 +36,10 @@ public class GlobalExceptionHandler {
             builder.append(fieldError.getDefaultMessage());
             builder.append("\n");
         }
+//        String firstErrorMessage = bindingResult.getFieldErrors().stream()
+//                .findFirst()
+//                .map(FieldError::getDefaultMessage)
+//                .orElse("Validation error");
 
         return new ResponseEntity<>(e, builder.toString());
     }

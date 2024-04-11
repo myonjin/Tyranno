@@ -46,7 +46,7 @@ public class OAuthServiceImp implements OAuthService {
 
     @Transactional
     @Override
-    public void signUpOAuth(OAuthSignUpDto oauthSignUpDto) {
+    public String signUpOAuth(OAuthSignUpDto oauthSignUpDto) {
 
         Users users = oauthSignUpDto.toUsersEntity();
         usersRepository.save(users);
@@ -61,7 +61,10 @@ public class OAuthServiceImp implements OAuthService {
         Delivery delivery = oauthSignUpDto.toDeliveryEntity(users);
         deliveryRepository.save(delivery);
 
-        oauthRepository.save(oauthSignUpDto.toOAuthEntity(users));
+        OAuth oauth = oauthSignUpDto.toOAuthEntity(users);
+        oauthRepository.save(oauth);
+
+        return jwtTokenProvider.generateToken(oauth.getUsers());
     }
     //    @Override
 //    @Transactional

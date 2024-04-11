@@ -4,6 +4,7 @@ import com.tyranno.ssg.delivery.domain.Delivery;
 import com.tyranno.ssg.config.ValidationGroups;
 import com.tyranno.ssg.users.domain.Users;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,7 +40,7 @@ public class SignUpDto {
     @NotBlank
     private String deliveryDetail;
 
-    @NotBlank
+    @NotNull
     private int zipCode;
 
     @NotBlank(message = "휴대폰 번호를 입력해주세요.", groups = ValidationGroups.NotEmptyGroup.class)
@@ -54,19 +55,19 @@ public class SignUpDto {
             groups = ValidationGroups.PatternCheckGroup.class)
     private String email;
 
-    @NotBlank
+    @NotNull
     private Byte gender;
 
-    @NotBlank
+    @NotNull
     private LocalDate birth;
 
-    @NotBlank
+    @NotNull
     private Byte shinsegaeMarketingAgree;
 
-    @NotBlank
+    @NotNull
     private Byte shinsegaeOptionAgree;
 
-    @NotBlank
+    @NotNull
     private Byte ssgMarketingAgree;
 
     public Users toUsersEntity() {
