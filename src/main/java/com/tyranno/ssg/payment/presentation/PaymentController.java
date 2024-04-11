@@ -59,15 +59,15 @@ public class PaymentController {
      * 결제 진행 중 취소
      */
     @GetMapping("/cancel")
-    public void cancel() {
-        throw new GlobalException(ResponseStatus.PAY_CANCEL);
+    public void cancel(HttpServletResponse response) throws IOException {
+        response.sendRedirect("http://localhost:3000/order/complete");
     }
 
     /**
      * 결제 실패
      */
     @GetMapping("/fail")
-    public void fail() {
-        throw new GlobalException(ResponseStatus.PAY_FAILED);
+    public void fail(HttpServletResponse response) throws IOException {
+        response.sendRedirect("http://localhost:3000/order/complete");
     }
 }
