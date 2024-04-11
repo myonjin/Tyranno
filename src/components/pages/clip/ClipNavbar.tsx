@@ -6,10 +6,10 @@ type ClipNavbarProps = {
   clipNums: ClipNumsType
 }
 
-export default function ClipNavbar({ clipNums }: ClipNavbarProps) {
+export default function ClipNavbar() {
   return (
     <nav className="text-sm bg-[#F5F5F5]">
-      <ul className="px-4 py-5 flex flex-row gap-3">
+      {/* <ul className="px-4 py-5 flex flex-row gap-3">
         <li>
           <button>
             <span>상품 ({clipNums.item})</span>
@@ -21,7 +21,7 @@ export default function ClipNavbar({ clipNums }: ClipNavbarProps) {
         <li>
           <span>카테고리 ({clipNums.category})</span>
         </li>
-      </ul>
+      </ul> */}
     </nav>
   )
 }
