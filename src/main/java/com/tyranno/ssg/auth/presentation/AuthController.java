@@ -2,11 +2,13 @@ package com.tyranno.ssg.auth.presentation;
 
 import com.tyranno.ssg.auth.application.AuthService;
 import com.tyranno.ssg.auth.dto.*;
+import com.tyranno.ssg.config.ValidationSequence;
 import com.tyranno.ssg.global.ResponseEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 //new ResponseEntity<>(message, headers, HttpStatus.OK);
@@ -26,24 +28,26 @@ public class AuthController {
     }
     @Operation(summary = "기존 소셜 회원 통합회원 연결", description = "기존의 소셜 회원이 통합 회원가입을 한다.")
     @PostMapping("/connect")
-    public ResponseEntity<?> connectUsers(@RequestBody ConnectUsersDto connectUsersDto) {
+    public ResponseEntity<?> connectUsers(@Validated(ValidationSequence.class)
+                                              @RequestBody ConnectUsersDto connectUsersDto) {
 
         authService.connectUsers(connectUsersDto);
 
         return new ResponseEntity<>("기존 소셜회원, 통합 회원가입 완료하였습니다.");
     }
-    @Operation(summary = "통합 회원가입", description = "통합 회원가입을 한다.")
+    @Operation(summary = "통합 회원가입", description = "기존 소셜회원은 통합회원 연결을, 비회원은 통합회원 가입을 한다.")
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpDto) {
+    public ResponseEntity<?> signUp(@Validated(ValidationSequence.class) @RequestBody SignUpDto signUpDto) {
 
-        authService.singUpUsers(signUpDto);
+        ;
 
-        return new ResponseEntity<>("회원가입 완료");
+        return new ResponseEntity<>(authService.singUpUsers(signUpDto));
     }
 
     @Operation(summary = "아이디 중복 검사", description = "회원 가입 시 기존 회원과 아이디 중복 여부 체크")
     @PostMapping("/id-check")
-    public ResponseEntity<?> checkIdExist(@RequestBody IdCheckDto idCheckDto) {
+    public ResponseEntity<?> checkIdExist(@Validated(ValidationSequence.class)
+                                              @RequestBody IdCheckDto idCheckDto) {
 
         authService.checkLoginId(idCheckDto);
 
@@ -52,7 +56,8 @@ public class AuthController {
 
     @Operation(summary = "이메일 중복 검사", description = "회원 가입 시 기존 회원과 이메일 중복 여부 체크")
     @PostMapping("/email-check")
-    public ResponseEntity<?> checkIdExist(@RequestBody EmailCheckDto emailCheckDto) {
+    public ResponseEntity<?> checkIdExist(@Validated(ValidationSequence.class)
+                                              @RequestBody EmailCheckDto emailCheckDto) {
 
         authService.checkEmail(emailCheckDto);
 
@@ -61,7 +66,7 @@ public class AuthController {
 
     @Operation(summary = "통합 회원 로그인", description = "통합 회원 로그인을 한다.")
     @PostMapping("/login")
-    public ResponseEntity<?> logIn(@RequestBody LoginDto logInDto) {
+    public ResponseEntity<?> logIn(@Valid @RequestBody LoginDto logInDto) {
 
         return new ResponseEntity<>(authService.loginUsers(logInDto));
     }
@@ -75,7 +80,8 @@ public class AuthController {
 
     @Operation(summary = "비밀번호 변경(로그인 x)", description = "비밀번호 찾기 에서의 비밀번호 변경")
     @PutMapping("/change-pw")
-    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDto passwordChangeDto) {
+    public ResponseEntity<?> changePassword(@Validated(ValidationSequence.class)
+                                                @RequestBody PasswordChangeDto passwordChangeDto) {
         authService.changePassword(passwordChangeDto);
         return new ResponseEntity<>("비밀번호 변경 성공");
     }

@@ -35,9 +35,8 @@ public class OAuthServiceImp implements OAuthService {
         if (oauth != null) return jwtTokenProvider.generateToken(oauth.getUsers());
 
         else {
-            // 비회원인 경우
             Users users = usersRepository.findByNameAndEmail(oauthInfoDto.getName(), oauthInfoDto.getEmail())
-                    .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+                    .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS)); // 비회원인 경우
             // 통합회원인 경우
             oauth = oauthInfoDto.toEntity(users);
             oauthRepository.save(oauth);
@@ -47,7 +46,7 @@ public class OAuthServiceImp implements OAuthService {
 
     @Transactional
     @Override
-    public void signUpOAuth(OAuthSignUpDto oauthSignUpDto) {
+    public String signUpOAuth(OAuthSignUpDto oauthSignUpDto) {
 
         Users users = oauthSignUpDto.toUsersEntity();
         usersRepository.save(users);
@@ -62,7 +61,10 @@ public class OAuthServiceImp implements OAuthService {
         Delivery delivery = oauthSignUpDto.toDeliveryEntity(users);
         deliveryRepository.save(delivery);
 
-        oauthRepository.save(oauthSignUpDto.toOAuthEntity(users));
+        OAuth oauth = oauthSignUpDto.toOAuthEntity(users);
+        oauthRepository.save(oauth);
+
+        return jwtTokenProvider.generateToken(oauth.getUsers());
     }
     //    @Override
 //    @Transactional

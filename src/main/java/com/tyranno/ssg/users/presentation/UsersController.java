@@ -3,16 +3,16 @@ package com.tyranno.ssg.users.presentation;
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import com.tyranno.ssg.users.application.UsersService;
-import com.tyranno.ssg.users.dto.MarketingModifyDto;
-import com.tyranno.ssg.users.dto.MarketingType;
+import com.tyranno.ssg.users.dto.MarketingIsAgreeDto;
 import com.tyranno.ssg.users.dto.PasswordModifyDto;
 import com.tyranno.ssg.users.dto.UsersModifyDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.tyranno.ssg.config.ValidationSequence;
 
 
 @RequiredArgsConstructor
@@ -31,33 +31,53 @@ public class UsersController {
         return new ResponseEntity<>(usersService.getUserName(uuid));
     }
 
-    @Operation(summary = "비밀번호 재설정(로그인 O)", description = "마이페이지에서 비밀번호 재설정")
+    @Operation(summary = "비밀번호 재설정(로그인 O)", description = "마이페이지에서 비밀번호 재설정한다.")
     @PutMapping("/modify-pw")
-    public ResponseEntity<?> changePassword(@RequestBody PasswordModifyDto passwordModifyDto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> changePassword(@Validated(ValidationSequence.class)
+                                                @RequestBody PasswordModifyDto passwordModifyDto,
+                                            @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         usersService.modifyPassword(passwordModifyDto, uuid);
         return new ResponseEntity<>("비밀번호 변경 성공");
     }
 
-    @Operation(summary = "신세계포인트 선택정보동의 변경", description = "마이페이지에서 신세계옵션 동의정보 변경")
-    @PutMapping("/shinsegae-marketing")
-    public ResponseEntity<?> modifyShinsegaeMaketing(@RequestBody MarketingModifyDto marketingModifyDto, @RequestHeader("Authorization") String token) {
+    @Operation(summary = "마케팅 동의 여부 변경", description = "신세계옵션 동의(/marketing/2), ssg 마케팅정보(/marketing/3) 동의 여부를 변경한다.")
+    @PutMapping("/marketing/{marketing_id}")
+    public ResponseEntity<?> modifyShinsegaeMaketing(@Valid @RequestBody MarketingIsAgreeDto marketingModifyDto,
+                                                     @PathVariable Long marketing_id,
+                                                     @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
-        usersService.modifyMarketing(marketingModifyDto, MarketingType.SHINSEGAE_OPTION, uuid);
+        usersService.modifyMarketing(marketingModifyDto, marketing_id, uuid);
         return new ResponseEntity<>("신세계 동의 변경 성공");
     }
 
-    @Operation(summary = "ssg 마케팅정보동의 변경", description = "마이페이지에서 ssg 동의정보 변경")
-    @PutMapping("/ssg-marketing")
-    public ResponseEntity<?> modifySsgMaketing(@Valid @RequestBody MarketingModifyDto marketingModifyDto, @RequestHeader("Authorization") String token) {
+//    @Operation(summary = "ssg 마케팅정보동의 변경", description = "마이페이지에서 ssg 동의정보 변경한다.")
+//    @PutMapping("/ssg-marketing")
+//    public ResponseEntity<?> modifySsgMaketing(@Valid @RequestBody MarketingModifyDto marketingModifyDto, @RequestHeader("Authorization") String token) {
+//        String uuid = jwtTokenProvider.tokenToUuid(token);
+//        usersService.modifyMarketing(marketingModifyDto, MarketingType.SSG, uuid);
+//        return new ResponseEntity<>("ssg 동의 변경 성공");
+//    }
+
+    @Operation(summary = "마케팅 동의 여부 조회", description = "신세계옵션 동의(/marketing/2), ssg 마케팅정보(/marketing/3) 동의 여부를 조회한다.")
+    @GetMapping("/marketing/{marketing_id}")
+    public ResponseEntity<MarketingIsAgreeDto> getMaketingAgree(@PathVariable Long marketing_id,
+                                                                @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
-        usersService.modifyMarketing(marketingModifyDto, MarketingType.SSG, uuid);
-        return new ResponseEntity<>("ssg 동의 변경 성공");
+        return new ResponseEntity<>(usersService.getMarketingAgree(marketing_id, uuid));
     }
 
-    @Operation(summary = "회원수정", description = "마이페이지에서 회원정보 변경")
+//    @Operation(summary = "ssg 마케팅정보동의 여부 조회", description = "ssg 동의정보 여부 조회한다.")
+//    @GetMapping("/ssg-marketing")
+//    public ResponseEntity<Byte> getSsgMaketingAgree(@RequestHeader("Authorization") String token) {
+//        String uuid = jwtTokenProvider.tokenToUuid(token);
+//        return new ResponseEntity<>(usersService.getMarketingAgree(MarketingType.SSG, uuid));
+//    }
+
+    @Operation(summary = "회원수정", description = "마이페이지에서 회원정보 변경한다.")
     @PutMapping
-    public ResponseEntity<?> modifyUsers(@Valid @RequestBody UsersModifyDto usersModifyDto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> modifyUsers(@Valid @RequestBody UsersModifyDto usersModifyDto,
+                                         @RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         usersService.modifyUsers(usersModifyDto, uuid);
         return new ResponseEntity<>("회원 정보 수정 완료");
@@ -70,7 +90,7 @@ public class UsersController {
         return new ResponseEntity<>(usersService.getUsersInfo(uuid));
     }
 
-    @Operation(summary = "회원 탈퇴", description = "회원 상태를 탈퇴로 변경")
+    @Operation(summary = "회원 탈퇴", description = "회원 상태를 탈퇴로 변경한다.")
     @DeleteMapping
     public ResponseEntity<?> resignUsers(@RequestHeader("Authorization") String token) {
         String uuid = jwtTokenProvider.tokenToUuid(token);

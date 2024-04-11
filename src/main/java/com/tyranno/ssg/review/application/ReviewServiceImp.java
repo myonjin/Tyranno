@@ -2,7 +2,6 @@ package com.tyranno.ssg.review.application;
 
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
-import com.tyranno.ssg.option.domain.Option;
 import com.tyranno.ssg.option.dto.OptionNamesDto;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
 import com.tyranno.ssg.order.domain.Order;
@@ -12,7 +11,6 @@ import com.tyranno.ssg.order.infrastructure.OrderRepository;
 import com.tyranno.ssg.product.application.ProductService;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.domain.ProductThum;
-import com.tyranno.ssg.product.dto.ProductIdListDto;
 import com.tyranno.ssg.product.infrastructure.ProductRepository;
 import com.tyranno.ssg.product.infrastructure.ProductThumRepository;
 import com.tyranno.ssg.review.domain.Review;
@@ -29,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +44,7 @@ public class ReviewServiceImp implements ReviewService{
     private final ProductService productService;
 
     public ReviewIdListDto getProductReviewIds(Long productId, Integer sortCriterion, Integer page) {
-        final int PAGE_SIZE = 20; // 페이지당 항목 수 상수 선언
+        final int PAGE_SIZE = 10; // 페이지당 항목 수 상수 선언
 
         List<Long> reviewIds = reviewRepositoryImp.searchReviewIdsByProductId(productId, sortCriterion, page);
         List<Map<String, Object>> reviewIdList = new ArrayList<>();
@@ -56,7 +53,7 @@ public class ReviewServiceImp implements ReviewService{
             Long reviewId = reviewIds.get(i);
             Map<String, Object> reviewMap = new HashMap<>();
             reviewMap.put("reviewId", reviewId);
-            reviewMap.put("id", startIndex + i + 1); // 인덱스도 1부터 시작하도록 수정
+            reviewMap.put("idx", startIndex + i + 1); // 인덱스도 1부터 시작하도록 수정
             reviewIdList.add(reviewMap);
         }
 
@@ -64,121 +61,86 @@ public class ReviewServiceImp implements ReviewService{
                 .reviewIds(reviewIdList)
                 .build();
     }
-
-
-
-
     @Override
-    public ReviewPageDto getReviewPage(Long productId, String uuid) {
-        // 사용자 정보 가져오기
-        Users users = usersRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+    public ReviewPageDto getReviewPage(Long orderId,String uuid) {
 
-        // 주문 목록 가져오기
-        List<OrderList> orderLists = orderListRepository.findAllByUuid(uuid);
-
-        // 주문 목록이 없을 경우 예외 처리
-        if (orderLists.isEmpty()) {
-            throw new GlobalException(ResponseStatus.NO_EXIST_ORDERS);
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_ORDERS));
+        if(!Objects.equals(order.getOrderList().getUuid(), uuid)){
+            throw new GlobalException(ResponseStatus.USER_HAS_NOT_PURCHASED_THE_PRODUCT);
         }
+        Product product = order.getOption().getProduct();
 
-        // 주문 목록에서 각 주문의 ID를 추출하여 리스트로 저장
-        List<Long> orderListIds = orderLists.stream()
-                .map(OrderList::getId)
-                .toList();
-
-        // 제품 정보 출력 여부를 나타내는 플래그
-        boolean productInfoPrinted = false;
-
-        // ReviewPageDto 생성
-        ReviewPageDto reviewPageDto = new ReviewPageDto();
-
-        // 주문 목록을 순회하며 해당 제품에 대한 리뷰를 작성할 옵션을 찾아 로그로 출력
-        for (Long orderListId : orderListIds) {
-            List<Order> orders = orderRepository.findByOrderListIdAndIsReview(orderListId, 99);
-            for (Order order : orders) {
-                // 주문이 해당 제품인지 확인
-                if (productId.equals(order.getOption().getProduct().getId())) {
-                    if (!productInfoPrinted) {
-                        // 제품 정보 설정
-                        String productName = order.getOption().getProduct().getProductName();
-                        reviewPageDto.setProductName(productName);
-                        log.info("Product Name: {}", productName);
-
-                        // ProductThumb에서 썸네일 정보 조회
-                        Optional<ProductThum> productThum = productThumRepository
-                                .findByProductIdAndPriority(order.getOption().getProduct().getId(), 1);
-                        String productThumUrl = productThum.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCTTHUM)).getImageUrl();
-                        reviewPageDto.setProductThum(productThumUrl);
-                        log.info("Product Thum URL: {}", productThumUrl);
-
-                        // orderNumber와 orderDate 설정
-                        reviewPageDto.setOrderNumber(order.getOrderList().getOrderNumber());
-                        reviewPageDto.setOrderDate(order.getOrderList().getCreatedAt());
-                        productInfoPrinted = true;
-                    }
-
-                    // Option ID 추가
-                    String optionKey = "optionId" + (reviewPageDto.getOptionIds().size() + 1);
-                    reviewPageDto.getOptionIds().put(optionKey, order.getOption().getId());
-                    log.info("Option ID: {}", order.getOption().getId());
-                }
-            }
+        Optional<ProductThum> productThumOptional = productThumRepository.findByProductIdAndPriority(product.getId(), 1);
+        String productThum = null;
+        if (productThumOptional.isPresent()) {
+            productThum = productThumOptional.get().getImageUrl();
         }
-        if (!productInfoPrinted) {
-            throw new GlobalException(ResponseStatus.NO_EXIST_ORDERPRODUCT);
-        }
-        // 로그로 ReviewPageDto 출력
-        log.info("ReviewPageDto: {}", reviewPageDto);
+        OptionNamesDto optionNamesDto = optionRepository
+                .findById(order.getOption().getId())
+                .map(OptionNamesDto::FromEntity)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_OPTION));
 
-        return reviewPageDto;
+
+        return ReviewPageDto.builder()
+                .productId(product.getId())
+                .productName(product.getProductName())
+                .productThum(productThum)
+                .orderDate(order.getOrderList().getCreatedAt())
+                .orderNumber(order.getOrderList().getOrderNumber())
+                .optionNamesDto(optionNamesDto)
+                .build();
     }
-
     @Override
     @Transactional
-    public String addReview(Long productId, ReviewCreateDto reviewCreateDto, String uuid) {
+    public String addReview(Long orderId, ReviewCreateDto reviewCreateDto, String uuid) {
         try {
             // 상품 조회
-            Product product = productRepository.findById(productId)
-                    .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
+            Product product = orderRepository.findById(orderId)
+                    .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_ORDERS))
+                    .getOption().getProduct();
+            log.info(product.getDetailContent());
 
             // 회원 조회
-            Users user = usersRepository.findByUuid(uuid)
-                    .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+            Users users = getUsers(uuid);
 
-            // 주문 조회
-            Order order = orderRepository.findById(reviewCreateDto.getOrderId())
+            // 주문 조회 및 확인
+            Order order = orderRepository.findById(orderId)
                     .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_ORDERS));
+            if (!Objects.equals(order.getOrderList().getUuid(), uuid)) {
+                throw new GlobalException(ResponseStatus.USER_HAS_NOT_PURCHASED_THE_PRODUCT);
+            }
 
             // 리뷰 생성
             Review review = Review.builder()
                     .product(product)
-                    .users(user)
+                    .users(users)
                     .rate(reviewCreateDto.getRate())
                     .content(reviewCreateDto.getContent())
                     .order(order)
                     .build();
 
-            // 첫 번째 이미지의 우선 순위를 1로 설정
-            boolean isFirstImage = true;
-            for (ReviewImageDto imageDto : reviewCreateDto.getReviewImages()) {
+            // 리뷰 이미지 저장
+            int priority = 1; // 첫 번째 이미지의 우선 순위는 1로 설정
+            for (String imageUrl : reviewCreateDto.getReviewImages()) {
                 ReviewImage reviewImage = ReviewImage.builder()
-                        .priority(isFirstImage ? 1 : 0)
-                        .reviewImageUrl(imageDto.getImageUrl())
+                        .priority(priority)
+                        .reviewImageUrl(imageUrl)
                         .review(review)
                         .build();
 
                 reviewImageRepository.save(reviewImage);
-                isFirstImage = false;
+                priority = 0; // 첫 번째 이미지 이외의 이미지는 우선 순위를 0으로 설정
             }
+
             // 리뷰 저장
             reviewRepository.save(review);
+
             // 평점 및 리뷰 수 업데이트
-            productService.updateProductRatingAndReviewCount(productId, reviewCreateDto.getRate());
+            productService.updateProductRatingAndReviewCount(product.getId(), reviewCreateDto.getRate());
 
             return "리뷰 저장 성공!";
         } catch (Exception e) {
-            throw new GlobalException(ResponseStatus.NO_EXIST_ORDERPRODUCT);
+            throw new GlobalException(ResponseStatus.FAILED_TO_REVIEW);
         }
     }
 
@@ -215,24 +177,47 @@ public class ReviewServiceImp implements ReviewService{
                 .reviewImageDtos(reviewImageDtos)
                 .build();
     }
-    @Override
     public ReviewIdListDto getUsersReviewIds(String uuid, Integer sortCriterion, Integer page) {
-        final int PAGE_SIZE = 20; // 페이지당 항목 수 상수 선언
-        Users user = usersRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-        List<Long> reviewIds = reviewRepositoryImp.searchReviewIdsByUsersId(user.getId(), sortCriterion, page);
+        final int PAGE_SIZE = 10; // 페이지당 항목 수 상수 선언
+        Users users = getUsers(uuid);
+        List<Long> reviewIds = reviewRepositoryImp.searchReviewIdsByUsersId(users.getId(), sortCriterion, page);
         List<Map<String, Object>> reviewIdList = new ArrayList<>();
-        int startIndex = (page - 1) * PAGE_SIZE; // 페이지 번호가 1부터 시작하므로 수정
+        int startIndex = (page - 1) * PAGE_SIZE; // 페이지 번호가 1부터 시작
         for (int i = 0; i < reviewIds.size(); i++) {
             Long reviewId = reviewIds.get(i);
             Map<String, Object> reviewMap = new HashMap<>();
             reviewMap.put("reviewId", reviewId);
-            reviewMap.put("id", startIndex + i + 1); // 인덱스도 1부터 시작하도록 수정
+            reviewMap.put("idx", startIndex + i + 1); // 인덱스도 1부터 시작
             reviewIdList.add(reviewMap);
         }
 
         return ReviewIdListDto.builder()
                 .reviewIds(reviewIdList)
                 .build();
+    }
+    public ReviewAbleOrderIdDto getReviewAbleOrderIds(String uuid, Integer sortCriterion, Integer page) {
+        final int PAGE_SIZE = 10;
+        List<OrderList> orderLists = orderListRepository.findAllByUuid(uuid);
+        List<Map<String, Object>> orderIdList = new ArrayList<>();
+        int startIndex = (page - 1) * PAGE_SIZE + 1;
+
+        for (OrderList orderList : orderLists) {
+            List<Order> orders = orderRepository.findByOrderListIdAndIsReview(orderList.getId(), 99);
+            for (Order order : orders) {
+                Map<String, Object> orderMap = new HashMap<>();
+                orderMap.put("orderId", order.getId());
+                orderMap.put("idx", startIndex++);
+                orderIdList.add(orderMap);
+            }
+        }
+
+        return ReviewAbleOrderIdDto.builder()
+                .reviewAbleOrderIds(orderIdList)
+                .build();
+    }
+
+    private Users getUsers(String uuid) {
+        return usersRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
     }
 }

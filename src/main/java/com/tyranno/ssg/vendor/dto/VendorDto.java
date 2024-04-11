@@ -18,6 +18,13 @@ public class VendorDto {
     private String vendorImageUrl;
 
     public static VendorDto FromEntity(Vendor vendor) {
+        if (vendor == null) {
+            return VendorDto.builder()
+                    .vendorId(null)
+                    .vendorName("")
+                    .vendorImageUrl("")
+                    .build();
+        }
         return VendorDto.builder()
                 .vendorId(vendor.getId())
                 .vendorName(vendor.getVendorName())

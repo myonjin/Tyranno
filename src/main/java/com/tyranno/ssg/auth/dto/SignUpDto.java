@@ -1,10 +1,12 @@
 package com.tyranno.ssg.auth.dto;
 
 import com.tyranno.ssg.delivery.domain.Delivery;
+import com.tyranno.ssg.config.ValidationGroups;
 import com.tyranno.ssg.users.domain.Users;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,32 +17,57 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUpDto { // 회원가입 정보 이걸로 받음
-    @NotNull  // - 유효성 검사를 위해 넣음
+public class SignUpDto {
+
+    @NotBlank(message = "아이디를 입력해주세요.", groups = ValidationGroups.NotEmptyGroup.class)
+    @Pattern(regexp = "^[a-zA-Z0-9]{6,20}$",
+            message = "아이디는 영어 또는 숫자로 6 ~ 20자리까지 가능합니다.",
+            groups = ValidationGroups.PatternCheckGroup.class)
     private String loginId;
-    @NotNull
+
+    @NotBlank(message = "비밀번호를 입력해주세요.", groups = ValidationGroups.NotEmptyGroup.class)
+            @Pattern(regexp = "^(?=.*\\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,20}$",
+            message = "비밀번호는 영문과 숫자 조합으로 8 ~ 20자리까지 가능합니다.",
+            groups = ValidationGroups.PatternCheckGroup.class)
     private String password;
-    @NotNull // - 회원 가입시 한 정보라도 안받으면 오류창
+
+    @NotBlank
     private String name;
-    @NotNull
+
+    @NotBlank
     private String deliveryBase;
-    @NotNull
+
+    @NotBlank
     private String deliveryDetail;
+
     @NotNull
     private int zipCode;
-    @NotNull
+
+    @NotBlank(message = "휴대폰 번호를 입력해주세요.", groups = ValidationGroups.NotEmptyGroup.class)
+    @Pattern(regexp = "^01[0-9]-\\d{4}-\\d{4}$",
+            message = "휴대폰 번호 형식이 올바르지 않습니다.",
+            groups = ValidationGroups.PatternCheckGroup.class)
     private String phoneNumber;
-    @NotNull
+
+    @NotBlank(message = "이메일을 입력해주세요.", groups = ValidationGroups.NotEmptyGroup.class)
+    @Pattern(regexp = "^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$",
+            message = "올바르지 않은 이메일 형식입니다.",
+            groups = ValidationGroups.PatternCheckGroup.class)
     private String email;
+
     @NotNull
     private Byte gender;
+
     @NotNull
     private LocalDate birth;
 
+    @NotNull
     private Byte shinsegaeMarketingAgree;
 
+    @NotNull
     private Byte shinsegaeOptionAgree;
 
+    @NotNull
     private Byte ssgMarketingAgree;
 
     public Users toUsersEntity() {
@@ -68,6 +95,21 @@ public class SignUpDto { // 회원가입 정보 이걸로 받음
                 .deliveryDetail(deliveryDetail)
                 .receiverName(name)
                 .phoneNumber(phoneNumber)
+                .build();
+    }
+    public Users connctUsers(Users users) {
+        return Users.builder()
+                .id(users.getId())
+                .loginId(loginId)
+                .password(new BCryptPasswordEncoder().encode(password))
+                .name(users.getName())
+                .email(users.getEmail())
+                .gender(users.getGender())
+                .phoneNumber(users.getPhoneNumber())
+                .birth(users.getBirth())
+                .status(users.getStatus())
+                .isIntegrated((byte) 1) // 통합회원 여부 true
+                .uuid(users.getUuid())
                 .build();
     }
 }
