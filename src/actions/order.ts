@@ -1,4 +1,4 @@
-import { OrderFormDataType } from '@/types/OrderDataTypte'
+import { KakaoPayDataType, OrderFormDataType } from '@/types/OrderDataTypte'
 import { GetAPI, PostAPI } from './FetchAPI'
 import { GetToken } from './GetToken'
 const token = GetToken()
@@ -17,6 +17,10 @@ async function getOptionListAPI(optionId: number) {
 }
 async function orderComplete(data: OrderFormDataType) {
     const response = await PostAPI('/api/v1/order', data, await token)
+    return response
+}
+async function kakaoPayReadyAPI(data: KakaoPayDataType) {
+    const response = await PostAPI('/api/v1/pay/ready', data)
     return response.result
 }
-export { getItemsOrderAPI, getDeliveryAddressAPI, getOptionListAPI, orderComplete }
+export { getItemsOrderAPI, getDeliveryAddressAPI, getOptionListAPI, orderComplete, kakaoPayReadyAPI }
