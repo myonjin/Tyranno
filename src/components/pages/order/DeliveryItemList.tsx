@@ -135,7 +135,7 @@ export default function DeliveryItemList() {
                                         {discountmoney(product.price, product.discount)}원
                                     </span>
                                 </div>
-                                <span className="text-[#666666]">수량 {product.qty} 개</span>
+                                <span className="text-[#666666]">수량 {product.count} 개</span>
                             </div>
                         </div>
                     </div>
