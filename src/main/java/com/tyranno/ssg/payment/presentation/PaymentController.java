@@ -39,7 +39,7 @@ public class PaymentController {
     @Operation(summary = "카카오페이 결제 성공", description = "카카오페이 결제 성공 시 redirect url")
     @GetMapping("/success/{id}")
     public ResponseEntity<?> successKakaoPay(HttpServletResponse response, @PathVariable String id, @RequestParam("pg_token") String pgToken) throws IOException {
-        response.sendRedirect("http://localhost:3000/order/complete");
+        response.sendRedirect("https://tyranno.site/order/complete");
         return new ResponseEntity<>("카카오페이 결제 성공");
     }
     @Operation(summary = "카카오페이 승인 요청", description = "카카오페이 결제 승인을 요청한다.")
@@ -48,26 +48,19 @@ public class PaymentController {
         return new ResponseEntity<>(paymentService.getKakaoPayApprove(successInfoDto));
     }
 
-//    @Operation(summary = "카카오페이 승인 요청", description = "카카오페이 결제 승인을 요청한다.")
-//    @PostMapping("/approve")
-//    public ResponseEntity<?> approveKakaoPay(@RequestBody ApproveRequestDto approveRequestDto) {
-//
-//
-//    }
-
     /**
      * 결제 진행 중 취소
      */
     @GetMapping("/cancel")
-    public void cancel() {
-        throw new GlobalException(ResponseStatus.PAY_CANCEL);
+    public void cancel(HttpServletResponse response) throws IOException {
+        response.sendRedirect("https://tyranno.site/order/complete");
     }
 
     /**
      * 결제 실패
      */
     @GetMapping("/fail")
-    public void fail() {
-        throw new GlobalException(ResponseStatus.PAY_FAILED);
+    public void fail(HttpServletResponse response) throws IOException {
+        response.sendRedirect("https://tyranno.site/order/complete");
     }
 }
