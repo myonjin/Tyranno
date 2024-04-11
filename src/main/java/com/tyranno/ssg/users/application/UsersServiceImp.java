@@ -38,15 +38,23 @@ public class UsersServiceImp implements UsersService {
 
     @Transactional
     @Override
-    public void modifyMarketing(MarketingModifyDto marketingModifyDto, MarketingType marketingType, String uuid) {
-        Users users = getUsers(uuid);
-        Marketing marketing = marketingRepository.findById(marketingType.getId()).orElseThrow();
-        MarketingInformation marketingInformation = marketingInformationRepository.findByUsersAndMarketing(users, marketing)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_MARKETING));
+    public void modifyMarketing(MarketingIsAgreeDto marketingModifyDto, Long marketing_id, String uuid) {
 
-        marketingInformationRepository.save(marketingModifyDto.toEntity(marketingInformation));
+        marketingInformationRepository.save(marketingModifyDto.toEntity(getMarketingInformation(marketing_id, uuid)));
     }
 
+    @Override
+    public MarketingIsAgreeDto getMarketingAgree(Long marketing_id, String uuid) {
+        Byte isAgree = getMarketingInformation(marketing_id, uuid).getIsAgree();
+        return new MarketingIsAgreeDto(isAgree);
+    }
+
+    private MarketingInformation getMarketingInformation(Long marketing_id, String uuid) {
+        Users users = getUsers(uuid);
+        Marketing marketing = marketingRepository.findById(marketing_id).orElseThrow();
+        return marketingInformationRepository.findByUsersAndMarketing(users, marketing)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_MARKETING));
+    }
 
     @Transactional
     @Override

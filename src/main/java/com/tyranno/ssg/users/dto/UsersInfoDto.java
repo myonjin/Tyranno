@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UsersInfoDto {
-    @NotNull
+
     private String loginId;
-    @NotNull
+
     private String name;
-    @NotNull
+
     private String phoneNumber;
-    @NotNull
+
     private String email;
 
     public static UsersInfoDto FromEntity(Users users) {
