@@ -53,7 +53,7 @@ public class PaymentController {
      */
     @GetMapping("/cancel")
     public void cancel(HttpServletResponse response) throws IOException {
-        response.sendRedirect("https://tyranno.site/order/complete");
+        response.sendRedirect("https://tyranno.site/order");
     }
 
     /**
@@ -61,6 +61,6 @@ public class PaymentController {
      */
     @GetMapping("/fail")
     public void fail(HttpServletResponse response) throws IOException {
-        response.sendRedirect("https://tyranno.site/order/complete");
+        response.sendRedirect("https://tyranno.site/order");
     }
 }
