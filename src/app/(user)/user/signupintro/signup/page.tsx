@@ -38,21 +38,21 @@ function signup() {
     const checkLoginId = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newId = event.target.value
         var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,20}$/
+        setLoginId(newId)
         if (!regExp.test(newId)) {
             setLoginIdValue('아이디는 영어 또는 숫자 8~20자로 조합 되어야합니다.')
         } else {
             setLoginIdValue('')
-            setLoginId(newId)
         }
     }
     const checkPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newPassword = event.target.value
         var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,20}$/
+        setpassword(newPassword)
         if (!regExp.test(newPassword)) {
             setPasswordValue('비밀번호는 영어 숫자 8~20자로 조합 되어야합니다.')
         } else {
             setPasswordValue('')
-            setpassword(newPassword)
         }
     }
 
@@ -67,11 +67,11 @@ function signup() {
     const checkEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newEmail = event.target.value
         var regExp = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
+        setEmail(newEmail)
         if (!regExp.test(newEmail)) {
             setEmailValue('이메일 형식이 올바르지 않습니다.')
         } else {
             setEmailValue('')
-            setEmail(newEmail)
         }
     }
     const handleCheckboxChange = (type: string) => {
@@ -104,8 +104,17 @@ function signup() {
                 shinsegaeOptionAgree: shinsegaeOptionAgree,
                 ssgMarketingAgree: ssgMarketingAgree,
             }
-            await signupAPI(requestData)
-            alert('가입 되었습니다.')
+            if (loginIdValue !== '' || passwordValue !== '' || passwordConfirm !== '' || emailValue !== '') {
+                alert('입력값을 확인해주세요.')
+                return
+            } else {
+                const res = await signupAPI(requestData)
+                if (res.isSuccess === false) {
+                    alert(res.message)
+                } else {
+                    alert('가입 되었습니다.')
+                }
+            }
         } catch (error) {
             console.error('Error:', error)
         }
@@ -113,7 +122,12 @@ function signup() {
     const handleValidLoginId = async () => {
         try {
             const res = await validLoginId(loginId)
-            alert(res.result)
+            console.log(res)
+            if (res.isSuccess === false) {
+                alert(res.message)
+            } else {
+                alert(res.result)
+            }
         } catch (error) {
             console.error('Error:', error)
         }
