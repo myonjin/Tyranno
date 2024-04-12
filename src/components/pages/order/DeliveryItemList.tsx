@@ -72,7 +72,7 @@ export default function DeliveryItemList() {
         }
         const data: OrderFormDataType = {
             optionIdList: orderOption,
-            deliveryRequest: 'dflkfld',
+            deliveryRequest: '없음',
             deliveryBase: deliveryAddress?.deliveryBase || '',
             deliveryDetail: deliveryAddress?.deliveryDetail || '',
             zipCode: deliveryAddress?.zipCode || 0,

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import HeaderToBackInModal from '../ui/HeaderToBackInModal'
 import { useEffect, useState } from 'react'
 import { AddressDataType } from '@/types/AddressDataType'
-import { getDelivery } from '@/actions/delivery'
+import { changeMainDelivery, getDelivery } from '@/actions/delivery'
 
 interface AddressModalProps {
     modalOpen: boolean
@@ -11,6 +11,7 @@ interface AddressModalProps {
 }
 function SelectAddressModal({ modalOpen, setModalOpen }: AddressModalProps) {
     const [deliveryData, setDeliveryData] = useState<AddressDataType[]>([])
+    const [deliveryId, setDeliveryId] = useState('')
     const fetchData = async () => {
         try {
             const res = await getDelivery()
@@ -18,6 +19,11 @@ function SelectAddressModal({ modalOpen, setModalOpen }: AddressModalProps) {
         } catch (err) {
             console.error(err)
         }
+    }
+
+    const handleMain = async (deliveryId: string) => {
+        const response = await changeMainDelivery(parseInt(deliveryId))
+        console.log(response)
     }
     useEffect(() => {
         fetchData()
@@ -43,7 +49,12 @@ function SelectAddressModal({ modalOpen, setModalOpen }: AddressModalProps) {
                         >
                             <label className="flex items-center">
                                 <div className="py-5">
-                                    <input type="radio" className="block relative w-5 h-5" name="address" />
+                                    <input
+                                        type="radio"
+                                        className="block relative w-5 h-5"
+                                        name="address"
+                                        onChange={() => setDeliveryId(String(delivery.id))}
+                                    />
                                 </div>
                                 <div className="flex-col ml-4">
                                     <div>
@@ -64,6 +75,7 @@ function SelectAddressModal({ modalOpen, setModalOpen }: AddressModalProps) {
                         className="bottom-0 left-0 right-0 fixed h-14 z-50 bg-[#ff5452] text-white font-semibold"
                         onClick={() => {
                             setModalOpen(false)
+                            handleMain(deliveryId)
                         }}
                     >
                         변경하기

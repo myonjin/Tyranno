@@ -18,7 +18,7 @@ export default function DeliveryAddress() {
     }
     useEffect(() => {
         fetchData()
-    }, [])
+    }, [deliveryAddress])
 
     return (
         <>
