@@ -60,11 +60,11 @@ export default function Authphone() {
                 localStorage.setItem('birthday', birthday)
                 localStorage.setItem('phoneNumberString', phoneNumberString)
                 localStorage.setItem('gender', gender?.toString() || '')
-                router.push('/user/signupintro/signup')
                 const phone = phoneNumberString
                 const response = await checkUserAPI(phone)
                 if (response.result.code === 1) {
                     alert('이미 가입된 회원입니다.')
+                    router.push('/user/login')
                 } else if (response.result.code === 2) {
                     window.confirm('소셜 로그인 회원입니다. 통합회원가입 하시겠습니까?')
                     if (!confirm) {
@@ -74,6 +74,7 @@ export default function Authphone() {
                     }
                 } else if (response.result.code === 3) {
                     alert('인증 되었습니다.')
+                    router.push('/user/signupintro/signup')
                 }
                 console.log(response)
             } else {
