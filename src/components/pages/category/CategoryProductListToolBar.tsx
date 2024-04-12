@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import CategoryListModal from '@/components/pages/category/CategoryListModal'
 interface categorySmall {
-    smallId: string
+    smallId: number
     smallName: string
 }
 interface categoryMiddle {
@@ -26,7 +26,7 @@ export default function CategoryProductListToolBar() {
     const largeId = searchParams.get('largeId')
     const middleId = searchParams.get('middleId')
     const smallId = searchParams.get('smallId') || ''
-    console.log(smallId.length)
+    // console.log(smallId.length, '스몰있는가')
     // 대분류
     useEffect(() => {
         const getCategory1 = async () => {
@@ -55,12 +55,12 @@ export default function CategoryProductListToolBar() {
             const data = await fetch(`https://tyrannoback.com/api/v1/category/small/${middleId}`)
             if (data) {
                 const response = await data.json()
-                setSCategory(response[parseInt(`${smallId}`) - 1])
+                setSCategory(response)
             }
         }
         getCategory()
-    }, [middleId])
-    console.log(Scategory, '카테고리명')
+    }, [middleId, smallId])
+    // console.log(Scategory, '카테고리명')
 
     return (
         <div className="flex flex-row w-full h-[46px] bg-white items-center pl-3 pr-3 sticky top-0 z-10">
@@ -81,55 +81,72 @@ export default function CategoryProductListToolBar() {
                     </div>
                 </Link>
             </div>
-            <div className="pl-5 pr-3 items-center flex ">
-                <div className="inline-flex flex-wrap content-center">
-                    <p className="text-gray-600 text-sm text-ellipsis">{Lcategory.largeName}</p>
-                </div>
-                <div className="w-4 h-4 relative  ">
-                    <Image
-                        src="https://img.icons8.com/sf-ultralight/25/000000/back.png"
-                        alt="back"
-                        style={{ transform: 'rotate(180deg)' }}
-                        fill
-                    />
-                </div>
-                <button
-                    onClick={() => setIsOpenModal(!isOpenModal)}
-                    className="inline-flex h-8 justify-center items-center"
-                >
-                    {category &&
-                        category.map((opt: categoryMiddle, index) => (
-                            <div key={index} className="text-sm font-bold overflow-hidden text-ellipsis">
-                                {opt.middleId === parseInt(`${middleId}`) && <div>{opt.middleName}</div>}
-                            </div>
-                        ))}
-                    {smallId.length === 0 ? (
+            {smallId.length === 0 ? (
+                <div className="pl-5 pr-3 items-center flex ">
+                    <div className="inline-flex flex-wrap content-center">
+                        <p className="text-gray-600 text-sm text-ellipsis">{Lcategory.largeName}</p>
+                    </div>
+                    <div className="w-4 h-4 relative  ">
+                        <Image
+                            src="https://img.icons8.com/sf-ultralight/25/000000/back.png"
+                            alt="back"
+                            style={{ transform: 'rotate(180deg)' }}
+                            fill
+                        />
+                    </div>
+                    <button
+                        onClick={() => setIsOpenModal(!isOpenModal)}
+                        className="inline-flex h-8 justify-center items-center"
+                    >
+                        {category &&
+                            category.map((opt: categoryMiddle, index) => (
+                                <div key={index} className="text-sm font-bold overflow-hidden text-ellipsis">
+                                    {opt.middleId === parseInt(`${middleId}`) && <div>{opt.middleName}</div>}
+                                </div>
+                            ))}
+
                         <div className={` relative w-3 h-3 inline-block ml-1 ${isOpenModal ? 'rotate-180' : ''}`}>
                             <Image src="https://img.icons8.com/material-sharp/24/give-way--v2.png" alt="더보기" fill />
                         </div>
-                    ) : (
-                        <div>
-                            {/* <div className="w-4 h-4 relative  ">
-                                <Image
-                                    src="https://img.icons8.com/sf-ultralight/25/000000/back.png"
-                                    alt="back"
-                                    style={{ transform: 'rotate(180deg)' }}
-                                    fill
-                                />
-                            </div>
-                            <p> {Scategory[parseInt(smallId) - 1].smallName}</p>
-                            <div className={` relative w-3 h-3 inline-block ml-1 ${isOpenModal ? 'rotate-180' : ''}`}>
-                                <Image
-                                    src="https://img.icons8.com/material-sharp/24/give-way--v2.png"
-                                    alt="더보기"
-                                    fill
-                                />
-                            </div> */}
+                    </button>
+                </div>
+            ) : (
+                <div className="pl-5 pr-3 items-center flex ">
+                    <div className="inline-flex flex-wrap content-center">
+                        {category &&
+                            category.map((opt: categoryMiddle, index) => (
+                                <div key={index} className="text-sm font-bold overflow-hidden text-ellipsis">
+                                    {opt.middleId === parseInt(`${middleId}`) && <div>{opt.middleName}</div>}
+                                </div>
+                            ))}
+                    </div>
+                    <div className="w-4 h-4 relative  ">
+                        <Image
+                            src="https://img.icons8.com/sf-ultralight/25/000000/back.png"
+                            alt="back"
+                            style={{ transform: 'rotate(180deg)' }}
+                            fill
+                        />
+                    </div>
+                    <button
+                        onClick={() => setIsOpenModal(!isOpenModal)}
+                        className="inline-flex h-8 justify-center items-center"
+                    >
+                        {Scategory &&
+                            Scategory.map((opt: categorySmall, index) => (
+                                <div key={index} className="text-gray-600 text-sm text-ellipsis">
+                                    {opt.smallId === parseInt(`${smallId}`) && <div>{opt.smallName}</div>}
+                                </div>
+                            ))}
+
+                        <div className={` relative w-3 h-3 inline-block ml-1 ${isOpenModal ? 'rotate-180' : ''}`}>
+                            <Image src="https://img.icons8.com/material-sharp/24/give-way--v2.png" alt="더보기" fill />
                         </div>
-                    )}
-                </button>
-            </div>
-            <div className="flex-grow flex-shrink basis-0 justify-stretch self-stretch"></div>
+                    </button>
+                </div>
+            )}
+
+            <div className="flex-grow   justify-stretch self-stretch"></div>
             <div className="w-8 h-8 flex justify-center items-center flex-grow-0 flex-shrink-0 basis-auto">
                 <button className="flex justify-center items-center">
                     <div className=" relative w-6 h-6 inline-block flex-shrink-0 align-middle">

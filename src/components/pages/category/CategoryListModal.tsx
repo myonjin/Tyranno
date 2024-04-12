@@ -72,15 +72,16 @@ export default function CategoryListModal() {
                                 </Link>
                             </li>
 
-                            {category.map((item: categoryMiddle, idx) => (
-                                <li key={idx}>
-                                    <Link href={`/productlist?largeId=${largeId}&middleId=${middleId}`}>
-                                        <button className="w-full h-[42px] overflow-hidden overflow-ellipsis text-xs pl-4 text-start border-b-[1px]">
-                                            {item.middleName}
-                                        </button>
-                                    </Link>
-                                </li>
-                            ))}
+                            {category &&
+                                category.map((item: categoryMiddle, idx) => (
+                                    <li key={idx}>
+                                        <Link href={`/productlist?largeId=${largeId}&middleId=${middleId}`}>
+                                            <button className="w-full h-[42px] overflow-hidden overflow-ellipsis text-xs pl-4 text-start border-b-[1px]">
+                                                {item.middleName}
+                                            </button>
+                                        </Link>
+                                    </li>
+                                ))}
                         </ul>
                     </div>
                 </div>
