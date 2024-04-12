@@ -7,7 +7,7 @@ export default function ContinueOrder() {
     const resetMoneyRecoil = useResetRecoilState(CartMoneyAtom)
     return (
         <div className="m-3 mt-[30px] h-[44px] mb-32">
-            <Link href={'/category'}>
+            <Link href={'/'}>
                 <button
                     className="w-1/2 bg-black text-white text-[14px] px-2 h-full rounded-full"
                     onClick={resetMoneyRecoil}

@@ -56,6 +56,7 @@ export default function DeliveryItemList() {
     }, [])
 
     const discountmoney = (money: number, discount: number) => {
+        console.log(money, discount)
         const remoney = money * (1 - discount / 100)
         total += remoney
         return remoney
@@ -144,7 +145,7 @@ export default function DeliveryItemList() {
                                         {product.price * product.count}원
                                     </span>
                                     <span className="font-extrabold">
-                                        {discountmoney(product.money, product.discount)}원
+                                        {discountmoney(product.money || product.price, product.discount)}원
                                     </span>
                                 </div>
                                 <span className="text-[#666666]">수량 {product.count} 개</span>

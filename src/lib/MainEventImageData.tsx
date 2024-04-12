@@ -29,14 +29,14 @@ export const mainEventImageData = [
     },
     {
         id: 5,
-        src: 'https://simg.ssgcdn.com/trans.ssg?src=/cmpt/banner…2404/2024041115010425359020612012_9.jpg&w=750&h=0',
+        src: 'https://simg.ssgcdn.com/trans.ssg?src=/cmpt/banner/202404/2024041115010425359020612012_9.jpg&w=750&h=0',
         title1: '그래놀라',
         title2: '선택이 아닌 필수',
         subTitle: '단백질과 식이섬유 챙기기',
     },
     {
         id: 6,
-        src: '	https://simg.ssgcdn.com/trans.ssg?src=/cmpt/banner…09/2023092015164848991647808264_146.jpg&w=750&h=0',
+        src: 'https://simg.ssgcdn.com/trans.ssg?src=/cmpt/banner/202309/2023092015164848991647808264_146.jpg&w=750&h=0',
         title1: '상품권보다 더 편리한',
         title2: 'SSG상품권',
         subTitle: '구매부터 충전, 사용까지 모바일로 한번에!',
