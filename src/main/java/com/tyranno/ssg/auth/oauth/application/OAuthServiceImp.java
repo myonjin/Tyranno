@@ -26,7 +26,6 @@ public class OAuthServiceImp implements OAuthService {
     private final OAuthRepository oauthRepository;
     private final AuthService authService;
 
-
     @Override
     @Transactional
     public String loginOAuth(OAuthInfoDto oauthInfoDto) {
@@ -47,6 +46,9 @@ public class OAuthServiceImp implements OAuthService {
     @Transactional
     @Override
     public String signUpOAuth(OAuthSignUpDto oauthSignUpDto) {
+        // email, phoneNumber 중복 방지
+        authService.checkEmail(oauthSignUpDto.getEmail());
+        authService.checkPhoneNumber(oauthSignUpDto.getPhoneNumber());
 
         Users users = oauthSignUpDto.toUsersEntity();
         usersRepository.save(users);
