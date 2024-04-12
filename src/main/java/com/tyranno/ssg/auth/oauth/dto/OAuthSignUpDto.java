@@ -21,13 +21,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OAuthSignUpDto {
 
-    @NotBlank
+    @NotBlank(message = "모든 항목을 입력해주세요.")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "모든 항목을 입력해주세요.")
     private String deliveryBase;
 
-    @NotBlank
+    @NotBlank(message = "모든 항목을 입력해주세요.")
     private String deliveryDetail;
 
     @NotNull

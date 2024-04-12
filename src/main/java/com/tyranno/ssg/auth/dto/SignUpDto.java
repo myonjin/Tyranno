@@ -31,13 +31,13 @@ public class SignUpDto {
             groups = ValidationGroups.PatternCheckGroup.class)
     private String password;
 
-    @NotBlank
+    @NotBlank(message = "모든 항목을 입력해주세요.")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "모든 항목을 입력해주세요.")
     private String deliveryBase;
 
-    @NotBlank
+    @NotBlank(message = "모든 항목을 입력해주세요.")
     private String deliveryDetail;
 
     @NotNull

@@ -26,8 +26,9 @@ public class DeliveryServiceImp implements DeliveryService {
     @Transactional
     @Override
     public void addDelivery(DeliveryAddDto deliveryAddDto, String uuid) {
-
-        deliveryRepository.save(deliveryAddDto.toEntity(getUsers(uuid)));
+        Users users = usersRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        deliveryRepository.save(deliveryAddDto.toEntity(users));
     }
 
     @Transactional
@@ -41,6 +42,10 @@ public class DeliveryServiceImp implements DeliveryService {
     public List<DeliveryListDto> getDeliveryList(String uuid) {
 
         List<Delivery> deliveries = deliveryRepository.findByUsersUuid(uuid);
+        // baseDelivery를 리스트의 맨 앞에 추가
+        Delivery baseDelivery = getBaseDelivery(uuid);
+        deliveries.remove(baseDelivery);
+        deliveries.add(0, baseDelivery);
 
         return deliveries.stream()
                 .map(DeliveryListDto::fromEntity)
@@ -49,14 +54,12 @@ public class DeliveryServiceImp implements DeliveryService {
 
     @Override
     public BaseDeliveryInfoDto getBaseDeliveryInfo(String uuid){
-        Delivery delivery = deliveryRepository.findByIsBaseDeliveryAndUsers((byte) 11, getUsers(uuid))
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
+        Delivery delivery = getBaseDelivery(uuid);
         return BaseDeliveryInfoDto.fromEntity(delivery);
     }
     @Override
     public OrderDeliveryInfoDto getOrderDeliveryInfo(String uuid){
-        Delivery delivery = deliveryRepository.findByIsBaseDeliveryAndUsers((byte) 11, getUsers(uuid))
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
+        Delivery delivery = getBaseDelivery(uuid);
         return OrderDeliveryInfoDto.fromEntity(delivery);
     }
 
@@ -78,28 +81,24 @@ public class DeliveryServiceImp implements DeliveryService {
     public void modifyBaseDelivery(BaseDeliveryModifyDto baseDeliveryModifyDto) {
         Delivery newBasedelivery = getDelivery(baseDeliveryModifyDto.getDeliveryId());
         // 기존 기본배송지 취소
-        Delivery basedelivery = deliveryRepository.findByIsBaseDeliveryAndUsers((byte) 11, newBasedelivery.getUsers())
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
+        Delivery basedelivery = getBaseDelivery(newBasedelivery.getUsers().getUuid());
         deliveryRepository.save(baseDeliveryModifyDto.toEntity(basedelivery, (byte) 99));
         // 새 기본배송지 설정
         deliveryRepository.save(baseDeliveryModifyDto.toEntity(newBasedelivery, (byte) 11));
     }
     @Override
     public String getBaseDeliveryName(String uuid) {
-        Delivery delivery = deliveryRepository.findByIsBaseDeliveryAndUsers((byte) 11, getUsers(uuid))
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
-
+        Delivery delivery = getBaseDelivery(uuid);
         return delivery.getDeliveryName();
     }
 
-
-    public Delivery getDelivery(Long deliveryId) {
-        return deliveryRepository.findById(deliveryId)
+    private Delivery getBaseDelivery(String uuid) {
+       return deliveryRepository.findByIsBaseDeliveryAndUsersUuid((byte) 11, uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
     }
 
-    public Users getUsers(String uuid) {
-        return usersRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+    private Delivery getDelivery(Long deliveryId) {
+        return deliveryRepository.findById(deliveryId)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_DELIVERY));
     }
 }
