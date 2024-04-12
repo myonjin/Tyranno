@@ -9,6 +9,7 @@ interface categorySmall {
 }
 export default function SubCategoryTable() {
     const searchParams = useSearchParams()
+    const largeId = searchParams.get('largeId')
     const middleId = searchParams.get('middleId')
     const [category, setCategory] = useState<categorySmall[]>([] as categorySmall[])
     useEffect(() => {
@@ -28,28 +29,13 @@ export default function SubCategoryTable() {
                     category.map((opt: categorySmall, index) => (
                         <div key={index}>
                             <Link
-                                href={'#'}
+                                href={`productlist?largeId=${largeId}&middleId=${middleId}&smallId=${opt.smallId}`}
                                 className="relative flex text-[11px] items-center text-ellipsis ps-[13px] pe-[13px] h-[46px] overflow-hidden border-b-[1px] border-r-[1px]"
                             >
                                 <div className="overflow-hidden text-ellipsis">{opt.smallName}</div>
                             </Link>
                         </div>
                     ))}
-
-                {/* {
-          소/세부분류 데이터.map((item, idx) => {
-            return (
-              <Link
-                key={idx}
-                href={'#'}
-                className="relative flex text-[11px] items-center text-ellipsis ps-[13px] pe-[13px] h-[46px] overflow-hidden border-b-[1px] border-r-[1px]">
-                <div className="overflow-hidden text-ellipsis">
-                  {item.title}
-                </div>
-              </Link>
-            )
-          })
-        } */}
             </div>
         </div>
     )

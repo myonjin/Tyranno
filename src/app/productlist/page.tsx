@@ -34,10 +34,7 @@ async function CategoryProductListPage({ searchParams }: { searchParams: { [key:
                 <SubCategoryTable />
             </div>
             <div className="col-start-2 col-end-auto">
-                <div className="text-xs flex ps-4 pe-4 pt-3">
-                    <div className="font-bold">~개</div>
-                    <div className="text-gray-500">의 상품이 있습니다.</div>
-                </div>
+                
                 <ProductList productListIdData={productListIdData} />
             </div>
         </div>

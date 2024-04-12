@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-
 import CategoryListModal from '@/components/pages/category/CategoryListModal'
 
 interface categoryMiddle {
@@ -36,7 +35,7 @@ export default function CategoryProductListToolBar() {
         }
         getCategory1()
     }, [])
-    console.log(Lcategory)
+    // console.log(Lcategory)
 
     useEffect(() => {
         const getCategory = async () => {
