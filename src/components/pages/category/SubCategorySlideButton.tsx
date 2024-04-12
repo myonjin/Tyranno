@@ -75,22 +75,6 @@ export default function SubCategorySlideButton() {
                                 </button>
                             ))}
                     </div>
-                    {/* 카테고리 전체보기 모달인데 안할까싶은데...... 
-                    <div className="bg-white top-[10px] absolute bottom-[10px] right-0 pr-4">
-                        <button
-                            // onClick={handleOpenAllCategory}
-                            className="min-w-9 min-h-9 rotate-90 inline-flex items-center justify-center text-sm border border-gray-200"
-                        >
-                            <div className="relative w-5 h-5 text-black font-bold">
-                                <Image
-                                    src="https://img.icons8.com/sf-ultralight/25/000000/back.png"
-                                    alt="back"
-                                    style={{ transform: 'rotate(180deg)' }}
-                                    fill
-                                />
-                            </div>
-                        </button>
-                    </div> */}
                 </div>
             </div>
         </div>
