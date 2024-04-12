@@ -4,6 +4,7 @@ import HeaderToHome from '@/components/ui/HeaderToHome'
 import CompleteAddress from '@/components/pages/order/CompleteAddress'
 import PayMoney from '@/components/pages/order/PayMoney'
 import CompleteMoney from '@/components/pages/order/CompleteMoney'
+import ContinueOrder from '@/components/pages/order/ContinueOrder'
 
 export default function Complete() {
     return (
@@ -55,18 +56,7 @@ export default function Complete() {
                 />
             </div>
 
-            <div className="m-3 mt-[30px] h-[44px] mb-32">
-                <Link href={'/'}>
-                    <button className="w-1/2 bg-black text-white text-[14px] px-2 h-full rounded-full">
-                        계속 쇼핑하기
-                    </button>
-                </Link>
-                <Link href={'/mypage'}>
-                    <button className="w-1/2 text-[14px] text-[#444444] border-[1px] px-2 h-full rounded-full border-[#e5e5e5]">
-                        주문상품 상세보기
-                    </button>
-                </Link>
-            </div>
+            <ContinueOrder />
         </>
     )
 }
