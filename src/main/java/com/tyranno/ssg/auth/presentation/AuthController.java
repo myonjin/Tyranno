@@ -86,14 +86,14 @@ public class AuthController {
         return new ResponseEntity<>("비밀번호 변경 성공");
     }
 
-//    @Operation(summary = "휴대폰 번호 중복 검사", description = "회원가입 시 문자인증 전, 휴대폰 번호로 이미 가입된 유저인지 판별한다.")
-//    @PostMapping("/phone-number-check")
-//    public ResponseEntity<String> checkPhoneNumberExist(@RequestBody PhoneNumberDto phoneNumberDto) {
-//
-//        authService.checkPhoneNumber(phoneNumberDto);
-//
-//        return new ResponseEntity<>("사용 가능한 휴대폰 번호 입니다.");
-//    }
+    @Operation(summary = "휴대폰 번호 중복 검사", description = "다른 기존 회원과 핸드폰번호가 같은지 중복확인 한다.")
+    @PostMapping("/phone-number-check")
+    public ResponseEntity<String> checkPhoneNumberExist(@RequestBody PhoneNumberDto phoneNumberDto) {
+
+        authService.checkPhoneNumber(phoneNumberDto);
+
+        return new ResponseEntity<>("사용 가능한 휴대폰 번호 입니다.");
+    }
 
 }
 

@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Optional;
 
@@ -39,7 +40,6 @@ public class AuthServiceImp implements AuthService {
         if (optionalUsers.isEmpty()) {
             return new UsersTypeInfoDto(UsersType.NON_USERS.getCode(), UsersType.NON_USERS.getDescription());
         }
-
         Users users = optionalUsers.get();
         if (users.getIsIntegrated() == 1) { // 통합회원
             return new UsersTypeInfoDto(UsersType.INTEGRATED_USERS.getCode(), UsersType.INTEGRATED_USERS.getDescription());
@@ -50,13 +50,22 @@ public class AuthServiceImp implements AuthService {
         }
     }
 
+    private void ValidatedUsersInfo(String loginId, String phoneNumber, String email) {
+        checkLoginId(new IdCheckDto(loginId));
+        checkEmail(new EmailCheckDto(email));
+        checkPhoneNumber(new PhoneNumberDto(phoneNumber));
+    }
+
     @Transactional // 기존 소셜 회원 통합회원 연결
     @Override
     public void connectUsers(ConnectUsersDto connectUsersDto) {
+        // 아이디 중복 시 회원 생성 막음
+        checkLoginId(new IdCheckDto(connectUsersDto.getLoginId()));
+
         Users users = usersRepository.findByPhoneNumber(connectUsersDto.getPhoneNumber())
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
 
-        // logId, password, 통합회원 여부 적용
+        // logId, password, isIntegrated 적용
         usersRepository.save(connectUsersDto.toEntity(users));
     }
 

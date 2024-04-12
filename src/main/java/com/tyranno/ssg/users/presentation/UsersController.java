@@ -51,14 +51,6 @@ public class UsersController {
         return new ResponseEntity<>("신세계 동의 변경 성공");
     }
 
-//    @Operation(summary = "ssg 마케팅정보동의 변경", description = "마이페이지에서 ssg 동의정보 변경한다.")
-//    @PutMapping("/ssg-marketing")
-//    public ResponseEntity<?> modifySsgMaketing(@Valid @RequestBody MarketingModifyDto marketingModifyDto, @RequestHeader("Authorization") String token) {
-//        String uuid = jwtTokenProvider.tokenToUuid(token);
-//        usersService.modifyMarketing(marketingModifyDto, MarketingType.SSG, uuid);
-//        return new ResponseEntity<>("ssg 동의 변경 성공");
-//    }
-
     @Operation(summary = "마케팅 동의 여부 조회", description = "신세계옵션 동의(/marketing/2), ssg 마케팅정보(/marketing/3) 동의 여부를 조회한다.")
     @GetMapping("/marketing/{marketing_id}")
     public ResponseEntity<MarketingIsAgreeDto> getMaketingAgree(@PathVariable Long marketing_id,
@@ -66,13 +58,6 @@ public class UsersController {
         String uuid = jwtTokenProvider.tokenToUuid(token);
         return new ResponseEntity<>(usersService.getMarketingAgree(marketing_id, uuid));
     }
-
-//    @Operation(summary = "ssg 마케팅정보동의 여부 조회", description = "ssg 동의정보 여부 조회한다.")
-//    @GetMapping("/ssg-marketing")
-//    public ResponseEntity<Byte> getSsgMaketingAgree(@RequestHeader("Authorization") String token) {
-//        String uuid = jwtTokenProvider.tokenToUuid(token);
-//        return new ResponseEntity<>(usersService.getMarketingAgree(MarketingType.SSG, uuid));
-//    }
 
     @Operation(summary = "회원수정", description = "마이페이지에서 회원정보 변경한다.")
     @PutMapping
