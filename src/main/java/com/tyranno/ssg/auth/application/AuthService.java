@@ -12,9 +12,9 @@ public interface AuthService {
     String singUpUsers(SignUpDto signUpDto);
     String loginUsers(LoginDto loginDto);
     void addMarketingInformation(MarketingAgreeDto marketingAgreeDto, Users users);
-    void checkLoginId(IdCheckDto idCheckDto);
-    void checkEmail(EmailCheckDto emailCheckDto);
+    void checkLoginId(String loginId);
+    void checkEmail(String email);
     String getLoginId(PhoneNumberDto phoneNumberDto);
     void changePassword(PasswordChangeDto passwordChangeDto);
-    void checkPhoneNumber(PhoneNumberDto phoneNumberDto);
+    void checkPhoneNumber(String phoneNumber);
 }
