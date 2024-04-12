@@ -62,7 +62,6 @@ export default function DeliveryItemList() {
     }
     let link = ''
     const handleSubmit = async () => {
-        console.log('fdnjskafbadshfuidwhfiu')
         const orderOption = []
         for (const items of productData) {
             orderOption.push({
@@ -100,7 +99,6 @@ export default function DeliveryItemList() {
         // router.push('/order/complete')
     }
     const resetCart = useResetRecoilState(CartItemsAtom)
-
     return (
         <>
             {productData.map((product: any, index: number) => (
@@ -161,7 +159,7 @@ export default function DeliveryItemList() {
                 className="bg-[#ff5452] w-full p-4 sticky right-0 left-0 bottom-0 z-10 text-center"
                 onClick={() => {
                     handleSubmit()
-                    // resetCart()
+                    resetCart()
                 }}
             >
                 <span className="text-white font-normal">
