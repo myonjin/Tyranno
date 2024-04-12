@@ -148,6 +148,7 @@ export default function CartList() {
         setRecoilMoney(orderMoney)
     }
 
+    console.log(checkedItem)
     return (
         <>
             <div className="my-3 mx-4 flex items-center">
@@ -191,7 +192,8 @@ export default function CartList() {
             <ul>
                 {productData.map(
                     (product) =>
-                        !showOnlySelectedProducts /* || checkedItem.includes(product.) */ && (
+                        (!showOnlySelectedProducts ||
+                            checkedItem.includes(product.cartId)) /* || checkedItem.includes(product.) */ && (
                             <li key={product.cartId} className="flex items-center py-5 px-4 border-t">
                                 <div className="flex items-start relative w-full">
                                     <label className="relative mr-3">

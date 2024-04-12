@@ -43,7 +43,7 @@ function SelectAddressModal({ modalOpen, setModalOpen }: AddressModalProps) {
                         >
                             <label className="flex items-center">
                                 <div className="py-5">
-                                    <input type="radio" className="block relative w-5 h-5" />
+                                    <input type="radio" className="block relative w-5 h-5" name="address" />
                                 </div>
                                 <div className="flex-col ml-4">
                                     <div>
