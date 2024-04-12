@@ -2,7 +2,8 @@ package com.tyranno.ssg.recent.presentation;
 
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.recent.application.RecentService;
-import com.tyranno.ssg.recent.dto.RecentViewedDto;
+import com.tyranno.ssg.recent.dto.Request.RecentProductIdDto;
+import com.tyranno.ssg.recent.dto.Response.RecentViewedDto;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,8 +35,8 @@ public class RecentController {
     @Operation(summary = "최근 본 상품 담기", description = "uuid, productId로 최근 본 상품에 담기, \n\n" +
             "만약 최근 본 상품을 다시 보면 isView값을 99로 처리하고 새로 DB에 추가")
     @PostMapping("/add")
-    public ResponseEntity<?> addRecent(@RequestBody Map<String, Long> requestBody, @RequestHeader("Authorization") String token) {
-        Long productId = requestBody.get("productId");
+    public ResponseEntity<?> addRecent(@RequestBody RecentProductIdDto recentProductIdDto, @RequestHeader("Authorization") String token) {
+        Long productId = recentProductIdDto.getProductId();
         String uuid = jwtTokenProvider.tokenToUuid(token);
         String result = recentService.addRecentByProduct(productId, uuid);
         return new ResponseEntity<>(result);

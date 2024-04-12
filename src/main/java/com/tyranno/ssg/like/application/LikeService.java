@@ -1,6 +1,6 @@
 package com.tyranno.ssg.like.application;
 
-import com.tyranno.ssg.like.dto.LikeListDto;
+import com.tyranno.ssg.like.dto.Response.LikeListDto;
 
 public interface LikeService {
     boolean modifyLike(Long productId, String uuid);
