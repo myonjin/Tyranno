@@ -1,7 +1,6 @@
 package com.tyranno.ssg.delivery.dto;
 
 import com.tyranno.ssg.delivery.domain.Delivery;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,17 +11,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class DeliveryDetailDto {
-    @NotNull
+
     private String deliveryName;
-    @NotNull
+
     private Integer zipCode;
-    @NotNull
+
     private String deliveryBase;
 
     private String deliveryDetail;
-    @NotNull
+
     private String receiverName;
-    @NotNull
+
     private String phoneNumber;
 
     private String homeNumber;

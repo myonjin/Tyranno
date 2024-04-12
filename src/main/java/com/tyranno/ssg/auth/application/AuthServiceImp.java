@@ -39,7 +39,6 @@ public class AuthServiceImp implements AuthService {
         if (optionalUsers.isEmpty()) {
             return new UsersTypeInfoDto(UsersType.NON_USERS.getCode(), UsersType.NON_USERS.getDescription());
         }
-
         Users users = optionalUsers.get();
         if (users.getIsIntegrated() == 1) { // 통합회원
             return new UsersTypeInfoDto(UsersType.INTEGRATED_USERS.getCode(), UsersType.INTEGRATED_USERS.getDescription());
@@ -53,25 +52,32 @@ public class AuthServiceImp implements AuthService {
     @Transactional // 기존 소셜 회원 통합회원 연결
     @Override
     public void connectUsers(ConnectUsersDto connectUsersDto) {
+        // 아이디 중복 시 회원 생성 막음
+        checkLoginId(connectUsersDto.getLoginId());
+
         Users users = usersRepository.findByPhoneNumber(connectUsersDto.getPhoneNumber())
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
 
-        // logId, password, 통합회원 여부 적용
+        // logId, password, isIntegrated 적용
         usersRepository.save(connectUsersDto.toEntity(users));
     }
 
     @Transactional
     @Override
     public String singUpUsers(SignUpDto signUpDto) {
+        // 아이디, 휴대폰번호, 이메일 중복 방지
+        checkLoginId(signUpDto.getLoginId());
+        checkEmail(signUpDto.getEmail());
+        checkPhoneNumber(signUpDto.getPhoneNumber());
+
         Optional<Users> optionalUsers = usersRepository.findByPhoneNumber(signUpDto.getPhoneNumber());
 
-        if(optionalUsers.isPresent()) { // 소셜회원이 통합회원가입 하는 경우
-        // logId, password, 통합회원 여부 적용
-        usersRepository.save(signUpDto.connctUsers(optionalUsers.get()));
-        return "기존 소셜회원, 통합회원 연결하였습니다.";
+        if (optionalUsers.isPresent()) { // 소셜회원이 통합회원가입 하는 경우
+            // logId, password, 통합회원 여부 적용
+            usersRepository.save(signUpDto.connctUsers(optionalUsers.get()));
+            return "기존 소셜회원, 통합회원 연결하였습니다.";
 
-        }
-        else { // 비회원이 통합회원가입 하는 경우
+        } else { // 비회원이 통합회원가입 하는 경우
             //회원
             Users users = signUpDto.toUsersEntity();
             usersRepository.save(users);
@@ -91,7 +97,6 @@ public class AuthServiceImp implements AuthService {
             return "최초 통합회원 가입 성공하였습니다.";
         }
     }
-
     @Transactional
     @Override
     public void addMarketingInformation(MarketingAgreeDto marketingAgreeDto, Users users) {
@@ -115,15 +120,15 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
-    public void checkLoginId(IdCheckDto idCheckDto) {
-        if (usersRepository.existsByLoginId(idCheckDto.getLoginId())) {
+    public void checkLoginId(String loginId) {
+        if (usersRepository.existsByLoginId(loginId)) {
             throw new GlobalException(ResponseStatus.DUPLICATE_ID);
         }
     }
 
     @Override
-    public void checkEmail(EmailCheckDto emailCheckDto) {
-        if (usersRepository.existsByEmail(emailCheckDto.getEmail())) {
+    public void checkEmail(String email) {
+        if (usersRepository.existsByEmail(email)) {
             throw new GlobalException(ResponseStatus.DUPLICATE_EMAIL);
         }
     }
@@ -159,8 +164,8 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
-    public void checkPhoneNumber(PhoneNumberDto phoneNumberDto) {
-        if (usersRepository.existsByPhoneNumber(phoneNumberDto.getPhoneNumber())) {
+    public void checkPhoneNumber(String phoneNumber) {
+        if (usersRepository.existsByPhoneNumber(phoneNumber)) {
             throw new GlobalException(ResponseStatus.DUPLICATED_USERS);
         }
     }
