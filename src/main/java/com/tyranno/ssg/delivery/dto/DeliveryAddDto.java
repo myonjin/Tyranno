@@ -23,7 +23,6 @@ public class DeliveryAddDto {
     @NotBlank(message = "모든 항목을 입력해주세요.")
     private String deliveryBase;
 
-    @NotBlank(message = "모든 항목을 입력해주세요.")
     private String deliveryDetail;
 
     @NotBlank(message = "모든 항목을 입력해주세요.")
