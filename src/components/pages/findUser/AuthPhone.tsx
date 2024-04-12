@@ -1,7 +1,7 @@
 'use client'
-import { findIdAPI } from '@/actions/user'
+import { checkAuthCodeAPI, findIdAPI, sendTextAPI } from '@/actions/user'
 import Buttons from '@/components/ui/buttons'
-import { FindUserDataType } from '@/types/FindUserDataType'
+import { authCode } from '@/types/UserDataType'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 export default function Authphone() {
@@ -9,6 +9,8 @@ export default function Authphone() {
     const [gender, setGender] = useState<number>()
     const [birthday, setBirthday] = useState('')
     const [phoneNumberString, setPhoneNumberString] = useState('')
+    const [authCode, setAuthCode] = useState<string>('')
+    const [authCodeCheck, setAuthCodeCheck] = useState<boolean>(false)
     const router = useRouter()
 
     const settingName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,22 +35,41 @@ export default function Authphone() {
 
     const handleButtonClick = async () => {
         try {
-            const authForm: FindUserDataType = {
-                name: name,
-                phoneNumber: phoneNumberString,
-                gender: gender || 1,
-                birth: birthday,
+            const data = phoneNumberString.replace(/-/g, '')
+            const response = await sendTextAPI(data)
+            if (response.statusCode === 2000) {
+                alert('인증번호가 발송되었습니다.')
             }
-
-            const response = await findIdAPI(authForm)
-            if (response.isSuccess === false) {
-                alert(response.message)
-                router.push('/user/findidform')
+            setAuthCodeCheck(true)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const verifyAuthCode = async () => {
+        try {
+            const data: authCode = {
+                phoneNumber: phoneNumberString.replace(/-/g, ''),
+                randomNumber: authCode,
             }
-            const findID = response.result
-            localStorage.setItem('findID', findID)
-        } catch (e) {
-            console.log(e)
+            const response = await checkAuthCodeAPI(data)
+            if (response.isSuccess == true) {
+                const phone = phoneNumberString
+                const response = await findIdAPI(phone)
+                console.log(response)
+                if (response.isSuccess === false) {
+                    alert(response.message)
+                    router.push('/user/findidform')
+                } else {
+                    localStorage.setItem('findId', response.result)
+                    alert('인증 되었습니다')
+                    router.push('/user/findpw')
+                }
+            } else {
+                alert('인증번호가 틀렸습니다.')
+                router.push('/user/signupintro/auth')
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
     const fieldCheck = () => {
@@ -125,18 +146,49 @@ export default function Authphone() {
                     />
                 </span>
             </div>
-            <span>
-                {!fieldCheck() && (
+            {authCodeCheck === true ? (
+                <div>
+                    <span className="inp_txt">
+                        <input
+                            className="input-content"
+                            type="number"
+                            maxLength={6}
+                            onChange={(e) => setAuthCode(e.target.value)}
+                            placeholder="인증번호 입력"
+                        />
+                    </span>
+
                     <div>
+                        <button
+                            className="button-groups"
+                            style={{ backgroundColor: '#ff5452', color: '#fff' }}
+                            onClick={verifyAuthCode}
+                        >
+                            확인
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div>
+                    {!fieldCheck() ? (
                         <Buttons
                             title="인증번호 받기"
-                            href="/user/findidform"
+                            href="/user/signupintro/auth"
                             click={() => alert('모든 항목을 체크해주세요')}
-                        ></Buttons>
-                    </div>
-                )}
-                {fieldCheck() && <Buttons title="아이디 찾기" href="/user/findid" click={handleButtonClick}></Buttons>}
-            </span>
+                        />
+                    ) : (
+                        <div>
+                            <button
+                                className="button-groups"
+                                style={{ backgroundColor: '#ff5452', color: '#fff' }}
+                                onClick={handleButtonClick}
+                            >
+                                안중번호 받기
+                            </button>
+                        </div>
+                    )}
+                </div>
+            )}
         </>
     )
 }
