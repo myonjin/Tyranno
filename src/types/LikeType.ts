@@ -1,3 +1,3 @@
 export interface LIKEType {
-    isLike : number
+    productId : string
 }
