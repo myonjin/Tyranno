@@ -55,6 +55,7 @@ public enum ResponseStatus {
     NO_EXIST_USERS(false, 2106, "존재하지 않는 유저 정보입니다."),
     NO_SIGNUP(false, 2107, "회원가입 이력이 존재하지 않습니다."),
     NO_REGISTER(false, 2108, "통합 회원이 아닙니다."),
+    ONLY_FOR_MEMBERS(false, 2109, "회원만 사용가능한 서비스입니다."),
     //    USERS_STATUS_IS_NOT_FOUND(false, 2107, "존재하지 않는 유저 상태입니다."),
     //    PASSWORD_SAME_FAILED(false, 2108, "현재 사용중인 비밀번호 입니다."),
 //    PASSWORD_CONTAIN_NUM_FAILED(false, 2109, "휴대폰 번호를 포함한 비밀번호 입니다."),

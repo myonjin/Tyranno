@@ -95,7 +95,8 @@ public class ProductServiceImp implements ProductService {
 
         Product product = productOptional.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
         log.info(String.valueOf(product));
-        Optional<ProductThum> imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1);
+        String imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_IMAGE)).getImageUrl();
         Long vendorId = null;
         String vendorName = "";
 
@@ -120,15 +121,20 @@ public class ProductServiceImp implements ProductService {
             Optional<Like> like = likeRepository.findByProductIdAndUsersId(productId, usersId);
             isLike = (byte) (like.isPresent() ? 11 : 99);
         }
+        float productRate = 0;
+
+        if (product.getReviewCount() != 0) {
+            productRate = product.getProductRate()/product.getReviewCount();
+        }
 
         return ProductInformationDto.builder()
                 .productId(product.getId())
                 .productName(product.getProductName())
                 .price(product.getProductPrice())
-                .productRate(product.getProductRate())
+                .productRate(productRate)
                 .reviewCount(product.getReviewCount())
                 .isLiked(isLike)
-                .imageUrl(imageUrl.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_IMAGE)).getImageUrl())
+                .imageUrl(imageUrl)
                 .vendorName(vendorName)
                 .discount(discountValue)
                 .build();
@@ -141,21 +147,14 @@ public class ProductServiceImp implements ProductService {
     }
     @Override
     public ProductIdListDto getProductIdList(Long largeId, Long middleId, Long smallId, Long detailId,
-                                             Integer sortCriterion, Integer page, String searchKeyword) { // productList
+                                             Integer sortCriterion, Integer page) { // productList
         // 페이지당 10개
         final int PAGE_SIZE = 10;
 
         List<Long> productIds;
-        if (searchKeyword != null && !searchKeyword.isEmpty()) {
-            // 상품명으로 검색
-            log.info("상품명 실행");
-            productIds = productRepositoryImp.searchProductIdsByKeyword(searchKeyword, sortCriterion, page);
-        } else {
-            // 카테고리로 검색
-            log.info("카테고리 실행");
-            productIds = productRepositoryImp.searchProductIdsByCategory(largeId, middleId, smallId, detailId,
+        productIds = productRepositoryImp.searchProductIdsByCategory(largeId, middleId, smallId, detailId,
                     sortCriterion, page);
-        }
+
         ProductIdListDto productIdListDto = new ProductIdListDto();
 
         List<Map<String, Object>> productIdList = new ArrayList<>();
