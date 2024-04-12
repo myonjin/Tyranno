@@ -11,7 +11,7 @@ export default function ProductList({ productListIdData }: { productListIdData: 
     return (
         <div className="grid-cols-2 md:grid-cols-4 grid gap-y-0 gap-x-5 ms-4 me-4 ">
             {productListIdData.map((item: product, idx) => (
-                <PopularProduct productId={item.productId} key={idx} />
+                <PopularProduct productId={item.productId} id={item.id} key={idx} />
             ))}
         </div>
     )

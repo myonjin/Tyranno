@@ -4,6 +4,7 @@ import MainSecondNav from '@/components/pages/Main/MainSecondNav'
 import MainBanner from '@/components/pages/Main/MainBanner'
 import MainCategorySlideButton from '@/components/pages/Main/MainCategorySlideButton'
 import ProductList from '@/components/pages/category/ProductList'
+import MainProductList from '@/components/pages/Main/MainProductList'
 
 async function Home() {
     // const data: product[] = await getProductList()
@@ -14,7 +15,7 @@ async function Home() {
             <MainEventSection />
             <MainShortcutSection />
             <MainBanner />
-            <MainCategorySlideButton />
+            <MainProductList />
         </main>
     )
 }
