@@ -22,18 +22,20 @@ function Order() {
             >
                 <div className="p-4 mt-10">
                     <div className="flex justify-between ">
-                        <h1 className="flex font-extrabold text-xl">
-                            주문/배송 조회
-                            <Image
-                                width={30}
-                                height={30}
-                                src="https://img.icons8.com/ios-glyphs/30/back.png"
-                                alt="back"
-                                style={{ transform: 'rotate(180deg)' }}
-                            />
-                        </h1>
+                        <Link href="/mypage/manage/orderlist">
+                            <h1 className="flex font-extrabold text-xl">
+                                주문/배송 조회
+                                <Image
+                                    width={30}
+                                    height={30}
+                                    src="https://img.icons8.com/ios-glyphs/30/back.png"
+                                    alt="back"
+                                    style={{ transform: 'rotate(180deg)' }}
+                                />
+                            </h1>
+                        </Link>
                         <Link
-                            href="/"
+                            href="/mypage/manage/addresschange"
                             className="flex items-center justify-center border rounded-md font-bold px-3  text-sm whitespace-nowrap"
                         >
                             <Image

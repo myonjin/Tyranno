@@ -8,22 +8,39 @@ export interface product {
     id: number
 }
 
-async function getProductList(largeId: string, middleId: string) {
+async function getProductList(
+    largeId: string,
+    middleId: string,
+    smallId: string,
+    detailId: string,
+    sortCriterion: string,
+) {
     const data = await fetch(
-        `https://tyrannoback.com/api/v1/product/productList?largeId=${largeId}&middleId=${middleId}`,
+        `https://tyrannoback.com/api/v1/product/productList?largeId=${largeId}&middleId=${middleId}&smallId=${smallId}&detailId=${detailId}&sortCriterion=${sortCriterion}`,
+        {
+            cache: 'force-cache',
+        },
     )
     if (data) {
         const response = await data.json()
-        // console.log(response.result.productIds)
+        console.log(response.result)
         return response.result.productIds
     }
 }
 
 async function CategoryProductListPage({ searchParams }: { searchParams: { [key: string]: string } }) {
     const params = searchParams
-    // console.log(params)
+    const smallId = params.smallId || ''
+    const detailId = params.detailId || ''
+    const sortCriterion = params.sortCriterion || ''
 
-    const productListIdData: product[] = await getProductList(params.largeId, params.middleId)
+    const productListIdData: product[] = await getProductList(
+        params.largeId,
+        params.middleId,
+        smallId,
+        detailId,
+        sortCriterion,
+    )
 
     return (
         <div className="min-h-screen">
@@ -33,10 +50,6 @@ async function CategoryProductListPage({ searchParams }: { searchParams: { [key:
                 <SubCategoryTable />
             </div>
             <div className="col-start-2 col-end-auto">
-                <div className="text-xs flex ps-4 pe-4 pt-3">
-                    <div className="font-bold">~개</div>
-                    <div className="text-gray-500">의 상품이 있습니다.</div>
-                </div>
                 <ProductList productListIdData={productListIdData} />
             </div>
         </div>

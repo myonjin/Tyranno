@@ -16,7 +16,7 @@ export default function DeliveryAddress() {
     }
     useEffect(() => {
         fetchData()
-    }, [])
+    }, [mainAddress])
 
     return (
         <section className="my-5 mx-5 z-[2]">

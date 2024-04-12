@@ -12,6 +12,8 @@ import { LastOptionListType } from '@/types/LastOptionType'
 import ProductSelect from './ProductSelect'
 import { cartClickAPI } from '@/actions/product'
 import { useRouter } from 'next/navigation'
+import { cartMoneyDataType } from '@/types/CartDataType'
+import { CartMoneyAtom } from '@/state/CartCheckedListAtom'
 
 interface OptionListType {
     idx: number
@@ -48,6 +50,7 @@ export default function ProductOptions({
     const [qty, setQty] = useState(1)
     const router = useRouter()
     const resetSelectedOptionList = useResetRecoilState(SelectedOptionItemListAtom)
+    const [recoilMoney, setRecoilMoney] = useRecoilState<cartMoneyDataType>(CartMoneyAtom)
 
     // useEffect(() => {
     //     return () => {
@@ -139,6 +142,12 @@ export default function ProductOptions({
             optionId: selectedOptionList.optionId,
             count: selectedOptionList.count,
         }
+        const orderMoney = {
+            orderMoney: productData.price * qty,
+            deliveryMoney: 3000,
+            discountMoney: -(productData.price * qty * (productData.discount / 100)),
+        }
+        setRecoilMoney(orderMoney)
         // console.log(res)
     }
     // console.log(selectedOptionId)

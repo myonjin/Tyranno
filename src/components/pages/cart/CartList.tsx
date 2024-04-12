@@ -133,21 +133,26 @@ export default function CartList() {
         }
     }
     const handleOrder = async () => {
-        const cartToOrder = productData.map((product) => ({
-            productId: product.productId,
-            optionId: product.optionId,
-            count: product.count,
-            money: product.totalPrice * product.count,
-        }))
-        const orderMoney = {
-            orderMoney: totalMoney,
-            deliveryMoney: 3000,
-            discountMoney: discountMoney,
+        if (productData.length !== 0) {
+            const cartToOrder = productData.map((product) => ({
+                productId: product.productId,
+                optionId: product.optionId,
+                count: product.count,
+                money: product.totalPrice * product.count,
+            }))
+            const orderMoney = {
+                orderMoney: totalMoney,
+                deliveryMoney: 3000,
+                discountMoney: discountMoney,
+            }
+            setRecoilCartItem(cartToOrder)
+            setRecoilMoney(orderMoney)
+        } else {
+            alert('상품이 없습니다.')
         }
-        setRecoilCartItem(cartToOrder)
-        setRecoilMoney(orderMoney)
     }
 
+    console.log(checkedItem)
     return (
         <>
             <div className="my-3 mx-4 flex items-center">
@@ -191,7 +196,8 @@ export default function CartList() {
             <ul>
                 {productData.map(
                     (product) =>
-                        !showOnlySelectedProducts /* || checkedItem.includes(product.) */ && (
+                        (!showOnlySelectedProducts ||
+                            checkedItem.includes(product.cartId)) /* || checkedItem.includes(product.) */ && (
                             <li key={product.cartId} className="flex items-center py-5 px-4 border-t">
                                 <div className="flex items-start relative w-full">
                                     <label className="relative mr-3">
@@ -319,7 +325,11 @@ export default function CartList() {
                     </p>
                     <p className="text-rose-600 text-xs">할인혜택 없음</p>
                 </div>
-                <Buttons title="주문하기" href="/order" click={handleOrder} />
+                {productData.length !== 0 ? (
+                    <Buttons title="주문하기" href="/order" click={handleOrder} />
+                ) : (
+                    <Buttons title="주문하기" href="/cart" click={handleOrder} />
+                )}
             </div>
         </>
     )

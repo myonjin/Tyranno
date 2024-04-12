@@ -35,6 +35,7 @@ function Login() {
 
         const session = await getSession(options)
         const sessionUser = session?.user as UserType
+
         if (sessionUser.isSuccess === true) {
             router.push('/')
         } else {

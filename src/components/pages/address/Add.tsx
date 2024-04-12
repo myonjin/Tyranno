@@ -55,14 +55,27 @@ const Postcode = ({ modalOpen, setModalOpen, setFullAddress, setDetailAddress, s
     return (
         modalOpen && (
             <div className="bg-white top-0 left-0 right-0 bottom-0" style={{ zIndex: '1000', position: 'fixed' }}>
-                <HeaderTitle title="배송지 추가" />
-                <div className="p-10">
-                    <DaumPostcodeEmbed onComplete={handleComplete} autoClose={false} />
+                <div className="flex items-center h-10  border-b  border-gray-400">
+                    <p className="flex-grow font-bold text-lg text-center">배송지 추가</p>
+                    <button
+                        className="absolute right-4"
+                        onClick={() => {
+                            closeModal()
+                        }}
+                    >
+                        <img
+                            width="24"
+                            height="24"
+                            src="https://img.icons8.com/fluency-systems-regular/48/x.png"
+                            alt="x"
+                        />
+                    </button>
                 </div>
+                <DaumPostcodeEmbed onComplete={handleComplete} autoClose={false} />
                 <div className="flex justify-center">{zCode}</div>
                 <div className="flex justify-center">{fullAddr}</div>
                 <div className="flex justify-center">{jibunAddr}</div>
-                <div className="m-10 ">
+                <div className=" ">
                     <input
                         type="text"
                         className=" w-full h-10 "

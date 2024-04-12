@@ -3,8 +3,9 @@ import { getDelivery } from '@/actions/delivery'
 import { AddressDataType } from '@/types/AddressDataType'
 import { useEffect, useState } from 'react'
 
-export default function AddressList() {
+export default function AddressList({ setDeliveryId }: { setDeliveryId: (value: string) => void }) {
     const [deliveryData, setDeliveryData] = useState<AddressDataType[]>([])
+    const [selected, setSelected] = useState<string>('')
     const fetchData = async () => {
         try {
             const res = await getDelivery()
@@ -15,9 +16,9 @@ export default function AddressList() {
     }
     useEffect(() => {
         fetchData()
-    }, [])
-    const response = getDelivery()
-    console.log(response)
+        setDeliveryId(selected)
+        console.log('fmkdslfs', selected)
+    }, [selected])
     return (
         <div className="flex w-full max-w-full max-h-full">
             <ul className="block w-full">
@@ -29,7 +30,12 @@ export default function AddressList() {
                     >
                         <label className="flex items-center">
                             <div className="py-5">
-                                <input type="radio" className="block relative w-5 h-5" />
+                                <input
+                                    type="radio"
+                                    className="block relative w-5 h-5"
+                                    name="address"
+                                    onChange={() => setSelected(String(delivery.id))}
+                                />
                             </div>
                             <div className="flex-col ml-4">
                                 <div>

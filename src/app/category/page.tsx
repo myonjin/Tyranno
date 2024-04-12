@@ -107,42 +107,7 @@ const GroupNav = ({
             </ul>
             {isOpen && (
                 <ul className="text-xs  px-3 py-3 bg-gray-100 my-[5px] box-border">
-                    {/* <li className="w-1/2 min-h-[38px] flex items-center pl-3 pr-[13px]">
-                        <p>
-                            <Link href={'/category/all'} passHref>
-                                상품 전체보기
-                            </Link>
-                        </p>
-                    </li> */}
-                    {/* <li className="w-1/2 min-h-[38px] flex items-center pl-3 pr-[13px]">
-                        <p>
-                            <Link href={'/category/1'} passHref>
-                                중분류명
-                            </Link>
-                        </p>
-                    </li> */}
-                    {/* <li className=" w-1/2 min-h-[38px] pl-3 pr-[13px]"> */}
-
                     <CategoryModal largeId={selectedLCategory} />
-                    {/* </li> */}
-
-                    {/* {중분류 데이터.map((item, idx) => {
-              return (
-                <li key={idx} className="w-1/2 min-h-[38px] flex items-center pl-3 pr-[13px]">
-                  <p>
-                    <Link
-                      href={{
-                        pathname: `/category/sub`,
-                        query: { lCtg: selectedLCategory, mCtg: item.id }
-                      }} // 중분류 페이지로 이동하기 위한 query 설정
-                      passHref>
-                      중분류명
-                    </Link>
-                  </p>
-                </li>
-              )
-            })
-            } */}
                 </ul>
             )}
         </div>

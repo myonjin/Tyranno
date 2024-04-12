@@ -1,6 +1,8 @@
 import { CartDataType } from '@/types/ProductDetailDataType'
 import { GetAPI, PostAPI } from './FetchAPI'
 import { GetToken } from './GetToken'
+import { LIKEType } from '@/types/LikeType'
+
 const token = GetToken()
 
 async function GetProductDataAPI(productId: string) {
@@ -28,10 +30,31 @@ async function cartClickAPI(data: CartDataType) {
     return response
 }
 
+async function getProductListAPI(productId: string) {
+    const response = await GetAPI(`/api/v1/product/productInformation/${productId}`, undefined, await token)
+    return response
+}
+
+async function LikeClickAPI(data: LIKEType) {
+    const response = await PostAPI(`/api/v1/like`, data, await token)
+    console.log('response is ', response)
+    return response
+}
+async function getLikeAPI(productId: string) {
+    const response = await GetAPI(
+        `/api/v1/like/isLike/${productId}`,
+        {
+            cache: 'force-cache',
+        },
+        await token,
+    )
+    return response
+}
+
 // async function recentProductAPI(productId: string) {
 //     const response = await PostAPI(`/api/v1/recent/${productId}`, undefined, await token)
 
 //     return response
 // }
 
-export { GetProductDataAPI, cartClickAPI }
+export { GetProductDataAPI, cartClickAPI, LikeClickAPI, getLikeAPI, getProductListAPI }

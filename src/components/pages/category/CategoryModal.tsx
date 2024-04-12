@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { middleware } from '@/middleware'
 
 export interface CategoryMiddleType {
     middleId: string
@@ -22,10 +21,13 @@ function CategoryModal({ largeId }: { largeId: string }) {
 
         GetCategoryMiddle()
     }, [largeId])
+    // console.log(largeId)
 
     return (
         <section className="grid grid-cols-2 gap-x-4 ">
-            <li className="flex text-xs min-h-[38px] pl-3 pr-[13px]"> 전체보기</li>
+            <Link href={`/category/${largeId}`} className="flex text-xs min-h-[38px] pl-3 pr-[13px]">
+                전체보기
+            </Link>
             {categoryMiddle &&
                 categoryMiddle.map((opt: CategoryMiddleType, idx) => (
                     <div key={idx}>
@@ -34,10 +36,10 @@ function CategoryModal({ largeId }: { largeId: string }) {
                                 <Link
                                     href={{
                                         pathname: `/productlist`,
-                                        query :{
-                                            largeId : largeId,
-                                            middleId : opt.middleId,
-                                        }
+                                        query: {
+                                            largeId: largeId,
+                                            middleId: opt.middleId,
+                                        },
                                     }}
                                     passHref
                                 >

@@ -56,13 +56,13 @@ export default function DeliveryItemList() {
     }, [])
 
     const discountmoney = (money: number, discount: number) => {
+        console.log(money, discount)
         const remoney = money * (1 - discount / 100)
         total += remoney
         return remoney
     }
     let link = ''
     const handleSubmit = async () => {
-        console.log('fdnjskafbadshfuidwhfiu')
         const orderOption = []
         for (const items of productData) {
             orderOption.push({
@@ -73,7 +73,7 @@ export default function DeliveryItemList() {
         }
         const data: OrderFormDataType = {
             optionIdList: orderOption,
-            deliveryRequest: 'dflkfld',
+            deliveryRequest: '없음',
             deliveryBase: deliveryAddress?.deliveryBase || '',
             deliveryDetail: deliveryAddress?.deliveryDetail || '',
             zipCode: deliveryAddress?.zipCode || 0,
@@ -100,7 +100,6 @@ export default function DeliveryItemList() {
         // router.push('/order/complete')
     }
     const resetCart = useResetRecoilState(CartItemsAtom)
-
     return (
         <>
             {productData.map((product: any, index: number) => (
@@ -146,7 +145,7 @@ export default function DeliveryItemList() {
                                         {product.price * product.count}원
                                     </span>
                                     <span className="font-extrabold">
-                                        {discountmoney(product.money, product.discount)}원
+                                        {discountmoney(product.money || product.price, product.discount)}원
                                     </span>
                                 </div>
                                 <span className="text-[#666666]">수량 {product.count} 개</span>
@@ -161,7 +160,7 @@ export default function DeliveryItemList() {
                 className="bg-[#ff5452] w-full p-4 sticky right-0 left-0 bottom-0 z-10 text-center"
                 onClick={() => {
                     handleSubmit()
-                    // resetCart()
+                    resetCart()
                 }}
             >
                 <span className="text-white font-normal">
