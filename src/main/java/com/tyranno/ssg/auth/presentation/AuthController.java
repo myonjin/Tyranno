@@ -35,13 +35,13 @@ public class AuthController {
 
         return new ResponseEntity<>("기존 소셜회원, 통합 회원가입 완료하였습니다.");
     }
-    @Operation(summary = "통합 회원가입", description = "통합 회원가입을 한다.")
+    @Operation(summary = "통합 회원가입", description = "기존 소셜회원은 통합회원 연결을, 비회원은 통합회원 가입을 한다.")
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@Validated(ValidationSequence.class) @RequestBody SignUpDto signUpDto) {
 
-        authService.singUpUsers(signUpDto);
+        ;
 
-        return new ResponseEntity<>("회원가입 완료");
+        return new ResponseEntity<>(authService.singUpUsers(signUpDto));
     }
 
     @Operation(summary = "아이디 중복 검사", description = "회원 가입 시 기존 회원과 아이디 중복 여부 체크")

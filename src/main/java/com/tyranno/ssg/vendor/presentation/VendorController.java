@@ -22,9 +22,9 @@ public class VendorController {
     private final VendorService vendorService;
 
     @Operation(summary = "Vendor 정보", description = "productId에 대한 vendor정보 불러오기")
-    @GetMapping("/detail/{productId}")
-    public ResponseEntity<?> getVendorDetail(@PathVariable(value = "productId") Long productId) {
+    @GetMapping("/detail/{product_id}")
+    public ResponseEntity<?> getVendorDetail(@PathVariable Long product_id) {
 
-        return new ResponseEntity<>(vendorService.findById(productId));
+        return new ResponseEntity<>(vendorService.findById(product_id));
     }
 }

@@ -24,9 +24,6 @@ public class CategoryController {
 
     @Operation(summary = "대 카테고리", description = "대 카테고리 조회하기")
     @GetMapping("/")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "대 카테고리 조회 완료"),
-            @ApiResponse(responseCode = "400", description = "대 카테고리 조회 중 오류 발생")})
     public ResponseEntity<List<LargeCategoryDto>> getLargeCategory() {
         List<LargeCategoryDto> largeCategoryDtos = categoryService.getLargeCategory();
         if (largeCategoryDtos != null) {
@@ -38,49 +35,40 @@ public class CategoryController {
         }
     }
     @Operation(summary = "중 카테고리", description = "중 카테고리 조회하기")
-    @GetMapping("/middle/{largeId}")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "중 카테고리 조회 완료"),
-            @ApiResponse(responseCode = "400", description = "중 카테고리 조회 중 오류 발생")})
-    public ResponseEntity<List<MiddleCategoryDto>> getMiddleCategory(@PathVariable Long largeId) {
-        List<MiddleCategoryDto> middleCategoryDtos = categoryService.getMiddleCategory(largeId);
+    @GetMapping("/middle/{large_id}")
+    public ResponseEntity<List<MiddleCategoryDto>> getMiddleCategory(@PathVariable Long large_id) {
+        List<MiddleCategoryDto> middleCategoryDtos = categoryService.getMiddleCategory(large_id);
         if (middleCategoryDtos != null) {
-            log.info("largeCategory ID: {}", largeId);
+            log.info("largeCategory ID: {}", large_id);
             return ResponseEntity.ok(middleCategoryDtos);
         } else {
-            log.warn("category ID 없는거다: {}", largeId);
+            log.warn("category ID 없는거다: {}", large_id);
             return ResponseEntity.notFound().build();
         }
     }
 
     @Operation(summary = "소 카테고리", description = "소 카테고리 조회하기")
-    @GetMapping("/small/{middleId}")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "소 카테고리 조회 완료"),
-            @ApiResponse(responseCode = "400", description = "소 카테고리 조회 중 오류 발생")})
-    public ResponseEntity<List<SmallCategoryDto>> getSmallCategory(@PathVariable Long middleId) {
-        List<SmallCategoryDto> smallCategoryDtos = categoryService.getSmallCategory(middleId);
+    @GetMapping("/small/{middle_id}")
+    public ResponseEntity<List<SmallCategoryDto>> getSmallCategory(@PathVariable Long middle_id) {
+        List<SmallCategoryDto> smallCategoryDtos = categoryService.getSmallCategory(middle_id);
         if (smallCategoryDtos != null) {
-            log.info("middleCategory ID: {}", middleId);
+            log.info("middleCategory ID: {}", middle_id);
             return ResponseEntity.ok(smallCategoryDtos);
         } else {
-            log.warn("category ID 없는거다: {}", middleId);
+            log.warn("category ID 없는거다: {}", middle_id);
             return ResponseEntity.notFound().build();
         }
     }
 
     @Operation(summary = "상세 카테고리", description = "상세 카테고리 조회하기")
-    @GetMapping("/detail/{smallId}")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "상세 카테고리 조회 완료"),
-            @ApiResponse(responseCode = "400", description = "상세 카테고리 조회 중 오류 발생")})
-    public ResponseEntity<List<DetailCategoryDto>> getDetailCategory(@PathVariable Long smallId) {
-        List<DetailCategoryDto> detailCategoryDtos = categoryService.getDetailCategory(smallId);
+    @GetMapping("/detail/{small_id}")
+    public ResponseEntity<List<DetailCategoryDto>> getDetailCategory(@PathVariable Long small_id) {
+        List<DetailCategoryDto> detailCategoryDtos = categoryService.getDetailCategory(small_id);
         if (detailCategoryDtos != null) {
-            log.info("smallCategory ID: {}", smallId);
+            log.info("smallCategory ID: {}", small_id);
             return ResponseEntity.ok(detailCategoryDtos);
         } else {
-            log.warn("category ID 없는거다: {}", smallId);
+            log.warn("category ID 없는거다: {}", small_id);
             return ResponseEntity.notFound().build();
         }
     }

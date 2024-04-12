@@ -139,6 +139,7 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
         QCategory category = QCategory.category;
         return page == null ? null : category.product.id.gt(page);
     }
+
     private BooleanExpression gtProductBoardId(@Nullable Integer page) {
         QProduct product = QProduct.product;
         return page == null ? null : product.id.gt(page);
@@ -149,17 +150,18 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
         return switch (sortCriterion) {
             case 1 -> new OrderSpecifier<>(Order.ASC, category.product.productPrice);
             case 2 -> new OrderSpecifier<>(Order.DESC, category.product.productPrice);
-            case 3 -> new OrderSpecifier<>(Order.DESC, category.product.productRate);
+            case 3 -> new OrderSpecifier<>(Order.DESC, category.product.productRate.divide(category.product.reviewCount));
             case 4 -> new OrderSpecifier<>(Order.DESC, category.product.reviewCount);
             default -> new OrderSpecifier<>(Order.ASC, category.product.id);
         };
     }
+
     private OrderSpecifier<?> createProductSpecifier(Integer sortCriterion) {
         QProduct product = QProduct.product;
         return switch (sortCriterion) {
             case 1 -> new OrderSpecifier<>(Order.ASC, product.productPrice);
             case 2 -> new OrderSpecifier<>(Order.DESC, product.productPrice);
-            case 3 -> new OrderSpecifier<>(Order.DESC, product.productRate);
+            case 3 -> new OrderSpecifier<>(Order.DESC, product.productRate.divide(product.reviewCount));
             case 4 -> new OrderSpecifier<>(Order.DESC, product.reviewCount);
             default -> new OrderSpecifier<>(Order.ASC, product.id);
         };

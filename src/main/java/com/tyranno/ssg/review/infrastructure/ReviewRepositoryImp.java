@@ -2,12 +2,10 @@ package com.tyranno.ssg.review.infrastructure;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tyranno.ssg.category.domain.QCategory;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.review.domain.QReview;
+import com.tyranno.ssg.review.domain.Review;
 import jakarta.annotation.Nullable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
@@ -19,7 +17,7 @@ public class ReviewRepositoryImp extends QuerydslRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
 
     public ReviewRepositoryImp(JPAQueryFactory jpaQueryFactory) {
-        super(Product.class);
+        super(Review.class);
         this.jpaQueryFactory = jpaQueryFactory;
     }
 

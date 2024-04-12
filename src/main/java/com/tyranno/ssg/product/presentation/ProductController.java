@@ -24,30 +24,30 @@ public class ProductController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "상품 상세페이지", description = "상품 상세페이지를 열기")
-    @GetMapping("/detail/{productId}")
-    public ResponseEntity<ProductDetailDto> productDetail(@PathVariable Long productId) {
+    @GetMapping("/detail/{product_id}")
+    public ResponseEntity<ProductDetailDto> productDetail(@PathVariable Long product_id) {
         log.info("productDetail 실행");
-        log.info(productId.toString());
+        log.info(product_id.toString());
 
-        ProductDetailDto productDetailDto = productService.productDetail(productId);
+        ProductDetailDto productDetailDto = productService.productDetail(product_id);
 
         return new ResponseEntity<>(productDetailDto);
     }
 
     @Operation(summary = "리스트용 상품 정보", description = "상품 ID로 상품정보" +
             "isLike 포함, image 한개만 포함")
-    @GetMapping("/productInformation/{productId}")
-    public ResponseEntity<?> ProductInformation(@PathVariable Long productId,
+    @GetMapping("/productInformation/{product_id}")
+    public ResponseEntity<?> ProductInformation(@PathVariable Long product_id,
                                                 @RequestHeader(value = "Authorization", required = false) String token) {
         if(token != null) {
             String uuid = jwtTokenProvider.tokenToUuid(token);
-            ProductInformationDto productDto = productService.getProductInformation(productId,uuid);
+            ProductInformationDto productDto = productService.getProductInformation(product_id,uuid);
             log.info(String.valueOf(productDto));
             return new ResponseEntity<>(productDto);
         }
         else {
             String uuid = null;
-            ProductInformationDto productDto = productService.getProductInformation(productId, null);
+            ProductInformationDto productDto = productService.getProductInformation(product_id, null);
             log.info(String.valueOf(productDto));
             return new ResponseEntity<>(productDto);
         }
@@ -69,12 +69,10 @@ public class ProductController {
             @RequestParam(required = false) Long smallId,
             @RequestParam(required = false) Long detailId,
             @RequestParam(defaultValue = "5") Integer sortCriterion,
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(required = false) String searchKeyword
+            @RequestParam(defaultValue = "1") Integer page
     ) {
         ProductIdListDto productIdListDto = productService.getProductIdList(largeId, middleId, smallId,
-                detailId, sortCriterion, page, searchKeyword);
-        return new com.tyranno.ssg.global.ResponseEntity<>(productIdListDto);
+                detailId, sortCriterion, page);
+        return new ResponseEntity<>(productIdListDto);
     }
-
 }
