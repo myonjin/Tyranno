@@ -15,17 +15,17 @@ import lombok.NoArgsConstructor;
 public class DeliveryModifyDto {
     @NotNull
     private Long id;
-    @NotBlank
+    @NotBlank(message = "모든 항목을 입력해주세요.")
     private String deliveryName;
     @NotNull
     private Integer zipCode;
-    @NotBlank
+    @NotBlank(message = "모든 항목을 입력해주세요.")
     private String deliveryBase;
-    @NotBlank
+    @NotBlank(message = "모든 항목을 입력해주세요.")
     private String deliveryDetail;
-    @NotBlank
+    @NotBlank(message = "모든 항목을 입력해주세요.")
     private String receiverName;
-    @NotBlank
+    @NotBlank(message = "모든 항목을 입력해주세요.")
     @Pattern(regexp = "^01[0-9]-\\d{4}-\\d{4}$",
             message = "휴대폰 번호 형식이 올바르지 않습니다.")
     private String phoneNumber;
