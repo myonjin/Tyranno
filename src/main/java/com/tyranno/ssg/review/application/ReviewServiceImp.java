@@ -4,6 +4,7 @@ import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.option.dto.OptionNamesDto;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
+import com.tyranno.ssg.order.application.OrderService;
 import com.tyranno.ssg.order.domain.Order;
 import com.tyranno.ssg.order.domain.OrderList;
 import com.tyranno.ssg.order.infrastructure.OrderListRepository;
@@ -137,7 +138,15 @@ public class ReviewServiceImp implements ReviewService{
 
             // 평점 및 리뷰 수 업데이트
             productService.updateProductRatingAndReviewCount(product.getId(), reviewCreateDto.getRate());
-
+            order = Order.builder()
+                    .id(orderId)
+                    .count(order.getCount())
+                    .money(order.getMoney())
+                    .option(order.getOption())
+                    .orderList(order.getOrderList())
+                    .isReview((byte) 99)
+                    .build();
+            orderRepository.save(order);
             return "리뷰 저장 성공!";
         } catch (Exception e) {
             throw new GlobalException(ResponseStatus.FAILED_TO_REVIEW);

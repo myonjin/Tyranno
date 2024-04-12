@@ -4,12 +4,15 @@ import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseEntity;
 import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.like.application.LikeService;
+import com.tyranno.ssg.like.dto.LikeListDto;
 import com.tyranno.ssg.security.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,9 +24,10 @@ public class LikeController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "좋아요 눌렀을때", description = "이미 좋아요 상태면 삭제, 아니면 좋아요")
-    @PostMapping("/likeButton/")
-    public ResponseEntity<?> modifyLLike(@RequestParam Long productId,
+    @PostMapping
+    public ResponseEntity<?> modifyLLike(@RequestBody Map<String, Long> requestBody,
                                          @RequestHeader(value = "Authorization", required = false) String token) {
+        Long productId = requestBody.get("productId");
         if(token != null) {
             String uuid = jwtTokenProvider.tokenToUuid(token);
             boolean isLike = likeService.modifyLike(productId, uuid);
@@ -36,9 +40,7 @@ public class LikeController {
             throw new RuntimeException(ResponseStatus.ONLY_FOR_MEMBERS.getMessage());
         }
     }
-
-
-    @Operation(summary = "좋아요 확인", description = "uuid")
+    @Operation(summary = "좋아요 확인", description = "uuid로 좋아요 했는지 확인")
     @GetMapping("/isLike/{product_id}")
     public ResponseEntity<?> getLike(@PathVariable Long product_id,
                                      @RequestHeader(value = "Authorization", required = false) String token) {
@@ -48,8 +50,19 @@ public class LikeController {
             return new ResponseEntity<>(result);
         } else {
             int result = 99;
-            ResponseEntity<Integer> integerResponseEntity = new ResponseEntity<>(result);
-            return integerResponseEntity;
+            return new ResponseEntity<>(result);
+        }
+    }
+    @Operation(summary = "좋아요 리스트", description = "uuid")
+    @GetMapping("/list")
+    public ResponseEntity<?> getLikeList(@RequestHeader(value = "Authorization", required = false) String token,
+                                         @RequestParam(defaultValue = "1") Integer page) {
+        if(token != null) {
+            String uuid = jwtTokenProvider.tokenToUuid(token);
+            LikeListDto likeListDto = likeService.getLikeList(uuid, page);
+            return new ResponseEntity<>(likeListDto);
+        } else {
+            throw new RuntimeException(ResponseStatus.ONLY_FOR_MEMBERS.getMessage());
         }
     }
 }

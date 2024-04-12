@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,10 +33,11 @@ public class RecentController {
 
     @Operation(summary = "최근 본 상품 담기", description = "uuid, productId로 최근 본 상품에 담기, \n\n" +
             "만약 최근 본 상품을 다시 보면 isView값을 99로 처리하고 새로 DB에 추가")
-    @PostMapping("/{product_id}")
-    public ResponseEntity<?> addRecent(@PathVariable Long product_id, @RequestHeader("Authorization") String token) {
+    @PostMapping("/add")
+    public ResponseEntity<?> addRecent(@RequestBody Map<String, Long> requestBody, @RequestHeader("Authorization") String token) {
+        Long productId = requestBody.get("productId");
         String uuid = jwtTokenProvider.tokenToUuid(token);
-        String result = recentService.addRecentByProduct(product_id, uuid);
+        String result = recentService.addRecentByProduct(productId, uuid);
         return new ResponseEntity<>(result);
     }
 }
