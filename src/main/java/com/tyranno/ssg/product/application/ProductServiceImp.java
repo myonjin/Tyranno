@@ -95,7 +95,8 @@ public class ProductServiceImp implements ProductService {
 
         Product product = productOptional.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
         log.info(String.valueOf(product));
-        Optional<ProductThum> imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1);
+        String imageUrl = productThumRepository.findByProductIdAndPriority(productId, 1)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_IMAGE)).getImageUrl();
         Long vendorId = null;
         String vendorName = "";
 
@@ -120,15 +121,20 @@ public class ProductServiceImp implements ProductService {
             Optional<Like> like = likeRepository.findByProductIdAndUsersId(productId, usersId);
             isLike = (byte) (like.isPresent() ? 11 : 99);
         }
+        float productRate = 0;
+
+        if (product.getReviewCount() != 0) {
+            productRate = product.getProductRate()/product.getReviewCount();
+        }
 
         return ProductInformationDto.builder()
                 .productId(product.getId())
                 .productName(product.getProductName())
                 .price(product.getProductPrice())
-                .productRate(product.getProductRate())
+                .productRate(productRate)
                 .reviewCount(product.getReviewCount())
                 .isLiked(isLike)
-                .imageUrl(imageUrl.orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_IMAGE)).getImageUrl())
+                .imageUrl(imageUrl)
                 .vendorName(vendorName)
                 .discount(discountValue)
                 .build();
