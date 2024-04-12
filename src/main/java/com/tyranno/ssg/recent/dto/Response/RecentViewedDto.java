@@ -1,11 +1,9 @@
-package com.tyranno.ssg.recent.dto;
+package com.tyranno.ssg.recent.dto.Response;
 
 import com.tyranno.ssg.recent.domain.RecentViewedProduct;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor

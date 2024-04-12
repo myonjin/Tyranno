@@ -1,4 +1,4 @@
-package com.tyranno.ssg.like.dto;
+package com.tyranno.ssg.like.dto.Response;
 
 import lombok.Builder;
 import lombok.Getter;

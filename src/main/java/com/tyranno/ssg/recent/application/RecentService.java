@@ -1,6 +1,6 @@
 package com.tyranno.ssg.recent.application;
 
-import com.tyranno.ssg.recent.dto.RecentViewedDto;
+import com.tyranno.ssg.recent.dto.Response.RecentViewedDto;
 
 import java.util.List;
 
