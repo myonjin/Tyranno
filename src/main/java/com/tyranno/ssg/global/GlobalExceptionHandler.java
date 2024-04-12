@@ -31,17 +31,17 @@ public class GlobalExceptionHandler {
         log.error("url: {}, message: {}", request.getRequestURI(), e.getMessage());
         BindingResult bindingResult = e.getBindingResult();
 
-        StringBuilder builder = new StringBuilder();
-        for (FieldError fieldError : bindingResult.getFieldErrors()) {
-            builder.append(fieldError.getDefaultMessage());
-            builder.append("\n");
-        }
-//        String firstErrorMessage = bindingResult.getFieldErrors().stream()
-//                .findFirst()
-//                .map(FieldError::getDefaultMessage)
-//                .orElse("Validation error");
+//        StringBuilder builder = new StringBuilder();
+//        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+//            builder.append(fieldError.getDefaultMessage());
+//            builder.append("\n");
+//        }
+        String ErrorMessage = bindingResult.getFieldErrors().stream()
+                .findFirst()
+                .map(FieldError::getDefaultMessage)
+                .orElse("Validation error");
 
-        return new ResponseEntity<>(e, builder.toString());
+        return new ResponseEntity<>(e, ErrorMessage);
     }
 
 }
