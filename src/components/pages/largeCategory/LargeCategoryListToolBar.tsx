@@ -28,6 +28,7 @@ export default function CategoryProductListToolBar({ largeId }: { largeId: strin
         }
         getCategory1()
     }, [])
+    console.log(Lcategory)
 
     return (
         <div className="flex flex-row w-full h-[46px] bg-white items-center pl-3 pr-3 sticky top-0 z-10">
@@ -64,7 +65,7 @@ export default function CategoryProductListToolBar({ largeId }: { largeId: strin
                     onClick={() => setIsOpenModal(!isOpenModal)}
                     className="inline-flex h-8 justify-center items-center"
                 >
-                    <div className="text-sm font-bold overflow-hidden text-ellipsis">{<div>전체보기</div>}</div>
+                    <div className="text-sm font-bold overflow-hidden text-ellipsis"><div>전체보기</div></div>
 
                     <div className={` relative w-3 h-3 inline-block ml-1 ${isOpenModal ? 'rotate-180' : ''}`}>
                         <Image src="https://img.icons8.com/material-sharp/24/give-way--v2.png" alt="더보기" fill />

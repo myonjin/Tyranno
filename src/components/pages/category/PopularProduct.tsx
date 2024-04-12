@@ -66,7 +66,7 @@ export default async function PopularProduct({ productId, id }: { productId: str
                     {/* --------순위-------- */}
                 </div>
                 {/* --------좋아요/장바구니-------- */}
-                <LikeAndCart productId={productId}/>
+                <LikeAndCart productId={productId} islike={productInformationData.isLiked} />
                 {/* --------좋아요/장바구니-------- */}
 
                 <Link href={`/product/${productId}`}>

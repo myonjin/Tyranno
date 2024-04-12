@@ -8,23 +8,39 @@ export interface product {
     id: number
 }
 
-async function getProductList(largeId: string, middleId: string) {
+async function getProductList(
+    largeId: string,
+    middleId: string,
+    smallId: string,
+    detailId: string,
+    sortCriterion: string,
+) {
     const data = await fetch(
-        `https://tyrannoback.com/api/v1/product/productList?largeId=${largeId}&middleId=${middleId}`,
+        `https://tyrannoback.com/api/v1/product/productList?largeId=${largeId}&middleId=${middleId}&smallId=${smallId}&detailId=${detailId}&sortCriterion=${sortCriterion}`,
         {
             cache: 'force-cache',
         },
     )
     if (data) {
         const response = await data.json()
-        // console.log(response.result.productIds)
+        console.log(response.result)
         return response.result.productIds
     }
 }
 
 async function CategoryProductListPage({ searchParams }: { searchParams: { [key: string]: string } }) {
     const params = searchParams
-    const productListIdData: product[] = await getProductList(params.largeId, params.middleId)
+    const smallId = params.smallId || ''
+    const detailId = params.detailId || ''
+    const sortCriterion = params.sortCriterion || ''
+
+    const productListIdData: product[] = await getProductList(
+        params.largeId,
+        params.middleId,
+        smallId,
+        detailId,
+        sortCriterion,
+    )
 
     return (
         <div className="min-h-screen">
@@ -34,7 +50,6 @@ async function CategoryProductListPage({ searchParams }: { searchParams: { [key:
                 <SubCategoryTable />
             </div>
             <div className="col-start-2 col-end-auto">
-                
                 <ProductList productListIdData={productListIdData} />
             </div>
         </div>
