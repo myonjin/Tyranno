@@ -97,4 +97,19 @@ public class SignUpDto {
                 .phoneNumber(phoneNumber)
                 .build();
     }
+    public Users connctUsers(Users users) {
+        return Users.builder()
+                .id(users.getId())
+                .loginId(loginId)
+                .password(new BCryptPasswordEncoder().encode(password))
+                .name(users.getName())
+                .email(users.getEmail())
+                .gender(users.getGender())
+                .phoneNumber(users.getPhoneNumber())
+                .birth(users.getBirth())
+                .status(users.getStatus())
+                .isIntegrated((byte) 1) // 통합회원 여부 true
+                .uuid(users.getUuid())
+                .build();
+    }
 }

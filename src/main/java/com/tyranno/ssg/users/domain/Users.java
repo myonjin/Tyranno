@@ -23,7 +23,7 @@ public class Users extends GlobalTime implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30, nullable = false, unique = true)
     private String loginId;
 
     @Column(length = 100, nullable = false)
@@ -32,13 +32,13 @@ public class Users extends GlobalTime implements UserDetails {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private Byte gender;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String phoneNumber;
 
     @Column(nullable = false)
@@ -50,7 +50,7 @@ public class Users extends GlobalTime implements UserDetails {
     @Column(nullable = false)
     private Byte isIntegrated;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String uuid;
 
     public String hashPassword(String password) {

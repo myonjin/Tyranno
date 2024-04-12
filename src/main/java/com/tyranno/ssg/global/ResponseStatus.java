@@ -55,6 +55,7 @@ public enum ResponseStatus {
     NO_EXIST_USERS(false, 2106, "존재하지 않는 유저 정보입니다."),
     NO_SIGNUP(false, 2107, "회원가입 이력이 존재하지 않습니다."),
     NO_REGISTER(false, 2108, "통합 회원이 아닙니다."),
+    ONLY_FOR_MEMBERS(false, 2109, "회원만 사용가능한 서비스입니다."),
     //    USERS_STATUS_IS_NOT_FOUND(false, 2107, "존재하지 않는 유저 상태입니다."),
     //    PASSWORD_SAME_FAILED(false, 2108, "현재 사용중인 비밀번호 입니다."),
 //    PASSWORD_CONTAIN_NUM_FAILED(false, 2109, "휴대폰 번호를 포함한 비밀번호 입니다."),
@@ -63,7 +64,7 @@ public enum ResponseStatus {
     // OAuth
     NO_EXIST_OAUTH(false, 2200, "존재하지 않는 소셜 회원입니다."),
     DUPLICATE_OAUTH(false, 2201, "이미 가입된 소셜 회원입니다."),
-    NO_EXIST_USERS_TYPE(false, 2201, "DB 데이터 오류. 통합회원 여부가 잘못되어 있습니다"),
+    NO_EXIST_USERS_TYPE(false, 2201, "통합회원 정보가 잘못되어 있습니다. 고객센터에 문의하세요."),
 
 //
 //    // Marketing
@@ -80,7 +81,7 @@ public enum ResponseStatus {
 
     ALREADY_EXIST_OPTION(false, 4001, "이미 존재하는 옵션입니니다."),
 
-    NO_SELECTED_OPTION(false,4003,"선택된 옵션이 없습니다."),
+    NO_SELECTED_OPTION(false, 4003, "선택된 옵션이 없습니다."),
 
     // Cart
     NO_EXIST_CART(false, 5000, "존재하지 않는 장바구니입니다."),
@@ -105,13 +106,13 @@ public enum ResponseStatus {
     NO_MATCH_CERTIFICATION_NUMBER(false, 9000, "인증번호가 일치하지 않습니다."),
 
     // Order
-    NO_EXIST_ORDER_LIST(false,10000,"존재하지 않는 주문내역입니다."),
+    NO_EXIST_ORDER_LIST(false, 10000, "존재하지 않는 주문내역입니다."),
     NO_EXIST_ORDERS(false, 10100, "이 상품을 주문하지 않았습니다."),
     NO_EXIST_ORDERPRODUCT(false, 10200, "이 상품을 구매한 이력이 없습니다."),
   
     // payment
-    PAY_CANCEL(false,11000,"결제가 취소되었습니다."),
-    PAY_FAILED(false,11001,"결제가 실패하였습니다."),
+    PAY_CANCEL(false, 11000, "결제가 취소되었습니다."),
+    PAY_FAILED(false, 11001, "결제가 실패하였습니다."),
     NO_EXIST_PAYMENT(false, 11002, "존재하지 않는 구매내역입니다."),
 
     // Review

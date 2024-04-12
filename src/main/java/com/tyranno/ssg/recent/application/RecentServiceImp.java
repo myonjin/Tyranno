@@ -1,13 +1,11 @@
 package com.tyranno.ssg.recent.application;
 
-import com.tyranno.ssg.cart.domain.Cart;
 import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.product.domain.Product;
 import com.tyranno.ssg.product.infrastructure.ProductRepository;
-import com.tyranno.ssg.product.infrastructure.ProductRepositoryImp;
 import com.tyranno.ssg.recent.domain.RecentViewedProduct;
-import com.tyranno.ssg.recent.dto.RecentViewedDto;
+import com.tyranno.ssg.recent.dto.Response.RecentViewedDto;
 import com.tyranno.ssg.recent.infrastructure.RecentViewedRepository;
 import com.tyranno.ssg.users.domain.Users;
 import com.tyranno.ssg.users.infrastructure.UsersRepository;
@@ -16,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
