@@ -32,6 +32,12 @@ export default function ChangePassword() {
                     newPassword: password,
                 }
                 const response = await changePasswordAPI(idPW)
+                if (response.isSuccess === false) {
+                    alert(response.message)
+                } else {
+                    alert('비밀번호가 변경되었습니다')
+                    router.push('/user/login')
+                }
             } catch (error) {
                 console.log(error)
             }

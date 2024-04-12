@@ -11,8 +11,8 @@ async function signupAPI(requestData: UserDataType) {
     const response = await PostAPI(`/api/v1/auth/signup`, requestData)
     return response
 }
-async function findIdAPI(authForm: FindUserDataType) {
-    const response = await PostAPI('/api/v1/auth/find-id', authForm)
+async function findIdAPI(phoneNumber: string) {
+    const response = await PostAPI('/api/v1/auth/find-id', { phoneNumber: phoneNumber })
     return response
 }
 

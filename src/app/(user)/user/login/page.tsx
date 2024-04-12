@@ -27,7 +27,7 @@ function Login() {
     const handleSumbit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        const res = await signIn('credentials', {
+        await signIn('credentials', {
             loginId,
             password,
             redirect: false,
