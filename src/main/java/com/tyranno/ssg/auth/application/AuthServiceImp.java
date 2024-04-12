@@ -67,8 +67,6 @@ public class AuthServiceImp implements AuthService {
     public String singUpUsers(SignUpDto signUpDto) {
         // 아이디, 휴대폰번호, 이메일 중복 방지
         checkLoginId(signUpDto.getLoginId());
-        checkEmail(signUpDto.getEmail());
-        checkPhoneNumber(signUpDto.getPhoneNumber());
 
         Optional<Users> optionalUsers = usersRepository.findByPhoneNumber(signUpDto.getPhoneNumber());
 
@@ -78,6 +76,8 @@ public class AuthServiceImp implements AuthService {
             return "기존 소셜회원, 통합회원 연결하였습니다.";
 
         } else { // 비회원이 통합회원가입 하는 경우
+            checkEmail(signUpDto.getEmail());
+            checkPhoneNumber(signUpDto.getPhoneNumber());
             //회원
             Users users = signUpDto.toUsersEntity();
             usersRepository.save(users);
