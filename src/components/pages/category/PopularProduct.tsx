@@ -106,7 +106,11 @@ export default async function PopularProduct({ productId, id }: { productId: str
                                             <span className="border-0 w-[1px] h-[1px] -my-px -mx-px px-0 py-0 overflow-hidden whitespace-nowrap absolute">
                                                 판매가격
                                             </span>
-                                            {productInformationData.price.toLocaleString()}원
+                                            {(
+                                                productInformationData.price *
+                                                (1 - productInformationData.discount / 100)
+                                            ).toLocaleString()}
+                                            원
                                         </em>
                                     </div>
                                 </div>
