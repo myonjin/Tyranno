@@ -67,7 +67,7 @@ function Menu() {
                                 width={61}
                                 height={61}
                             />
-                            <p className="text-center whitespace-nowrap">{icon.alt}</p>
+                            <p className="text-center whitespace-nowrap test-sm">{icon.alt}</p>
                         </Link>
                     </div>
                 ))}

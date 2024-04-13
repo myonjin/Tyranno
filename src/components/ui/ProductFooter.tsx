@@ -32,13 +32,14 @@ function ProductFooter({ data }: { data: ProductDataType }) {
     }, [params.productId])
     const router = useRouter()
     const handleNonUser = async () => {
+        alert('로그인 후 이용해주세요.')
         router.push(`/user/login`)
     }
     // console.log(like)
     return (
         <section>
             <div className="fixed bottom-0 w-screen z-[10] ">
-                <ul className="flex flex-grow-0 items-center h-12 w-full ml-3">
+                <ul className="flex flex-grow-0 items-center h-12 w-full ">
                     {like === 99 ? (
                         <button
                             onClick={() => handleLike()}
@@ -65,8 +66,8 @@ function ProductFooter({ data }: { data: ProductDataType }) {
                     )}
                     <button className="flex justify-center items-center font-semibold w-28  h-12 bg-white">
                         <Image
-                            width="32"
-                            height="32"
+                            width="30"
+                            height="30"
                             src="https://img.icons8.com/windows/32/packaging.png"
                             alt="packaging"
                         />
