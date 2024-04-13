@@ -9,3 +9,8 @@ export const SelectedOptionItemListAtom = atom({
     default: [] as LastOptionListType[],
     effects_UNSTABLE: [persistAtom],
 })
+export const NoOptionItemListAtom = atom({
+    key: 'NoOptionItemListAtom',
+    default: [] as LastOptionListType[],
+    effects_UNSTABLE: [persistAtom],
+})

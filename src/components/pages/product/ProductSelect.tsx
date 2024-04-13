@@ -12,7 +12,7 @@ export default function ProductSelect({ item }: { item: LastOptionListType }) {
                 if (optionItem.productId === item.productId && optionItem.optionId === item.optionId) {
                     return {
                         ...optionItem,
-                        qty: newCount,
+                        count: newCount,
                     }
                 }
                 return optionItem

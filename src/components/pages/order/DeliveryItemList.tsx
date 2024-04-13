@@ -15,7 +15,7 @@ import { KakaoPayDataType, OrderFormDataType } from '@/types/OrderDataTypte'
 import { MyInfo } from '@/types/MyInfoDataType'
 import { getMyInfo } from '@/actions/mypage'
 import { useRouter } from 'next/navigation'
-import { SelectedOptionItemListAtom } from '@/state/SelectedOptionListAtom'
+import { NoOptionItemListAtom, SelectedOptionItemListAtom } from '@/state/SelectedOptionListAtom'
 
 export interface OptionType {
     color: string | null
@@ -25,11 +25,12 @@ export interface OptionType {
 
 export default function DeliveryItemList() {
     const [option, setOption] = useRecoilState(SelectedOptionItemListAtom)
+    const [noOption, setNoOption] = useRecoilState(NoOptionItemListAtom)
     const data = useRecoilValue(CartItemsAtom)
     const [productData, setProductData] = useState([]) as any[]
     const [deliveryAddress, setDeliveryAddress] = useState<OrderAddressDataType>()
     const [MyInfo, setMyInfo] = useState<MyInfo>()
-    console.log(option, '주문')
+
     let total = 0
     const fetchOptions = async () => {
         const productLists = []
@@ -44,6 +45,13 @@ export default function DeliveryItemList() {
             const option = await getOptionListAPI(item.optionId)
             productLists.push({ ...product, ...item, ...option })
         }
+        console.log(productLists, '상세')
+        for (const opt of noOption) {
+            const product = await getItemsOrderAPI(opt.productId)
+            const option = await getOptionListAPI(opt.optionId)
+            productLists.push({ ...product, ...opt, ...option })
+        }
+        console.log(productLists, '옵션없음')
         setProductData(productLists)
         const res = await getDeliveryAddressAPI()
         setDeliveryAddress(res)
@@ -120,16 +128,13 @@ export default function DeliveryItemList() {
                         />
 
                         <div className="w-full flex flex-col justify-between text-sm mx-2">
-                            {product.vendorName}
-                            <div className="flex">
-                                <span className="font-extrabold mr-2">{product.vendorName}</span>
+                            신세계백화점
+                            <div>
+                                <span className=" font-extrabold mr-2 whitespace-nowrap">{product.vendorName}</span>
                                 <span>{product.productName}</span>
                             </div>
-
                             <div className="flex">
-                                {product.color !== null ||
-                                product.size !== null ||
-                                product.additional_product !== null ? (
+                                {product.color || product.size || product.additional_product ? (
                                     <div className="flex">
                                         옵션:
                                         {product.color && <p>{product.color}</p>}
@@ -138,7 +143,6 @@ export default function DeliveryItemList() {
                                     </div>
                                 ) : null}
                             </div>
-
                             <div className="flex justify-between">
                                 <div>
                                     <span className="line-through mr-2 text-[#666666]">

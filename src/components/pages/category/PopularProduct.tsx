@@ -42,8 +42,6 @@ export default async function PopularProduct({ productId, id }: { productId: str
                             </div>
                         </div>
                     </Link>
-                    {/* --------순위-------- */}
-
                     <div className="flex absolute justify-between pointer-events-none top-0 right-0 left-0">
                         <div className="flex-shrink-0 max-w-[100%] ml-auto">
                             <div className="flex flex-row items-center">
@@ -62,13 +60,9 @@ export default async function PopularProduct({ productId, id }: { productId: str
                             </div>
                         </div>
                     </div>
-
-                    {/* --------순위-------- */}
                 </div>
-                {/* --------좋아요/장바구니-------- */}
-                <LikeAndCart productId={productId} islike={productInformationData.isLiked} />
-                {/* --------좋아요/장바구니-------- */}
 
+                <LikeAndCart productId={productId} islike={productInformationData.isLiked} />
                 <Link href={`/product/${productId}`}>
                     <div className="block mt-[0.625rem] pr-[1.25rem]">
                         {/* --------브랜드, 이름-------- */}

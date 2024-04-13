@@ -2,11 +2,9 @@
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import OptionModal from './OptionModal'
-// import ProductSelect from './ProductSelect'
-import Link from 'next/link'
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil'
 import { LastOptionType } from '@/types/LastOptionType'
-import { SelectedOptionItemListAtom } from '@/state/SelectedOptionListAtom'
+import { NoOptionItemListAtom, SelectedOptionItemListAtom } from '@/state/SelectedOptionListAtom'
 import { CartDataType, ProductDataType } from '@/types/ProductDetailDataType'
 import { LastOptionListType } from '@/types/LastOptionType'
 import ProductSelect from './ProductSelect'
@@ -14,6 +12,7 @@ import { cartClickAPI } from '@/actions/product'
 import { useRouter } from 'next/navigation'
 import { cartMoneyDataType } from '@/types/CartDataType'
 import { CartMoneyAtom } from '@/state/CartCheckedListAtom'
+import { cookies } from 'next/headers'
 
 interface OptionListType {
     idx: number
@@ -38,7 +37,7 @@ export default function ProductOptions({
     setIsModal: React.Dispatch<React.SetStateAction<boolean>>
     productData: ProductDataType
 }) {
-    const [optionData, setOptionData] = useState<LastOptionType>({} as LastOptionType)
+    const [optionData, setOptionData] = useState<LastOptionType[]>([] as LastOptionType[])
     const [newOptionList, setNewOptionList] = useState<OptionListType[]>([] as OptionListType[])
     const [queryUrl, setQueryUrl] = useState<queryKeyType>({
         color: '',
@@ -51,12 +50,14 @@ export default function ProductOptions({
     const router = useRouter()
     const resetSelectedOptionList = useResetRecoilState(SelectedOptionItemListAtom)
     const [recoilMoney, setRecoilMoney] = useRecoilState<cartMoneyDataType>(CartMoneyAtom)
+    const [noOptionList, setNoOptionList] = useRecoilState(NoOptionItemListAtom)
+    const resetNoOptionItemListAtom = useResetRecoilState(NoOptionItemListAtom)
 
-    // useEffect(() => {
-    //     return () => {
-    //         resetSelectedOptionList()
-    //     }
-    // }, [])
+    useEffect(() => {
+        return () => {
+            resetNoOptionItemListAtom()
+        }
+    }, [])
     useEffect(() => {
         const getOptionData = async () => {
             const data = await fetch(`https://tyrannoback.com/api/v1/option/string/${productId}`, {
@@ -64,9 +65,7 @@ export default function ProductOptions({
             })
             if (data) {
                 const res = await data.json()
-
                 setOptionData(res.result)
-
                 const newData = res.result.map((opt: string, idx: number) => {
                     return {
                         idx: idx,
@@ -75,43 +74,62 @@ export default function ProductOptions({
                     }
                 })
                 setNewOptionList(newData)
+                if (newData.length === 0) {
+                    const getOptionData1 = async () => {
+                        const response = await fetch(`https://tyrannoback.com/api/v1/option/${productId}`)
+                        if (response) {
+                            const data = await response.json()
+                            console.log(data)
+                            if (data.isSuccess) {
+                                setNoOptionList([
+                                    ...noOptionList,
+                                    {
+                                        productId: productId,
+                                        optionId: data.result[0].optionId,
+                                        count: qty,
+                                    },
+                                ])
+                            }
+                        }
+                    }
+                    getOptionData1()
+                }
             }
         }
         getOptionData()
     }, [productId])
-
+    // console.log(newOptionList)
     useEffect(() => {
-        const getOptionDataByOptionId = async () => {
-            const res = await fetch(`https://tyrannoback.com/api/v1/option/names/${selectedOptionId}`, {
-                cache: 'force-cache',
-            })
-            if (res) {
-                const data = await res.json()
-                // console.log(data)
+        if (optionData.length > 0) {
+            const getOptionDataByOptionId = async () => {
+                const res = await fetch(`https://tyrannoback.com/api/v1/option/names/${selectedOptionId}`, {
+                    cache: 'force-cache',
+                })
+                if (res) {
+                    const data = await res.json()
+                    // console.log(data)
 
-                if (data.isSuccess) {
-                    setSelectedOptionList([
-                        ...selectedOptionList,
-                        {
-                            productId: productId,
-                            optionId: selectedOptionId,
-                            productName: productData.productName,
-                            price: productData.price,
-                            discount: productData.discount,
-                            color: data.result?.color,
-                            size: data.result?.size,
-                            etc: data.result?.additional_option,
-                            count: qty,
-                        },
-                    ])
+                    if (data.isSuccess) {
+                        setSelectedOptionList([
+                            ...selectedOptionList,
+                            {
+                                productId: productId,
+                                optionId: selectedOptionId,
+                                productName: productData.productName,
+                                price: productData.price,
+                                discount: productData.discount,
+                                color: data.result?.color,
+                                size: data.result?.size,
+                                etc: data.result?.additional_option,
+                                count: qty,
+                            },
+                        ])
+                    }
                 }
             }
+            getOptionDataByOptionId()
         }
-        getOptionDataByOptionId()
     }, [selectedOptionId])
-    console.log(selectedOptionList)
-    // console.log(newOptionList.length)
-    // console.log(productId, '상품아이디')
 
     const handleModal = () => {
         setIsModal(false)
@@ -124,31 +142,72 @@ export default function ProductOptions({
     const handleCountChange = (newCount: number) => {
         if (newCount >= 1) {
             setQty(newCount)
+
+            // Update the Recoil state `noOptionList` with the new quantity
+            setNoOptionList((prevList: any) => {
+                const updatedList = prevList.map((item: any) => {
+                    if (item.productId === productId) {
+                        return {
+                            ...item,
+                            count: newCount,
+                        }
+                    }
+                    return item
+                })
+                return updatedList
+            })
         }
     }
-
     const handleCart = async () => {
-        for (let i = 0; i < selectedOptionList.length; i++) {
+        if (newOptionList.length > 0) {
+            if (selectedOptionId > 0) {
+                for (let i = 0; i < selectedOptionList.length; i++) {
+                    const data: CartDataType = {
+                        optionId: selectedOptionList[i].optionId,
+                        count: selectedOptionList[i].count,
+                    }
+                    const res = await cartClickAPI(data)
+                    console.log(res, '장바구니')
+                }
+                resetSelectedOptionList()
+                router.push('/cart')
+            } else {
+                alert('상품 옵션을 선택해주세요')
+            }
+        } else {
             const data: CartDataType = {
-                optionId: selectedOptionList[i].optionId,
-                count: selectedOptionList[i].count,
+                optionId: noOptionList[0].optionId,
+                count: noOptionList[0].count,
             }
             const res = await cartClickAPI(data)
             console.log(res, '장바구니')
+            resetSelectedOptionList()
+            router.push('/cart')
         }
     }
+    console.log(noOptionList)
     const handleOrder = async () => {
-        const data: CartDataType = {
-            optionId: selectedOptionList.optionId,
-            count: selectedOptionList.count,
+        if (newOptionList.length > 0) {
+            if (selectedOptionId > 0) {
+                const orderMoney = {
+                    orderMoney: productData.price * qty,
+                    deliveryMoney: 3000,
+                    discountMoney: -(productData.price * qty * (productData.discount / 100)),
+                }
+                setRecoilMoney(orderMoney)
+                router.push('/order')
+            } else {
+                alert('상품 옵션을 선택해주세요')
+            }
+        } else {
+            const orderMoney = {
+                orderMoney: productData.price * qty,
+                deliveryMoney: 3000,
+                discountMoney: -(productData.price * qty * (productData.discount / 100)),
+            }
+            setRecoilMoney(orderMoney)
+            router.push('/order')
         }
-        const orderMoney = {
-            orderMoney: productData.price * qty,
-            deliveryMoney: 3000,
-            discountMoney: -(productData.price * qty * (productData.discount / 100)),
-        }
-        setRecoilMoney(orderMoney)
-        // console.log(res)
     }
     // console.log(selectedOptionId)
 
@@ -243,8 +302,6 @@ export default function ProductOptions({
                 <button
                     onClick={() => {
                         handleCart()
-                        resetSelectedOptionList()
-                        router.push('/cart')
                     }}
                     className="flex justify-center items-center bg-black flex-grow h-12"
                 >
@@ -254,8 +311,6 @@ export default function ProductOptions({
                 <button
                     onClick={() => {
                         handleOrder()
-                        router.push('/order')
-                        // resetSelectedOptionList()
                     }}
                     className="flex justify-center items-center bg-red-500  h-12 flex-grow"
                 >

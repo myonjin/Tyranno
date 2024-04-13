@@ -27,6 +27,7 @@ async function GetProductDataAPI(productId: string) {
 // }
 async function cartClickAPI(data: CartDataType) {
     const response = await PostAPI('/api/v1/cart', data, await token)
+    console.log('response is ', response)
     return response
 }
 

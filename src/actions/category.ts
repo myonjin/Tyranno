@@ -1,4 +1,6 @@
-import { GetAPI } from './FetchAPI'
+import { GetAPI, PostAPI } from './FetchAPI'
+import { GetToken } from './GetToken'
+const token = GetToken()
 
 async function GetCategoryAPI() {
     const response = await GetAPI(`https://tyrannoback.com/api/v1/category`, undefined, undefined)
@@ -6,4 +8,10 @@ async function GetCategoryAPI() {
     return response
 }
 
-export { GetCategoryAPI }
+async function cartClickAPI(productId: string) {
+    const response = await PostAPI(`/api/v1/cart/${productId}`, undefined, await token)
+    console.log('response is ', response)
+    return response
+}
+
+export { GetCategoryAPI, cartClickAPI }
