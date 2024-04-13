@@ -6,6 +6,7 @@ import RedHeartIcon from '@/images/RedHeartIcon.png'
 import { LikeClickAPI, getLikeAPI, getProductListAPI } from '@/actions/product'
 import { LIKEType } from '@/types/LikeType'
 import { useRouter } from 'next/navigation'
+import { cartClickAPI } from '@/actions/category'
 
 function LikeAndCart({ productId, islike }: { productId: string; islike: number }) {
     const [like, setLike] = useState<number>(99)
@@ -29,7 +30,23 @@ function LikeAndCart({ productId, islike }: { productId: string; islike: number 
     }, [productId])
     const router = useRouter()
     const handleNonUser = async () => {
+        alert('로그인 후 이용해주세요.')
         router.push(`/user/login`)
+    }
+    const handleCart = async () => {
+        const response = await cartClickAPI(productId)
+        if (response.isSuccess) {
+            if (response.result === '상품 상세에서 옵션을 선택해주세요.') {
+                alert('이 상품은 옵션이 있는 상품 입니다.\n상품상세에서 옵션을 선택해주세요.')
+                router.push(`/product/${productId}`)
+            } else {
+                alert('장바구니에 상품을 담았습니다.')
+            }
+        } else {
+            alert('로그인 후 이용해주세요.')
+            router.push(`/user/login`)
+        }
+        console.log(response.result, '장바구니 요청성공?')
     }
 
     return (
@@ -54,7 +71,7 @@ function LikeAndCart({ productId, islike }: { productId: string; islike: number 
             ) : (
                 ''
             )}
-            <button className="inline-flex justify-center items-center w-7 h-7 ml-1">
+            <button onClick={() => handleCart()} className="inline-flex justify-center items-center w-7 h-7 ml-1">
                 <Image
                     width="24"
                     height="48"
