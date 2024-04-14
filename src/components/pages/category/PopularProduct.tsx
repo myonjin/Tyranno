@@ -18,6 +18,7 @@ async function getProductData(productId: string) {
 
 export default async function PopularProduct({ productId, id }: { productId: string; id: number }) {
     const productInformationData: productInformation = await getProductData(productId)
+    console.log(productInformationData, 'productInfoData')
 
     // console.log(productInformationData, productId, 'productInfoData')
     const randomNum = Math.floor(Math.random() * 10 + 1)
@@ -123,7 +124,7 @@ export default async function PopularProduct({ productId, id }: { productId: str
                                 <span className="border-0 w-[1px] h-[1px] -my-px -mx-px px-0 py-0 overflow-hidden whitespace-nowrap absolute">
                                     리뷰 별점
                                 </span>
-                                {productInformationData.productRate / productInformationData.reviewCount}
+                                {productInformationData.productRate.toFixed(2)}
                                 <span className="border-0 w-[1px] h-[1px] -my-px -mx-px px-0 py-0 overflow-hidden whitespace-nowrap absolute">
                                     점
                                 </span>

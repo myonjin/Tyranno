@@ -6,9 +6,7 @@ export interface product {
     id: number
 }
 async function getProductList() {
-    const data = await fetch(`${constraints.Server_Url}/api/v1/product/productList?sortCriterion=3`, {
-        cache: 'force-cache',
-    })
+    const data = await fetch(`${constraints.Server_Url}/api/v1/product/productList?sortCriterion=3`, {})
     if (data) {
         const response = await data.json()
         return response.result.productIds
