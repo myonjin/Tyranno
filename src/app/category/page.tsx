@@ -1,6 +1,7 @@
 'use client'
 
 import { GetCategoryAPI } from '@/actions/category'
+import constraints from '@/actions/constraints'
 import CategoryModal from '@/components/pages/category/CategoryModal'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -19,7 +20,7 @@ export default function CategoryPage() {
 
     useEffect(() => {
         const GetCategory = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/category/`)
+            const data = await fetch(`${constraints.Server_Url}/api/v1/category/`)
             if (data) {
                 const response = await data.json()
                 setCategory(response)

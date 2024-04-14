@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { queryKeyType } from './ProductOptions'
 import { LastOptionType } from '@/types/LastOptionType'
+import constraints from '@/actions/constraints'
 
 export default function OptionModal({
     showModal,
@@ -33,7 +34,7 @@ export default function OptionModal({
 
     const [optionData, setOptionData] = useState<any[]>([])
     // const [lastOptionData, setLastOptionData] = useState<>()
-    const url = `https://tyrannoback.com/api/v1/option/${productId}?`
+    const url = `${constraints.Server_Url}/api/v1/option/${productId}?`
 
     const lastUrl =
         'color' + '=' + queryUrl.color + '&' + 'size' + '=' + queryUrl.size + '&' + 'etc' + '=' + queryUrl.etc
@@ -43,7 +44,7 @@ export default function OptionModal({
         if (!last) {
             // console.log(optionType, 'optionType')
             const getOptionData = async () => {
-                const data = await fetch(`https://tyrannoback.com/api/v1/option/list/${productId}`, {
+                const data = await fetch(`${constraints.Server_Url}/api/v1/option/list/${productId}`, {
                     cache: 'force-cache',
                 })
 

@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import { cartMoneyDataType } from '@/types/CartDataType'
 import { CartMoneyAtom } from '@/state/CartCheckedListAtom'
 import { signOut, useSession } from 'next-auth/react'
+import constraints from '@/actions/constraints'
 
 interface OptionListType {
     idx: number
@@ -61,7 +62,7 @@ export default function ProductOptions({
     }, [])
     useEffect(() => {
         const getOptionData = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/option/string/${productId}`, {
+            const data = await fetch(`${constraints.Server_Url}/api/v1/option/string/${productId}`, {
                 cache: 'force-cache',
             })
             if (data) {
@@ -77,7 +78,7 @@ export default function ProductOptions({
                 setNewOptionList(newData)
                 if (newData.length === 0) {
                     const getOptionData1 = async () => {
-                        const response = await fetch(`https://tyrannoback.com/api/v1/option/${productId}`)
+                        const response = await fetch(`${constraints.Server_Url}/api/v1/option/${productId}`)
                         if (response) {
                             const data = await response.json()
                             console.log(data)
@@ -103,7 +104,7 @@ export default function ProductOptions({
     useEffect(() => {
         if (optionData.length > 0) {
             const getOptionDataByOptionId = async () => {
-                const res = await fetch(`https://tyrannoback.com/api/v1/option/names/${selectedOptionId}`, {
+                const res = await fetch(`${constraints.Server_Url}/api/v1/option/names/${selectedOptionId}`, {
                     cache: 'force-cache',
                 })
                 if (res) {
@@ -262,7 +263,7 @@ export default function ProductOptions({
 
                     {newOptionList.length === 0 && (
                         <div className="p-3">
-                            <div className="mt-5 border py-2  w-full bg-gray-100  border-black rounded-md min-h-[90px] ">
+                            <div className="mt-5 border py-2  w-full bg-gray-100  border-black rounded-md min-h-[100px] ">
                                 <div className="flex text-sm ml-2">{productData.productName}</div>
                                 <div className="absolute ml-2 bg-white mt-2 w-20 flex items-center justify-center h-8">
                                     <button
@@ -280,7 +281,10 @@ export default function ProductOptions({
                                     </button>
                                 </div>
                                 <div className=" absolute  right-5 text-lg font-semibold mt-5">
-                                    {(productData.price * (1 - productData.discount / 100) * qty).toLocaleString()}원
+                                    {Math.floor(
+                                        productData.price * (1 - productData.discount / 100) * qty,
+                                    ).toLocaleString()}
+                                    원
                                 </div>
                             </div>
                         </div>
@@ -290,13 +294,16 @@ export default function ProductOptions({
 
                         <div className=" text-red-500 font-bold  text-xl">
                             {totalCount === 0 ? (
-                                <p>{(productData.price * (1 - productData.discount / 100) * qty).toLocaleString()}원</p>
+                                <p>
+                                    {Math.floor(
+                                        productData.price * (1 - productData.discount / 100) * qty,
+                                    ).toLocaleString()}
+                                    원
+                                </p>
                             ) : (
                                 <p>
-                                    {(
-                                        productData.price *
-                                        (1 - productData.discount / 100) *
-                                        totalCount
+                                    {Math.floor(
+                                        productData.price * (1 - productData.discount / 100) * totalCount,
                                     ).toLocaleString()}
                                     원
                                 </p>

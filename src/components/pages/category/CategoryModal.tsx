@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import constraints from '@/actions/constraints'
 
 export interface CategoryMiddleType {
     middleId: string
@@ -12,7 +13,7 @@ function CategoryModal({ largeId }: { largeId: string }) {
     // console.log(typeof largeId)
     useEffect(() => {
         const GetCategoryMiddle = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/category/middle/${largeId}`)
+            const data = await fetch(`${constraints.Server_Url}/api/v1/category/middle/${largeId}`)
             if (data) {
                 const response = await data.json()
                 setCategoryMiddle(response)

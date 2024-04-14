@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import React, { useEffect, useState, useRef } from 'react'
 import MainProductList from './MainProductList'
+import constraints from '@/actions/constraints'
 
 interface categoryMiddle {
     middleId: number
@@ -12,7 +13,7 @@ export default function SubCategorySlideButton() {
     const [category, setCategory] = useState<categoryMiddle[]>([] as categoryMiddle[])
     useEffect(() => {
         const getCategory = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/category/middle/1`)
+            const data = await fetch(`${constraints.Server_Url}/api/v1/category/middle/1`)
             if (data) {
                 const response = await data.json()
                 setCategory(response)

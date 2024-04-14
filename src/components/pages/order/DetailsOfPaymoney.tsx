@@ -14,7 +14,7 @@ export default function DetailsOfPaymoney() {
             </p>
             <p className="flex justify-between text-[14px] my-1">
                 <span className="text-[#666666]">상품할인</span>
-                <span className="text-[#222222]">{data.discountMoney}원</span>
+                <span className="text-[#222222]">{Math.floor(data.discountMoney)}원</span>
             </p>
             <p className="flex justify-between text-[14px] my-1">
                 <span className="text-[#666666]">배송비</span>

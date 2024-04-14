@@ -40,7 +40,7 @@ export default function ProductSelect({ item }: { item: LastOptionListType }) {
                     </button>
                 </div>
                 <div className=" absolute  right-5 text-lg font-semibold mt-5">
-                    {(item.price * (1 - item.discount / 100) * item.count).toLocaleString()}원
+                    {Math.floor(item.price * (1 - item.discount / 100) * item.count).toLocaleString()}원
                 </div>
             </div>
         </div>

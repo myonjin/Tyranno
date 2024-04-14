@@ -1,3 +1,4 @@
+import constraints from '@/actions/constraints'
 import ProductList from '@/components/pages/category/ProductList'
 import LargeCategoryListToolBar from '@/components/pages/largeCategory/LargeCategoryListToolBar'
 
@@ -7,7 +8,7 @@ export interface product {
 }
 
 async function getProductList(largeId: string) {
-    const data = await fetch(`https://tyrannoback.com/api/v1/product/productList?largeId=${largeId}`)
+    const data = await fetch(`${constraints.Server_Url}/api/v1/product/productList?largeId=${largeId}`)
     if (data) {
         const response = await data.json()
 

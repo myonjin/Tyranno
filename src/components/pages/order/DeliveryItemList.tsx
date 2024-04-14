@@ -149,7 +149,7 @@ export default function DeliveryItemList() {
                                         {product.price * product.count}원
                                     </span>
                                     <span className="font-extrabold">
-                                        {discountmoney(product.money || product.price, product.discount)}원
+                                        {Math.floor(discountmoney(product.money || product.price, product.discount))}원
                                     </span>
                                 </div>
                                 <span className="text-[#666666]">수량 {product.count} 개</span>
@@ -168,7 +168,7 @@ export default function DeliveryItemList() {
                 }}
             >
                 <span className="text-white font-normal">
-                    <span className="font-bold">{(total + 3000).toLocaleString()}원</span> 결제하기
+                    <span className="font-bold">{Math.floor(total + 3000).toLocaleString()}원</span> 결제하기
                 </span>
             </button>
         </>

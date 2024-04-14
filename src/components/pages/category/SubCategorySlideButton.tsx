@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import constraints from '@/actions/constraints'
 
 interface categoryMiddle {
     middleId: number
@@ -19,7 +20,7 @@ export default function SubCategorySlideButton() {
     const [Scategory, setSCategory] = useState<categorySmall[]>([] as categorySmall[])
     useEffect(() => {
         const getCategory = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/category/middle/${largeId}`)
+            const data = await fetch(`${constraints.Server_Url}/api/v1/category/middle/${largeId}`)
             if (data) {
                 const response = await data.json()
                 setCategory(response)
@@ -29,7 +30,7 @@ export default function SubCategorySlideButton() {
     }, [largeId])
     useEffect(() => {
         const getCategory = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/category/small/${middleId}`)
+            const data = await fetch(`${constraints.Server_Url}/api/v1/category/small/${middleId}`)
             if (data) {
                 const response = await data.json()
                 setSCategory(response)

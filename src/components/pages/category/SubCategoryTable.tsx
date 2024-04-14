@@ -1,4 +1,5 @@
 'use client'
+import constraints from '@/actions/constraints'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -23,7 +24,7 @@ export default function SubCategoryTable() {
     const router = useRouter()
     useEffect(() => {
         const getCategory = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/category/small/${middleId}`)
+            const data = await fetch(`${constraints.Server_Url}/api/v1/category/small/${middleId}`)
             if (data) {
                 const response = await data.json()
                 setCategory(response)
@@ -34,7 +35,7 @@ export default function SubCategoryTable() {
 
     useEffect(() => {
         const getCategory = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/category/detail/${smallId}`)
+            const data = await fetch(`${constraints.Server_Url}/api/v1/category/detail/${smallId}`)
             if (data) {
                 const response = await data.json()
                 setDCategory(response)

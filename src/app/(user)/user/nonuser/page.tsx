@@ -24,14 +24,14 @@ function Nonuser() {
                             className="text-sm  mt-3 h-11 border w-full p-2"
                         />
 
-                        <div className=" flex mt-5 justify-center ">
+                        <div className=" flex mt-5 justify-center  items-center  ">
                             <Link href="">
-                                <button type="submit" className="  w-96 h-12  bg-white border border-black">
+                                <button type="submit" className=" w-28 h-12  bg-white border border-black">
                                     취소
                                 </button>
                             </Link>
                             <Link href="">
-                                <button type="submit" className=" w-96 h-12 text-white bg-black">
+                                <button type="submit" className="w-28  h-12 text-white bg-black">
                                     조회하기
                                 </button>
                             </Link>

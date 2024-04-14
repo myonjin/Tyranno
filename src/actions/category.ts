@@ -3,7 +3,7 @@ import { GetToken } from './GetToken'
 const token = GetToken()
 
 async function GetCategoryAPI() {
-    const response = await GetAPI(`https://tyrannoback.com/api/v1/category`, undefined, undefined)
+    const response = await GetAPI(`/api/v1/category`, undefined, undefined)
 
     return response
 }
