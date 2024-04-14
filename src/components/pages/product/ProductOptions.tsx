@@ -12,7 +12,7 @@ import { cartClickAPI } from '@/actions/product'
 import { useRouter } from 'next/navigation'
 import { cartMoneyDataType } from '@/types/CartDataType'
 import { CartMoneyAtom } from '@/state/CartCheckedListAtom'
-import { cookies } from 'next/headers'
+import { signOut, useSession } from 'next-auth/react'
 
 interface OptionListType {
     idx: number
@@ -37,6 +37,7 @@ export default function ProductOptions({
     setIsModal: React.Dispatch<React.SetStateAction<boolean>>
     productData: ProductDataType
 }) {
+    const { data: session } = useSession()
     const [optionData, setOptionData] = useState<LastOptionType[]>([] as LastOptionType[])
     const [newOptionList, setNewOptionList] = useState<OptionListType[]>([] as OptionListType[])
     const [queryUrl, setQueryUrl] = useState<queryKeyType>({
@@ -159,36 +160,53 @@ export default function ProductOptions({
         }
     }
     const handleCart = async () => {
-        if (newOptionList.length > 0) {
-            if (selectedOptionId > 0) {
-                for (let i = 0; i < selectedOptionList.length; i++) {
-                    const data: CartDataType = {
-                        optionId: selectedOptionList[i].optionId,
-                        count: selectedOptionList[i].count,
+        if (session?.user.isSuccess) {
+            if (newOptionList.length > 0) {
+                if (selectedOptionId > 0) {
+                    for (let i = 0; i < selectedOptionList.length; i++) {
+                        const data: CartDataType = {
+                            optionId: selectedOptionList[i].optionId,
+                            count: selectedOptionList[i].count,
+                        }
+                        const res = await cartClickAPI(data)
+                        console.log(res, '장바구니')
                     }
-                    const res = await cartClickAPI(data)
-                    console.log(res, '장바구니')
+                    resetSelectedOptionList()
+                    router.push('/cart')
+                } else {
+                    alert('상품 옵션을 선택해주세요')
                 }
+            } else {
+                const data: CartDataType = {
+                    optionId: noOptionList[0].optionId,
+                    count: noOptionList[0].count,
+                }
+                const res = await cartClickAPI(data)
+                console.log(res, '장바구니')
                 resetSelectedOptionList()
                 router.push('/cart')
-            } else {
-                alert('상품 옵션을 선택해주세요')
             }
         } else {
-            const data: CartDataType = {
-                optionId: noOptionList[0].optionId,
-                count: noOptionList[0].count,
-            }
-            const res = await cartClickAPI(data)
-            console.log(res, '장바구니')
-            resetSelectedOptionList()
-            router.push('/cart')
+            alert('로그인 후 이용해주세요')
+            router.push(`/user/login`)
         }
     }
     console.log(noOptionList)
     const handleOrder = async () => {
-        if (newOptionList.length > 0) {
-            if (selectedOptionId > 0) {
+        if (session?.user.isSuccess) {
+            if (newOptionList.length > 0) {
+                if (selectedOptionId > 0) {
+                    const orderMoney = {
+                        orderMoney: productData.price * qty,
+                        deliveryMoney: 3000,
+                        discountMoney: -(productData.price * qty * (productData.discount / 100)),
+                    }
+                    setRecoilMoney(orderMoney)
+                    router.push('/order')
+                } else {
+                    alert('상품 옵션을 선택해주세요')
+                }
+            } else {
                 const orderMoney = {
                     orderMoney: productData.price * qty,
                     deliveryMoney: 3000,
@@ -196,17 +214,10 @@ export default function ProductOptions({
                 }
                 setRecoilMoney(orderMoney)
                 router.push('/order')
-            } else {
-                alert('상품 옵션을 선택해주세요')
             }
         } else {
-            const orderMoney = {
-                orderMoney: productData.price * qty,
-                deliveryMoney: 3000,
-                discountMoney: -(productData.price * qty * (productData.discount / 100)),
-            }
-            setRecoilMoney(orderMoney)
-            router.push('/order')
+            alert('로그인 후 이용해주세요')
+            router.push(`/user/login`)
         }
     }
     // console.log(selectedOptionId)

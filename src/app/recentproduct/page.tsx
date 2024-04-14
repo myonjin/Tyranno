@@ -2,26 +2,14 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
+import { LikeClickAPI, getProductListAPI, getRecentProductAPI } from '@/actions/product'
+import { cartClickAPI } from '@/actions/category'
+import { RecenIdtDataType } from '@/types/RecentDataType'
+import { LIKEType } from '@/types/LikeType'
 export default function Recent() {
-    const productData = [
-        {
-            productId: 1,
-            vendorName: 'H&M',
-            name: '비스코스 셔츠 드레스 카키 그린/패턴 1213391003',
-            price: 34900,
-            discount: 0,
-            imageUrl: 'https://sitem.ssgcdn.com/87/77/06/item/1000583067787_i1_750.jpg',
-        },
-        {
-            productId: 2,
-            vendorName: 'S BLANC',
-            name: '[최초가:458000원]Freesia / Pleated Detail Puff Sleeves Dress',
-            price: 304570,
-            discount: 10,
-            imageUrl: 'https://sitem.ssgcdn.com/70/99/40/item/1000583409970_i1_750.jpg',
-        },
-    ]
+    const [productDataId, setProductDataId] = useState<RecenIdtDataType[]>([])
+    const [recentProdcut, setRecentProduct] = useState([]) as any[]
 
     const router = useRouter()
     const back = () => {
@@ -41,10 +29,44 @@ export default function Recent() {
             setCheckedItem(checkedItem.filter((item) => item !== id))
         }
     }
+    const getRecentProduct = async () => {
+        const response = await getRecentProductAPI()
+        setProductDataId(response.result)
+        fetchProductList(response.result)
+    }
+    useEffect(() => {
+        getRecentProduct()
+    }, [])
+
+    console.log(recentProdcut)
+    const fetchProductList = async (productDataId: RecenIdtDataType[]) => {
+        const productList = []
+        for (const item of productDataId) {
+            console.log(item.productId)
+            const res = await getProductListAPI(item.productId.toString())
+            productList.push({ ...res.result })
+        }
+        setRecentProduct(productList)
+    }
+    const handleCart = async (productId: string) => {
+        const res = await cartClickAPI(productId)
+        if (res.isSuccess === true) {
+            alert(res.result)
+        }
+    }
+    const handleLike = async (productId: string) => {
+        const body: LIKEType = {
+            productId: productId,
+        }
+        const res = await LikeClickAPI(body)
+        if (res.isSuccess === true) {
+            alert(res.result)
+        }
+    }
 
     return (
         <>
-            <div className=" bg-gray-100 p-4 h-screen">
+            <div className=" bg-gray-100 p-4 ">
                 <div className="flex items-center ">
                     <span onClick={back}>
                         <Image width="35" height="50" src="https://img.icons8.com/ios/50/left--v1.png" alt="뒤로가기" />
@@ -82,7 +104,7 @@ export default function Recent() {
                     </div>
                 )}
 
-                {productData.map((product) => (
+                {recentProdcut.map((product: any) => (
                     <div key={product.productId}>
                         <div className="flex justify-between bg-white rounded w-full  mt-4">
                             {deleted && (
@@ -114,7 +136,7 @@ export default function Recent() {
                             {!deleted && (
                                 <Link href="./" className="flex justify-between w-full" passHref>
                                     <div className="max-w-56 text-sm p-3">
-                                        [{product.vendorName}] {product.name}
+                                        [{product.vendorName}] {product.productName}
                                         <p className="mt-1 font-semibold">
                                             {(product.price * (1 - product.discount / 100)).toLocaleString()}원
                                         </p>
@@ -124,7 +146,10 @@ export default function Recent() {
                             )}
 
                             <div className="flex flex-col">
-                                <button className="flex justify-center items-center  w-14 h-14">
+                                <button
+                                    className="flex justify-center items-center  w-14 h-14"
+                                    onClick={() => handleCart(product.productId)}
+                                >
                                     <Image
                                         width="24"
                                         height="48"
@@ -133,7 +158,10 @@ export default function Recent() {
                                     />
                                 </button>
                                 <hr></hr>
-                                <button className="flex justify-center items-center w-14 h-14">
+                                <button
+                                    className="flex justify-center items-center w-14 h-14"
+                                    onClick={() => handleLike(product.productId)}
+                                >
                                     <Image
                                         width="24"
                                         height="32"
