@@ -21,22 +21,11 @@ export default function Complete() {
             <PayMoney />
             <hr className="border-[#f5f5f5] h-[10px]" />
             <div className="m-3">
-                <div className="flex justify-between font-bold text-[16px]">
-                    <span>무통장입금</span>
+                <div className="flex mb-10 justify-between font-bold text-[20px]">
+                    <span>카카오페이</span>
                     <CompleteMoney />
                 </div>
-                <div className="flex justify-between text-[14px] my-1">
-                    <span className="text-[#666666]">{'카카오뱅크'}</span>
-                    <span className="text-[#222222]">{'3333-13-6067020'}</span>
-                </div>
-                <div className="flex justify-between text-[14px] my-1">
-                    <span className="text-[#666666]">입금 기한일</span>
-                    <span className="text-[#222222]">{'2024년 04월 17일'}</span>
-                </div>
-                <div className="flex justify-between text-[14px] my-1">
-                    <span className="text-[#666666]">입금자</span>
-                    <span className="text-[#222222]">{'홍길동'}</span>
-                </div>
+
                 <div className="text-[13px] tracking-[-0.3px] font-normal">
                     <p>※ (주)에스에스지닷컴으로 발급되는 가상계좌로, 상품구매목적 이외의 입금은 불가합니다.</p>
                     <p>※ 입금 기한일까지 미 입금 시 자동 주문취소</p>

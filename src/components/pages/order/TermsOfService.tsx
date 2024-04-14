@@ -45,7 +45,7 @@ export default function TermsOfService() {
                         </div>
                     )}
                 </div>
-                <button className="bg-[#ff5452] w-full rounded-b-xl text-white h-[50px] font-bold" >결제하기</button>
+                <button className="bg-[#cbc7c7] w-full rounded-b-xl text-white h-[50px] font-bold">결제하기</button>
             </div>
         </>
     )

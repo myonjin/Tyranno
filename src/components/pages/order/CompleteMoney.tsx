@@ -10,7 +10,7 @@ export default function CompleteMoney() {
     return (
         <div>
             <span>{total.toLocaleString()}원</span>
-            <span className="font-normal text-[#ff5452]">(입금대기)</span>
+            <span className="font-normal text-[#ff5452]">(결제완료)</span>
         </div>
     )
 }
