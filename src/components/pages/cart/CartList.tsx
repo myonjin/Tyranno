@@ -226,15 +226,13 @@ export default function CartList() {
                                         <div className="flex flex-col mt-1">
                                             {product.discount > 0 && (
                                                 <span className="text-xs line-through">
-                                                    {product.totalPrice * product.count}원
+                                                    {Math.floor(product.totalPrice * product.count)}원
                                                 </span>
                                             )}
 
                                             <span className="text-lg font-semibold  ">
-                                                {(
-                                                    product.totalPrice *
-                                                    product.count *
-                                                    (1 - product.discount / 100)
+                                                {Math.floor(
+                                                    product.totalPrice * product.count * (1 - product.discount / 100),
                                                 ).toLocaleString()}
                                                 원
                                             </span>
@@ -297,11 +295,11 @@ export default function CartList() {
                 <h3 className="text-xl font-bold m-3 "> 결제 예정금액</h3>
                 <div className="flex justify-between m-1">
                     <span>주문금액</span>
-                    <span>{totalMoney.toLocaleString()} 원</span>
+                    <span>{Math.floor(totalMoney).toLocaleString()} 원</span>
                 </div>
                 <div className="flex justify-between m-1">
                     <span>상품할인 </span>
-                    <span style={{ color: 'red' }}>{discountMoney.toLocaleString()} 원</span>
+                    <span style={{ color: 'red' }}>{Math.floor(discountMoney).toLocaleString()} 원</span>
                 </div>
                 <div className="flex justify-between m-1">
                     <span>배송비</span>
@@ -310,7 +308,7 @@ export default function CartList() {
                 <div className="flex justify-between m-1 border-t  mb-7 ">
                     <span className="text-base font-bold mt-2">총 결제예정금액</span>
                     <span className="text-lg font-bold mt-2">
-                        {(totalMoney + discountMoney + 3000).toLocaleString()} 원
+                        {Math.floor(totalMoney + discountMoney + 3000).toLocaleString()} 원
                     </span>
                 </div>
             </div>

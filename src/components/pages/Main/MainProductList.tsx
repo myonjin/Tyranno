@@ -1,3 +1,4 @@
+import constraints from '@/actions/constraints'
 import PopularProduct from '../category/PopularProduct'
 import Image from 'next/image'
 export interface product {
@@ -5,7 +6,7 @@ export interface product {
     id: number
 }
 async function getProductList() {
-    const data = await fetch(`https://tyrannoback.com/api/v1/product/productList?sortCriterion=3`, {
+    const data = await fetch(`${constraints.Server_Url}/api/v1/product/productList?sortCriterion=3`, {
         cache: 'force-cache',
     })
     if (data) {

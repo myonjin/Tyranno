@@ -62,7 +62,7 @@ function ProductInformation({ data }: { data: ProductDataType }) {
                                     <span className=" text-red-600 ">{data.discount}%</span>
                                 </div>
                                 <div>
-                                    <span>{(data.price * (1 - data.discount / 100)).toLocaleString()}원</span>
+                                    <span>{Math.floor(data.price * (1 - data.discount / 100)).toLocaleString()}원</span>
                                 </div>
                             </div>
                         </div>

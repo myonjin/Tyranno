@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
+import constraints from '@/actions/constraints'
 interface categoryMiddle {
     middleId: number
     middleName: string
@@ -19,7 +20,7 @@ export default function CategoryListModal() {
     const middleId = searchParams.get('middleId')
     useEffect(() => {
         const getCategory = async () => {
-            const data1 = await fetch(`https://tyrannoback.com/api/v1/category/`)
+            const data1 = await fetch(`${constraints.Server_Url}/api/v1/category/`)
             if (data1) {
                 const response = await data1.json()
                 setLCategory(response)
@@ -30,7 +31,7 @@ export default function CategoryListModal() {
     // console.log(Lcategory)
     useEffect(() => {
         const getCategory = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/category/middle/${largeId}`)
+            const data = await fetch(`${constraints.Server_Url}/api/v1/category/middle/${largeId}`)
             if (data) {
                 const response = await data.json()
                 setCategory(response)

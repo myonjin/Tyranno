@@ -3,9 +3,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import LikeAndCart from './PopularProductlikecart'
+import constraints from '@/actions/constraints'
 
 async function getProductData(productId: string) {
-    const data = await fetch(`https://tyrannoback.com/api/v1/product/productInformation/${productId}`, {
+    const data = await fetch(`${constraints.Server_Url}/api/v1/product/productInformation/${productId}`, {
         cache: 'force-cache',
     })
     if (data) {

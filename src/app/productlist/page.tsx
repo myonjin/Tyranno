@@ -2,6 +2,7 @@ import ProductList from '@/components/pages/category/ProductList'
 import SubCategorySlideButton from '@/components/pages/category/SubCategorySlideButton'
 import CategoryProductListToolBar from '@/components/pages/category/CategoryProductListToolBar'
 import SubCategoryTable from '@/components/pages/category/SubCategoryTable'
+import constraints from '@/actions/constraints'
 
 export interface product {
     productId: string
@@ -16,7 +17,7 @@ async function getProductList(
     sortCriterion: string,
 ) {
     const data = await fetch(
-        `https://tyrannoback.com/api/v1/product/productList?largeId=${largeId}&middleId=${middleId}&smallId=${smallId}&detailId=${detailId}&sortCriterion=${sortCriterion}`,
+        `${constraints.Server_Url}/api/v1/product/productList?largeId=${largeId}&middleId=${middleId}&smallId=${smallId}&detailId=${detailId}&sortCriterion=${sortCriterion}`,
         {
             cache: 'force-cache',
         },

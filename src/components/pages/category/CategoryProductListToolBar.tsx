@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import CategoryListModal from '@/components/pages/category/CategoryListModal'
+import constraints from '@/actions/constraints'
 interface categorySmall {
     smallId: number
     smallName: string
@@ -30,7 +31,7 @@ export default function CategoryProductListToolBar() {
     // 대분류
     useEffect(() => {
         const getCategory1 = async () => {
-            const data1 = await fetch(`https://tyrannoback.com/api/v1/category/`)
+            const data1 = await fetch(`${constraints.Server_Url}/api/v1/category/`)
             if (data1) {
                 const response = await data1.json()
                 setLCategory(response[parseInt(`${largeId}`) - 1])
@@ -41,7 +42,7 @@ export default function CategoryProductListToolBar() {
     //중분류
     useEffect(() => {
         const getCategory = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/category/middle/${largeId}`)
+            const data = await fetch(`${constraints.Server_Url}/api/v1/category/middle/${largeId}`)
             if (data) {
                 const response = await data.json()
                 setCategory(response)
@@ -52,7 +53,7 @@ export default function CategoryProductListToolBar() {
     //소분류
     useEffect(() => {
         const getCategory = async () => {
-            const data = await fetch(`https://tyrannoback.com/api/v1/category/small/${middleId}`)
+            const data = await fetch(`${constraints.Server_Url}/api/v1/category/small/${middleId}`)
             if (data) {
                 const response = await data.json()
                 setSCategory(response)

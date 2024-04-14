@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import constraints from '@/actions/constraints'
 
 interface category {
     largeId: number
@@ -14,7 +15,7 @@ export default function CategoryProductListToolBar({ largeId }: { largeId: strin
 
     useEffect(() => {
         const getCategory1 = async () => {
-            const data1 = await fetch(`https://tyrannoback.com/api/v1/category/`)
+            const data1 = await fetch(`${constraints.Server_Url}/api/v1/category/`)
             if (data1) {
                 const response = await data1.json()
                 setLCategory(response[parseInt(`${largeId}`) - 1])
