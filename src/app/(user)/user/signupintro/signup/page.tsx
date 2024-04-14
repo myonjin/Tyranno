@@ -89,6 +89,7 @@ function signup() {
 
     const sendUserApi = async () => {
         try {
+            // local storage에 저장된 값들을 가져온다.
             const requestData = {
                 loginId: loginId,
                 password: password,
@@ -176,7 +177,7 @@ function signup() {
                         onChange={checkLoginId}
                     />
                     <button
-                        className=" mt-1 ml-2 h-10 w-28 text-sm  "
+                        className=" mt-1 ml-2 h-10 min-w-16 text-sm whitespace-nowrap  "
                         style={{ backgroundColor: '#f0f0f0', fontWeight: 'bold' }}
                         onClick={handleValidLoginId}
                     >
@@ -229,7 +230,7 @@ function signup() {
                     <input type="text" value={zipCode} readOnly />
 
                     <button
-                        className=" mt-1 ml-2 h-10 w-28 text-sm  "
+                        className=" mt-1 ml-2 h-10 min-w-16 text-sm  whitespace-nowrap"
                         style={{ backgroundColor: '#f0f0f0', fontWeight: 'bold' }}
                         onClick={() => {
                             setModalOpen(true)
@@ -238,15 +239,18 @@ function signup() {
                         주소 찾기
                     </button>
                 </div>
-                <div className="ml-10">
-                    <span className="flex">
-                        <span className="terms-content">도로명</span>
-                        <span className="ml-14">
-                            {addressBase}
-                            {addressDetail}
+                {addressBase !== '' && (
+                    <div className="ml-10">
+                        <span className="flex">
+                            <span className="terms-content">도로명</span>
+                            <span className="ml-14">
+                                {addressBase}
+                                {addressDetail}
+                            </span>
                         </span>
-                    </span>
-                </div>
+                    </div>
+                )}
+
                 <div className="box">
                     <dl className="flex">
                         <dt>
@@ -259,7 +263,7 @@ function signup() {
                 <div className="box">
                     <dl className="cmem_ip">
                         <dt>
-                            <span className="cmem_require">
+                            <span className="cmem_require whitespace-nowrap">
                                 <span style={{ color: 'red' }}>*</span>
                                 <label>이메일주소</label>
                             </span>
@@ -274,7 +278,7 @@ function signup() {
                         onChange={checkEmail}
                     />
                     <button
-                        className=" mt-1 ml-2 h-10 w-28 text-sm  "
+                        className=" mt-1 ml-2 h-10 min-w-16 text-sm  whitespace-nowrap"
                         style={{ backgroundColor: '#f0f0f0', fontWeight: 'bold' }}
                         onClick={handleValidEmail}
                     >
@@ -296,7 +300,7 @@ function signup() {
                             (선택) 마케팅 정보 제공을 위한 개인정보 수집 및 이용 동의{' '}
                         </span>
                     </label>
-                    <span className="terms-content">내용 보기</span>
+                    <span className="terms-content whitespace-nowrap">내용 보기</span>
                 </div>
                 <div className="terms-box">
                     <label>
@@ -306,7 +310,7 @@ function signup() {
                             (선택) 정보 이마트/신세계백화점 공동 개인정보 수집 및 이용동의{' '}
                         </span>
                     </label>
-                    <span className="terms-content">내용 보기</span>
+                    <span className="terms-content whitespace-nowrap">내용 보기</span>
                 </div>
                 <h4 className="m-3 ml-5 font-semibold">SSG.COM</h4>
                 <div className="terms-box">
@@ -317,7 +321,7 @@ function signup() {
                             (선택) 마케팅 정보 제공을 위한 개인정보 수집 및 이용 동의{' '}
                         </span>
                     </label>
-                    <span className="terms-content">내용 보기</span>
+                    <span className="terms-content whitespace-nowrap">내용 보기</span>
                 </div>
                 <p style={{ color: 'red', marginTop: '5px', marginLeft: '30px', fontSize: '13px' }}>
                     마케팅 정보 수신 동의를 하시면 SSG.COM 서비스 및 이벤트 정보를 받으실 수 있습니다.
