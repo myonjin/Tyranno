@@ -58,9 +58,7 @@ export default function OrderItems() {
                                                 <strong>{product.vendorName}</strong>
                                                 <span className="ml-1">{product.productName}</span>
                                             </div>
-                                            <div>
-                                                <span className="text-xs">옵션 : {'옵션 시발 그만좀해 '}</span>
-                                            </div>
+
                                             <div className="flex">
                                                 <span className="text-sm mr-4 font-semibold">
                                                     {(
