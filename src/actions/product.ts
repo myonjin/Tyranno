@@ -57,5 +57,17 @@ async function recentProductAPI(productId: string) {
 
     return response
 }
+async function getRecentProductAPI() {
+    const response = await GetAPI('/api/v1/recent/user', undefined, await token)
+    return response
+}
 
-export { GetProductDataAPI, cartClickAPI, LikeClickAPI, getLikeAPI, getProductListAPI, recentProductAPI }
+export {
+    GetProductDataAPI,
+    cartClickAPI,
+    LikeClickAPI,
+    getLikeAPI,
+    getProductListAPI,
+    recentProductAPI,
+    getRecentProductAPI,
+}
