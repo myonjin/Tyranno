@@ -32,7 +32,7 @@ export default function page() {
                 <div className="w-full h-[21px] mb-4 flex justify-between items-center">
                     <span className="font-bold">포토 리뷰</span>
                     <span className="flex text-xs whitespace-nowrap text-gray-400" onClick={openModal}>
-                        더보기<span>(3658)</span>
+                        더보기<span>(1)</span>
                         <div className="w-[16px] h-[14px]">
                             <span>
                                 <SmallArrowIcon />
