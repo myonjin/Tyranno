@@ -183,7 +183,7 @@ export default function Authphone() {
                                 style={{ backgroundColor: '#ff5452', color: '#fff' }}
                                 onClick={handleButtonClick}
                             >
-                                안중번호 받기
+                                인증번호 받기
                             </button>
                         </div>
                     )}
