@@ -17,10 +17,10 @@ public class LikeRepositoryImp extends QuerydslRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    public List<Long> searchLikeIdsByUsersId(Long id, Integer page) {
+    public List<Long> searchProductIdsByUsersId(Long id, Integer page) {
         QLike like = QLike.like;
         com.querydsl.jpa.impl.JPAQuery<Long> query = jpaQueryFactory
-                .select(like.id)
+                .select(like.product.id)
                 .from(like)
                 .where(like.users.id.eq(id));
         if (page != null && page > 0) {

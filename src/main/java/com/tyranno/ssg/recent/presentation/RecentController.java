@@ -41,4 +41,13 @@ public class RecentController {
         String result = recentService.addRecentByProduct(productId, uuid);
         return new ResponseEntity<>(result);
     }
+
+    @Operation(summary = "최근 본 상품 삭제", description = "uuid, productId로 최근 본 상품 삭제, \n\n")
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteRecent(@RequestBody RecentProductIdDto recentProductIdDto, @RequestHeader("Authorization") String token) {
+        Long productId = recentProductIdDto.getProductId();
+        String uuid = jwtTokenProvider.tokenToUuid(token);
+        String result = recentService.deleteRecentByProduct(productId, uuid);
+        return new ResponseEntity<>(result);
+    }
 }

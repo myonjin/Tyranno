@@ -64,18 +64,18 @@ public class LikeServiceImp implements LikeService{
         final int PAGE_SIZE = 10;
         Users users = usersRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
-        List<Long> likeIds = likeRepositoryImp.searchLikeIdsByUsersId(users.getId(), page);
-        List<Map<String, Object>> likeIdList = new ArrayList<>();
+        List<Long> productIds = likeRepositoryImp.searchProductIdsByUsersId(users.getId(), page);
+        List<Map<String, Object>> productIdList = new ArrayList<>();
         int startIndex = (page - 1) * PAGE_SIZE; // 페이지 번호가 1부터 시작하므로 수정
-        for (int i = 0; i < likeIds.size(); i++) {
-            Long likeId = likeIds.get(i);
-            Map<String, Object> likeMap = new HashMap<>();
-            likeMap.put("likeId", likeId);
-            likeMap.put("idx", startIndex + i + 1); // 인덱스도 1부터 시작하도록 수정
-            likeIdList.add(likeMap);
+        for (int i = 0; i < productIds.size(); i++) {
+            Long productId = productIds.get(i);
+            Map<String, Object> productMap = new HashMap<>();
+            productMap.put("productId", productId);
+            productMap.put("idx", startIndex + i + 1); // 인덱스도 1부터 시작하도록 수정
+            productIdList.add(productMap);
         }
         return LikeListDto.builder()
-                .likeIds(likeIdList)
+                .productIds(productIdList)
                 .build();
     }
 }

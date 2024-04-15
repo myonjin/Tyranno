@@ -167,6 +167,18 @@ public class ProductServiceImp implements ProductService {
             productIdList.add(productMap);
         }
         productIdListDto.setProductIds(productIdList);
+        List<Long> productCounts = productRepositoryImp.searchAllProductIdsByCategory(largeId, middleId, smallId, detailId, sortCriterion);
+        int totalIds = productCounts.size();
+        if (totalIds % 10 != 0) {
+            int lastPage = (totalIds/10)+1;
+            productIdListDto.setLastPage(lastPage);
+        } else {
+            int lastPage = (totalIds/10);
+            productIdListDto.setLastPage(lastPage);
+        }
+        productIdListDto.setCurrentPage(page);
+
+        productIdListDto.setTotalCount(totalIds);
 
         return productIdListDto;
     }
