@@ -73,6 +73,24 @@ public class RecentServiceImp implements RecentService {
             recentRepository.save(recentViewedProduct);
         return "최근 본 상품 추가!";
     }
+    @Transactional
+    @Override
+    public String deleteRecentByProduct(Long productId, String uuid) {
+        Users users = usersRepository.findByUuid(uuid)
+                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+//        Product product = productRepository.findById(productId)
+//                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_PRODUCT));
+        RecentViewedProduct recentViewedProduct =
+                recentRepository.findByProductIdAndUsersAndIsView(productId, users, 11);
+        recentViewedProduct = RecentViewedProduct.builder()
+                .id(recentViewedProduct.getId())
+                .product(recentViewedProduct.getProduct())
+                .users(recentViewedProduct.getUsers())
+                .isView((byte) 99)
+                .build();
+        recentRepository.save(recentViewedProduct);
+        return "최근 본 상품 삭제";
+    }
 }
 
 

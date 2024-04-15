@@ -14,11 +14,13 @@ public class ProductIdListDto {
     private List<Map<String, Object>> productIds;
     private int totalCount;
     private int lastPage;
+    private int currentPage;
 
     @Builder
-    public ProductIdListDto(List<Map<String, Object>> productIds, int totalCount, int lastPage) {
+    public ProductIdListDto(List<Map<String, Object>> productIds, int totalCount, int lastPage, int currentPage) {
         this.productIds = productIds;
         this.totalCount = totalCount;
         this.lastPage = lastPage;
+        this.currentPage = currentPage;
     }
 }

@@ -176,7 +176,7 @@ public class ProductServiceImp implements ProductService {
             int lastPage = (totalIds/10);
             productIdListDto.setLastPage(lastPage);
         }
-
+        productIdListDto.setCurrentPage(page);
 
         productIdListDto.setTotalCount(totalIds);
 

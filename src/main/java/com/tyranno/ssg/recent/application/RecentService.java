@@ -8,4 +8,6 @@ public interface RecentService {
     List<RecentViewedDto> getRecentByUser(String uuid);
 
     String addRecentByProduct(Long productId, String uuid);
+
+    String deleteRecentByProduct(Long productId, String uuid);
 }
