@@ -26,7 +26,7 @@ export default function page() {
         <div className="w-full h-full">
             <div className=" font-bold text-center border-b-2">고객리뷰</div>
             {isModalOpen && <Modal closeModal={closeModal} />}
-            {/* <SimpleHeader title="리뷰 전체 보기" /> */}
+        
             <ReviewTotalScore />
             <div className="w-full h-[148px] mt-5 px-4">
                 <div className="w-full h-[21px] mb-4 flex justify-between items-center">
