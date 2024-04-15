@@ -1,27 +1,30 @@
+'use client'
 import { productInformation } from '@/types/ProductType'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import LikeAndCart from './PopularProductlikecart'
 import constraints from '@/actions/constraints'
 
-async function getProductData(productId: string) {
-    const data = await fetch(`${constraints.Server_Url}/api/v1/product/productInformation/${productId}`, {
-        cache: 'force-cache',
-    })
-    if (data) {
-        const response = await data.json()
-        // console.log(response.result)
-        return response.result
-    }
-}
-
-export default async function PopularProduct({ productId, id }: { productId: string; id: number }) {
-    const productInformationData: productInformation = await getProductData(productId)
-    console.log(productInformationData, 'productInfoData')
-
-    // console.log(productInformationData, productId, 'productInfoData')
-    const randomNum = Math.floor(Math.random() * 10 + 1)
+export default function PopularProduct({ productId, id }: { productId: string; id: number }) {
+    const [productInformationData, setProductInformationData] = useState<productInformation>({} as productInformation)
+    const [random, setRandom] = useState(0)
+    useEffect(() => {
+        const getProductData = async () => {
+            const data = await fetch(`${constraints.Server_Url}/api/v1/product/productInformation/${productId}`, {
+                cache: 'force-cache',
+            })
+            if (data) {
+                const response = await data.json()
+                setProductInformationData(response.result)
+            }
+        }
+        getProductData()
+    }, [productId])
+    useEffect(() => {
+        const randomNum = Math.floor(Math.random() * 10 + 1)
+        setRandom(randomNum)
+    }, [random])
     return (
         <div>
             <div className="relative pt-[0.625rem] pb-5">
@@ -29,7 +32,7 @@ export default async function PopularProduct({ productId, id }: { productId: str
                     <Link href={`/product/${productId}`}>
                         <div className="relative">
                             <div className=" overflow-hidden justify-center items-center">
-                                <Image
+                                <img
                                     src={productInformationData.imageUrl}
                                     alt="상품썸네일"
                                     className="will-change-auto max-w-[100%]"
@@ -48,7 +51,7 @@ export default async function PopularProduct({ productId, id }: { productId: str
                         <div className="flex-shrink-0 max-w-[100%] ml-auto">
                             <div className="flex flex-row items-center">
                                 <div className="flex items-center align-top h-[1.25rem] pr-[0.25rem] text-[10px] bg-white text-red-600">
-                                    ▲{randomNum}
+                                    ▲{random}
                                     <span className="border-0 h-[1px] w-[1px] -my-[1px] -ml-[1px] -mr-[1px] overflow-hidden text-nowrap absolute p-0 collapse">
                                         순위변동정보
                                     </span>
@@ -67,12 +70,11 @@ export default async function PopularProduct({ productId, id }: { productId: str
                 <LikeAndCart productId={productId} islike={productInformationData.isLiked} />
                 <Link href={`/product/${productId}`}>
                     <div className="block mt-[0.625rem] pr-[1.25rem]">
-                        {/* --------브랜드, 이름-------- */}
                         <p className="text-ellipsis line-clamp-2 text-sm ">
                             <span className="font-bold">{productInformationData.vendorName}</span>
                             <span className="ml-1">{productInformationData.productName}</span>
                         </p>
-                        {/* --------브랜드, 이름-------- */}
+
                         {productInformationData.discount === null ? (
                             <div className="flex flex-col">
                                 <em className="mt-0 -me-0 mb-0 ms-[0.25rem] not-italic font-semibold">
@@ -89,7 +91,7 @@ export default async function PopularProduct({ productId, id }: { productId: str
                                         <span className="border-0 h-[1px] w-[1px] -my-px -mx-px p-0 overflow-hidden absolute whitespace-nowrap">
                                             정상가격
                                         </span>
-                                        {productInformationData.price.toLocaleString()}원
+                                        {productInformationData.price}원
                                     </del>
                                     <div className="mt-[0.125rem] mb-0 flex flex-row">
                                         <em className="block font-semibold text-base not-italic text-red-500">
@@ -124,7 +126,7 @@ export default async function PopularProduct({ productId, id }: { productId: str
                                 <span className="border-0 w-[1px] h-[1px] -my-px -mx-px px-0 py-0 overflow-hidden whitespace-nowrap absolute">
                                     리뷰 별점
                                 </span>
-                                {productInformationData.productRate.toFixed(2)}
+                                {productInformationData.productRate}
                                 <span className="border-0 w-[1px] h-[1px] -my-px -mx-px px-0 py-0 overflow-hidden whitespace-nowrap absolute">
                                     점
                                 </span>

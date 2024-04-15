@@ -15,16 +15,10 @@ async function GetProductDataAPI(productId: string) {
     )
     return response
 }
-// async function GetProductReviewAPI(productId: string) {
-//     const response = await GetAPI(
-//         `/api/v1/review/list/${productId}`,
-//         {
-//             cache: 'force-cache',
-//         },
-//         undefined,
-//     )
-//     return response
-// }
+async function GetProductReviewAPI(productId: string) {
+    const response = await GetAPI(`/api/v1/review/list/${productId}`, undefined)
+    return response
+}
 async function cartClickAPI(data: CartDataType) {
     const response = await PostAPI('/api/v1/cart', data, await token)
     console.log('response is ', response)
@@ -70,4 +64,5 @@ export {
     getProductListAPI,
     recentProductAPI,
     getRecentProductAPI,
+    GetProductReviewAPI,
 }

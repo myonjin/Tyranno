@@ -4,8 +4,7 @@ import ProductDetail from '@/components/pages/product/ProductDetail'
 import { ProductDataType } from '@/types/ProductDetailDataType'
 import ProductFooter from '@/components/ui/ProductFooter'
 import ProductReview from '@/components/pages/review/ProductReview'
-import { GetProductDataAPI, recentProductAPI } from '@/actions/product'
-import { useEffect } from 'react'
+import { GetProductDataAPI, GetProductReviewAPI, recentProductAPI } from '@/actions/product'
 
 async function GetProductData(productId: string) {
     const response = await GetProductDataAPI(productId)
@@ -15,19 +14,19 @@ async function GetProductData(productId: string) {
 
     return response.result
 }
-// async function GetProductReview(productId: string) {
-//     const response = await GetProductReviewAPI(productId)
-//     // console.log(response)
-//     if (!response.isSuccess) {
-//         console.log('서버 오류')
-//     }
+async function GetProductReview(productId: string) {
+    const response = await GetProductReviewAPI(productId)
+    // console.log(response)
+    if (!response.isSuccess) {
+        console.log('서버 오류')
+    }
 
-//     return response.result
-// }
+    return response.result
+}
 async function fetchRecentProduct(productId: string) {
     const response = await recentProductAPI(productId)
-    console.log(response)
-    return response
+    console.log(response.result)
+    return response.result
 }
 export default async function Page({ params }: { params: { productId: string } }) {
     const productId: string = params.productId

@@ -7,8 +7,6 @@ import ProductList from '@/components/pages/category/ProductList'
 import MainProductList from '@/components/pages/Main/MainProductList'
 
 async function Home() {
-    // const data: product[] = await getProductList()
-    // console.log(data)
     return (
         <main>
             <MainSecondNav />
