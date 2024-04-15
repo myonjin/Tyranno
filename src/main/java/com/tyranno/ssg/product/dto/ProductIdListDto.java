@@ -1,19 +1,24 @@
 package com.tyranno.ssg.product.dto;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
 
-@Getter
+@Data
 @NoArgsConstructor
 public class ProductIdListDto {
     private List<Map<String, Object>> productIds;
+    private int totalCount;
+    private int lastPage;
 
     @Builder
-    public void setProductIds(List<Map<String, Object>> productIds) {
+    public ProductIdListDto(List<Map<String, Object>> productIds, int totalCount, int lastPage) {
         this.productIds = productIds;
+        this.totalCount = totalCount;
+        this.lastPage = lastPage;
     }
 }

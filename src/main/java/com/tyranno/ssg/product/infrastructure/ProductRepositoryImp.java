@@ -3,14 +3,9 @@ package com.tyranno.ssg.product.infrastructure;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tyranno.ssg.category.domain.QCategory;
 import com.tyranno.ssg.product.domain.Product;
-import com.tyranno.ssg.product.domain.QProduct;
-import com.tyranno.ssg.vendor.domain.QVendor;
-import com.tyranno.ssg.vendor.domain.QVendorProduct;
-import jakarta.annotation.Nullable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
@@ -51,62 +46,6 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
 
         return query.fetch();
     }
-
-    public List<Long> searchProductIdsByKeyword(String searchKeyword, Integer sortCriterion, Integer page) {
-        OrderSpecifier<?> orderSpecifier = createProductSpecifier(sortCriterion);
-        QProduct product = QProduct.product;
-        QVendor vendor = QVendor.vendor;
-        QVendorProduct vendorProduct = QVendorProduct.vendorProduct;
-
-        // Vendor에서 vendorId
-        List<Long> vendorIds = jpaQueryFactory.select(vendor.id)
-                .from(vendor)
-                .where(vendor.vendorName.likeIgnoreCase("%" + searchKeyword + "%"))
-                .fetch();
-
-        // VendorProduct에서 상품 ID
-        BooleanExpression vendorExpression = vendorIds.isEmpty() ? null : vendorProduct.vendor.id.in(vendorIds);
-
-        // 검색 키워드
-        BooleanExpression searchExpression = searchKeyword != null ?
-                product.productName.likeIgnoreCase("%" + searchKeyword + "%") : null;
-
-        // 일반 상품
-        BooleanExpression generalProductExpression = searchKeyword != null ?
-                searchExpression.and(product.notIn(
-                        JPAExpressions.select(vendorProduct.product)
-                                .from(vendorProduct)
-                                .innerJoin(vendorProduct.vendor, vendor)
-                                .where(vendor.id.in(vendorIds))
-                )) : null;
-
-        BooleanExpression finalExpression = null;
-        if (vendorExpression != null && searchExpression != null) {
-            finalExpression = vendorExpression.and(searchExpression);
-        } else if (vendorExpression != null) {
-            finalExpression = vendorExpression;
-        } else if (searchExpression != null) {
-            finalExpression = searchExpression;
-        }
-
-        com.querydsl.jpa.impl.JPAQuery<Long> query = jpaQueryFactory
-                .select(vendorProduct.id)
-                .from(vendorProduct)
-                .where(
-                        gtProductBoardId(page),
-                        finalExpression.or(generalProductExpression))
-                .orderBy(orderSpecifier)
-                .limit(10);
-
-        if (page != null && page > 0) {
-            // lastIndex가 제공된 경우, 해당 인덱스 이후의 상품을 가져오도록 offset 설정
-            int offset = (page - 1) * 10; // 10개씩 끊어서 가져오므로 10을 곱해야함
-            query.offset(offset);
-        }
-
-        return query.fetch();
-    }
-
     private BooleanExpression largeIdEq(QCategory category, Long largeId) {
         if (largeId == null) {
             return null;
@@ -134,17 +73,6 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
         }
         return category.detailId.eq(detailId);
     }
-
-    private BooleanExpression gtBoardId(@Nullable Integer page) {
-        QCategory category = QCategory.category;
-        return page == null ? null : category.product.id.gt(page);
-    }
-
-    private BooleanExpression gtProductBoardId(@Nullable Integer page) {
-        QProduct product = QProduct.product;
-        return page == null ? null : product.id.gt(page);
-    }
-
     private OrderSpecifier<?> createOrderSpecifier(Integer sortCriterion) {
         QCategory category = QCategory.category;
         return switch (sortCriterion) {
@@ -155,15 +83,20 @@ public class ProductRepositoryImp extends QuerydslRepositorySupport {
             default -> new OrderSpecifier<>(Order.ASC, category.product.id);
         };
     }
+    public List<Long> searchAllProductIdsByCategory(Long largeId, Long middleId,
+                                                 Long smallId, Long detailId, Integer sortCriterion) {
+        OrderSpecifier<?> orderSpecifier = createOrderSpecifier(sortCriterion);
+        QCategory category = QCategory.category;
 
-    private OrderSpecifier<?> createProductSpecifier(Integer sortCriterion) {
-        QProduct product = QProduct.product;
-        return switch (sortCriterion) {
-            case 1 -> new OrderSpecifier<>(Order.ASC, product.productPrice);
-            case 2 -> new OrderSpecifier<>(Order.DESC, product.productPrice);
-            case 3 -> new OrderSpecifier<>(Order.DESC, product.productRate.divide(product.reviewCount));
-            case 4 -> new OrderSpecifier<>(Order.DESC, product.reviewCount);
-            default -> new OrderSpecifier<>(Order.ASC, product.id);
-        };
+        com.querydsl.jpa.impl.JPAQuery<Long> query = jpaQueryFactory
+                .select(category.product.id)
+                .from(category)
+                .where(
+                        largeIdEq(category, largeId),
+                        middleIdEq(category, middleId),
+                        smallIdEq(category, smallId),
+                        detailIdEq(category, detailId))
+                .orderBy(orderSpecifier);
+        return query.fetch();
     }
 }
