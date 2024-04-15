@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findByUsersUuid(String uuid);
-
+    List<Cart> findByUsersUuidAndIsKeep(String uuid, Byte isKeep);
     boolean existsByOptionAndUsers(Option option, Users users);
     Cart findByOptionAndUsers(Option option, Users users); // 먼저 existsByOption 로 검사해서 optional 형식으로 리턴하지 않음
     void deleteByIdIn(List<Long> ids);
