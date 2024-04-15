@@ -48,7 +48,7 @@ function Login() {
             <HeaderTitle title="로그인" />
             <div>
                 <form className=" p-8 flex flex-col ">
-                    <div className=" mb-1">
+                    <div className="mt-5 mb-1">
                         <input
                             type="text"
                             id="loginId"
@@ -73,7 +73,7 @@ function Login() {
                             <label className="ml-1  text-sm">아이디 저장</label>
                         </span>
                     </div>
-                    <div className="mt-6">
+                    <div className="mt-10">
                         <Buttons title="로그인" href="/" click={handleSumbit} />
                     </div>
                 </form>
@@ -89,7 +89,7 @@ function Login() {
                     <span>|</span>
                     <Link href="/user/signupintro">회원가입</Link>
                 </div>
-                <EasyIcon />
+                {/* <EasyIcon /> */}
 
                 <div className=" p-4 mt-20 ">
                     <button type="submit" className="relative w-full  h-12  bg-black text-white text-sm font-bold">
