@@ -11,13 +11,19 @@ export default function FooterButtons() {
         { id: 3, name: '회원가입', url: '/user/signupintro' },
         { id: 4, name: '앱 다운로드', url: 'https://m.ssg.com/comm/app/appLink.ssg?mobilAppSvcNo=3' },
     ]
+    const handleSignOut = () => {
+        const confirm = window.confirm('로그아웃 하시겠습니까?')
+        if (confirm) {
+            signOut()
+        }
+    }
     return (
         <div className="px-4 " style={{ backgroundColor: '#dbdbe0' }}>
             <ul className="table table-fixed w-full ">
                 {urlData.map((data) =>
                     data.id == 2 ? (
                         data.name == '로그아웃' ? (
-                            <li key={data.id} className="table-cell relative " onClick={() => signOut()}>
+                            <li key={data.id} className="table-cell relative " onClick={() => handleSignOut()}>
                                 <Link
                                     href={data.url}
                                     className="block relative mx-3 my-2 text-xs"

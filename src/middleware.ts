@@ -12,8 +12,20 @@ export async function middleware(request: NextRequest) {
             const redirectUrl = new URL('/user/login', request.nextUrl.origin)
             return NextResponse.redirect(redirectUrl.toString())
         }
+        if (request.nextUrl.pathname.startsWith('/recentproduct')) {
+            const redirectUrl = new URL('/user/login', request.nextUrl.origin)
+            return NextResponse.redirect(redirectUrl.toString())
+        }
+        if (request.nextUrl.pathname.startsWith('/order')) {
+            const redirectUrl = new URL('/user/login', request.nextUrl.origin)
+            return NextResponse.redirect(redirectUrl.toString())
+        }
+        if (request.nextUrl.pathname.startsWith('/cart')) {
+            const redirectUrl = new URL('/user/login', request.nextUrl.origin)
+            return NextResponse.redirect(redirectUrl.toString())
+        }
     } else {
-        if (request.nextUrl.pathname.startsWith('/user/login')) {
+        if (request.nextUrl.pathname.startsWith('/user')) {
             console.log('미들웨어 실행여부 ')
             // const redirectUrl = new URL('/mypage', request.nextUrl.origin)
             // return NextResponse.redirect(redirectUrl.toString())

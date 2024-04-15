@@ -15,7 +15,7 @@ export default function ContinueOrder() {
                     계속 쇼핑하기
                 </button>
             </Link>
-            <Link href={'/mypage/manage/address'}>
+            <Link href={'/mypage/manage/orderlist'}>
                 <button
                     className="w-1/2 text-[14px] text-[#444444] border-[1px] px-2 h-full rounded-full border-[#e5e5e5]"
                     onClick={resetMoneyRecoil}
