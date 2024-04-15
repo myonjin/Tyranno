@@ -18,9 +18,6 @@ async function getProductList(
 ) {
     const data = await fetch(
         `${constraints.Server_Url}/api/v1/product/productList?largeId=${largeId}&middleId=${middleId}&smallId=${smallId}&detailId=${detailId}&sortCriterion=${sortCriterion}`,
-        {
-            cache: 'force-cache',
-        },
     )
     if (data) {
         const response = await data.json()

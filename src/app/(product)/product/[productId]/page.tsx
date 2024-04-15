@@ -5,7 +5,6 @@ import { ProductDataType } from '@/types/ProductDetailDataType'
 import ProductFooter from '@/components/ui/ProductFooter'
 import ProductReview from '@/components/pages/review/ProductReview'
 import { GetProductDataAPI, recentProductAPI } from '@/actions/product'
-import { useEffect } from 'react'
 
 async function GetProductData(productId: string) {
     const response = await GetProductDataAPI(productId)
