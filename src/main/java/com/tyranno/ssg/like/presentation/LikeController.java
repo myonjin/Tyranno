@@ -28,11 +28,11 @@ public class LikeController {
         Long productId = likeProductIdDto.getProductId();
         if(token != null) {
             String uuid = jwtTokenProvider.tokenToUuid(token);
-            boolean isLike = likeService.modifyLike(productId, uuid);
-            if (isLike) {
-                return new ResponseEntity<>("좋아요 추가!");
+            int isLike = likeService.modifyLike(productId, uuid);
+            if (isLike == 11) {
+                return new ResponseEntity<>(11);
             } else {
-                return new ResponseEntity<>("좋아요 삭제!");
+                return new ResponseEntity<>(99);
             }
         } else {
             throw new RuntimeException(ResponseStatus.ONLY_FOR_MEMBERS.getMessage());
@@ -70,8 +70,8 @@ public class LikeController {
         Long productId = likeProductIdDto.getProductId();
         if(token != null) {
             String uuid = jwtTokenProvider.tokenToUuid(token);
-            boolean isLike = likeService.modifyLike(productId, uuid);
-            if (isLike) {
+            int isLike = likeService.modifyLike(productId, uuid);
+            if (isLike == 11) {
                 return new ResponseEntity<>("좋아요 추가!");
             } else {
                 return new ResponseEntity<>("좋아요 삭제!");

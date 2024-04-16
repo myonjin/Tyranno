@@ -28,7 +28,7 @@ public class LikeServiceImp implements LikeService{
 
     @Override
     @Transactional
-    public boolean modifyLike(Long productId, String uuid) {
+    public int modifyLike(Long productId, String uuid) {
         Users users =  usersRepository.findByUuid(uuid)
                 .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
         Product product = productRepository.findById(productId)
@@ -36,28 +36,34 @@ public class LikeServiceImp implements LikeService{
         Optional<Like> like = likeRepository.findByProductIdAndUsersId(productId, users.getId()); // 상품을 좋아요 했는지 확인
         if (like.isPresent()) {// 이미 좋아요한 경우 삭제
             likeRepository.deleteByProductIdAndUsersId(productId, users.getId());
-            return false;
+            return 99;
         } else {// 좋아요 하지 않은 경우 추가
             Like newLike = Like.builder()
                     .product(product)
                     .users(users)
                             .build();
             likeRepository.save(newLike);
-            return true; // 찜이 추가되었음을 나타냄
+            return 11; // 찜이 추가되었음을 나타냄
         }
     }
 
     @Override
     public int getLike(Long productId, String uuid) {
-        Users users =  usersRepository.findByUuid(uuid)
-                .orElseThrow(() -> new GlobalException(ResponseStatus.NO_EXIST_USERS));
+        if (uuid == null) {
+            return 99; // 비회원인 경우, 그냥 99 반환
+        }
+        Users users =  usersRepository.findByUuid(uuid).orElse(null); // 회원인 경우에만 사용자 조회
+        if (users == null) {
+            return 99; // 해당 UUID에 해당하는 사용자가 없으면 99 반환
+        }
         Optional<Like> like = likeRepository.findByProductIdAndUsersId(productId, users.getId());
         if (like.isPresent()) {
-            return 11;
+            return 11; // 좋아요가 있는 경우
         } else {
-            return 99;
+            return 99; // 좋아요가 없는 경우
         }
     }
+
 
     @Override
     public LikeListDto getLikeList(String uuid, Integer page) {
