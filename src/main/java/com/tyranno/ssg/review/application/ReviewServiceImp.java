@@ -4,7 +4,6 @@ import com.tyranno.ssg.global.GlobalException;
 import com.tyranno.ssg.global.ResponseStatus;
 import com.tyranno.ssg.option.dto.OptionNamesDto;
 import com.tyranno.ssg.option.infrastructure.OptionRepository;
-import com.tyranno.ssg.order.application.OrderService;
 import com.tyranno.ssg.order.domain.Order;
 import com.tyranno.ssg.order.domain.OrderList;
 import com.tyranno.ssg.order.infrastructure.OrderListRepository;
@@ -206,7 +205,7 @@ public class ReviewServiceImp implements ReviewService{
     }
     public ReviewAbleOrderIdDto getReviewAbleOrderIds(String uuid, Integer sortCriterion, Integer page) {
         final int PAGE_SIZE = 10;
-        List<OrderList> orderLists = orderListRepository.findAllByUuid(uuid);
+        List<OrderList> orderLists = orderListRepository.findAllByUuidOrderByCreatedAtDesc(uuid);
         List<Map<String, Object>> orderIdList = new ArrayList<>();
         int startIndex = (page - 1) * PAGE_SIZE + 1;
 
