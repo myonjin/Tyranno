@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface OrderListRepository extends JpaRepository<OrderList, Long> {
 
-    List<OrderList> findAllByUuid(String uuid);
+    List<OrderList> findAllByUuidOrderByCreatedAtDesc(String uuid);
     List<OrderList> findByOrderNameAndOrderPhoneNumberAndOrderNumber(String orderName, String orderPhoneNumber, String orderNumber);
 }

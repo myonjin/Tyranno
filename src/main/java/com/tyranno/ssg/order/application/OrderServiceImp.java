@@ -28,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -111,7 +110,7 @@ public class OrderServiceImp implements OrderService {
     }
 
     public List<OrderListDto> getOrderList(String uuid) {
-        List<OrderList> orderLists = orderListRepository.findAllByUuid(uuid); // 주문 리스트
+        List<OrderList> orderLists = orderListRepository.findAllByUuidOrderByCreatedAtDesc(uuid); // 주문 리스트
         List<OrderListDto> orderListDtos = new ArrayList<OrderListDto>(); // OrderListDto 객체들을 담을 리스트 생성
 
         for (OrderList orderList : orderLists) {
