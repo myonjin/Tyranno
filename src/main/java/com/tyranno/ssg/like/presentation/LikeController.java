@@ -63,6 +63,23 @@ public class LikeController {
             throw new RuntimeException(ResponseStatus.ONLY_FOR_MEMBERS.getMessage());
         }
     }
+    @Operation(summary = "좋아요 삭제", description = "좋아요 상품 삭제하기")
+    @DeleteMapping
+    public ResponseEntity<?> deleteLike(@RequestBody LikeProductIdDto likeProductIdDto,
+                                         @RequestHeader(value = "Authorization", required = false) String token) {
+        Long productId = likeProductIdDto.getProductId();
+        if(token != null) {
+            String uuid = jwtTokenProvider.tokenToUuid(token);
+            boolean isLike = likeService.modifyLike(productId, uuid);
+            if (isLike) {
+                return new ResponseEntity<>("좋아요 추가!");
+            } else {
+                return new ResponseEntity<>("좋아요 삭제!");
+            }
+        } else {
+            throw new RuntimeException(ResponseStatus.ONLY_FOR_MEMBERS.getMessage());
+        }
+    }
 }
 
 

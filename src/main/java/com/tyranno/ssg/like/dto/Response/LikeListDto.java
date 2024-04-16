@@ -9,11 +9,11 @@ import java.util.Map;
 @Getter
 @NoArgsConstructor
 public class LikeListDto {
-    private List<Map<String, Object>> likeIds;
+    private List<Map<String, Object>> productIds;
 
     @Builder
-    public LikeListDto(List<Map<String, Object>> likeIds) {
-        this.likeIds = likeIds;
+    public LikeListDto(List<Map<String, Object>> productIds) {
+        this.productIds = productIds;
     }
 }
 

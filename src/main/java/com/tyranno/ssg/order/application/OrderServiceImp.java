@@ -54,7 +54,7 @@ public class OrderServiceImp implements OrderService {
         OrderList savedOrderList = orderListRepository.save(orderList);
 
         // 5. CartList 가져오기
-        List<Cart> CartList = cartRepository.findByUsersUuid(uuid);
+        List<Cart> CartList = cartRepository.findByUsersUuidAndIsKeep(uuid, (byte) 99);
 
         /** 주문리스트 번호와 옵션아이디 넣어준다
          *  개수와 가격도 넣어준다 stream으로
