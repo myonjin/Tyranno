@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Footer from '@/components/ui/Footer'
@@ -16,11 +16,18 @@ export const metadata: Metadata = {
         icon: '/favicon.ico',
     },
 }
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+}
 declare global {
     interface Window {
-      Kakao: any;
+        Kakao: any
     }
-  }
+}
 
 export default function RootLayout({
     children,
@@ -35,7 +42,7 @@ export default function RootLayout({
                         {children} <Footer />
                     </RecoilProvider>
                 </body>
-                <KakaoScript/>
+                <KakaoScript />
             </html>
         </AuthProvider>
     )

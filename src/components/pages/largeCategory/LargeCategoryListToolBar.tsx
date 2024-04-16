@@ -23,7 +23,6 @@ export default function CategoryProductListToolBar({ largeId }: { largeId: strin
         }
         getCategory1()
     }, [])
-    console.log(Lcategory)
 
     return (
         <div className="flex flex-row w-full h-[46px] bg-white items-center pl-3 pr-3 sticky top-0 z-10">

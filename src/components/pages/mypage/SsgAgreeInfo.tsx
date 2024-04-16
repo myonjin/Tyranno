@@ -14,7 +14,6 @@ export default function SsgAgreeInfo() {
     useEffect(() => {
         getMyInfos()
     }, [])
-    console.log(myInfo)
     return (
         <>
             <div style={{ backgroundColor: '#f8f8f8', padding: '15px 20px' }}>

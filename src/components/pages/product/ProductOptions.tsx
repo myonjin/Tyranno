@@ -81,7 +81,7 @@ export default function ProductOptions({
                         const response = await fetch(`${constraints.Server_Url}/api/v1/option/${productId}`)
                         if (response) {
                             const data = await response.json()
-                            console.log(data)
+
                             if (data.isSuccess) {
                                 setNoOptionList([
                                     ...noOptionList,
@@ -170,7 +170,6 @@ export default function ProductOptions({
                             count: selectedOptionList[i].count,
                         }
                         const res = await cartClickAPI(data)
-                        console.log(res, '장바구니')
                     }
                     resetSelectedOptionList()
                     router.push('/cart')
@@ -183,7 +182,7 @@ export default function ProductOptions({
                     count: noOptionList[0].count,
                 }
                 const res = await cartClickAPI(data)
-                console.log(res, '장바구니')
+
                 resetSelectedOptionList()
                 router.push('/cart')
             }
@@ -192,7 +191,7 @@ export default function ProductOptions({
             router.push(`/user/login`)
         }
     }
-    console.log(noOptionList)
+
     const handleOrder = async () => {
         if (session?.user.isSuccess) {
             if (newOptionList.length > 0) {

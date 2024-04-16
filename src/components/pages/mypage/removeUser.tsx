@@ -8,7 +8,6 @@ export default function RemoveUser() {
         const confirm = window.confirm('정말 탈퇴하시겠습니까?')
         if (confirm) {
             const res = await removeUserAPI()
-            console.log(res)
             alert('탈퇴되었습니다.')
             router.push('/')
         }

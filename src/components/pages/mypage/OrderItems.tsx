@@ -10,7 +10,6 @@ export default function OrderItems() {
     const getOrderList = async () => {
         const res = await getOrderListAPI()
         setOrderList(res)
-        console.log(res)
     }
     useEffect(() => {
         getOrderList()

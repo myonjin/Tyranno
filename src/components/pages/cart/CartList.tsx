@@ -92,7 +92,6 @@ export default function CartList() {
     const [allChecked, setAllChecked] = useState(false)
     const [checkedItem, setCheckedItem] = useState<number[]>(recoilSample)
     const checkItemhandler = (id: number, ischecked: boolean) => {
-        console.log(id, ischecked)
         if (ischecked) {
             if (!recoilSample.includes(id)) {
                 setRecoilSample([...recoilSample, id])
@@ -110,7 +109,6 @@ export default function CartList() {
         } else {
             setCheckedItem([])
         }
-        console.log(checkedItem)
     }
     const isKeepHandle = async (cartId: number, isKeep: number) => {
         if (isKeep === 11) {
@@ -149,7 +147,7 @@ export default function CartList() {
             alert('상품이 없습니다.')
         }
     }
-    console.log(checkedItem)
+
     return (
         <>
             <div className="my-3 mx-4 flex items-center">

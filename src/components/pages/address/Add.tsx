@@ -44,7 +44,6 @@ const Postcode = ({ modalOpen, setModalOpen, setFullAddress, setDetailAddress, s
         setFullAddress(full)
         setZipCode(zonecode)
         setJibunAddr(jibunAddress)
-        console.log(full, detailAddr, zonecode, jibunAddress) // detailAddress 출력
     }
     const closeModal = () => {
         setDetailAddr(detailAddr)

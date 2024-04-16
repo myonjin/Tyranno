@@ -37,7 +37,6 @@ export default function ChangeAddress() {
         alert(response)
         fetchData()
     }
-    console.log(settingsAddress)
     const handlehangeAddress = (deliveryId: string) => {
         let id = parseInt(deliveryId)
         router.push(`/address/${id}`)

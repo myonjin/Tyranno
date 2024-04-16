@@ -123,7 +123,6 @@ function signup() {
     const handleValidLoginId = async () => {
         try {
             const res = await validLoginId(loginId)
-            console.log(res)
             if (res.isSuccess === false) {
                 alert(res.message)
             } else {
@@ -134,12 +133,14 @@ function signup() {
         }
     }
     const handleValidEmail = async () => {
-        if (emailValue !== '') {
-            alert('이메일 형식이 올바르지 않습니다.')
-        } else {
+        {
             try {
                 const res = await validEmailAPI(email)
-                alert(res.result)
+                if (res.isSuccess === false) {
+                    alert(res.message)
+                } else {
+                    alert(res.result)
+                }
             } catch (error) {
                 console.error('Error:', error)
             }

@@ -22,8 +22,7 @@ function SelectAddressModal({ modalOpen, setModalOpen }: AddressModalProps) {
     }
 
     const handleMain = async (deliveryId: string) => {
-        const response = await changeMainDelivery(parseInt(deliveryId))
-        console.log(response)
+        await changeMainDelivery(parseInt(deliveryId))
     }
     useEffect(() => {
         fetchData()

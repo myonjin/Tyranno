@@ -11,7 +11,6 @@ export default function Agree() {
     const [allChecked, setAllChecked] = useState(false)
     const [checkedItem, setCheckedItem] = useState<number[]>([])
     const checkItemhandler = (id: number, ischecked: boolean) => {
-        console.log(id, ischecked)
         if (ischecked) {
             setCheckedItem((prev) => [...prev, id])
         } else {

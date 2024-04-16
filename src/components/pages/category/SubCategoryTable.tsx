@@ -20,7 +20,7 @@ export default function SubCategoryTable() {
     const detailId = searchParams.get('detailId') || ''
     const [category, setCategory] = useState<categorySmall[]>([] as categorySmall[])
     const [Dcategory, setDCategory] = useState<categoryDetail[]>([] as categoryDetail[])
-    // console.log(detailId.length, '상세까지 갈것인가')
+
     const router = useRouter()
     useEffect(() => {
         const getCategory = async () => {

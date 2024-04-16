@@ -28,7 +28,7 @@ export default function CategoryListModal() {
         }
         getCategory()
     }, [])
-    // console.log(Lcategory)
+
     useEffect(() => {
         const getCategory = async () => {
             const data = await fetch(`${constraints.Server_Url}/api/v1/category/middle/${largeId}`)
@@ -39,7 +39,7 @@ export default function CategoryListModal() {
         }
         getCategory()
     }, [largeId])
-    // console.log(category)
+
     return (
         <div>
             <div className="absolute bg-gray-700 bg-opacity-70 top-20 left-0 w-full h-dvh z-[1399]"></div>

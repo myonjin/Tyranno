@@ -21,7 +21,7 @@ async function getProductList(
     )
     if (data) {
         const response = await data.json()
-        console.log(response.result)
+
         return response.result.productIds
     }
 }

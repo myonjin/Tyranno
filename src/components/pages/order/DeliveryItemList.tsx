@@ -45,26 +45,25 @@ export default function DeliveryItemList() {
             const option = await getOptionListAPI(item.optionId)
             productLists.push({ ...product, ...item, ...option })
         }
-        console.log(productLists, '상세')
+
         for (const opt of noOption) {
             const product = await getItemsOrderAPI(opt.productId)
             const option = await getOptionListAPI(opt.optionId)
             productLists.push({ ...product, ...opt, ...option })
         }
-        console.log(productLists, '옵션없음')
+
         setProductData(productLists)
         const res = await getDeliveryAddressAPI()
         setDeliveryAddress(res)
         const myinfos = await getMyInfo()
         setMyInfo(myinfos as MyInfo)
     }
-    console.log(productData, 'tgsg')
+
     useEffect(() => {
         fetchOptions()
     }, [])
 
     const discountmoney = (money: number, discount: number) => {
-        console.log(money, discount)
         const remoney = money * (1 - discount / 100)
         total += remoney
         return remoney
@@ -99,7 +98,7 @@ export default function DeliveryItemList() {
                 total_amount: total,
             }
             const response = await kakaoPayReadyAPI(payData)
-            console.log(response)
+
             // link = response.next_redirect_pc_url
             link = response.next_redirect_mobile_url
             window.open(link)

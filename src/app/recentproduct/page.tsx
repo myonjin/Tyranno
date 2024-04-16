@@ -22,7 +22,6 @@ export default function Recent() {
         setDeleted(!deleted)
     }
     const checkItemhandler = (id: number, ischecked: boolean) => {
-        console.log(id, ischecked)
         if (ischecked) {
             setCheckedItem((prev) => [...prev, id])
         } else {
@@ -37,12 +36,9 @@ export default function Recent() {
     useEffect(() => {
         getRecentProduct()
     }, [])
-
-    console.log(recentProdcut)
     const fetchProductList = async (productDataId: RecenIdtDataType[]) => {
         const productList = []
         for (const item of productDataId) {
-            console.log(item.productId)
             const res = await getProductListAPI(item.productId.toString())
             productList.push({ ...res.result })
         }

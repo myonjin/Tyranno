@@ -98,7 +98,6 @@ const GroupNav = ({
     isOpen: Boolean
     selectedLCategory: string
 }) => {
-    // console.log(group, 'group')
     return (
         <div className="relative left-0 overflow-hidden w-full ">
             <ul className={isOpen ? 'grid grid-cols-5 h-full relative' : 'grid grid-cols-5 relative'}>

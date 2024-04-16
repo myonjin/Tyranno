@@ -10,7 +10,6 @@ export interface CategoryMiddleType {
 function CategoryModal({ largeId }: { largeId: string }) {
     const [categoryMiddle, setCategoryMiddle] = useState<CategoryMiddleType[]>([] as CategoryMiddleType[])
 
-    // console.log(typeof largeId)
     useEffect(() => {
         const GetCategoryMiddle = async () => {
             const data = await fetch(`${constraints.Server_Url}/api/v1/category/middle/${largeId}`)
@@ -22,7 +21,6 @@ function CategoryModal({ largeId }: { largeId: string }) {
 
         GetCategoryMiddle()
     }, [largeId])
-    // console.log(largeId)
 
     return (
         <section className="grid grid-cols-2 gap-x-4 ">

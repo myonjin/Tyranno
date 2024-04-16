@@ -76,7 +76,6 @@ export default function Authphone() {
                     alert('인증 되었습니다.')
                     router.push('/user/signupintro/signup')
                 }
-                console.log(response)
             } else {
                 alert('인증번호가 틀렸습니다.')
                 router.push('/user/signupintro/auth')

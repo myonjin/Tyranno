@@ -55,7 +55,7 @@ export default function Authphone() {
             if (response.isSuccess == true) {
                 const phone = phoneNumberString
                 const response = await findIdAPI(phone)
-                console.log(response)
+
                 if (response.isSuccess === false) {
                     alert(response.message)
                     router.push('/user/findidform')

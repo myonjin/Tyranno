@@ -26,7 +26,6 @@ async function fetchAPI(method: Method, url: string, body?: object, token?: stri
         const response = await fetch(`${constraints.Server_Url}${url}`, options)
         return response.json()
     } catch (error) {
-        console.error('Error:', error)
         throw error
     }
 }
@@ -39,8 +38,6 @@ function GetAPI(url: string, params?: object, token?: string) {
     return fetchAPI('GET', url, undefined, token)
 }
 function PostAPI(url: string, body?: object, token?: string) {
-    console.log('body', body)
-    // console.log(GetToken())
     return fetchAPI('POST', url, body, token)
 }
 function PutAPI(url: string, body: object, token?: string) {

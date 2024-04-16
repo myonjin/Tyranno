@@ -11,8 +11,7 @@ interface AddressModalProps {
 }
 function AddressModal({ modalOpen, setModalOpen }: AddressModalProps) {
     const handleMain = async (deliveryId: string) => {
-        const response = await changeMainDelivery(parseInt(deliveryId))
-        console.log(response)
+        await changeMainDelivery(parseInt(deliveryId))
     }
     const [deliveryId, setDeliveryId] = useState('')
     return modalOpen ? (

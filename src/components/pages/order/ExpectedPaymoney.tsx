@@ -4,7 +4,6 @@ import { useRecoilValue } from 'recoil'
 
 export default function ExpectedPaymoney() {
     const money = useRecoilValue(CartMoneyAtom)
-    console.log(money, '결제예정')
 
     return (
         <>

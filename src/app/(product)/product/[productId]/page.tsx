@@ -25,7 +25,6 @@ async function GetProductReview(productId: string) {
 }
 async function fetchRecentProduct(productId: string) {
     const response = await recentProductAPI(productId)
-    console.log(response.result)
     return response.result
 }
 export default async function Page({ params }: { params: { productId: string } }) {

@@ -10,7 +10,6 @@ async function GetCategoryAPI() {
 
 async function cartClickAPI(productId: string) {
     const response = await PostAPI(`/api/v1/cart/${productId}`, undefined, await token)
-    console.log('response is ', response)
     return response
 }
 

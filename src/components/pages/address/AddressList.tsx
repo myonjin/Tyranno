@@ -17,7 +17,6 @@ export default function AddressList({ setDeliveryId }: { setDeliveryId: (value: 
     useEffect(() => {
         fetchData()
         setDeliveryId(selected)
-        console.log('fmkdslfs', selected)
     }, [selected])
     return (
         <div className="flex w-full max-w-full max-h-full">

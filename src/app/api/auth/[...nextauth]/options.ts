@@ -28,11 +28,8 @@ export const options: NextAuthOptions = {
                         password: credentials.password,
                     }),
                 })
-                console.log('res', res)
                 if (res.ok) {
                     const user = await res.json()
-
-                    console.log('user', user)
                     return user
                 } else {
                     console.log('error')
@@ -48,10 +45,6 @@ export const options: NextAuthOptions = {
     callbacks: {
         async signIn({ user, profile }): Promise<any> {
             if (profile) {
-                console.log('fdjso;afio;djfoasjkfsldjfjdsfldsnfsdkl')
-                // console.log(profile)
-                // 회원인지 아닌지 확인
-                // console.log(`${process.env.API_BASE_URL}/api/v1/auth/oauth/check`)
                 const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/oauth/check`, {
                     method: 'POST',
                     headers: {
@@ -83,7 +76,6 @@ export const options: NextAuthOptions = {
 
         async session({ session, token }) {
             session.user = token as any
-            console.log('session', session)
             return session
         },
 

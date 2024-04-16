@@ -21,7 +21,6 @@ export default function ChangePassword() {
         setPasswordCheck(event.target.value)
     }
     const handleSubmitChangePassword = async (e: any) => {
-        console.log(password, passwordCheck)
         if (password != passwordCheck) {
             alert('비밀번호가 다릅니다')
         } else {

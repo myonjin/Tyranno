@@ -21,7 +21,6 @@ async function GetProductReviewAPI(productId: string) {
 }
 async function cartClickAPI(data: CartDataType) {
     const response = await PostAPI('/api/v1/cart', data, await token)
-    console.log('response is ', response)
     return response
 }
 
@@ -32,7 +31,6 @@ async function getProductListAPI(productId: string) {
 
 async function LikeClickAPI(data: LIKEType) {
     const response = await PostAPI(`/api/v1/like`, data, await token)
-    console.log('response is ', response)
     return response
 }
 async function getLikeAPI(productId: string) {
