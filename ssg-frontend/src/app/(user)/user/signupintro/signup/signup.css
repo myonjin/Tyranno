@@ -1,0 +1,49 @@
+.box dt {
+    display: inline-block;
+    max-width: 137px;
+    width: 95px;
+    height: 40px;
+    padding-top: 9px;
+    padding-left: 15px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+.box input {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    border: 1px solid #f0f0f0;
+}
+.box {
+    display: flex;
+
+    position: relative;
+    /* margin-right: 10px; */
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+
+input::placeholder {
+    font-size: small;
+}
+.terms-box {
+    background-color: white;
+    border: 1px solid #f0f0f0;
+    padding: 10px;
+    position: relative;
+    align-items: center;
+    height: 50px;
+    justify-content: space-between;
+    display: flex;
+}
+.terms-content {
+    padding: 10px;
+    width: 80px;
+    height: 30px;
+    font-size: 12px;
+    background-color: #f0f0f0;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
