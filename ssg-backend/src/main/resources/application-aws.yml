@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    #    url: jdbc:mysql://15.164.246.181:3306/tyranno?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://15.164.246.181:3306/tyranno?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        #        dialect: org.hibernate.dialect.MySQL5Dialect
+        format_sql: true
+  security:
+    user:
+      name: tyranno
+      password: xlfksh97
+  data:
+    redis:
+      host: ${TYRANNO_SERVER}
+      port: 6379
+      password: ${REDIS_PASSWORD}
+
+
+# swagger
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operations-sorter: alpha
+  api-docs:
+    path: /api-docs
+
+# jwt
+JWT:
+  SECRET_KEY: 395c0719ce36e1fe04e4a6e4386f97735a18bec33f73b8d8d65adc188697dfe795bfa81a7f59a777704d1f8b9ce1baa99dad4c670d75be52efc4bfa7d9c39db5
+  EXPIRATION_TIME: 3600000
+
+COOLSMS:
+  APIKEY: ${COOLSMS_APIKEY}
+  APISECRET: ${COOLSMS_APISECRET}
+  FROMNUMBER: ${COOLSMS_FROMNUMBER}
+
+# 카카오페이
+kakaopay:
+  secret-key: ${KAKAO_PAY_SECRET_KEY}
